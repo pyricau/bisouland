@@ -1,13 +1,13 @@
 Bisouland est un jeu par navigateur. Volez des points d'amour √† vos adversaires en leur envoyant des bisous !
 
-Pierre-Yves Ricau a créé le site http://bisouland.piwai.info en 2005, et ce fût pour lui l'occasion de découvrir la programmation PHP. Aujourd'hui (2011), le site devient open source et est repris par une équipe motivée. Soyez donc indulgent sur la qualité du code, qui, si elle ne saurait que s'améliorer, part vraiment de très loin.
+Pierre-Yves Ricau a cr√©√© le site http://bisouland.piwai.info en 2005, et ce f√ªt pour lui l'occasion de d√©couvrir la programmation PHP. Aujourd'hui (2011), le site devient open source et est repris par une √©quipe motiv√©e. Soyez donc indulgent sur la qualit√© du code, qui, si elle ne saurait que s'am√©liorer, part vraiment de tr√®s loin.
 
 TODO pour publier le site online :
 
-Remplacer le contenu de news/.htpasswd par un contenu valide (user ayant accès aux news)
+Remplacer le contenu de news/.htpasswd par un contenu valide (user ayant acc√®s aux news)
 
-Remplacer les identifiants de connexion à la bd dans phpIncludes/bd.php
+Remplacer les identifiants de connexion √† la bd dans phpIncludes/bd.php
 
 S'assurer que l'envoi de mails (inscription) fonctionne
 
-Remplacer dans news/mail.php l'email d'admin qui permet de checker les inscrits non validés (variable $destinataire)
+Remplacer dans news/mail.php l'email d'admin qui permet de checker les inscrits non valid√©s (variable $destinataire)

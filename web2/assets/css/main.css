@@ -1,6 +1,17 @@
+/*
+** Main CSS :
+** Surcharge les valeurs de Reset CSS pour la mise en page generale.
+*/
+
+html {
+  background:     #ccc url("../images/bg.png");
+  color:          #6b6b6b;
+  font:           12px Arial, sans-serif;
+}
+
 body {
-  background:     #fdfdfd;
-  font-family:    Arial, sans-serif;
+  width:          952px;
+  margin:         auto;
 }
 
 #atomik-wrapper {

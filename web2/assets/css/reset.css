@@ -1,0 +1,21 @@
+/*
+** Reset CSS :
+** Remplace les valeurs par defaut des navigateurs pour les balises generiques.
+*/
+
+body, html,
+abbr, acronym, blockquote, br, cite, code, div, em, h1, h2, h3, p, pre, span, strong,
+a,
+dl, dt, dd, ol, ul, li,
+fieldset, form, input, label, legend, select, textarea,
+caption, table, tbody, td, tfoot, th, thead, tr,
+img {
+  margin:           0;
+  padding:          0;
+  border:           0;
+  vertical-align:   baseline;
+}
+table {
+  border-collapse:  collapse;
+  border-spacing:   0;
+}

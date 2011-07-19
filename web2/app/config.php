@@ -17,7 +17,8 @@ Atomik::set(array(
       'debug'           => false,
   ),
   'styles' => array(
-      0                 => 'assets/css/main.css',
+      0                 => 'assets/css/style.css',
+      1                 => 'assets/css/main.css',
   ),
   'plugins' => array(
   ),

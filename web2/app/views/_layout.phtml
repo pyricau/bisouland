@@ -25,7 +25,7 @@
   </head>
 
   <body>
-    <div class="header">
+    <div id="header">
       <h1>Bisouland v2<?php echo A('title', ''); ?></h1>
 
       <ul>
@@ -35,7 +35,7 @@
       </ul>
     </div>
 
-    <div class="nav">
+    <div id="nav">
       <h2>G&eacute;n&eacute;ral</h2>
 
       <ul>
@@ -65,7 +65,7 @@
       </ul>
     </div>
 
-    <div class="article">
+    <div id="article">
       <div class="section">
         <ul id="messages">
           <?php foreach (A('flash:all') as $label => $messages): ?>
@@ -82,7 +82,7 @@
 
     </div>
 
-    <div class="aside">
+    <div id="aside">
       <h2>Messagerie instantann&eacute;e</h2>
 
       <form>
@@ -101,7 +101,7 @@
       </dl>
     </div>
 
-    <div class="footer">
+    <div id="footer">
       <h2>Connect&eacute;s</h2>
 
       <ul>

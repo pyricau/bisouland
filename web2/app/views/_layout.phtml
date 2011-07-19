@@ -1,8 +1,16 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml">
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN"
+                      "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+<html version="-//W3C//DTD XHTML 1.1//EN"
+      xmlns="http://www.w3.org/1999/xhtml"
+      xml:lang="fr"
+      xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+      xsi:schemaLocation="http://www.w3.org/1999/xhtml
+                          http://www.w3.org/MarkUp/SCHEMA/xhtml11.xsd"
+>
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
-    <title><?php echo A('title', 'My website'); ?></title>
+    <title>Bisouland v2<?php echo A('title', ''); ?></title>
 
     <?php foreach (A('styles', array()) as $style): ?>
 
@@ -15,20 +23,91 @@
     <?php endforeach; ?>
 
   </head>
+
   <body>
-    <ul id="messages">
-      <?php foreach (A('flash:all') as $label => $messages): ?>
-        <?php foreach ($messages as $message): ?>
+    <div class="header">
+      <h1>Bisouland v2<?php echo A('title', ''); ?></h1>
 
-          <li class="<?php echo $label; ?>"><?php echo $message; ?></li>
-        <?php endforeach; ?>
-      <?php endforeach; ?>
+      <ul>
+        <li>Username</li>
+        <li>messages</li>
+        <li>logout</li>
+      </ul>
+    </div>
 
-    </ul>
+    <div class="nav">
+      <h2>G&eacute;n&eacute;ral</h2>
 
-    <div id="content">
+      <ul>
+        <li>accueil</li>
+        <li>statistiques</li>
+        <li>top 20</li>
+      </ul>
+
+      <h2>Strat&eacute;gie</h2>
+
+      <ul>
+        <li>cerveau</li>
+        <li>organes</li>
+        <li>techniques</li>
+        <li>bisous</li>
+        <li>nuages</li>
+      </ul>
+
+      <h2>Informations</h2>
+
+      <ul>
+        <li>FAQ</li>
+        <li>aide</li>
+        <li>encyclop&eacute;die</li>
+        <li>recherche</li>
+        <li>joueurs</li>
+      </ul>
+    </div>
+
+    <div class="article">
+      <div class="section">
+        <ul id="messages">
+          <?php foreach (A('flash:all') as $label => $messages): ?>
+            <?php foreach ($messages as $message): ?>
+
+              <li class="<?php echo $label; ?>"><?php echo $message; ?></li>
+            <?php endforeach; ?>
+          <?php endforeach; ?>
+
+        </ul>
+      </div>
+
       <?php echo $contentForLayout; ?>
 
+    </div>
+
+    <div class="aside">
+      <h2>Messagerie instantann&eacute;e</h2>
+
+      <form>
+        <input type="text" />
+        <input type="submit" />
+      </form>
+
+      <dl>
+        <dt>Kismi</dt>
+        <dd>Ya quelqu'un ?</dd>
+      </dl>
+
+      <dl>
+        <dt>Kismi</dt>
+        <dd>Hello ?</dd>
+      </dl>
+    </div>
+
+    <div class="footer">
+      <h2>Connect&eacute;s</h2>
+
+      <ul>
+        <li>visiteurs</li>
+        <li>membres</li>
+      </ul>
     </div>
   </body>
 </html>

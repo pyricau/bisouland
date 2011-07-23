@@ -4,34 +4,27 @@
 */
 
 html {
-  background:     #ccc url("../images/bg.png");
-  color:          #6b6b6b;
-  font:           12px Arial, sans-serif;
+  background:             #fde url("../images/bg.png");
+  color:                  #666;
+  font:                   12px Arial;
 }
 
 body {
-  width:          952px;
-  margin:         auto;
+  width:                  1000px;
+  margin:                 auto;
+  margin-top:             20px;
+  padding:                20px;
+  background:             #fee;
+  border:                 1px solid #f7a;
+  -webkit-border-radius:  10px;
+  -moz-border-radius:     10px;
+  border-radius:          10px;
 }
 
-#atomik-wrapper {
-  margin:         50px auto auto;
-  text-align:     right;
-  width:          50%;
+a:link, a:visited {
+  color:                  #777;
 }
 
-#atomik {
-  background:     #f8ffea;
-  border:         3px solid #aad944;
-  margin-bottom:  10px;
-  padding:        10px;
-  text-align:     left;
-}
-
-#atomik h1 {
-  color:          #5f5f5f;
-}
-
-#atomik-wrapper img {
-  border:         0;
+a:hover, a:active {
+  color:                  #888;
 }

@@ -1,0 +1,10 @@
+/*
+** Article CSS :
+** Surcharge Main CSS pour le div article.
+*/
+
+#article {
+  background: #fff;
+  padding:    5px;
+  border:     1px solid #ccc;
+}

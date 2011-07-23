@@ -3,7 +3,7 @@
 Atomik::set(array(
   'app' => array(
       'layout'          => '_layout',
-      'default_action'  => 'index',
+      'default_action'  => 'accueil',
       'views'           => array(
           'file_extension'  => '.phtml',
       ),
@@ -17,8 +17,12 @@ Atomik::set(array(
       'debug'           => false,
   ),
   'styles' => array(
-      0                 => 'assets/css/style.css',
+      0                 => 'assets/css/reset.css',
       1                 => 'assets/css/main.css',
+      2                 => 'assets/css/header.css',
+      3                 => 'assets/css/nav.css',
+      4                 => 'assets/css/article.css',
+      5                 => 'assets/css/footer.css',
   ),
   'plugins' => array(
   ),

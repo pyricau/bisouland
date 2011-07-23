@@ -1,0 +1,25 @@
+/*
+** Nav CSS :
+** Surcharge Main CSS pour le div nav.
+*/
+
+#nav {
+  background:       #a97;
+  border:           1px solid #986;
+  color:            #875;
+  padding:          5px;
+  margin-bottom:    5px;
+}
+
+#nav a:link, #nav a:visited {
+  color:            #dca;
+}
+
+#nav a:hover, #nav a:active {
+  color:            #edb;
+}
+
+#nav ul {
+  list-style-type:  none;
+}
+

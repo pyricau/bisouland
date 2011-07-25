@@ -4,22 +4,37 @@
 */
 
 #nav {
-  background:       #a97;
-  border:           1px solid #986;
-  color:            #875;
-  padding:          5px;
-  margin-bottom:    5px;
+  background:             #a97 url("../images/nav-bg.gif") repeat;
+  border:                 1px solid #986;
+  color:                  #875;
+  margin-bottom:          5px;
+  height:                 130px;
+}
+
+#nav h1, #nav h2, #nav ul {
+  margin:                 0;
+  padding:                0;
 }
 
 #nav a:link, #nav a:visited {
-  color:            #dca;
+  color:                  #dca;
 }
 
 #nav a:hover, #nav a:active {
-  color:            #edb;
+  color:                  #edb;
 }
 
 #nav ul {
-  list-style-type:  none;
+  background:             #ba8;
+  width:                  150px;
+  height:                 100px;
+  list-style-type:        none;
+  display:                inline-block;
+  vertical-align:         top;
+  margin:                 10px;
+  padding:                5px;
+  -webkit-border-radius:  10px;
+  -moz-border-radius:     10px;
+  border-radius:          10px;
 }
 

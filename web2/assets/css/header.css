@@ -6,19 +6,24 @@
 #header {
   background:     #9c6;
   height:         70px;
-  color:          #cd9;
-  border:         1px solid #cd9;
+  color:          #7a4;
+  border:         1px solid #8b5;
   position:       relative;
-  padding:        5px;
+  padding:        5px 15px;
   margin-bottom:  5px;
 }
 
+#header h1, #header h2, #header ul {
+  margin:         0;
+  padding:        0;
+}
+
 #header a:link, #header a:visited {
-  color:          #dea;
+  color:          #be8;
 }
 
 #header a:hover, #header a:active {
-  color:          #efb;
+  color:          #cf9;
 }
 
 #header li {

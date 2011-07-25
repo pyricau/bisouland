@@ -36,17 +36,15 @@
     </div>
 
     <div id="nav">
-      <h2>G&eacute;n&eacute;ral</h2>
-
       <ul>
+        <li><h2>G&eacute;n&eacute;ral</h2></li>
         <li><a href="<?php Atomik::url('home') ?>">Bisouland v2</a></li>
         <li>statistiques</li>
         <li>top 20</li>
       </ul>
 
-      <h2>Strat&eacute;gie</h2>
-
       <ul>
+        <li><h2>Strat&eacute;gie</h2></li>
         <li>cerveau</li>
         <li>organes</li>
         <li>techniques</li>
@@ -54,9 +52,8 @@
         <li>nuages</li>
       </ul>
 
-      <h2>Informations</h2>
-
       <ul>
+        <li><h2>Informations</h2></li>
         <li>FAQ</li>
         <li>aide</li>
         <li>encyclop&eacute;die</li>
@@ -66,17 +63,20 @@
     </div>
 
     <div id="article">
-      <div class="section">
-        <ul id="messages">
-          <?php foreach (A('flash:all') as $label => $messages): ?>
-            <?php foreach ($messages as $message): ?>
+      <?php if (0 !== count(Atomik::get('flash:all', null))): ?>
 
-              <li class="<?php echo $label; ?>"><?php echo $message; ?></li>
+        <div class="section">
+          <ul id="messages">
+            <?php foreach (A('flash:all') as $label => $messages): ?>
+              <?php foreach ($messages as $message): ?>
+
+                <li class="<?php echo $label; ?>"><?php echo $message; ?></li>
+              <?php endforeach; ?>
             <?php endforeach; ?>
-          <?php endforeach; ?>
 
-        </ul>
-      </div>
+          </ul>
+        </div>
+      <?php endif; ?>
 
       <?php echo $contentForLayout; ?>
 
@@ -85,9 +85,11 @@
     <div id="aside">
       <h2>Messagerie instantann&eacute;e</h2>
 
-      <form>
-        <input type="text" />
-        <input type="submit" />
+      <form action="#" method="post">
+        <fieldset>
+          <input type="text" />
+          <input type="submit" />
+        </fieldset>
       </form>
 
       <dl>

@@ -22,7 +22,8 @@ Atomik::set(array(
       2                 => 'assets/css/header.css',
       3                 => 'assets/css/nav.css',
       4                 => 'assets/css/article.css',
-      5                 => 'assets/css/footer.css',
+      5                 => 'assets/css/aside.css',
+      6                 => 'assets/css/footer.css',
   ),
   'plugins' => array(
   ),

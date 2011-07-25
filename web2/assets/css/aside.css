@@ -1,0 +1,12 @@
+/*
+** Aside CSS :
+** Surcharge Main CSS pour le div aside
+*/
+
+#aside {
+  width:      250px;
+  background: #fff;
+  padding:    5px;
+  border:     1px solid #ccc;
+  float:      right;
+}

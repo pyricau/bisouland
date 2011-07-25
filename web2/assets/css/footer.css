@@ -2,3 +2,8 @@
 ** Footer CSS :
 ** Surcharge Main CSS pour le div footer.
 */
+
+#footer {
+  margin-top: 15px;
+  clear:      both;
+}

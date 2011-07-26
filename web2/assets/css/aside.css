@@ -4,13 +4,18 @@
 */
 
 #aside {
-  width:      250px;
-  background: #fff;
-  padding:    5px;
-  border:     1px solid #ccc;
-  float:      right;
+  margin-bottom:  5px;
+  width:          250px;
+  background:     #eee;
+  padding:        5px;
+  border:         1px solid #ccc;
+  float:          right;
 }
 
 #aside h2 {
-  text-align: center;
+  text-align:     center;
+}
+
+#aside a {
+  font-weight:    bold;
 }

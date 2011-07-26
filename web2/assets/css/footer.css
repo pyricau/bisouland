@@ -4,6 +4,29 @@
 */
 
 #footer {
-  margin-top: 15px;
-  clear:      both;
+  background:             #eee;
+  border:                 1px solid #ccc;
+  clear:                  both;
+}
+
+#footer h1, #footer h2, #footer ul {
+  margin:                 0;
+  padding:                0;
+}
+
+#footer .subnav {
+  background:             #fff;
+  width:                  150px;
+  height:                 100px;
+  display:                inline-block;
+  vertical-align:         top;
+  margin:                 10px;
+  padding:                5px;
+  -webkit-border-radius:  10px;
+  -moz-border-radius:     10px;
+  border-radius:          10px;
+}
+
+#footer .subnav ul {
+  list-style-type:        none;
 }

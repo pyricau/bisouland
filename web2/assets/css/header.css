@@ -4,12 +4,12 @@
 */
 
 #header {
-  background:     #9c6;
+  background:     #9c6 url("../images/logo.gif") no-repeat;
   height:         70px;
   color:          #7a4;
   border:         1px solid #8b5;
   position:       relative;
-  padding:        5px 15px;
+  padding:        5px 85px;
   margin-bottom:  5px;
 }
 

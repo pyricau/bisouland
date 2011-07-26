@@ -4,7 +4,7 @@
 */
 
 html {
-  background:             #ccc url("../images/bg.png");
+  background:             #ccc url("../images/bg.gif") repeat-x;
   color:                  #777;
   font:                   12px Arial;
 }
@@ -27,8 +27,4 @@ a:link, a:visited {
 
 a:hover, a:active {
   color:                  #999;
-}
-
-.clear {
-  clear:                  both;
 }

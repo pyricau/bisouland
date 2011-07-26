@@ -26,6 +26,11 @@ Atomik::set(array(
       6                 => 'assets/css/footer.css',
   ),
   'plugins' => array(
+      'plugins/Db', array(
+          'dsn'       => 'mysql:host=localhost;dbname=mydb',
+          'username'  => 'root',
+          'password'  => ''
+      ),
       'Minifier' => array(
           'cache/dir' => 'assets/css/cache',
       ),

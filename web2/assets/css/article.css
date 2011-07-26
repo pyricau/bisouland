@@ -4,9 +4,15 @@
 */
 
 #article {
-  width:      885px;
-  background: #fff;
-  padding:    15px;
-  border:     1px solid #ccc;
-  float:      left;
+  width:          885px;
+  background:     #eee;
+  padding:        15px;
+  border:         1px solid #ccc;
+  float:          left;
+}
+
+.section {
+  background:    #fff;
+  margin-bottom:  10px;
+  padding:        5px;
 }

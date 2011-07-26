@@ -8,7 +8,7 @@ body, html {
   padding:          0;
 }
 
-img {
+fieldset, img {
   border:           none;
 }
 

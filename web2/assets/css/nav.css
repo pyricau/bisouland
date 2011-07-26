@@ -24,11 +24,10 @@
   color:                  #edb;
 }
 
-#nav ul {
+#nav .subnav {
   background:             #ba8;
   width:                  150px;
   height:                 100px;
-  list-style-type:        none;
   display:                inline-block;
   vertical-align:         top;
   margin:                 10px;
@@ -36,5 +35,9 @@
   -webkit-border-radius:  10px;
   -moz-border-radius:     10px;
   border-radius:          10px;
+}
+
+#nav .subnav ul {
+  list-style-type:        none;
 }
 

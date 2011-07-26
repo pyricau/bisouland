@@ -11,10 +11,7 @@
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
     <title>Bisouland v2 - <?php echo A('title', 'Le jeu amoureux'); ?></title>
 
-    <?php foreach (A('styles', array()) as $style): ?>
-
-      <link rel="stylesheet" type="text/css" href="<?php echo Atomik::appAsset($style); ?>" />
-    <?php endforeach; ?>
+    <link rel="stylesheet" type="text/css" href="<?php echo Atomik::asset(MinifierPlugin::minify()); ?>" />
 
     <?php foreach (A('scripts', array()) as $script): ?>
 

@@ -26,6 +26,9 @@ Atomik::set(array(
       6                 => 'assets/css/footer.css',
   ),
   'plugins' => array(
+      'Minifier' => array(
+          'cache/dir' => 'assets/css/cache',
+      ),
   ),
   'scripts' => array(
   ),

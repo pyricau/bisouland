@@ -9,7 +9,7 @@
   clear:                  both;
 }
 
-#footer h1, #footer h2, #footer ul {
+#footer h1, #footer h2, #footer ul, #footer dl {
   margin:                 0;
   padding:                0;
 }

@@ -1,32 +1,52 @@
 <?php
 
 Atomik::set(array(
-  'app' => array(
+  'app'     => array(
       'layout'          => '_layout',
       'default_action'  => 'accueil',
       'views'           => array(
-          'file_extension'  => '.phtml',
+          'file_extension'      => '.phtml',
+      ),
+      'escaping'        => array(
+      ),
+      'routes'          => array(
+          'accueil'        => array(
+              'controller'        => 'pages',
+              'action'            => 'accueil',
+          )
       ),
   ),
-  'atomik' => array(
+  'atomik'  => array(
+      'url_rewriting'   => true,
       'start_session'   => true,
       'class_autoload'  => true,
       'trigger'         => 'action',
       'catch_errors'    => true,
       'display_errors'  => true,
       'debug'           => false,
+      'log'             => array(
+          'register_default'    => true,
+      ),
       'dirs'            => array(
-          'helpers'   => 'app/lib/helper',
-          'includes'  => array(
-              'app/lib',
-              'app/lib/form',
-              'app/lib/model',
-              'app/lib/vendor',
-              'app/lib/exception'
+          'helpers'             => 'app/lib/helper',
+          'plugins'             => 'app/plugins',
+          'views'               => 'app/views',
+          'layouts'             => 'app/views',
+          'includes'            => array(
+              0                   => 'app/lib',
+              1                   => 'app/lib/form',
+              2                   => 'app/lib/vendor',
+              3                   => 'app/lib/exception'
           ),
       ),
+      'files'           => array(
+          'error'               => 'app/views/error.phtml',
+          '404'                 => 'app/views/404.phtml',
+      ),
   ),
-  'styles' => array(
+  'scripts' => array(
+  ),
+  'styles'  => array(
       0                 => 'assets/css/reset.css',
       1                 => 'assets/css/main.css',
       2                 => 'assets/css/header.css',
@@ -36,15 +56,29 @@ Atomik::set(array(
       6                 => 'assets/css/footer.css',
   ),
   'plugins' => array(
-      'Db'        => array(
-          'dsn'       => 'mysql:host=localhost;dbname=mydb',
-          'username'  => 'root',
-          'password'  => ''
+      'Controller'      => array(
+          'default_controller'  => 'pages',
+          'default_action'      => 'accueil',
       ),
-      'Minifier'  => array(
-          'cache/dir' => 'assets/css/cache',
+      'Db'              => array(
+          'dsn'                 => 'mysql:host=localhost;dbname=bisouland',
+          'username'            => 'root',
+          'password'            => '',
+          'table_prefix'        => '',
+          'query_cache'         => false,
+          'result_cache'        => false,
+          'model_dirs'          => array(
+              0                   => 'app/lib/model',
+          ),
+          'sql_dirs'            => array(
+              0                   => 'app/sql'
+          ),
       ),
-  ),
-  'scripts' => array(
+      'Minifier'        => array(
+          'cache'               => array(
+              'dir'               => 'assets/css_cache/',
+          ),
+          'force_css_link'      => false,
+      ),
   ),
 ));

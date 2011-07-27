@@ -15,6 +15,16 @@ Atomik::set(array(
       'catch_errors'    => true,
       'display_errors'  => true,
       'debug'           => false,
+      'dirs'            => array(
+          'helpers'   => 'app/lib/helper',
+          'includes'  => array(
+              'app/lib',
+              'app/lib/form',
+              'app/lib/model',
+              'app/lib/vendor',
+              'app/lib/exception'
+          ),
+      ),
   ),
   'styles' => array(
       0                 => 'assets/css/reset.css',

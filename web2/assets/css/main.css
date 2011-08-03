@@ -4,8 +4,8 @@
 */
 
 html {
-  background:             #ccc url("../images/bg.gif") repeat-x;
-  color:                  #777;
+  background:             #fcc url("../images/bg.gif") repeat-x;
+  color:                  #444;
   font:                   12px Arial;
 }
 
@@ -14,17 +14,17 @@ body {
   margin:                 auto;
   margin-top:             20px;
   padding:                20px;
-  background:             #ddd;
-  border:                 2px solid #bbb;
+  background:             #fdd;
+  border:                 2px solid #fbb;
   -webkit-border-radius:  10px;
   -moz-border-radius:     10px;
   border-radius:          10px;
 }
 
 a:link, a:visited {
-  color:                  #888;
+  color:                  #e15;
 }
 
 a:hover, a:active {
-  color:                  #999;
+  color:                  #f26;
 }

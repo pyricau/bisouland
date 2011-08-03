@@ -5,7 +5,7 @@
 
 #nav {
   background:             #a97 url("../images/nav-bg.gif") repeat;
-  border:                 1px solid #986;
+  border:                 1px solid #f99;
   color:                  #875;
   margin-bottom:          5px;
   height:                 130px;
@@ -25,7 +25,7 @@
 }
 
 #nav .subnav {
-  background:             #ba8;
+  background:             #fdd;
   width:                  150px;
   height:                 100px;
   display:                inline-block;

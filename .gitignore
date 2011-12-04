@@ -3,3 +3,5 @@
 /web2/app/config.php
 /web2/assets/css_cache
 /web2/.htaccess
+/nbproject
+/web2/app/log.txt

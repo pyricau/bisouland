@@ -1,0 +1,144 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN"
+                      "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+<html version="-//W3C//DTD XHTML 1.1//EN"
+      xmlns="http://www.w3.org/1999/xhtml"
+      xml:lang="fr"
+      xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+      xsi:schemaLocation="http://www.w3.org/1999/xhtml
+                          http://www.w3.org/MarkUp/SCHEMA/xhtml11.xsd"
+>
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <title>Bisouland v2 - <?php echo A('title', 'Erreur 404'); ?></title>
+
+    <link rel="stylesheet" type="text/css" href="<?php echo Atomik::asset(MinifierPlugin::minify()); ?>" />
+
+    <?php foreach (A('scripts', array()) as $script): ?>
+
+      <script type="text/javascript" src="<?php echo Atomik::appAsset($script); ?>"></script>
+    <?php endforeach; ?>
+
+  </head>
+
+  <body>
+    <div id="header">
+      <h1><a href="<?php Atomik::url('home') ?>">Bisouland v2</a></h1>
+      <h2><?php echo A('title', 'Erreur 404 !!'); ?></h2>
+
+      <ul>
+        <li><a href="#">Username</a></li>
+        <li>messages</li>
+        <li>logout</li>
+      </ul>
+    </div>
+
+    <div id="nav">
+      <ul>
+        <li class="subnav">
+          <h2>G&eacute;n&eacute;ral</h2>
+          <ul>
+            <li><a href="<?php Atomik::url('home') ?>">Bisouland v2</a></li>
+            <li>statistiques</li>
+            <li>top 20</li>
+          </ul>
+        </li>
+
+        <li class="subnav">
+          <h2>Strat&eacute;gie</h2>
+          <ul>
+            <li>cerveau</li>
+            <li>organes</li>
+            <li>techniques</li>
+            <li>bisous</li>
+            <li>nuages</li>
+          </ul>
+        </li>
+
+        <li class="subnav">
+          <h2>Informations</h2>
+          <ul>
+            <li>FAQ</li>
+            <li>aide</li>
+            <li>encyclop&eacute;die</li>
+            <li>recherche</li>
+            <li>joueurs</li>
+          </ul>
+        </li>
+      </ul>
+    </div>
+
+    <div id="article">
+      <?php if (0 !== count(Atomik::get('flash:all', null))): ?>
+
+        <div class="section">
+          <ul id="messages">
+            <?php foreach (A('flash:all') as $label => $messages): ?>
+              <?php foreach ($messages as $message): ?>
+
+                <li class="<?php echo $label; ?>"><?php echo $message; ?></li>
+              <?php endforeach; ?>
+            <?php endforeach; ?>
+
+          </ul>
+        </div>
+      <?php endif; ?>
+
+      Pfff... La page n'existe pas !!
+
+    </div>
+
+    <div id="aside">
+      <h2>Messagerie instantann&eacute;e</h2>
+
+      <form action="#" method="post">
+        <fieldset>
+          <input type="text" />
+          <input type="submit" />
+        </fieldset>
+      </form>
+
+      <dl>
+        <dt><a href="#">Kismi</a> [2011-07-27 12:42:54]</dt>
+        <dd>Ya quelqu'un ?</dd>
+      </dl>
+
+      <dl>
+        <dt><a href="#">Kismi</a> [2011-07-27 12:42:54]</dt>
+        <dd>Hello ?</dd>
+      </dl>
+    </div>
+
+    <div id="footer">
+      <ul>
+        <li class="subnav">
+          <h2>Connect&eacute;s</h2>
+          <ul>
+            <li>
+              <dl>
+                <dt>Visiteurs</dt>
+                <dd>42</dd>
+              </dl>
+            </li>
+            <li>
+              <dl>
+                <dt>Membres</dt>
+                <dd>23/1337</dd>
+              </dl>
+            </li>
+            <li><a href="<?php Atomik::url('stats') ?>">Plus de statistiques</a></li>
+          </ul>
+        </li>
+
+        <li class="subnav">
+          <h2>Cr&eacute;dits</h2>
+          <ul>
+            <li><a href="http://www.piwai.info/" title="Auteur original">Piwa&iuml;</a></li>
+            <li><a href="https://github.com/pyricau/bisouland" title="D&eacute;p&ocirc;t des sources">Github</a></li>
+            <li><a href="http://www.atomikframework.com/" title="Micro framework PHP5">Atomik</a></li>
+            <li><a href="http://www.styleshout.com/" title="CSS template et ressources">Styleshout</a></li>
+          </ul>
+        </li>
+      </ul>
+    </div>
+  </body>
+</html>

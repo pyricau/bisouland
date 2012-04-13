@@ -1,22 +1,30 @@
-# Introduction
-Bisouland est un jeu par navigateur. Volez des points d'amour à vos adversaires en leur envoyant des bisous !
+Bisouland
+=========
 
-# Le site a disparu ?
-Bisouland change de maison. Le code devient Open Source, et des joueurs motivés ont décidé d'en reprendre le développement. Dans l'intervalle, le site est désactivé pour éviter tout problème de désynchronisation. Soyez assurés qu'ils se démènent pour que le déménagement soit terminé le plus rapidement possible !
+Bisouland est un jeu gratuit par navigateur.
 
-# License
-Le code source de Bisouland est open source, sous licence Apache 2.
+Volez des points d'amour à vos adversaires en leur envoyant des bisous !
 
-# Historique
-Pierre-Yves Ricau a créé le site http://bisouland.piwai.info en 2005, et ce fût pour lui l'occasion de découvrir la programmation PHP. Aujourd'hui (2011), le site devient open source et est repris par une équipe motivée. Soyez donc indulgent sur la qualité du code, qui, si elle ne saurait que s'améliorer, part vraiment de très loin.
+Documentation
+-------------
 
-# Instructions
-TODO pour publier le site online :
+* Copyright et licence Apache 2 : `./LICENSE.md` ;
+* version : `VERSION.md` ;
+* versioning, branching et API publique : `VERSIONING.md` ;
+* changelog : `CHANGELOG.md`.
 
-Remplacer le contenu de news/.htpasswd par un contenu valide (user ayant accès aux news)
+Contributer
+------------
 
-Remplacer les identifiants de connexion à la bd dans phpIncludes/bd.php
+1. Fork ;
+2. Faire sa propre branche : `git checkout -b ma_branch` ;
+3. commiter les changements : `git commit -am "Description de mes changements"`
+4. push : (`git push origin ma_branche`)
+5. pull request.
 
-S'assurer que l'envoi de mails (inscription) fonctionne
+Historique
+----------
 
-Remplacer dans news/mail.php l'email d'admin qui permet de checker les inscrits non validés (variable $destinataire)
+* 2005 : Pierre-Yves Ricau met en place le site http://bisouland.piwai.info ;
+* 2011 : il rend le projet Open Source pour qu'il soit repris par Marc Epron, Thomas Gay et Loic Chardonnet ;
+* 2012 : sortie de la version 2.0.

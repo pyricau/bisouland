@@ -16,11 +16,11 @@ Documentation
 Contributer
 ------------
 
-1. Fork ;
-2. Faire sa propre branche : `git checkout -b ma_branch` ;
-3. commiter les changements : `git commit -am "Description de mes changements"`
-4. push : (`git push origin ma_branche`)
-5. pull request.
+1. Faire un Fork : https://github.com/pyricau/bisouland/fork_select ;
+2. faire sa propre branche : `git checkout -b ma_branch` ;
+3. faire un commit des changements : `git commit -am "Description de mes changements"` ;
+4. faire un push : (`git push origin ma_branche`) ;
+5. faire un pull request et attendre.
 
 Historique
 ----------

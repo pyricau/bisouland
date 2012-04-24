@@ -3,7 +3,7 @@ Bisouland
 
 Bisouland est un jeu gratuit par navigateur.
 
-Volez des points d'amour à vos adversaires en leur envoyant des bisous !
+Volez des points d'amour de vos adversaires en leur envoyant des bisous !
 
 Documentation
 -------------

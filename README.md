@@ -9,9 +9,9 @@ Documentation
 -------------
 
 * Copyright et licence Apache 2 : `./LICENSE.md` ;
-* version : `VERSION.md` ;
-* versioning, branching et API publique : `VERSIONING.md` ;
-* changelog : `CHANGELOG.md`.
+* version : `./VERSION.md` ;
+* versioning, branching et API publique : `./VERSIONING.md` ;
+* changelog : `./CHANGELOG.md`.
 
 Contributer
 ------------

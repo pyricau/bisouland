@@ -45,7 +45,8 @@ et configurez les droits :
 * Copyright et licence Apache 2 : `./LICENSE.md` ;
 * version : `./VERSION.md` ;
 * versioning, branching et API publique : `./VERSIONING.md` ;
-* changelog : `./CHANGELOG.md`.
+* changelog : `./CHANGELOG.md`;
+* autre : `./doc`.
 
 ## Contributer
 

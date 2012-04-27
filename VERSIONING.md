@@ -19,9 +19,9 @@ Le modele de branching est inspire par cet atricle:
 
 ## API publique
 
-According to the Semantic Versioning Specification, a public API must be
-defined.
-In this project, the `design` folder will be marked as the public API:
-* any correction should increment the patch version (Z);
-* any addition of file/line should increment the minor version (Y);
-* any removal and modification of file/line should increment the major version (Y).
+Une API publique est requise pour respecter le Versioning semantique.
+Pour Bisouland, cette API sera le jeu ressenti par le joueur :
+
+* une simple correction ou un nouveau test augmentera la version patch (Z) ;
+* un ajout de fonction augmentera la version mineure (Y) ;
+* la suppression ou la modification d'une fonction augmentera la version majeure (X).

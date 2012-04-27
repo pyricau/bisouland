@@ -1,9 +1,23 @@
-{% block content %}
-    <h2>Bonjour et bienvenue sur Bisouland v2 !!</h2></br>
-BisouLand est un jeu multi-joueurs.</br>
-La communaut&eacute; de joueur vous aide &agrave; avancer rejoignez la!</br>
-Vous pouvez aller visiter la page d'aide pour apprendre les bases.</br>
-La version deux de Bisouland &eacute;volue pour avoir plus de contenu.</br>
-</br>
-Ce site est en cours de d&eacute;veloppement.</br>
+{% extends '::base.html.twig' %}
+
+{% block title %}Bisouland v2{% endblock %}
+
+{% block body %}
+    <h2>Bonjour et bienvenue sur Bisouland v2 !</h2>
+
+    <p>
+        Bisouland est un jeu gratuit par navigateur.<br />
+        Volez des points d'amour de vos adversaires en leur envoyant des bisous !
+    </p>
+
+    <p>
+        La communaut&eacute; de joueur vous aide &agrave; avancer rejoignez la !<br />
+        Ce site est en perp&eacute;tuelle &eacute;volution, n'h&eacute;sitez pas
+        &agrave; revenir r&eacute;guli&egrave;rement pour voir les
+        nouveaut&eacute;s.
+    </p>
+    
+    <p>
+        Ce site est en cours de d&eacute;veloppement.
+    </p>
 {% endblock %}

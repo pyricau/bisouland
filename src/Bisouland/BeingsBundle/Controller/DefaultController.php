@@ -1,6 +1,6 @@
 <?php
 
-namespace Bisouland\CharactersBundle\Controller;
+namespace Bisouland\BeingsBundle\Controller;
 
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;

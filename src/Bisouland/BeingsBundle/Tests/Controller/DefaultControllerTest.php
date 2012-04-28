@@ -1,6 +1,6 @@
 <?php
 
-namespace Bisouland\CharactersBundle\Tests\Controller;
+namespace Bisouland\BeingsBundle\Tests\Controller;
 
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
 

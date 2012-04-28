@@ -1,12 +1,12 @@
-BisoulandCharactersBundle:
-    resource: "@BisoulandCharactersBundle/Controller/"
+BisoulandBeingsBundle:
+    resource: "@BisoulandBeingsBundle/Controller/"
     type:     annotation
-    prefix:   /
+    prefix:   /beings/
 
 BisoulandFrontBundle:
     resource: "@BisoulandFrontBundle/Controller/"
     type:     annotation
-    prefix:   /characters/
+    prefix:   /
 
 # Internal routing configuration to handle ESI
 #_internal:

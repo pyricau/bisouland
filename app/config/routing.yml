@@ -6,7 +6,7 @@ BisoulandCharactersBundle:
 BisoulandFrontBundle:
     resource: "@BisoulandFrontBundle/Controller/"
     type:     annotation
-    prefix:   /
+    prefix:   /characters/
 
 # Internal routing configuration to handle ESI
 #_internal:

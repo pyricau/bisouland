@@ -1,3 +1,19 @@
 {% extends '::base.html.twig' %}
 
 {% block title %}Bisouland v2 - Personnages{% endblock %}
+
+{% block body %}
+    <h1>Personnages</h1>
+
+    <table>
+        <tr>
+            <th>Nom</th>
+        </tr>
+
+        {% for beings in beings %}
+            <tr>
+                <td>{{ being.name }}</td>
+            </tr>
+        {% endfor %}
+    </table>
+{% endblock %}

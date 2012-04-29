@@ -14,6 +14,10 @@ class DefaultController extends Controller
      */
     public function indexAction()
     {
-        return array();
+        $beings = $this->getDoctrine()
+                ->getRepository('BisoulandBeingsBundle:Being')
+                ->findAll();
+
+        return array('beings' => $beings);
     }
 }

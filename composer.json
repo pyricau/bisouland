@@ -21,7 +21,9 @@
         "doctrine/doctrine-fixtures-bundle": "dev-master",
         "stof/doctrine-extensions-bundle": "dev-master",
         
-        "gnugat/PronounceableWord": "dev-master"
+        "gnugat/PronounceableWord": "dev-master",
+        
+        "gnugat/DhgamacheSkeletonBundle": "dev-master"
     },
     "scripts": {
         "post-install-cmd": [

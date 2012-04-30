@@ -1,1 +1,14 @@
 {% extends 'DhgamacheSkeletonBundle::layout.html.twig' %}
+
+{% block title %}Bisouland v2{% endblock %}
+
+{% block stylesheets %}
+    <link rel="stylesheet" href="{{ asset('css/main.css') }}">
+    <link rel="stylesheet" href="{{ asset('css/article.css') }}">
+    <link rel="stylesheet" href="{{ asset('css/footer.css') }}">
+    <link rel="stylesheet" href="{{ asset('css/header.css') }}">
+{% endblock %}
+
+{% block favicons %}
+    <link rel="shortcut icon" href="{{ asset('images/favicon.ico') }}" />
+{% endblock %}

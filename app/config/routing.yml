@@ -1,3 +1,8 @@
+BisoulandBeingsBundle:
+    resource: "@BisoulandBeingsBundle/Controller/"
+    type:     annotation
+    prefix:   /beings/
+
 BisoulandFrontBundle:
     resource: "@BisoulandFrontBundle/Controller/"
     type:     annotation

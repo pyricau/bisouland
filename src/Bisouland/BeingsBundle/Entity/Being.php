@@ -21,13 +21,13 @@ class Being
     private $id;
 
     /**
-     * @ORM\Column(name="name", type="string", length=255)
+     * @ORM\Column(name="name", unique=true, type="string", length=255)
      */
     private $name;
     
     /**
      * @Gedmo\Timestampable(on="create")
-     * @ORM\Column(type="datetime")
+     * @ORM\Column(name="created", type="datetime")
      */
     private $created;
 

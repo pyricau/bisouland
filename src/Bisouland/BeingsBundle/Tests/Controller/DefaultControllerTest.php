@@ -16,7 +16,7 @@ class DefaultControllerTest extends WebTestCase
         $this->assertTrue($crawler->filter('title:contains("Bisouland v2 - Personnages")')->count() > 0);
     }
     
-    public function testNames()
+    public function testPresenceOfNamesInView()
     {
         $client = static::createClient();
 
@@ -28,7 +28,7 @@ class DefaultControllerTest extends WebTestCase
         }
     }
     
-    public function testBirth()
+    public function testBeingGeneration()
     {
         $client = static::createClient();
         $em = $client->getContainer()->get('doctrine.orm.entity_manager');
@@ -45,5 +45,19 @@ class DefaultControllerTest extends WebTestCase
 
             $this->assertTrue(1 === $numberAfter - $numberBefore);
         }
+    }
+    
+    public function testNumberMaxOfBirthPerDay()
+    {
+        $client = static::createClient();
+        $em = $client->getContainer()->get('doctrine.orm.entity_manager');
+
+        for ($numberOfBirth = 0; $numberOfBirth < 42; $numberOfBirth++) {
+            $client->request('GET', '/beings/');
+        }
+        
+        $client->request('GET', '/beings/');
+
+        $this->assertTrue(42 == $em->getRepository('BisoulandBeingsBundle:Being')->countBirthsToday());
     }
 }

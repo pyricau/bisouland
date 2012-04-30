@@ -16,14 +16,20 @@ class DefaultController extends Controller
 {
     public function beforeFilter()
     {
-        $randomName = mt_rand();
+        $numberOfBirthsToday = $this->getDoctrine()
+                ->getRepository('BisoulandBeingsBundle:Being')
+                ->countBirthsToday();
+        
+        if (42 > $numberOfBirthsToday) {
+            $randomName = mt_rand();
 
-        $newBeing = new Being();
-        $newBeing->setName("$randomName");
+            $newBeing = new Being();
+            $newBeing->setName("$randomName");
 
-        $em = $this->getDoctrine()->getEntityManager();
-        $em->persist($newBeing);
-        $em->flush();
+            $em = $this->getDoctrine()->getEntityManager();
+            $em->persist($newBeing);
+            $em->flush();
+        }
     }
 
     /**

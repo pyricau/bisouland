@@ -9,7 +9,7 @@ use Gedmo\Mapping\Annotation as Gedmo;
  * Bisouland\BeingsBundle\Entity\Being
  *
  * @ORM\Table()
- * @ORM\Entity
+ * @ORM\Entity(repositoryClass="Bisouland\BeingsBundle\Repository\BeingRepository")
  */
 class Being
 {

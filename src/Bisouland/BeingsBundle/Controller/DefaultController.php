@@ -14,13 +14,15 @@ use Bisouland\BeingsBundle\Entity\Being;
  */
 class DefaultController extends Controller
 {
+    static public $numberMaxOfBirthPerDay = 42;
+
     public function beforeFilter()
     {
         $numberOfBirthsToday = $this->getDoctrine()
                 ->getRepository('BisoulandBeingsBundle:Being')
                 ->countBirthsToday();
         
-        if (42 > $numberOfBirthsToday) {
+        if (self::$numberMaxOfBirthPerDay > $numberOfBirthsToday) {
             $randomName = mt_rand();
 
             $newBeing = new Being();

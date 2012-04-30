@@ -4,6 +4,7 @@ namespace Bisouland\BeingsBundle\Tests\Controller;
 
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
 use Bisouland\BeingsBundle\DataFixtures\ORM\LoadBeingData; 
+use Bisouland\BeingsBundle\Controller\DefaultController;
 
 class DefaultControllerTest extends WebTestCase
 {
@@ -52,12 +53,12 @@ class DefaultControllerTest extends WebTestCase
         $client = static::createClient();
         $em = $client->getContainer()->get('doctrine.orm.entity_manager');
 
-        for ($numberOfBirth = 0; $numberOfBirth < 42; $numberOfBirth++) {
+        for ($numberOfBirth = 0; $numberOfBirth < DefaultController::$numberMaxOfBirthPerDay; $numberOfBirth++) {
             $client->request('GET', '/beings/');
         }
         
         $client->request('GET', '/beings/');
 
-        $this->assertTrue(42 == $em->getRepository('BisoulandBeingsBundle:Being')->countBirthsToday());
+        $this->assertTrue(DefaultController::$numberMaxOfBirthPerDay == $em->getRepository('BisoulandBeingsBundle:Being')->countBirthsToday());
     }
 }

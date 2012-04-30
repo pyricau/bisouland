@@ -1,0 +1,6 @@
+services:
+    bisouland_beings.before_filter:
+        class: Bisouland\BeingsBundle\EventListener\BeforeControllerListener
+        arguments: [@annotation_reader]
+        tags:
+            - { name: kernel.event_listener, event: kernel.controller, method: onKernelController }

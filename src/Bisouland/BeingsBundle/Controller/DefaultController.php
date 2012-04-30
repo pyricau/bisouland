@@ -23,10 +23,14 @@ class DefaultController extends Controller
                 ->countBirthsToday();
         
         if (self::$numberMaxOfBirthPerDay > $numberOfBirthsToday) {
-            $randomName = mt_rand();
+            $nameLength = mt_rand(4, 9);
+
+            $pronounceableWordContainer = new \PronounceableWord_DependencyInjectionContainer();
+            $pronounceableNameGenerator = $pronounceableWordContainer->getGenerator();
+            $randomName = ucfirst($pronounceableNameGenerator->generateWordOfGivenLength($nameLength));
 
             $newBeing = new Being();
-            $newBeing->setName("$randomName");
+            $newBeing->setName($randomName);
 
             $em = $this->getDoctrine()->getEntityManager();
             $em->persist($newBeing);

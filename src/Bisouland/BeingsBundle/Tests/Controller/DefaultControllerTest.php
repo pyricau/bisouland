@@ -3,6 +3,7 @@
 namespace Bisouland\BeingsBundle\Tests\Controller;
 
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
+use Bisouland\BeingsBundle\DataFixtures\ORM\LoadBeingData;
 
 class DefaultControllerTest extends WebTestCase
 {
@@ -17,20 +18,13 @@ class DefaultControllerTest extends WebTestCase
     
     public function testNames()
     {
-        $names = array(
-            'Smith',
-            'John',
-            'Adam',
-            'Douglas',
-            'Terry',
-        );
-
         $client = static::createClient();
 
         $crawler = $client->request('GET', '/beings/');
 
-        foreach ($names as $name) {
-            $this->assertTrue($crawler->filter('td:contains("'.$name.'")')->count() > 0);
+        $beings = LoadBeingData::getFixtures();
+        foreach ($beings as $being) {
+            $this->assertTrue(0 < $crawler->filter('td:contains("'.$being['name'].'")')->count());
         }
     }
 }

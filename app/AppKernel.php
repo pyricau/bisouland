@@ -25,8 +25,9 @@ class AppKernel extends Kernel
             new Bisouland\FrontBundle\BisoulandFrontBundle(),
             new Bisouland\BeingsBundle\BisoulandBeingsBundle(),
             
-            /* Fixtures */
+            /* Extra Doctrine */
             new Doctrine\Bundle\FixturesBundle\DoctrineFixturesBundle(),
+            new Stof\DoctrineExtensionsBundle\StofDoctrineExtensionsBundle(),
         );
 
         if (in_array($this->getEnvironment(), array('dev', 'test'))) {

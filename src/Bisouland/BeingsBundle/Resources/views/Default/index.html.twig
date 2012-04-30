@@ -8,11 +8,13 @@
     <table>
         <tr>
             <th>Nom</th>
+            <th>Date de naissance</th>
         </tr>
 
         {% for being in beings %}
             <tr>
                 <td>{{ being.name }}</td>
+                <td>{{ being.created|date("h:m:s d/m/Y") }}</td>
             </tr>
         {% endfor %}
     </table>

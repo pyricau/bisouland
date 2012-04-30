@@ -1,0 +1,15 @@
+html {
+  background:             #9cc url("../images/bg.gif") repeat-x;
+}
+
+body {
+  width:                  1000px;
+  margin:                 auto;
+  margin-top:             20px;
+  padding:                20px;
+  background:             #9dd;
+  border:                 2px solid #9bb;
+  -webkit-border-radius:  10px;
+  -moz-border-radius:     10px;
+  border-radius:          10px;
+}

@@ -25,9 +25,8 @@ class DefaultController extends Controller
         if (self::$numberMaxOfBirthPerDay > $numberOfBirthsToday) {
             $nameLength = mt_rand(4, 9);
 
-            $pronounceableWordContainer = new \PronounceableWord_DependencyInjectionContainer();
-            $pronounceableNameGenerator = $pronounceableWordContainer->getGenerator();
-            $randomName = ucfirst($pronounceableNameGenerator->generateWordOfGivenLength($nameLength));
+            $nameGenerator = $this->container->get('pronounceable_word_generator');
+            $randomName = ucfirst($nameGenerator->generateWordOfGivenLength($nameLength));
 
             $newBeing = new Being();
             $newBeing->setName($randomName);

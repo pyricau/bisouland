@@ -38,7 +38,7 @@ class DefaultController extends Controller
     }
 
     /**
-     * @Route("/")
+     * @Route("/", name="beings")
      * @Template()
      */
     public function indexAction()

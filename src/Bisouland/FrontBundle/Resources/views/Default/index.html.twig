@@ -1,45 +1,25 @@
 {% extends '::base.html.twig' %}
-{% block favicons %}
-	<link rel="shortcut icon" href="{{ asset('images/favicon.ico') }}" />
-{% endblock %}
-{% block stylesheets %}
-<link rel="stylesheet" href="{{ asset('css/main.css') }}">
-<link rel="stylesheet" href="{{ asset('css/article.css') }}">
-<link rel="stylesheet" href="{{ asset('css/footer.css') }}">
-<link rel="stylesheet" href="{{ asset('css/header.css') }}">
-{% endblock %}
 
-{% block body %}
-{% block title %}Bisouland v2{% endblock %}
-{% block content %}
-{% block header %}
-<div class="container">
-    <div id="header" class="fourteen columns">
-        <h1>Bisouland v2</h1>
-    </div>
-{% endblock %}
-	<div class="sixteen columns content">
-		<div id="article">
-			<h4>Bonjour et bienvenue sur Bisouland v2 !</h4>
+{% block view %}
+    <article>
+        <h2>Bonjour et bienvenue sur Bisouland v2 !</h2>
 
-			<p>
-				Bisouland est un jeu gratuit par navigateur.<br />
-				Volez des points d'amour de vos adversaires en leur envoyant des bisous !
-			</p>
+        <p>
+            Bisouland est un jeu gratuit par navigateur.<br />
+            Volez des points d'amour de vos adversaires en leur
+            envoyant des bisous !
+        </p>
 
-			<p>
-				La communaut&eacute; de joueur vous aide &agrave; avancer rejoignez la !<br />
-			</p>
+        <p>
+            La communaut&eacute; de joueur vous aide &agrave; avancer
+            rejoignez la !<br />
+        </p>
 
-			<p>
-				Ce site est en perp&eacute;tuelle &eacute;volution et en cours de d&eacute;veloppement,
-				n'h&eacute;sitez pas &agrave; revenir r&eacute;guli&egrave;rement pour voir les
-				nouveaut&eacute;s.
-			</p>
-		</div>
-    </div>
-<div id="footer">
-    <a href="https://github.com/pyricau/bisouland">sources</a>
-</div></div>
-{% endblock %}
+        <p>
+            Ce site est en perp&eacute;tuelle &eacute;volution et en
+            cours de d&eacute;veloppement, n'h&eacute;sitez pas
+            &agrave; revenir r&eacute;guli&egrave;rement pour voir les
+            nouveaut&eacute;s.
+        </p>
+    </article>
 {% endblock %}

@@ -2,20 +2,22 @@
 
 {% block title %}Bisouland v2 - Personnages{% endblock %}
 
-{% block body %}
-    <h1>Personnages</h1>
+{% block view %}
+    <article>
+        <h2>Personnages</h2>
 
-    <table>
-        <tr>
-            <th>Nom</th>
-            <th>Date de naissance</th>
-        </tr>
-
-        {% for being in beings %}
+        <table>
             <tr>
-                <td>{{ being.name }}</td>
-                <td>{{ being.created|date("h:m:s d/m/Y") }}</td>
+                <th>Nom</th>
+                <th>Date de naissance</th>
             </tr>
-        {% endfor %}
-    </table>
+
+            {% for being in beings %}
+                <tr>
+                    <td>{{ being.name }}</td>
+                    <td>{{ being.created|date("h:m:s d/m/Y") }}</td>
+                </tr>
+            {% endfor %}
+        </table>
+    </article>
 {% endblock %}

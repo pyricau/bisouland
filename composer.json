@@ -22,8 +22,9 @@
         "stof/doctrine-extensions-bundle": "dev-master",
         
         "gnugat/PronounceableWord": "dev-master",
+        "gnugat/DhgamacheSkeletonBundle": "dev-master",
         
-        "gnugat/DhgamacheSkeletonBundle": "dev-master"
+        "knplabs/knp-menu-bundle": "dev-master"
     },
     "scripts": {
         "post-install-cmd": [

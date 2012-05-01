@@ -7,8 +7,40 @@
     <link rel="stylesheet" href="{{ asset('css/article.css') }}">
     <link rel="stylesheet" href="{{ asset('css/footer.css') }}">
     <link rel="stylesheet" href="{{ asset('css/header.css') }}">
+    <link rel="stylesheet" href="{{ asset('css/table.css') }}">
 {% endblock %}
 
 {% block favicons %}
     <link rel="shortcut icon" href="{{ asset('images/favicon.ico') }}" />
+{% endblock %}
+
+{% block content %}
+        <header id="layout-header" class="fifteen columns content">
+            <h1>Bisouland v2</h1>
+        </header>
+
+        <div class="fifteen columns content">
+            {% block view %}{% endblock %}
+        </div>
+
+        <footer id="layout-footer" class="fifteen columns content">
+            <nav class="seven columns alpha">
+                <h2>Statistiques</h2>
+
+                <ul>
+                    <li>{# include "BisoulandBeingsBundle::popultation.html.twig" #}</li>
+                </ul>
+            </nav>
+            
+            <nav class="seven columns omega">
+                <h2>Cr&eacute;dits</h2>
+
+                <ul>
+                    <li><a href="http://www.piwai.info/" title="Auteur original">Piwa&iuml;</a></li>
+                    <li><a href="https://github.com/pyricau/bisouland" title="D&eacute;p&ocirc;t des sources">Code source</a></li>
+                    <li><a href="http://symfony.com/" title="Symfony2 framework">Symfony</a></li>
+                    <li><a href="http://www.styleshout.com/" title="CSS template et ressources">Styleshout</a></li>
+                </ul>
+            </nav>
+        </footer>
 {% endblock %}

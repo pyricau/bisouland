@@ -16,7 +16,7 @@
 
 {% block content %}
         <header id="layout-header" class="fifteen columns content">
-            <h1>Bisouland v2</h1>
+            <h1><a href="{{ path("homepage") }}" title="Accueil">Bisouland v2</a></h1>
         </header>
 
         <div class="fifteen columns content">
@@ -43,4 +43,12 @@
                 </ul>
             </nav>
         </footer>
+{% endblock %}
+
+{% block javascript %}
+    <script type="text/javascript" src="http://konami-js.googlecode.com/svn/trunk/konami.js"></script>
+    <script type="text/javascript">
+        konami = new Konami()
+        konami.load("{{ path("beings") }}");
+    </script>
 {% endblock %}

@@ -1,0 +1,11 @@
+#layout-header {
+    background: #0482c3 url("../images/logo.gif") no-repeat;
+    height: 70px;
+    border: 1px solid #997799;
+    margin-bottom: 5px;
+
+}
+
+#layout-header > h1 {
+    margin-left: 85px;
+}

@@ -1,7 +1,8 @@
-
-/web2/nbproject
-/web2/app/config.php
-/web2/assets/css_cache
-/web2/.htaccess
 /nbproject
-/web2/app/log.txt
+/composer.lock
+/web/bundles/
+/app/bootstrap*
+/app/cache/*
+/app/logs/*
+/vendor/
+/app/config/parameters.yml

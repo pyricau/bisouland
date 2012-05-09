@@ -1,11 +1,24 @@
 #layout-header {
-    background: #0482c3 url("../images/logo.gif") no-repeat;
-    height: 70px;
-    border: 1px solid #997799;
-    margin-bottom: 5px;
-
+    height: 63px;
+    padding-top: 9px;
 }
 
-#layout-header > h1 {
-    margin-left: 85px;
+#layout-header nav {
+    float: right;
+}
+
+#layout-header ul, #layout-header li {
+    display: inline;
+}
+
+#layout-header li a {
+    padding: 10px;
+    font-size: 16px;
+    color: #99cccc;
+}
+
+#layout-header li.current a {
+    background-color: #004c89;
+    border-radius: 4px;
+    border: #003B78 solid 1px;
 }

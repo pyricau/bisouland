@@ -16,14 +16,12 @@
 
 {% block content %}
     <header id="layout-header" class="fifteen columns content">
-        <h1><a href="{{ path("homepage") }}" title="Accueil">Bisouland v2</a></h1>
-    </header>
+        <a href="{{ path('homepage') }}"><img alt="Bisouland" src="{{ asset('bundles/bisoulandfront/images/logo.gif') }}" /></a>
 
-    <aside id="layout-menu" class="two columns content">
         <nav>
             {{ knp_menu_render("BisoulandFrontBundle:Builder:mainMenu") }}
         </nav>    
-    </aside>
+    </header>
 
     <div class="fifteen columns content">
         {% block view %}{% endblock %}

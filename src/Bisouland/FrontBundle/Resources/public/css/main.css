@@ -1,12 +1,3 @@
 body {
     background: #99cccc url("../images/bg.gif") repeat-x;
 }
-
-.container {
-    margin: auto;
-    padding-top: 20px;
-}
-
-.content {
-    margin-bottom: 5px;
-}

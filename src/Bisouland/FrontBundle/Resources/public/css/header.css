@@ -11,8 +11,14 @@
     display: inline;
 }
 
-#layout-header a {
+#layout-header li a {
     padding: 10px;
     font-size: 16px;
     color: #99cccc;
+}
+
+#layout-header li.current a {
+    background-color: #004c89;
+    border-radius: 4px;
+    border: #003B78 solid 1px;
 }

@@ -1,4 +1,22 @@
 #layout-header {
-    height: 72px;
+    height: 63px;
     padding-top: 9px;
+}
+
+#layout-header nav {
+    float: right;
+}
+
+#layout-header ul, #layout-header li {
+    display: inline;
+}
+
+#layout-header nav ul li a {
+    padding: 10px;
+    font-size: 16px;
+    color: #99cccc;
+}
+
+#layout-header nav ul li a .last {
+    padding-right: 0px;
 }

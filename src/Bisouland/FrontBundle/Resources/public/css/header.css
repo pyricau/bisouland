@@ -11,12 +11,8 @@
     display: inline;
 }
 
-#layout-header nav ul li a {
+#layout-header a {
     padding: 10px;
     font-size: 16px;
     color: #99cccc;
-}
-
-#layout-header nav ul li a .last {
-    padding-right: 0px;
 }

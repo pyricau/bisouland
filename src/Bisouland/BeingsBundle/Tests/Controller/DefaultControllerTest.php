@@ -38,11 +38,11 @@ class DefaultControllerTest extends WebTestCase
             '/beings/',
         );
         foreach ($routes as $route) {
-            $numberBefore = $em->getRepository('BisoulandBeingsBundle:Being')->count();
+            $numberBefore = $em->getRepository('BisoulandBeingsBundle:Being')->countAlivePopulation();
 
             $client->request('GET', $route);
             
-            $numberAfter = $em->getRepository('BisoulandBeingsBundle:Being')->count();
+            $numberAfter = $em->getRepository('BisoulandBeingsBundle:Being')->countAlivePopulation();
 
             $this->assertTrue(1 === $numberAfter - $numberBefore);
         }

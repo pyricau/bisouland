@@ -6,7 +6,7 @@ use Doctrine\ORM\EntityRepository;
 
 class BeingRepository extends EntityRepository
 {
-    public function count()
+    public function countAlivePopulation()
     {
         return $this->getEntityManager()
                 ->createQueryBuilder()
@@ -26,6 +26,18 @@ class BeingRepository extends EntityRepository
                 ->from('BisoulandBeingsBundle:Being', 'bisouland_being')
                 ->where('bisouland_being.created >= :today')
                 ->setParameter('today', $today)
+                ->getQuery()
+                ->getSingleScalarResult();
+    }
+    
+    public function countTotalBirths()
+    {
+        return $this->getEntityManager()
+                ->createQueryBuilder()
+                ->select('bisouland_being.id')
+                ->from('BisoulandBeingsBundle:Being', 'bisouland_being')
+                ->orderBy('bisouland_being.id')
+                ->setMaxResults(1)
                 ->getQuery()
                 ->getSingleScalarResult();
     }

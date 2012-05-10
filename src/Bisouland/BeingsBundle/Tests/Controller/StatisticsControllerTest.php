@@ -2,12 +2,11 @@
 
 namespace Bisouland\BeingsBundle\Tests\Controller;
 
-use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
-use Bisouland\BeingsBundle\DataFixtures\ORM\LoadBeingData; 
+use Symfony\Bundle\FrameworkBundle\Test\WebTestCase; 
 use Bisouland\BeingsBundle\Controller\StatisticsController;
 
 class StatisticsControllerTest extends WebTestCase
-{  
+{
     public function testBeingGeneration()
     {
         $client = static::createClient();

@@ -36,7 +36,7 @@ class BeingRepository extends EntityRepository
                 ->createQueryBuilder()
                 ->select('bisouland_being.id')
                 ->from('BisoulandBeingsBundle:Being', 'bisouland_being')
-                ->orderBy('bisouland_being.id')
+                ->orderBy('bisouland_being.id', 'desc')
                 ->setMaxResults(1)
                 ->getQuery()
                 ->getSingleScalarResult();

@@ -24,7 +24,7 @@ class StatisticsController extends Controller
         $totalNumberOfBirth = $this->getDoctrine()
                 ->getRepository('BisoulandBeingsBundle:Being')
                 ->countTotalBirths();
-        $deathCount = $alivePopulationCount - $totalNumberOfBirth;
+        $deathCount = $totalNumberOfBirth - $alivePopulationCount;
 
         return compact(
                 'numberOfBirthsToday',

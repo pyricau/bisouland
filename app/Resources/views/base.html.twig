@@ -8,6 +8,7 @@
     <link rel="stylesheet" href="{{ asset('bundles/bisoulandfront/css/footer.css') }}">
     <link rel="stylesheet" href="{{ asset('bundles/bisoulandfront/css/header.css') }}">
     <link rel="stylesheet" href="{{ asset('bundles/bisoulandfront/css/table.css') }}">
+    <link rel="stylesheet" href="{{ asset('bundles/bisoulandfront/css/dl.css') }}">
 {% endblock %}
 
 {% block favicons %}
@@ -31,9 +32,7 @@
         <nav class="seven columns offset-by-one content">
             <h2>Statistiques</h2>
 
-            <ul>
-                <li>{# include "BisoulandBeingsBundle::popultation.html.twig" #}</li>
-            </ul>
+            {% render 'BisoulandBeingsBundle:Statistics:index' %}
         </nav>
 
         <nav class="seven columns offset-by-one content">

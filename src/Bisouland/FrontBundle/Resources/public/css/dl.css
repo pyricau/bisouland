@@ -1,0 +1,11 @@
+dl {
+    line-height: 2em;
+}
+
+dl dd:nth-child(4n+2), dl dt:nth-child(4n+1) {
+    background: #e5e5e5;
+}
+
+dt {
+    font-weight: bold;
+}

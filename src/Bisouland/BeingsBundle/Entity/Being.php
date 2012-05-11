@@ -26,6 +26,11 @@ class Being
     private $name;
     
     /**
+     * @ORM\Column(name="love_points", type="integer")
+     */
+    private $love_points;
+    
+    /**
      * @Gedmo\Timestampable(on="create")
      * @ORM\Column(name="created", type="datetime")
      */
@@ -45,6 +50,17 @@ class Being
     public function getName()
     {
         return $this->name;
+    }
+    
+    public function setLovePoints($love_points)
+    {
+        $this->love_points = $love_points;
+        return $this;
+    }
+
+    public function getLovePoints()
+    {
+        return $this->love_points;
     }
     
     public function getCreated()

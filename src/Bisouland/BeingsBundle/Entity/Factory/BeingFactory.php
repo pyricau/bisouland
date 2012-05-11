@@ -11,6 +11,9 @@ class BeingFactory
     
     static public $minimumNameLength = 4;
     static public $maximumNameLength = 9;
+    
+    static public $minimumLovePointsInDays = 4;
+    static public $maximumLovePointsInDays = 10;
 
     public function __construct(PronounceableWord_Generator $nameGenerator)
     {
@@ -21,6 +24,7 @@ class BeingFactory
     {
         $being = new Being();
         $being->setName($this->generateName());
+        $being->setLovePoints($this->generateLovePoints());
         
         return $being;
     }
@@ -33,5 +37,16 @@ class BeingFactory
         $randomName = ucfirst($randomName);
         
         return $randomName;
+    }
+    
+    private function generateLovePoints()
+    {
+        $numberOfSecondsInOneDay = 24 * 60 * 60;
+        $minimumLovePointsInSeconds = self::$minimumLovePointsInDays * $numberOfSecondsInOneDay;
+        $maximumLovePointsInSeconds = self::$maximumLovePointsInDays * $numberOfSecondsInOneDay;
+        
+        $love_points = mt_rand($minimumLovePointsInSeconds, $maximumLovePointsInSeconds);
+        
+        return $love_points;
     }
 }

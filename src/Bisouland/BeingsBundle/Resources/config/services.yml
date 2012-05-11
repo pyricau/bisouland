@@ -1,6 +1,6 @@
 parameters:
-    bisouland_beings.before_filter.class: Bisouland\BeingsBundle\EventListener\BeforeControllerListener
-    
+    bisouland_beings.being_updater_subscriber.class: Bisouland\BeingsBundle\Event\BeingUpdaterSubscriber
+
     pronounceable_word_configuration_linked_letters.class: Bisouland\BeingsBundle\PronounceableWord\Configuration\LinkedLetters
     pronounceable_word_linked_letters.class: PronounceableWord_LinkedLetters
     pronounceable_word_configuration_letter_types.class: PronounceableWord_Configuration_LetterTypes
@@ -10,11 +10,11 @@ parameters:
     pronounceable_word_generator.class: PronounceableWord_Generator
 
 services:
-    bisouland_beings.before_filter:
-        class: %bisouland_beings.before_filter.class%
-        arguments: ["@annotation_reader"]
+    bisouland_beings.being_updater_subscriber:
+        class: %bisouland_beings.being_updater_subscriber.class%
+        arguments: ["@doctrine", "@pronounceable_word_generator"]
         tags:
-            - { name: kernel.event_listener, event: kernel.controller, method: onKernelController }
+            - { name: kernel.event_subscriber }
 
     pronounceable_word_configuration_linked_letters:
         class: %pronounceable_word_configuration_linked_letters.class%

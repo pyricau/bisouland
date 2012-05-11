@@ -6,7 +6,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 
 use Bisouland\BeingsBundle\Filters\Before;
-use Bisouland\BeingsBundle\Entity\Being;
+use Bisouland\BeingsBundle\Entity\Factory\BeingFactory;
 
 /**
  * @Before("beforeFilter")
@@ -27,16 +27,10 @@ class StatisticsController extends Controller
                 ->countBirthsToday();
         
         if (self::$numberMaxOfBirthPerDay > $numberOfBirthsToday) {
-            $nameLength = mt_rand(4, 9);
-
-            $nameGenerator = $this->container->get('pronounceable_word_generator');
-            $randomName = ucfirst($nameGenerator->generateWordOfGivenLength($nameLength));
-
-            $newBeing = new Being();
-            $newBeing->setName($randomName);
+            $beingFactory = new BeingFactory($this->container->get('pronounceable_word_generator'));
 
             $em = $this->getDoctrine()->getEntityManager();
-            $em->persist($newBeing);
+            $em->persist($beingFactory->make());
             $em->flush();
         }
     }

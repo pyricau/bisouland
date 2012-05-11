@@ -35,6 +35,12 @@ class Being
      * @ORM\Column(name="created", type="datetime")
      */
     private $created;
+    
+    /**
+     * @Gedmo\Timestampable(on="update")
+     * @ORM\Column(name="updated", type="datetime")
+     */
+    private $updated;
 
     public function getId()
     {
@@ -66,5 +72,10 @@ class Being
     public function getCreated()
     {
         return $this->created;
+    }
+    
+    public function getUpdated()
+    {
+        return $this->updated;
     }
 }

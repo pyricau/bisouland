@@ -66,7 +66,9 @@ class Being
 
     public function getLovePoints()
     {
-        return $this->love_points;
+        $timeSinceLastUpdate = time() - $this->updated->getTimestamp();
+
+        return $this->love_points - $timeSinceLastUpdate;
     }
     
     public function getCreated()

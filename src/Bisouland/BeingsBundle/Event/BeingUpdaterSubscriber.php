@@ -23,9 +23,13 @@ class BeingUpdaterSubscriber implements EventSubscriberInterface
 
     static public function getSubscribedEvents()
     {
+        $priorities = array(
+            'firstEvent' => 0,
+        );
+
         return array(
             'kernel.request' => array(
-                array('birth', 0),
+                array('birth', $priorities['firstEvent']),
             ),
         );
     }

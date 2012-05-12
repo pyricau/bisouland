@@ -16,7 +16,7 @@
             {% for being in beings %}
                 <tr>
                     <td>{{ being.name }}</td>
-                    <td>{{ being.lovePoints|number_format_decimal }}</td>
+                    <td class="number">{{ being.lovePoints|number_format_decimal }}</td>
                     <td>{{ being.created|date("h:m:s d/m/Y") }}</td>
                 </tr>
             {% endfor %}

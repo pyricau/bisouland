@@ -1,3 +1,7 @@
 body {
     background: #99cccc url("../images/bg.gif") repeat-x;
 }
+
+.number {
+    text-align: right;
+}

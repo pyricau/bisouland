@@ -46,11 +46,9 @@
     <script type="text/javascript">
         $('td.age').each(function() {
             var ageInSeconds = $(this).text().replace(/\s/g, '');
-            var today = new Date().getTime();
-            var birthday = today - parseInt(ageInSeconds) * 1000;
 
             $(this).countdown({
-                since: new Date(birthday),
+                since: -1 * ageInSeconds,
                 compact: true,
                 format: 'DHMS'
             });

@@ -9,3 +9,20 @@ body {
 .hide {
     visibility: hidden;
 }
+
+.help dl {
+    margin-bottom: 5px;
+    font-size: 14px;
+}
+
+.help dt {
+    padding-left: 4px;
+    vertical-align: top;
+    width: 14em;
+}
+
+.help dd {
+    margin-left: 12em;
+    margin-top: -2em;
+    vertical-align: top;
+}

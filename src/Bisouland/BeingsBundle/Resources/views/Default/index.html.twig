@@ -32,9 +32,6 @@
                     </td>
                     <td class="age number">
                         {{ being.age|number_format_decimal }}
-                        <span class="hide birthday">
-                            {{ being.created|date('F d, Y H:i:s') }}
-                        </span>
                     </td>
                 </tr>
             {% endfor %}
@@ -48,8 +45,12 @@
     <script type="text/javascript" src="{{ asset('js/jquery.countdown-fr.js') }}"></script>
     <script type="text/javascript">
         $('td.age').each(function() {
+            var ageInSeconds = $(this).text().replace(/\s/g, '');
+            var today = new Date().getTime();
+            var birthday = today - parseInt(ageInSeconds) * 1000;
+
             $(this).countdown({
-                since: new Date($('.birthday', this).text()),
+                since: new Date(birthday),
                 compact: true,
                 format: 'DHMS'
             });

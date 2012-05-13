@@ -15,7 +15,7 @@
             <tr>
                 <th>#</th>
                 <th>Nom</th>
-                <th>Points d'Amour (<abbr title="Points d'Amour">PA</abbr>)</th>
+                <th>Temps restant</th>
                 <th>&Acirc;ge</th>
             </tr>
 
@@ -27,7 +27,7 @@
                     <td>
                         {{ being.name }}
                     </td>
-                    <td class="number">
+                    <td class="time-left number">
                         {{ being.lovePoints|number_format_decimal }}
                     </td>
                     <td class="age number">
@@ -44,14 +44,20 @@
     <script type="text/javascript" src="{{ asset('js/jquery.countdown.pack.js') }}"></script>
     <script type="text/javascript" src="{{ asset('js/jquery.countdown-fr.js') }}"></script>
     <script type="text/javascript">
-        $('td.age').each(function() {
-            var ageInSeconds = $(this).text().replace(/\s/g, '');
+        $('tr').each(function() {
+            var ageInSeconds = $('.age', this).text().replace(/\s/g, '')
+            var timeLeftInSeconds = $('.time-left', this).text().replace(/\s/g, '')
 
-            $(this).countdown({
-                since: -1 * ageInSeconds,
-                compact: true,
-                format: 'DHMS'
-            });
-        });
+            $('.age', this).countdown({
+                since: -1 * ageInSeconds
+                , compact: true
+                , format: 'DHMS'
+            })
+            $('.time-left', this).countdown({
+                until: timeLeftInSeconds
+                , compact: true
+                , format: 'DHMS'
+            })
+        })
     </script>
 {% endblock %}

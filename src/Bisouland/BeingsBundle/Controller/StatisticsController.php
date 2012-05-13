@@ -6,37 +6,31 @@ use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 
 use Bisouland\BeingsBundle\Filters\Before;
-use Bisouland\BeingsBundle\Entity\Being;
+use Bisouland\BeingsBundle\Entity\Factory\BeingFactory;
 
 /**
  * @Before("beforeFilter")
  */
 class StatisticsController extends Controller
 {
-    static public $numberMaxOfBirthPerDay = 42;
+    static public $maximumNumberOfBirthInOneDay = 42;
 
     public function beforeFilter()
     {
-        $this->birthGenerator();
+        $this->generateBirth();
     }
-
-    protected function birthGenerator()
+    
+    private function generateBirth()
     {
         $numberOfBirthsToday = $this->getDoctrine()
                 ->getRepository('BisoulandBeingsBundle:Being')
                 ->countBirthsToday();
         
-        if (self::$numberMaxOfBirthPerDay > $numberOfBirthsToday) {
-            $nameLength = mt_rand(4, 9);
-
-            $nameGenerator = $this->container->get('pronounceable_word_generator');
-            $randomName = ucfirst($nameGenerator->generateWordOfGivenLength($nameLength));
-
-            $newBeing = new Being();
-            $newBeing->setName($randomName);
+        if (self::$maximumNumberOfBirthInOneDay > $numberOfBirthsToday) {
+            $beingFactory = new BeingFactory($this->get('pronounceable_word_generator'));
 
             $em = $this->getDoctrine()->getEntityManager();
-            $em->persist($newBeing);
+            $em->persist($beingFactory->make());
             $em->flush();
         }
     }

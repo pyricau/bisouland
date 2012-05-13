@@ -76,6 +76,11 @@ class Being
         return $this->created;
     }
     
+    public function getAge()
+    {
+        return time() - $this->created->getTimestamp();
+    }
+    
     public function getUpdated()
     {
         return $this->updated;

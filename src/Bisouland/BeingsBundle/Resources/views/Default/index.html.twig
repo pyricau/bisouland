@@ -1,25 +1,58 @@
 {% extends '::base.html.twig' %}
 
-{% block title %}Bisouland v2 - Personnages{% endblock %}
+{% block title %}Bisouland v2 - Population{% endblock %}
+
+{% block css %}
+    {{ parent() }}
+    <link rel="stylesheet" href="{{ asset('css/jquery.countdown.css') }}" />
+{% endblock %}
 
 {% block view %}
     <article>
         <h2>Personnages</h2>
 
-        <table>
+        <table id="population">
             <tr>
+                <th>#</th>
                 <th>Nom</th>
                 <th>Points d'Amour (<abbr title="Points d'Amour">PA</abbr>)</th>
-                <th>Date de naissance</th>
+                <th>&Acirc;ge</th>
             </tr>
 
             {% for being in beings %}
                 <tr>
-                    <td>{{ being.name }}</td>
-                    <td class="number">{{ being.lovePoints|number_format_decimal }}</td>
-                    <td>{{ being.created|date("h:m:s d/m/Y") }}</td>
+                    <td>
+                        {{ loop.index }}
+                    </td>
+                    <td>
+                        {{ being.name }}
+                    </td>
+                    <td class="number">
+                        {{ being.lovePoints|number_format_decimal }}
+                    </td>
+                    <td class="age number">
+                        {{ being.age|number_format_decimal }}
+                        <span class="hide birthday">
+                            {{ being.created|date('F d, Y H:i:s') }}
+                        </span>
+                    </td>
                 </tr>
             {% endfor %}
         </table>
     </article>
+{% endblock %}
+
+{% block javascript %}
+    {{ parent() }}
+    <script type="text/javascript" src="{{ asset('js/jquery.countdown.pack.js') }}"></script>
+    <script type="text/javascript" src="{{ asset('js/jquery.countdown-fr.js') }}"></script>
+    <script type="text/javascript">
+        $('td.age').each(function() {
+            $(this).countdown({
+                since: new Date($('.birthday', this).text()),
+                compact: true,
+                format: 'DHMS'
+            });
+        });
+    </script>
 {% endblock %}

@@ -5,3 +5,7 @@ body {
 .number {
     text-align: right;
 }
+
+.hide {
+    visibility: hidden;
+}

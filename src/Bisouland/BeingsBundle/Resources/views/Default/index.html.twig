@@ -9,13 +9,43 @@
 
 {% block view %}
     <article>
-        <h2>Personnages</h2>
+        <h2>Population</h2>
+        
+        <section class="help">
+            <h3>Aide</h3>
 
+            <ul class="tabs">
+                <li>
+                    <a class="active" href="#love-points">
+                        Points d'Amour (<abbr title="Points d'Amour">PA</abbr>)
+                    </a>
+                </li>
+            </ul>
+
+            <ul class="tabs-content">
+                <li class="active" id="love-points">
+                    <p>
+                        La ressource de ce jeu : se traduit par le temps
+                        restant, en secondes, avant que le personnage ne perde
+                        le jeu.<br />
+                        Les <abbr title="Points d'Amour">PA</abbr> diminuent
+                        naturellement d'un point par seconde.<br />
+                        Lorsqu'ils atteignent 0, le personnage est
+                        supprim&eacute; du jeu : il aura perdu.
+                    </p>
+                </li>
+            </ul>
+        </section>
+        
+        <button type="button" id="show-help">
+            Afficher l'aide
+        </button>
+        
         <table id="population">
             <tr>
                 <th>#</th>
                 <th>Nom</th>
-                <th>Temps restant</th>
+                <th><abbr title="Points d'Amour">PA</abbr></th>
                 <th>&Acirc;ge</th>
             </tr>
 
@@ -44,6 +74,11 @@
     <script type="text/javascript" src="{{ asset('js/jquery.countdown.pack.js') }}"></script>
     <script type="text/javascript" src="{{ asset('js/jquery.countdown-fr.js') }}"></script>
     <script type="text/javascript">
+        $('#show-help').click(function() {
+            $('.help').show('slow');
+            $(this).hide();
+        });
+
         $('tr').each(function() {
             var ageInSeconds = $('.age', this).text().replace(/\s/g, '')
             var timeLeftInSeconds = $('.time-left', this).text().replace(/\s/g, '')

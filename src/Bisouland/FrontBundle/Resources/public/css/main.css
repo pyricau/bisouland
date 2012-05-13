@@ -9,3 +9,7 @@ body {
 .hide {
     visibility: hidden;
 }
+
+.help {
+    display: none;
+}

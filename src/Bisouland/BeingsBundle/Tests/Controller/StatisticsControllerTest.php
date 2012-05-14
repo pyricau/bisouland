@@ -27,17 +27,17 @@ class StatisticsControllerTest extends WebTestCase
         }
     }
     
-    public function testNumberMaxOfBirthPerDay()
+    public function testNumberMaximumNumberOfBirthInONeDay()
     {
         $client = static::createClient();
         $em = $client->getContainer()->get('doctrine.orm.entity_manager');
 
-        for ($numberOfBirth = 0; $numberOfBirth < StatisticsController::$numberMaxOfBirthPerDay; $numberOfBirth++) {
+        for ($numberOfBirth = 0; $numberOfBirth < StatisticsController::$maximumNumberOfBirthInOneDay; $numberOfBirth++) {
             $client->request('GET', '/beings/');
         }
         
         $client->request('GET', '/beings/');
 
-        $this->assertTrue(StatisticsController::$numberMaxOfBirthPerDay == $em->getRepository('BisoulandBeingsBundle:Being')->countBirthsToday());
+        $this->assertTrue(StatisticsController::$maximumNumberOfBirthInOneDay == $em->getRepository('BisoulandBeingsBundle:Being')->countBirthsToday());
     }
 }

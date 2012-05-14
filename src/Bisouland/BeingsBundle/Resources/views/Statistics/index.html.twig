@@ -1,29 +1,45 @@
-<dl>
-    <dt class="four columns alpha">
-        Naissances aujourd'hui
-    </dt>
-    <dd class="three columns omega number">
-        {{ numberOfBirthsToday }}
-    </dd>
+<div id="chart_div">
+    <dl>
+        <dt class="four columns alpha">
+            Naissances aujourd'hui
+        </dt>
+        <dd class="three columns omega number">
+            {{ numberOfBirthsToday }}
+        </dd>
 
-    <dt class="four columns alpha">
-        Population actuelle
-    </dt>
-    <dd class="three columns omega number">
-        {{ alivePopulationCount }}
-    </dd>
+        <dt class="four columns alpha">
+            Perdants
+        </dt>
+        <dd class="three columns omega number">
+            {{ numberOfLosers }}
+        </dd>
 
-    <dt class="four columns alpha">
-        Naissances totales
-    </dt>
-    <dd class="three columns omega number">
-        {{ totalNumberOfBirth }}
-    </dd>
+        <dt class="four columns alpha">
+            Autres
+        </dt>
+        <dd class="three columns omega number">
+            {{ numberOfOthers }}
+        </dd>
+    </dl>
+</div>
 
-    <dt class="four columns alpha">
-        Nombre de morts
-    </dt>
-    <dd class="three columns omega number">
-        {{ deathCount }}
-    </dd>
-</dl>
+<script type="text/javascript" src="https://www.google.com/jsapi"></script>
+<script type="text/javascript">
+    google.load("visualization", "1", {packages:["corechart"]});
+    google.setOnLoadCallback(drawChart);
+    function drawChart() {
+        var data = google.visualization.arrayToDataTable([
+            ['Type', 'Nombre'],
+            ['Naissances du jour', {{ numberOfBirthsToday }}],
+            ['Perdants', {{ numberOfLosers }}],
+            ['Autres', {{ numberOfOthers }}]
+        ]);
+
+        var options = {
+            title: 'Population'
+        };
+
+        var chart = new google.visualization.PieChart(document.getElementById('chart_div'));
+        chart.draw(data, options);
+    }
+</script>

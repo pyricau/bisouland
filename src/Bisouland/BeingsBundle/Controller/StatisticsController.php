@@ -50,21 +50,21 @@ class StatisticsController extends Controller
     {
         $numberOfBirthsToday = $this->getDoctrine()
                 ->getRepository('BisoulandBeingsBundle:Being')
-                ->countBirthsToday();
-        
+                ->countBirthsToday(); 
+
         $alivePopulationCount = $this->getDoctrine()
                 ->getRepository('BisoulandBeingsBundle:Being')
                 ->countAlivePopulation();
         $totalNumberOfBirth = $this->getDoctrine()
                 ->getRepository('BisoulandBeingsBundle:Being')
                 ->countTotalBirths();
-        $deathCount = $totalNumberOfBirth - $alivePopulationCount;
+        $numberOfLosers = $totalNumberOfBirth - $alivePopulationCount;
+        $numberOfOthers = $alivePopulationCount - $numberOfBirthsToday;
 
         return compact(
                 'numberOfBirthsToday',
-                'alivePopulationCount',
-                'totalNumberOfBirth',
-                'deathCount'
+                'numberOfLosers',
+                'numberOfOthers'
         );
     }
 }

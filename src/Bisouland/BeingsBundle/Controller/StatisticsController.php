@@ -18,6 +18,7 @@ class StatisticsController extends Controller
     public function beforeFilter()
     {
         $this->generateBirth();
+        $this->removeLosers();
     }
     
     private function generateBirth()
@@ -29,10 +30,17 @@ class StatisticsController extends Controller
         if (self::$maximumNumberOfBirthInOneDay > $numberOfBirthsToday) {
             $beingFactory = new BeingFactory($this->get('pronounceable_word_generator'));
 
-            $em = $this->getDoctrine()->getEntityManager();
-            $em->persist($beingFactory->make());
-            $em->flush();
+            $entityManager = $this->getDoctrine()->getEntityManager();
+            $entityManager->persist($beingFactory->make());
+            $entityManager->flush();
         }
+    }
+    
+    private function removeLosers()
+    {
+        $this->getDoctrine()
+                ->getRepository('BisoulandBeingsBundle:Being')
+                ->removeLosers();
     }
 
     /**

@@ -1,0 +1,10 @@
+#layout-footer h2, #layout-footer ul, #layout-footer dl {
+    margin: 0;
+    padding: 0;
+}
+
+#layout-footer nav {
+    background: #faffff;
+    border-radius: 10px;
+    margin-bottom: 10px;
+}

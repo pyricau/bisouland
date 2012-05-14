@@ -7,34 +7,25 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 
 use Bisouland\BeingsBundle\Filters\Before;
-use Bisouland\BeingsBundle\Entity\Being;
 
 /**
- * @Before("beforeFilter")
+ * @Before("beforeFilter") 
  */
 class DefaultController extends Controller
 {
-    static public $numberMaxOfBirthPerDay = 42;
-
     public function beforeFilter()
     {
-        $numberOfBirthsToday = $this->getDoctrine()
-                ->getRepository('BisoulandBeingsBundle:Being')
-                ->countBirthsToday();
-        
-        if (self::$numberMaxOfBirthPerDay > $numberOfBirthsToday) {
-            $nameLength = mt_rand(4, 9);
-
-            $nameGenerator = $this->container->get('pronounceable_word_generator');
-            $randomName = ucfirst($nameGenerator->generateWordOfGivenLength($nameLength));
-
-            $newBeing = new Being();
-            $newBeing->setName($randomName);
-
-            $em = $this->getDoctrine()->getEntityManager();
-            $em->persist($newBeing);
-            $em->flush();
+        $this->updateLovePoints();
+    }
+    
+    private function updateLovePoints()
+    {
+        $entityManager = $this->getDoctrine()->getEntityManager();
+        $beings = $entityManager->getRepository('BisoulandBeingsBundle:Being')->findAll();
+        foreach ($beings as $being) {
+            $being->setLovePoints($being->getLovePoints());
         }
+        $entityManager->flush();
     }
 
     /**

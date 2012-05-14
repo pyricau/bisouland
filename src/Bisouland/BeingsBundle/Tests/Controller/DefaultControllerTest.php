@@ -14,7 +14,7 @@ class DefaultControllerTest extends WebTestCase
 
         $crawler = $client->request('GET', '/beings/');
 
-        $this->assertTrue($crawler->filter('title:contains("Bisouland v2 - Personnages")')->count() > 0);
+        $this->assertTrue($crawler->filter('title:contains("Bisouland v2 - Population")')->count() > 0);
     }
     
     public function testPresenceOfNamesInView()
@@ -26,6 +26,18 @@ class DefaultControllerTest extends WebTestCase
         $beings = LoadBeingData::getFixtures();
         foreach ($beings as $being) {
             $this->assertTrue(0 < $crawler->filter('td:contains("'.$being['name'].'")')->count());
+        }
+    }
+    
+    public function testAbsenceOfNamesInView()
+    {
+        $client = static::createClient();
+
+        $crawler = $client->request('GET', '/beings/');
+
+        $beings = LoadBeingData::getFixturesToBeRemoved();
+        foreach ($beings as $being) {
+            $this->assertTrue(0 === $crawler->filter('td:contains("'.$being['name'].'")')->count());
         }
     }
 }

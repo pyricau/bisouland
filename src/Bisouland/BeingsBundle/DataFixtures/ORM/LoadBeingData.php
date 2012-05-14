@@ -22,10 +22,20 @@ class LoadBeingData implements FixtureInterface
         
         return $beings;
     }
+    
+    static public function getFixturesToBeRemoved()
+    {
+        $beingsToBeRemoved = array(
+            'shouldBeRemoved1' => array('name' => 'Should be removed 1', 'love_points' => -1),
+            'shouldBeRemoved2' => array('name' => 'Should be removed 2', 'love_points' => 0),
+        );
+        
+        return $beingsToBeRemoved;
+    }
 
     public function load(ObjectManager $manager)
     {
-        $beings = self::getFixtures();
+        $beings = array_merge(self::getFixtures(), self::getFixturesToBeRemoved());
         foreach ($beings as $being) {
             $newBeing = new Being();
             $newBeing->setName($being['name']);

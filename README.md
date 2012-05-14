@@ -60,4 +60,4 @@ et configurez les droits :
 
 * 2005 : Pierre-Yves Ricau met en place le site http://bisouland.piwai.info ;
 * 2011 : il rend le projet Open Source pour qu'il soit repris par Marc Epron, Thomas Gay et Loic Chardonnet ;
-* 2012 : sortie de la version 2.0.
+* 2012 : sortie de la version 2.

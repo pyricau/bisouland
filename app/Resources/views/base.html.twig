@@ -3,50 +3,52 @@
 {% block title %}Bisouland v2{% endblock %}
 
 {% block stylesheets %}
-    <link rel="stylesheet" href="{{ asset('bundles/bisoulandfront/css/main.css') }}" />
-    <link rel="stylesheet" href="{{ asset('bundles/bisoulandfront/css/article.css') }}" />
-    <link rel="stylesheet" href="{{ asset('bundles/bisoulandfront/css/footer.css') }}" />
-    <link rel="stylesheet" href="{{ asset('bundles/bisoulandfront/css/header.css') }}" />
-    <link rel="stylesheet" href="{{ asset('bundles/bisoulandfront/css/table.css') }}" />
-    <link rel="stylesheet" href="{{ asset('bundles/bisoulandfront/css/dl.css') }}" />
+    <link rel="stylesheet" href="{{ asset('css/main.css') }}">
+    <link rel="stylesheet" href="{{ asset('css/article.css') }}">
+    <link rel="stylesheet" href="{{ asset('css/footer.css') }}">
+    <link rel="stylesheet" href="{{ asset('css/header.css') }}">
+    <link rel="stylesheet" href="{{ asset('css/table.css') }}">
 {% endblock %}
 
 {% block favicons %}
-    <link rel="shortcut icon" href="{{ asset('bundles/bisoulandfront/images/favicon.ico') }}" />
-    <link rel="apple-touch-icon" href="{{ asset('bundles/bisoulandfront/images/apple-touch-icon.png') }}">
-    <link rel="apple-touch-icon" sizes="72x72" href="{{ asset('bundles/bisoulandfront/images/apple-touch-icon-72x72.png') }}">
-    <link rel="apple-touch-icon" sizes="114x114" href="{{ asset('bundles/bisoulandfront/images/apple-touch-icon-114x114.png') }}">
+    <link rel="shortcut icon" href="{{ asset('images/favicon.ico') }}" />
 {% endblock %}
 
 {% block content %}
-    <header id="layout-header" class="sixteen columns content">
-        <a href="{{ path('homepage') }}"><img alt="Bisouland" src="{{ asset('bundles/bisoulandfront/images/logo.gif') }}" /></a>
+        <header id="layout-header" class="fifteen columns content">
+            <h1><a href="{{ path("homepage") }}" title="Accueil">Bisouland v2</a></h1>
+        </header>
 
-        <nav>
-            {{ knp_menu_render("BisoulandFrontBundle:Builder:mainMenu") }}
-        </nav>    
-    </header>
+        <div class="fifteen columns content">
+            {% block view %}{% endblock %}
+        </div>
 
-    <div class="sixteen columns content">
-        {% block view %}{% endblock %}
-    </div>
+        <footer id="layout-footer" class="fifteen columns content">
+            <nav class="seven columns alpha">
+                <h2>Statistiques</h2>
 
-    <footer id="layout-footer">
-        <nav class="seven columns offset-by-one content">
-            <h2>Statistiques</h2>
+                <ul>
+                    <li>{# include "BisoulandBeingsBundle::popultation.html.twig" #}</li>
+                </ul>
+            </nav>
+            
+            <nav class="seven columns omega">
+                <h2>Cr&eacute;dits</h2>
 
-            {% render 'BisoulandBeingsBundle:Statistics:index' %}
-        </nav>
+                <ul>
+                    <li><a href="http://www.piwai.info/" title="Auteur original">Piwa&iuml;</a></li>
+                    <li><a href="https://github.com/pyricau/bisouland" title="D&eacute;p&ocirc;t des sources">Code source</a></li>
+                    <li><a href="http://symfony.com/" title="Symfony2 framework">Symfony</a></li>
+                    <li><a href="http://www.styleshout.com/" title="CSS template et ressources">Styleshout</a></li>
+                </ul>
+            </nav>
+        </footer>
+{% endblock %}
 
-        <nav class="seven columns offset-by-one content">
-            <h2>Cr&eacute;dits</h2>
-
-            <ul>
-                <li><a href="http://www.piwai.info/" title="Auteur original">Piwa&iuml;</a></li>
-                <li><a href="https://github.com/pyricau/bisouland" title="D&eacute;p&ocirc;t des sources">Code source</a></li>
-                <li><a href="http://symfony.com/" title="Symfony2 framework">Symfony</a></li>
-                <li><a href="http://www.styleshout.com/" title="CSS template et ressources">Styleshout</a></li>
-            </ul>
-        </nav>
-    </footer>
+{% block javascript %}
+    <script type="text/javascript" src="http://konami-js.googlecode.com/svn/trunk/konami.js"></script>
+    <script type="text/javascript">
+        konami = new Konami()
+        konami.load("{{ path("beings") }}");
+    </script>
 {% endblock %}

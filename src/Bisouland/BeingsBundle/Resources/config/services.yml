@@ -1,6 +1,4 @@
 parameters:
-    bisouland_beings.before_controller.class: Bisouland\BeingsBundle\EventListener\BeforeControllerListener
-
     pronounceable_word_configuration_linked_letters.class: Bisouland\BeingsBundle\PronounceableWord\Configuration\LinkedLetters
     pronounceable_word_linked_letters.class: PronounceableWord_LinkedLetters
     pronounceable_word_configuration_letter_types.class: PronounceableWord_Configuration_LetterTypes
@@ -11,7 +9,7 @@ parameters:
 
 services:
     bisouland_beings.before_filter:
-        class: %bisouland_beings.before_controller.class%
+        class: Bisouland\BeingsBundle\EventListener\BeforeControllerListener
         arguments: ["@annotation_reader"]
         tags:
             - { name: kernel.event_listener, event: kernel.controller, method: onKernelController }

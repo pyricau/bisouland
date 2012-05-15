@@ -14,13 +14,4 @@ class DefaultControllerTest extends WebTestCase
 
         $this->assertTrue($crawler->filter('html:contains("Bisouland v2")')->count() > 0);
     }
-    
-    public function testMenu()
-    {
-        $client = static::createClient();
-
-        $crawler = $client->request('GET', '/');
-
-        $this->assertTrue($crawler->filter('.current:contains("Accueil")')->count() > 0);
-    }
 }

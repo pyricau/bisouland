@@ -22,8 +22,6 @@ class AppKernel extends Kernel
             new JMS\SecurityExtraBundle\JMSSecurityExtraBundle(),
             
             new Dhgamache\SkeletonBundle\DhgamacheSkeletonBundle(),
-            
-            new Knp\Bundle\MenuBundle\KnpMenuBundle(),
 
             /* Bisouland */
             new Bisouland\FrontBundle\BisoulandFrontBundle(),
@@ -32,9 +30,6 @@ class AppKernel extends Kernel
             /* Extra Doctrine */
             new Doctrine\Bundle\FixturesBundle\DoctrineFixturesBundle(),
             new Stof\DoctrineExtensionsBundle\StofDoctrineExtensionsBundle(),
-            
-            /* Sonata */
-            new Sonata\IntlBundle\SonataIntlBundle(),
         );
 
         if (in_array($this->getEnvironment(), array('dev', 'test'))) {

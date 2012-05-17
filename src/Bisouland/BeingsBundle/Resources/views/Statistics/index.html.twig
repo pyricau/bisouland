@@ -1,27 +1,25 @@
-<div id="chart_div">
-    <dl>
-        <dt class="four columns alpha">
-            Naissances aujourd'hui
-        </dt>
-        <dd class="three columns omega number">
-            {{ numberOfBirthsToday }}
-        </dd>
+<dl id="population_statistics" class="dl-horizontal">
+    <dt>
+        Naissances aujourd'hui
+    </dt>
+    <dd class="number">
+        {{ numberOfBirthsToday }}
+    </dd>
 
-        <dt class="four columns alpha">
-            Perdants
-        </dt>
-        <dd class="three columns omega number">
-            {{ numberOfLosers }}
-        </dd>
+    <dt>
+        Perdants
+    </dt>
+    <dd class="number">
+        {{ numberOfLosers }}
+    </dd>
 
-        <dt class="four columns alpha">
-            Autres
-        </dt>
-        <dd class="three columns omega number">
-            {{ numberOfOthers }}
-        </dd>
-    </dl>
-</div>
+    <dt>
+        Autres
+    </dt>
+    <dd class="number">
+        {{ numberOfOthers }}
+    </dd>
+</dl>
 
 <script type="text/javascript" src="https://www.google.com/jsapi"></script>
 <script type="text/javascript">
@@ -39,7 +37,7 @@
             title: 'Population'
         };
 
-        var chart = new google.visualization.PieChart(document.getElementById('chart_div'));
+        var chart = new google.visualization.PieChart(document.getElementById('population_statistics'));
         chart.draw(data, options);
     }
 </script>

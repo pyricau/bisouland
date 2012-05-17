@@ -12,6 +12,8 @@
         <style>body{padding-top: 50px;}</style>
         {% block stylesheets %}
             <link rel="stylesheet" href="{{ asset('css/bootstrap.min.css') }}" />
+            <link rel="stylesheet" href="{{ asset('bundles/bisoulandfront/css/theme.css') }}" />
+            <link rel="stylesheet" href="{{ asset('bundles/bisoulandfront/css/dl.css') }}" />
         {% endblock %}
             
         <!--[if lt IE 9]>
@@ -39,7 +41,7 @@
                         Bisouland
                     </a>
                     <nav class="nav-collapse collapse">
-                        {{ knp_menu_render("BisoulandFrontBundle:Builder:mainMenu") }}
+                        {{ knp_menu_render("BisoulandFrontBundle:Builder:mainMenu", {"currentClass": "active"}) }}
                     </nav>
                 </div>
             </div>
@@ -51,13 +53,13 @@
             </div>
 
             <footer id="layout-footer" class="row">
-                    <nav class="span4">
+                    <nav class="span6">
                         <h2>Statistiques</h2>
 
                         {% render 'BisoulandBeingsBundle:Statistics:index' %}
                     </nav>
 
-                    <nav class="span4 offset4">
+                    <nav class="span6">
                         <h2>Cr&eacute;dits</h2>
 
                         <ul>

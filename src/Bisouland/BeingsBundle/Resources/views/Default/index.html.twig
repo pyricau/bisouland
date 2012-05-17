@@ -14,57 +14,53 @@
         <section class="help">
             <h3>Aide</h3>
 
-            <ul class="tabs">
-                <li>
-                    <a class="active" href="#population">
+            <ul class="nav nav-tabs">
+                <li class="active">
+                    <a href="#population" data-toggle="tab">
                         Population
                     </a>
                 </li>
                 <li>
-                    <a href="#love-points">
-                        <abbr title="Points d'Amour">PA</abbr>
+                    <a href="#love-points" data-toggle="tab">
+                        <abbr title="Points d'Amour" class="initialism">PA</abbr>
                     </a>
                 </li>
             </ul>
 
-            <ul class="tabs-content">
-                <li class="active" id="population">
-                    <p>
-                        La population est r&eacute;gul&eacute;e naturellement
-                        par la cr&eacute;ation et suppression automatique de
-                        personnages.<br />
-                        &Agrave; chaque visite sur le site, un nouveau
-                        personnage est automatiquement cr&eacute;&eacute; et
-                        &agrave; chaque fois qu'un personnage perd le jeu, il
-                        est supprim&eacute; automatiquement.
-                    </p>
+            <div class="tab-content">
+                <p class="tab-pane active" id="population">
+                    La population est r&eacute;gul&eacute;e naturellement
+                    par la cr&eacute;ation et suppression automatique de
+                    personnages.<br />
+                    &Agrave; chaque visite sur le site, un nouveau
+                    personnage est automatiquement cr&eacute;&eacute; et
+                    &agrave; chaque fois qu'un personnage perd le jeu, il
+                    est supprim&eacute; automatiquement.
                 </li>
-                <li id="love-points">
-                    <p>
-                        Les Points d'Amour
-                        (<abbr title="Points d'Amour">PA</abbr>) sont la
-                        ressource de ce jeu : ils se traduisent par le temps
-                        restant, en secondes, avant que le personnage ne perde
-                        le jeu.<br />
-                        Les <abbr title="Points d'Amour">PA</abbr> diminuent
-                        naturellement d'un point par seconde.<br />
-                        Lorsqu'un personnage atteind 0
-                        <abbr title="Points d'Amour">PA</abbr>, il perd le jeu
-                        et est supprim&eacute;.
-                    </p>
-                </li>
-            </ul>
+                <p class="tab-pane" id="love-points">
+                    Les Points d'Amour
+                    (<abbr title="Points d'Amour" class="initialism">PA</abbr>) sont la
+                    ressource de ce jeu : ils se traduisent par le temps
+                    restant, en secondes, avant que le personnage ne perde
+                    le jeu.<br />
+                    Les <abbr title="Points d'Amour" class="initialism">PA</abbr> diminuent
+                    naturellement d'un point par seconde.<br />
+                    Lorsqu'un personnage atteind 0
+                    <abbr title="Points d'Amour" class="initialism">PA</abbr>, il perd le jeu
+                    et est supprim&eacute;.
+                </p>
+            </div>
         </section>
         
-        <button type="button" id="show-help">
+        <button type="button" id="show-help" class="btn-large btn-info">
             Afficher l'aide
         </button>
         
-        <table id="population">
+        <table id="population" class="table table-striped">
             <tr>
                 <th>#</th>
                 <th>Nom</th>
-                <th><abbr title="Points d'Amour">PA</abbr></th>
+                <th><abbr title="Points d'Amour" class="initialism">PA</abbr></th>
                 <th>&Acirc;ge</th>
             </tr>
 

@@ -15,6 +15,22 @@
                     "reference": "origin/master"
                 }
             }
+        },
+        {
+            "type": "package",
+            "package": {
+                "version": "master",
+                "name": "twitter/bootstrap",
+                "source": {
+                    "url": "https://github.com/twitter/bootstrap.git",
+                    "type": "git",
+                    "reference": "master"
+                },
+                "dist": {
+                    "url": "https://github.com/twitter/bootstrap/zipball/master",
+                    "type": "zip"
+                }
+            }
         }
     ],
     "require": {
@@ -38,6 +54,9 @@
         
         "gnugat/PronounceableWord": "dev-master",
         "gnugat/DhgamacheSkeletonBundle": "dev-master",
+        
+        "mopa/bootstrap-bundle": "dev-master",
+        "twitter/bootstrap": "master",
         
         "knplabs/knp-menu-bundle": "dev-master",
         

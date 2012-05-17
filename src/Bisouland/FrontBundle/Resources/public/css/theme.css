@@ -1,0 +1,40 @@
+html {
+    background: #4786b3;
+    background: -moz-radial-gradient(center, ellipse cover,  #4786b3 42%, #2e5673 100%);
+    background: -webkit-gradient(radial, center center, 0px, center center, 100%, color-stop(42%,#4786b3), color-stop(100%,#2e5673));
+    background: -webkit-radial-gradient(center, ellipse cover,  #4786b3 42%,#2e5673 100%);
+    background: -o-radial-gradient(center, ellipse cover,  #4786b3 42%,#2e5673 100%);
+    background: -ms-radial-gradient(center, ellipse cover,  #4786b3 42%,#2e5673 100%);
+    background: radial-gradient(center, ellipse cover,  #4786b3 42%,#2e5673 100%);
+    filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#4786b3', endColorstr='#2e5673',GradientType=1);
+}
+
+body {
+    background-color: transparent !important;
+}
+
+h1, h2, h3 {
+    color: #333333 !important;
+}
+
+article {
+    padding: 5px;
+    margin-bottom: 10px;
+}
+
+article, footer > nav {
+    background-color: #ffffff;
+}
+
+footer > nav {
+    height: 130px;
+    border-radius: 10px;
+}
+
+.number {
+    text-align: right !important;
+}
+
+.help {
+    display: none;
+}

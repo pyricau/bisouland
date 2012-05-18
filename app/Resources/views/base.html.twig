@@ -9,7 +9,6 @@
             {% block title %}Bisouland v2{% endblock %}
         </title>
 
-        <style>body{padding-top: 50px;}</style>
         {% block stylesheets %}
             <link rel="stylesheet" href="{{ asset('css/bootstrap.min.css') }}" />
             <link rel="stylesheet" href="{{ asset('bundles/bisoulandfront/css/theme.css') }}" />
@@ -37,11 +36,9 @@
                         <span class="icon-bar"></span>
                         <span class="icon-bar"></span>
                     </a>
-                    <h1>
-                        <a class="brand" href="{{ path('homepage') }}">
-                            Bisouland
-                        </a>
-                    </h1>
+                    <a class="brand" href="{{ path('homepage') }}">
+                        Bisouland
+                    </a>
                     <nav class="nav-collapse collapse">
                         {{ knp_menu_render("BisoulandFrontBundle:Builder:mainMenu", {"currentClass": "active"}) }}
                     </nav>

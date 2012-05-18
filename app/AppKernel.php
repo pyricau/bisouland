@@ -21,8 +21,6 @@ class AppKernel extends Kernel
             new JMS\DiExtraBundle\JMSDiExtraBundle($this),
             new JMS\SecurityExtraBundle\JMSSecurityExtraBundle(),
             
-            new Dhgamache\SkeletonBundle\DhgamacheSkeletonBundle(),
-            
             new Knp\Bundle\MenuBundle\KnpMenuBundle(),
 
             /* Bisouland */

@@ -37,7 +37,6 @@
         "uvd/doctrine": "*",
         
         "gnugat/PronounceableWord": "dev-master",
-        "gnugat/DhgamacheSkeletonBundle": "dev-master",
         
         "knplabs/knp-menu-bundle": "dev-master",
         

@@ -5,27 +5,129 @@
     <meta name="keywords" content="Bisouland, jeu en ligne, navigateur, accueil" />
 {% endblock %}
 
-{% block view %}
-    <article>
-        <h2>Bonjour et bienvenue sur Bisouland v2 !</h2>
+{% block stylesheets %}
+    {{ parent() }}
+    <link rel="stylesheet" href="{{ asset('bundles/bisoulandfront/css/marketing.css') }}" />
+{% endblock %}
 
-        <p>
-            Bisouland est un jeu gratuit par navigateur.<br />
-            Volez des points d'amour de vos adversaires en leur
-            envoyant des bisous !
+{% block view %}
+    <article class="hero-unit">
+        <h1>Bisouland v2 <small>Embrassez les tous !</small></h1>
+        
+        <p class="pull-right">
+            <i class="icon-heart"></i>
         </p>
 
         <p>
-            Ce site est en perp&eacute;tuelle &eacute;volution et en
-            cours de d&eacute;veloppement, n'h&eacute;sitez pas
-            &agrave; revenir r&eacute;guli&egrave;rement pour voir les
-            nouveaut&eacute;s.
+            Volez les points d'amour de vos adversaires en les embrassant, dans
+            ce jeu gratuit par navigateur !
+        </p>
+        
+        <p>
+            <a href="{{ path('beings') }}" class="btn btn-primary btn-large">
+                Commencez &agrave; jouer d&egrave;s maintenant !
+            </a>
         </p>
     </article>
+    
+    <div class="row">
+        <div class="span4 marketing">
+            <h2>Un monde &eacute;volutif</h2>
+
+            <p>
+                &Agrave; chaque visite, un nouvel amoureux est
+                cr&eacute;&eacute; et rejoint la population de Bisouland.
+            </p>
+        </div>
+
+        <div class="span4 marketing">
+            <h2>De l'amour &agrave; revendre</h2>
+
+            <p>
+                Chaque amoureux poss&egrave;de des points d'amour
+                (<abbr title="Points d'Amour" class="initialism">PA</abbr>), la
+                ressource de ce jeu.
+            </p>
+        </div>
+            
+        <div class="span4 marketing">
+            <h2>De la passion</h2>
+
+            <p>
+                Votre but est de voler les
+                <abbr title="Points d'Amour" class="initialism">PA</abbr> des
+                autres amoureux, en les embrassant.
+            </p>
+        </div>
+    </div>
+    
+    <div class="row">
+        <div class="span4 marketing">
+            <h2>Des drames passionels</h2>
+
+            <p>
+                Lorsqu'il atteind les <span class="number">0</span>
+                <abbr title="Points d'Amour" class="initialism">PA</abbr>
+                l'amoureux perd le jeu et est automatiquement supprim&eacute;.
+            </p>
+        </div>
+
+        <div class="span4 marketing">
+            <h2>Le temps passe vite</h2>
+
+            <p>
+                Les <abbr title="Points d'Amour" class="initialism">PA</abbr>
+                diminuent naturellement d'<span class="number">1</span> point
+                par seconde.
+            </p>
+        </div>
+
+        <div class="span4 marketing">
+            <h2>Partagez vos partenaires</h2>
+
+            <p>
+                Vous pouvez s&eacute;lectionnez n'importe quel amoureux,
+                y compris un qui a d&eacute;j&agrave; &eacute;t&eacute;
+                s&eacute;lectionn&eacute; !
+            </p>
+        </div>
+    </div>
+    
+    <div class="row">
+        <div class="span6 marketing">
+            <h2>Une int&eacute;gration continue</h2>
+
+            <p>
+                Incomplet en l'&eacute;tat actuel, Bisouland &eacute;volue
+                en recevant chaque semaine de nouvelles
+                fonctionnalit&eacute;es.
+            </p>
+            
+            <p class="alert">
+                <span class="label label-warning">En d&eacute;velopement</span>
+                Revenez r&eacute;guli&egrave;rement.
+            </p>
+        </div>
+
+        <div class="span6 marketing">
+            <h2>L'amour sous toutes ses formes</h2>
+
+            <p>
+                Les types (ange, humain et d&eacute;mons) et strat&eacute;gies
+                (platonique, fid&egrave;le et brise coeur) permettent de varier
+                les tactiques de jeu.
+            </p>
+            
+            <p class="alert alert-info">
+                <span class="label label-info">Pour la v2.3</span>
+                Prochainement disponible.
+            </p>
+        </div>
+    </div>
 
     <article>
         <header>
-            <h2>Bisouland version 2.1.0</h2>
+            <h2>Bisouland version <span class="number">2.1.0</span></h2>
 
             <p>Le 14/05/2012</p>
         </header>
@@ -38,7 +140,7 @@
         <h3>Fonctionnalit&eacute;s ajout&eacute;es</h3>
         
         <p>
-            Lors de la version 2.0.0, en tappant le
+            Lors de la version <span class="number">2.0.0</span>, en tappant le
             <a href="http://fr.wikipedia.org/wiki/Code_Konami" title="lien Wikip&eacute;dia">
                 Konami code
             </a>
@@ -57,7 +159,7 @@
             <li>une visite sur le site fera augmenter la population ;</li>
             <li>les personnages ont d&eacute;sormais des Points d'Amour ;</li>
             <li>les <abbr title="Points d'Amour" class="initialism">PA</abbr> diminuent automatiquement d'une unit&eacute; par seconde ;</li>
-            <li>lorsqu'ils atteignent 0, le personnage perd le jeu et est automatiquement supprim&eacute;.</li>
+            <li>lorsqu'ils atteignent <span class="number">0</span>, le personnage perd le jeu et est automatiquement supprim&eacute;.</li>
         </ul>
         
         <h3>Fin de la v1</h3>
@@ -69,11 +171,14 @@
         </p>
         
         <p>
-            La version 1 aura fini avec 64 nuages, 2 415 membres,
-            1 413 695 139 948 points de score et 2 340 853 121 625.7734
-            <abbr title="Points d'Amour" class="initialism">PA</abbr> (sans compter ceux qui ont
-            &eacute;t&eacute; d&eacute;pens&eacute;s).<br />
-            Et voici le top 20 final :
+            La version <span class="number">1</span> aura fini avec
+            <span class="number">64</span> nuages,
+            <span class="number">2 415</span> membres,
+            <span class="number">1 413 695 139 948</span> points de score et
+            <span class="number">2 340 853 121 625.7734</span>
+            <abbr title="Points d'Amour" class="initialism">PA</abbr> (sans
+            compter ceux qui ont &eacute;t&eacute; d&eacute;pens&eacute;s).<br />
+            Et voici le top <span class="number">20</span> final :
         </p>
         
         <table class="table table-striped">
@@ -85,121 +190,121 @@
             </tr>
 
             <tr>
-                <td>1</td>
+                <td class="number">1</td>
                 <td>kismi</td>
                 <td class="number">287 480 354 613</td>
                 <td class="number">566 808 202 520.0000</td>
             </tr>
             <tr>
-                <td>2</td>
+                <td class="number">2</td>
                 <td>ZEAS</td>
                 <td class="number">253 661 305 618</td>
                 <td class="number">2 302 636 088.7800</td>
             </tr>
             <tr>
-                <td>3</td>
+                <td class="number">3</td>
                 <td>facepalm</td>
                 <td class="number">199 071 377 082</td>
                 <td class="number">7 720 687 437.2900</td>
             </tr>
             <tr>
-                <td>4</td>
+                <td class="number">4</td>
                 <td>tyop</td>
                 <td class="number">187 045 740 077</td>
                 <td class="number">17 833 454 121.2000</td>
             </tr>
             <tr>
-                <td>5</td>
+                <td class="number">5</td>
                 <td>cat_loic</td>
                 <td class="number">151 157 344 314</td>
                 <td class="number">2 757 972 521.6400</td>
             </tr>
             <tr>
-                <td>6</td>
+                <td class="number">6</td>
                 <td>robisous</td>
                 <td class="number">109 421 747 257</td>
                 <td class="number">0.0000</td>
             </tr>
             <tr>
-                <td>7</td>
+                <td class="number">7</td>
                 <td>Petrus</td>
                 <td class="number">43 459 683 497</td>
                 <td class="number">11 895 399.1992</td>
             </tr>
             <tr>
-                <td>8</td>
+                <td class="number">8</td>
                 <td>Sparkette</td>
                 <td class="number">20 797 799 084</td>
                 <td class="number">875 953 127.7700</td>
             </tr>
             <tr>
-                <td>9</td>
+                <td class="number">9</td>
                 <td>yazzz</td>
                 <td class="number">16 197 955 294</td>
                 <td class="number">457 228 861.7260</td>
             </tr>
             <tr>
-                <td>10</td>
+                <td class="number">10</td>
                 <td>alzeheimer</td>
                 <td class="number">15 712 408 653</td>
                 <td class="number">117 050 706 799.0000</td>
             </tr>
             <tr>
-                <td>11</td>
+                <td class="number">11</td>
                 <td>Mr_KaLiMaN</td>
                 <td class="number">15 707 811 876</td>
                 <td class="number">109 500 029 098.0000</td>
             </tr>
             <tr>
-                <td>12</td>
+                <td class="number">12</td>
                 <td>sakul</td>
                 <td class="number">14 683 240 695</td>
                 <td class="number">520 648 778.4080</td>
             </tr>
             <tr>
-                <td>13</td>
+                <td class="number">13</td>
                 <td>BiD0rD</td>
                 <td class="number">13 386 412 475</td>
                 <td class="number">95 767 219 498.2000</td>
             </tr>
             <tr>
-                <td>14</td>
+                <td class="number">14</td>
                 <td>Oceane</td>
                 <td class="number">12 744 419 252</td>
                 <td class="number">99 542 885 168.1000</td>
             </tr>
             <tr>
-                <td>15</td>
+                <td class="number">15</td>
                 <td>Awe_</td>
                 <td class="number">12 443 828 134</td>
                 <td class="number">82 350 730 423.3000</td>
             </tr>
             <tr>
-                <td>16</td>
+                <td class="number">16</td>
                 <td>Duncan</td>
                 <td class="number">12 166 857 523</td>
                 <td class="number">85 413 552 082.2000</td>
             </tr>
             <tr>
-                <td>17</td>
+                <td class="number">17</td>
                 <td>Bebeoix</td>
                 <td class="number">9 985 036 956</td>
                 <td class="number">78 893 804 936.0000</td>
             </tr>
             <tr>
-                <td>18</td>
+                <td class="number">18</td>
                 <td>angellina666</td>
                 <td class="number">6 388 626 353</td>
                 <td class="number">209 344 723.4650</td>
             </tr>
             <tr>
-                <td>19</td>
+                <td class="number">19</td>
                 <td>Neko</td>
                 <td class="number">5 949 769 949</td>
                 <td class="number">144 658 296.7410</td>
             </tr>
             <tr>
-                <td>20</td>
+                <td class="number">20</td>
                 <td>marvin2</td>
                 <td class="number">4 199 709 646</td>
                 <td class="number">137.0312</td>
@@ -213,7 +318,7 @@
 
     <article>
         <header>
-            <h2>Bisouland version 2.0.0</h2>
+            <h2>Bisouland version <span class="number">2.0.0</span></h2>
 
             <p>Le 02/05/2012</p>
         </header>

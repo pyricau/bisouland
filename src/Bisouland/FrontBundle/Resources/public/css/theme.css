@@ -11,6 +11,11 @@ html {
 
 body {
     background-color: transparent !important;
+    padding-top: 50px;
+}
+
+body, p {
+    font-size: 16px !important;
 }
 
 h1, h2, h3 {
@@ -26,6 +31,15 @@ article, footer > nav {
     background-color: #ffffff;
 }
 
+.marketing {
+    color: #e0eff6;
+    margin-bottom: 10px;
+}
+
+.marketing > h2 {
+    color: #ffffff !important;
+}
+
 footer > nav {
     height: 130px;
     border-radius: 10px;
@@ -33,6 +47,8 @@ footer > nav {
 
 .number {
     text-align: right !important;
+    font-family: monospace;
+    font-weight: bold;
 }
 
 .help {

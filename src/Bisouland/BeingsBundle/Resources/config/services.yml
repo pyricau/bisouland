@@ -10,12 +10,6 @@ parameters:
     pronounceable_word_generator.class: PronounceableWord_Generator
 
 services:
-    bisouland_beings.before_filter:
-        class: %bisouland_beings.before_controller.class%
-        arguments: ["@annotation_reader"]
-        tags:
-            - { name: kernel.event_listener, event: kernel.controller, method: onKernelController }
-
     pronounceable_word_configuration_linked_letters:
         class: %pronounceable_word_configuration_linked_letters.class%
     pronounceable_word_linked_letters:

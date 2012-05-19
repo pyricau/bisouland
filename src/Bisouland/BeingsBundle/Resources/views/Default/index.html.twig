@@ -21,7 +21,10 @@
                 <th>#</th>
                 <th>Nom</th>
                 <th><abbr title="Points d'Amour" class="initialism">PA</abbr></th>
-                <th>&Acirc;ge</th>
+                <th><abbr title="S&eacute;duction" class="initialism">S</abbr></th>
+                <th><abbr title="Baffe" class="initialism">B</abbr></th>
+                <th><abbr title="Coeur" class="initialism">B</abbr></th>
+                <th>Actions</th>
             </tr>
 
             {% for being in beings %}
@@ -32,11 +35,22 @@
                     <td>
                         {{ being.name }}
                     </td>
-                    <td class="time-left number">
+                    <td class="love-points number">
                         {{ being.lovePoints|number_format_decimal }}
                     </td>
-                    <td class="age number">
-                        {{ being.age|number_format_decimal }}
+                    <td class="number">
+                        {{ being.bonusSeduction|number_format_decimal }}
+                    </td>
+                    <td class="number">
+                        {{ being.bonusSlap|number_format_decimal }}
+                    </td>
+                    <td class="number">
+                        {{ being.bonusHeart|number_format_decimal }}
+                    </td>
+                    <td>
+                        <a href="{{ path('beings_view', {"name": being.name}) }}" title="Voir">
+                            <i class="icon-eye-open"></i>
+                        </a>
                     </td>
                 </tr>
             {% endfor %}
@@ -55,18 +69,12 @@
         });
 
         $('tr').each(function() {
-            var ageInSeconds = $('.age', this).text().replace(/\s/g, '')
-            var timeLeftInSeconds = $('.time-left', this).text().replace(/\s/g, '')
+            var timeLeftInSeconds = $('.love-points', this).text().replace(/\s/g, '')
 
-            $('.age', this).countdown({
-                since: -1 * ageInSeconds
-                , compact: true
-                , format: 'DHMS'
-            })
-            $('.time-left', this).countdown({
+            $('.love-points', this).countdown({
                 until: timeLeftInSeconds
                 , compact: true
-                , format: 'DHMS'
+                , format: 'S'
             })
         })
     </script>

@@ -1,0 +1,123 @@
+{% extends '::base.html.twig' %}
+
+{% block meta %}
+    <meta name="description" content="Amoureux de Bisouland, personnage du jeu" />
+    <meta name="keywords" content="Bisouland, jeu en ligne, navigateur, amoureux, personnage" />
+{% endblock %}
+
+{% block title %}Bisouland v2 - Amoureux {{ being.name }}{% endblock %}
+
+{% block css %}
+    {{ parent() }}
+    <link rel="stylesheet" href="{{ asset('css/jquery.countdown.css') }}" />
+{% endblock %}
+
+{% block view %}
+    <article>
+        <h2>Amoureux {{ being.name }}</h2>
+
+        <table class="table table-striped">
+            <tr>
+                <th>
+                    <abbr title="Points d'Amour" class="initialism">PA</abbr>
+                </th>
+                <td id="love-points" class="number">
+                    {{ being.lovePoints|number_format_decimal }}
+                </td>
+            </tr>
+            <tr>
+                <th>
+                    Temps restant
+                </th>
+                <td id="time-left" class="number">
+                    {{ being.lovePoints|number_format_decimal }}
+                </td>
+            </tr>
+            <tr>
+                <th>
+                    Bonus de s&eacute;duction
+                </th>
+                <td class="number">
+                    {{ being.bonusSeduction|number_format_decimal }}
+                </td>
+            </tr>
+            <tr>
+                <th>
+                    Bonus de baffe
+                </th>
+                <td class="number">
+                    {{ being.bonusSlap|number_format_decimal }}
+                </td>
+            </tr>
+            <tr>
+                <th>
+                    Bonus de coeur
+                </th>
+                <td class="number">
+                    {{ being.bonusHeart|number_format_decimal }}
+                </td>
+            </tr>
+            <tr>
+                <th>
+                    &Acirc;ge
+                </th>
+                <td id="age" class="number">
+                    {{ being.age|number_format_decimal }}
+                </td>
+            </tr>
+        </table>
+    </article>
+    
+    <article>
+        <h3>Aide</h3>
+        
+        <dl>
+            <dt>
+                S&eacute;duction
+            </dt>
+            <dd>
+                Bonus pour mieux embrasser.
+            </dd>
+            <dt>
+                Baffe
+            </dt>
+            <dd>
+                Bonus pour &eaute;viter de se faire embrasser.
+            </dd>
+            <dt>
+                Coeur
+            </dt>
+            <dd>
+                Bonus pour diminuer le nombre de
+                <abbr title="Points d'Amour" class="initialism">PA</abbr> que
+                peut prendre l'adversaire.
+            </dd>
+        </dl>
+    </article>
+{% endblock %}
+
+{% block javascript %}
+    {{ parent() }}
+    <script type="text/javascript" src="{{ asset('js/jquery.countdown.pack.js') }}"></script>
+    <script type="text/javascript" src="{{ asset('js/jquery.countdown-fr.js') }}"></script>
+    <script type="text/javascript">
+        var ageInSeconds = $('#age').text().replace(/\s/g, '')
+        var timeLeftInSeconds = $('#time-left').text().replace(/\s/g, '')
+
+        $('#age').countdown({
+            since: -1 * ageInSeconds
+            , compact: true
+            , format: 'DHMS'
+        })
+        $('#time-left').countdown({
+            until: timeLeftInSeconds
+            , compact: true
+            , format: 'DHMS'
+        })
+        $('#love-points').countdown({
+            until: timeLeftInSeconds
+            , compact: true
+            , format: 'S'
+        })
+    </script>
+{% endblock %}

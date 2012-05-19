@@ -3,11 +3,11 @@
 namespace Bisouland\BeingsBundle\Tests\Controller;
 
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase; 
-use Bisouland\BeingsBundle\Controller\StatisticsController;
+use Bisouland\BeingsBundle\Controller\UpdateController;
 
-class StatisticsControllerTest extends WebTestCase
+class UpdateControllerTest extends WebTestCase
 {
-    public function testBeingGeneration()
+    public function testBirthGeneration()
     {
         $client = static::createClient();
         $em = $client->getContainer()->get('doctrine.orm.entity_manager');
@@ -32,12 +32,12 @@ class StatisticsControllerTest extends WebTestCase
         $client = static::createClient();
         $em = $client->getContainer()->get('doctrine.orm.entity_manager');
 
-        for ($numberOfBirth = 0; $numberOfBirth < StatisticsController::$maximumNumberOfBirthInOneDay; $numberOfBirth++) {
+        for ($numberOfBirth = 0; $numberOfBirth < UpdateController::$maximumNumberOfBirthInOneDay; $numberOfBirth++) {
             $client->request('GET', '/beings/');
         }
         
         $client->request('GET', '/beings/');
 
-        $this->assertTrue(StatisticsController::$maximumNumberOfBirthInOneDay == $em->getRepository('BisoulandBeingsBundle:Being')->countBirthsToday());
+        $this->assertTrue(UpdateController::$maximumNumberOfBirthInOneDay == $em->getRepository('BisoulandBeingsBundle:Being')->countBirthsToday());
     }
 }

@@ -1,0 +1,15 @@
+{% if 0 < numberOfGeneratedBirth %}
+    <div class="alert alert-success">
+        <button class="close" data-dismiss="alert">&times;</button>
+        <span class="label label-success">Coup de foudre</span>
+        Vous venez de cr&eacute;er un nouvel amoureux !
+    </div>
+{% endif %}
+
+{% if 0 < numberOfRemovedLosers %}
+    <div class="alert alert-error">
+        <button class="close" data-dismiss="alert">&times;</button>
+        <span class="label label-important">Coeurs bris&eacute;s</span>
+        {{ numberOfRemovedLosers }} amoureux {{ numberOfRemovedLosers > 1 ? 'viennent' : 'vient' }} de perdre.
+    </div>
+{% endif %}

@@ -3,50 +3,30 @@
 namespace Bisouland\BeingsBundle\Entity\Factory;
 
 use Bisouland\BeingsBundle\Entity\Being;
-use PronounceableWord_Generator;
+use Bisouland\BeingsBundle\RandomSystem\Factory\CharacterFactory;
 
 class BeingFactory
 {
-    private $nameGenerator;
-    
-    static public $minimumNameLength = 4;
-    static public $maximumNameLength = 9;
-    
-    static public $minimumLovePointsInDays = 4;
-    static public $maximumLovePointsInDays = 10;
+    private $characterFactory;
 
-    public function __construct(PronounceableWord_Generator $nameGenerator)
+    public function __construct(CharacterFactory $characterFactory)
     {
-        $this->nameGenerator = $nameGenerator;
+        $this->characterFactory = $characterFactory;
     }
     
     public function make()
     {
+        $numberOfSecondsInOneDay = 24 * 60 * 60;
+
+        $character = $this->characterFactory->make();
+
         $being = new Being();
-        $being->setName($this->generateName());
-        $being->setLovePoints($this->generateLovePoints());
+        $being->setName($character->name);
+        $being->setLovePoints($character->lifePoints * $numberOfSecondsInOneDay);
+        $being->setSeduction($character->attack);
+        $being->setSlap($character->defense);
+        $being->setHeart($character->constitution);
         
         return $being;
-    }
-    
-    private function generateName()
-    {
-        $nameLength = mt_rand(self::$minimumNameLength, self::$maximumNameLength);
-
-        $randomName = $this->nameGenerator->generateWordOfGivenLength($nameLength);
-        $randomName = ucfirst($randomName);
-        
-        return $randomName;
-    }
-    
-    private function generateLovePoints()
-    {
-        $numberOfSecondsInOneDay = 24 * 60 * 60;
-        $minimumLovePointsInSeconds = self::$minimumLovePointsInDays * $numberOfSecondsInOneDay;
-        $maximumLovePointsInSeconds = self::$maximumLovePointsInDays * $numberOfSecondsInOneDay;
-        
-        $love_points = mt_rand($minimumLovePointsInSeconds, $maximumLovePointsInSeconds);
-        
-        return $love_points;
     }
 }

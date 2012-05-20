@@ -7,67 +7,81 @@
 
 {% block title %}Bisouland v2 - Population{% endblock %}
 
-{% block css %}
+{% block stylesheets %}
     {{ parent() }}
-    <link rel="stylesheet" href="{{ asset('css/jquery.countdown.css') }}" />
+    <link rel="stylesheet" href="{{ asset('bundles/bisoulandbeings/css/table-sorting.css') }}" />
 {% endblock %}
 
 {% block view %}
-    <article>
+    <article class="table-sorting">
         <h2>Population</h2>
         
         <table id="population" class="table table-striped">
-            <tr>
-                <th>#</th>
-                <th>Nom</th>
-                <th><abbr title="Points d'Amour" class="initialism">PA</abbr></th>
-                <th><abbr title="S&eacute;duction" class="initialism">S</abbr></th>
-                <th><abbr title="Baffe" class="initialism">B</abbr></th>
-                <th><abbr title="Coeur" class="initialism">C</abbr></th>
-                <th>Actions</th>
-            </tr>
-
-            {% for being in beings %}
+            <thead>
                 <tr>
-                    <td class="number">
-                        {{ loop.index }}
-                    </td>
-                    <td>
-                        {{ being.name }}
-                    </td>
-                    <td class="love-points number">
-                        {{ being.lovePoints|number_format_decimal }}
-                    </td>
-                    <td class="number">
-                        {{ being.bonusSeduction|number_format_decimal }}
-                    </td>
-                    <td class="number">
-                        {{ being.bonusSlap|number_format_decimal }}
-                    </td>
-                    <td class="number">
-                        {{ being.bonusHeart|number_format_decimal }}
-                    </td>
-                    <td>
-                        <a href="{{ path('beings_view', {"name": being.name}) }}" title="Voir">
-                            <i class="icon-eye-open"></i>
-                        </a>
-                    </td>
+                    <th>#</th>
+                    <th>Nom</th>
+                    <th><abbr title="Points d'Amour" class="initialism">PA</abbr></th>
+                    <th><abbr title="S&eacute;duction" class="initialism">S</abbr></th>
+                    <th><abbr title="Baffe" class="initialism">B</abbr></th>
+                    <th><abbr title="Coeur" class="initialism">C</abbr></th>
+                    <th>Actions</th>
                 </tr>
-            {% endfor %}
+            </thead>
+
+            <tbody>
+                {% for being in beings %}
+                    <tr>
+                        <td class="number">
+                            {{ loop.index }}
+                        </td>
+                        <td>
+                            {{ being.name }}
+                        </td>
+                        <td class="love-points number">
+                            {{ being.lovePoints|number_format_decimal }}
+                        </td>
+                        <td class="number">
+                            {{ being.bonusSeduction|number_format_decimal }}
+                        </td>
+                        <td class="number">
+                            {{ being.bonusSlap|number_format_decimal }}
+                        </td>
+                        <td class="number">
+                            {{ being.bonusHeart|number_format_decimal }}
+                        </td>
+                        <td>
+                            <a href="{{ path('beings_view', {"name": being.name}) }}" title="Voir">
+                                <i class="icon-eye-open"></i>
+                            </a>
+                        </td>
+                    </tr>
+                {% endfor %}
+            </tbody>
         </table>
     </article>
 {% endblock %}
 
 {% block javascript %}
     {{ parent() }}
-    <script type="text/javascript" src="{{ asset('js/jquery.countdown.pack.js') }}"></script>
-    <script type="text/javascript" src="{{ asset('js/jquery.countdown-fr.js') }}"></script>
+    <script type="text/javascript" src="{{ asset('js/jquery.dataTables.min.js') }}"></script>
+    <script type="text/javascript" src="{{ asset('bundles/bisoulandbeings/js/table-sorting.js') }}"></script>
     <script type="text/javascript">
-        $('#show-help').click(function() {
-            $('.help').show('slow');
-            $(this).hide();
-        });
+        $(document).ready(function() {
+            $('#population').dataTable({
+                'sDom': "<'row'<'span6'l><'span6'f>r>t<'row'<'span6'i><'span6'p>>"
+                , 'sPaginationType': 'bootstrap'
+                , 'oLanguage': {
+                    'sLengthMenu': '_MENU_ records per page'
+                }
+            })
+        })
+    </script>
 
+    <script type="text/javascript" src="{{ asset('js/jquery.countdown.pack.js') }}"></script>
+    <script type="text/javascript" src="{{ asset('js/jquery.countdown-fr.js') }}"></script></script>
+
+    <script type="text/javascript">
         $('tr').each(function() {
             var timeLeftInSeconds = $('.love-points', this).text().replace(/\s/g, '')
 

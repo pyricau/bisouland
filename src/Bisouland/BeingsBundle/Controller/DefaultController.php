@@ -22,7 +22,7 @@ class DefaultController extends Controller
     }
     
     /**
-     * @Route("/amoureux/{name}", name="beings_view")
+     * @Route("/{name}", name="beings_view")
      * @Template()
      */
     public function viewAction($name)

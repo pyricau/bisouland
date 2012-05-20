@@ -6,6 +6,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 
 use Bisouland\BeingsBundle\Entity\Factory\BeingFactory;
+use Bisouland\BeingsBundle\RandomSystem\Factory\CharacterFactory;
 
 class UpdateController extends Controller
 {
@@ -33,7 +34,7 @@ class UpdateController extends Controller
                 ->countBirthsToday();
         
         if (self::$maximumNumberOfBirthInOneDay > $numberOfBirthsToday) {
-            $beingFactory = new BeingFactory($this->get('pronounceable_word_generator'));
+            $beingFactory = new BeingFactory(new CharacterFactory($this->get('pronounceable_word_generator')));
 
             $entityManager = $this->getDoctrine()->getEntityManager();
             $entityManager->persist($beingFactory->make());
@@ -44,21 +45,18 @@ class UpdateController extends Controller
         return $numberOfGeneratedBirth;
     }
     
-    private function removeLosers()
+    private function updateLovePoints()
     {
-        $numberOfPopulationBefore = $numberOfBirthsToday = $this->getDoctrine()
-                ->getRepository('BisoulandBeingsBundle:Being')
-                ->countAlivePopulation();
-
         $this->getDoctrine()
                 ->getRepository('BisoulandBeingsBundle:Being')
-                ->removeLosers();
-        
-        $numberOfPopulationAfter = $numberOfBirthsToday = $this->getDoctrine()
+                ->updateLovePoints();
+    }
+    
+    private function removeLosers()
+    {
+        $numberOfRemovedLosers = $this->getDoctrine()
                 ->getRepository('BisoulandBeingsBundle:Being')
-                ->countAlivePopulation();
-
-        $numberOfRemovedLosers = $numberOfPopulationBefore - $numberOfPopulationAfter;
+                ->removeLosers();
         
         return $numberOfRemovedLosers;
     }

@@ -5,6 +5,8 @@ namespace Bisouland\BeingsBundle\Entity;
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Mapping\Annotation as Gedmo;
 
+use Bisouland\BeingsBundle\RandomSystem\Character;
+
 /**
  * Bisouland\BeingsBundle\Entity\Being
  *
@@ -29,6 +31,21 @@ class Being
      * @ORM\Column(name="love_points", type="integer")
      */
     private $love_points;
+    
+    /**
+     * @ORM\Column(name="seduction", type="integer")
+     */
+    private $seduction;
+    
+    /**
+     * @ORM\Column(name="slap", type="integer")
+     */
+    private $slap;
+    
+    /**
+     * @ORM\Column(name="heart", type="integer")
+     */
+    private $heart;
     
     /**
      * @Gedmo\Timestampable(on="create")
@@ -69,6 +86,54 @@ class Being
         $timeSinceLastUpdate = time() - $this->updated->getTimestamp();
 
         return $this->love_points - $timeSinceLastUpdate;
+    }
+    
+    public function setSeduction($seduction)
+    {
+        $this->seduction = $seduction;
+        return $this;
+    }
+
+    public function getSeduction()
+    {
+        return $this->seduction;
+    }
+    
+    public function getBonusSeduction()
+    {
+        return Character::calculateBonusPointsFromAttributePoints($this->seduction);
+    }
+    
+    public function setSlap($slap)
+    {
+        $this->slap = $slap;
+        return $this;
+    }
+
+    public function getSlap()
+    {
+        return $this->slap;
+    }
+    
+    public function getBonusSlap()
+    {
+        return Character::calculateBonusPointsFromAttributePoints($this->slap);
+    }
+    
+    public function setHeart($heart)
+    {
+        $this->heart = $heart;
+        return $this;
+    }
+
+    public function getHeart()
+    {
+        return $this->heart;
+    }
+    
+    public function getBonusHeart()
+    {
+        return Character::calculateBonusPointsFromAttributePoints($this->heart);
     }
     
     public function getCreated()

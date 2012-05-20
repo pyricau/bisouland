@@ -45,21 +45,18 @@ class UpdateController extends Controller
         return $numberOfGeneratedBirth;
     }
     
-    private function removeLosers()
+    private function updateLovePoints()
     {
-        $numberOfPopulationBefore = $numberOfBirthsToday = $this->getDoctrine()
-                ->getRepository('BisoulandBeingsBundle:Being')
-                ->countAlivePopulation();
-
         $this->getDoctrine()
                 ->getRepository('BisoulandBeingsBundle:Being')
-                ->removeLosers();
-        
-        $numberOfPopulationAfter = $numberOfBirthsToday = $this->getDoctrine()
+                ->updateLovePoints();
+    }
+    
+    private function removeLosers()
+    {
+        $numberOfRemovedLosers = $this->getDoctrine()
                 ->getRepository('BisoulandBeingsBundle:Being')
-                ->countAlivePopulation();
-
-        $numberOfRemovedLosers = $numberOfPopulationBefore - $numberOfPopulationAfter;
+                ->removeLosers();
         
         return $numberOfRemovedLosers;
     }

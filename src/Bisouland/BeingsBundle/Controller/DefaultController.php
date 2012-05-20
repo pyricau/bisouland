@@ -7,17 +7,7 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 
 class DefaultController extends Controller
-{   
-    private function updateLovePoints()
-    {
-        $entityManager = $this->getDoctrine()->getEntityManager();
-        $beings = $entityManager->getRepository('BisoulandBeingsBundle:Being')->findAll();
-        foreach ($beings as $being) {
-            $being->setLovePoints($being->getLovePoints());
-        }
-        $entityManager->flush();
-    }
-
+{
     /**
      * @Route("/", name="beings")
      * @Template()

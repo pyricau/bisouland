@@ -31,7 +31,17 @@ class Attack {
         );
     }
     
-    public function hit()
+    public function make()
+    {
+        $this->hit();
+        $this->criticalHit();
+        $this->damages();
+        $this->reward();
+        
+        return $this->report;
+    }
+    
+    private function hit()
     {
         $this->report['attackerRoll'] = mt_rand(self::$minimumDiceValue, self::$hitDiceNumberOfFace);
         $attackerBonus = Character::calculateBonusPointsFromAttributePoints($this->attacker->attack);
@@ -44,7 +54,7 @@ class Attack {
         $this->report['hasAttackerHit'] = $attackerScore > $defenderScore;
     }
     
-    public function criticalHit()
+    private function criticalHit()
     {
         if (self::$hitDiceNumberOfFace === $this->report['attackerRoll']) {
             $this->report['hasAttackerHit'] = true;
@@ -55,7 +65,7 @@ class Attack {
         }
     }
     
-    public function damages()
+    private function damages()
     {
         $damagesRoll = mt_rand(self::$minimumDiceValue, self::$damagesDiceNumberOfFace);
         $attackerBonus = Character::calculateBonusPointsFromAttributePoints($this->attacker->attack);
@@ -66,7 +76,7 @@ class Attack {
         }
     }
     
-    public function reward()
+    private function reward()
     {
         $defenderBonus = Character::calculateBonusPointsFromAttributePoints($this->attacker->constitution);
         

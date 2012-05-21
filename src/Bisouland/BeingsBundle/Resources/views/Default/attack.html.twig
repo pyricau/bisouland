@@ -5,7 +5,7 @@
     <meta name="keywords" content="Bisouland, jeu en ligne, navigateur, baiser, combat" />
 {% endblock %}
 
-{% block title %}Bisouland v2 - Baiser fougueux{% endblock %}
+{% block title %}Bisouland v2 - Tentative de baiser{% endblock %}
 
 {% block view %}
     <article>
@@ -22,13 +22,20 @@
             {% else %}
                 s'est pris un
                 {% if isHitCritical %}
-                    <span class="label label-warning">giga</span>
+                    <span class="label label-important">giga</span>
                 {% endif %}
                 r&acirc;teau par
             {% endif %}
             <a href="{{ path('beings_view', {"name": defenderName}) }}" title="Voir">
                 {{ defenderName }}
             </a>
+            {% if hasAttackerHit == true %}
+                et a gagn&eacute;
+                <span class="number">{{ attackerReward|number_format_decimal }}</span>
+                <abbr title="Points d'Amour" class="initialism">PA</abbr> tout
+                en en faisant perdre
+                <span class="number">{{ defenderDamages|number_format_decimal }}</span>.
+            {% endif %}
         </p>
     </article>
 {% endblock %}

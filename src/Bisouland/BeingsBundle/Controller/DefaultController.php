@@ -44,6 +44,8 @@ class DefaultController extends Controller
      */
     public function attackAction($name)
     {
+        $numberOfSecondsInOneDay = 24 * 60 * 60;
+
         $attackerName = $this->getRequest()
                 ->getSession()
                 ->get(SelectionController::$sessionKeyForNnameOfBeingSelected);
@@ -59,8 +61,11 @@ class DefaultController extends Controller
                 $this->beingToCharacter($attackerBeing),
                 $this->beingToCharacter($defenderBeing)
         );
+        $report = $attackManager->make();
+        $report['defenderDamages'] *= $numberOfSecondsInOneDay;
+        $report['attackerReward'] *= $numberOfSecondsInOneDay;
         
-        return $attackManager->make();
+        return $report;
     }
     
     private function beingToCharacter($being)

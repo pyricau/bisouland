@@ -12,6 +12,7 @@ class Attack {
 
     static public $minimumDiceValue = 1;
     static public $minimumDamagesValue = 1;
+    static public $minimumRewardValue = 0;
 
     static public $hitDiceNumberOfFace = 20;
     static public $damagesDiceNumberOfFace = 4;
@@ -62,6 +63,16 @@ class Attack {
         $this->report['defenderDamages'] = $damagesRoll + $attackerBonus;
         if ($this->report['defenderDamages'] < self::$minimumDamagesValue) {
             $this->report['defenderDamages'] = self::$minimumDamagesValue;
+        }
+    }
+    
+    public function reward()
+    {
+        $defenderBonus = Character::calculateBonusPointsFromAttributePoints($this->attacker->constitution);
+        
+        $this->report['attackerReward'] = $this->report['defenderDamages'] - $defenderBonus;
+        if ($this->report['attackerReward'] < self::$minimumRewardValue) {
+            $this->report['attackerReward'] = self::$minimumRewardValue;
         }
     }
 }

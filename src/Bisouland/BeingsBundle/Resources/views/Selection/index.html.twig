@@ -1,0 +1,33 @@
+{% if true == hasGeneratedNewBeing %}
+    <div class="alert alert-success">
+        <button class="close" data-dismiss="alert">&times;</button>
+        <span class="label label-success">Coup de foudre</span>
+        Vous venez de cr&eacute;er un nouvel amoureux !
+    </div>
+{% endif %}
+
+<article class="row">
+    <h3 class="span">Amoureux s&eacutelectionn&eacute;</h3>
+
+    <table class="table table-striped">
+        <tr>
+            <th>Nom</th>
+            <th><abbr title="Points d'Amour" class="initialism">PA</abbr></th>
+            <th>Actions</th>
+        </tr>
+
+        <tr>
+            <td>
+                {{ selectedBeing.name }}
+            </td>
+            <td id="love-points" class="number">
+                {{ selectedBeing.lovePoints|number_format_decimal }}
+            </td>
+            <td>
+                <a href="{{ path('beings_view', {"name": selectedBeing.name}) }}" title="Voir">
+                    <i class="icon-eye-open"></i>
+                </a>
+            </td>
+        </tr>
+    </table>
+</article>

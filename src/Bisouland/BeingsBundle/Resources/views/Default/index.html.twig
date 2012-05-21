@@ -54,6 +54,9 @@
                             <a href="{{ path('beings_view', {"name": being.name}) }}" title="Voir">
                                 <i class="icon-eye-open"></i>
                             </a>
+                            <a href="{{ path('beings_select', {"name": being.name}) }}" title="S&eacute;lectionner">
+                                <i class="icon-hand-left"></i>
+                            </a>
                         </td>
                     </tr>
                 {% endfor %}

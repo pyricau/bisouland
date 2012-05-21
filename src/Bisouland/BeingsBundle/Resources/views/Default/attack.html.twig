@@ -1,0 +1,32 @@
+{% extends '::base.html.twig' %}
+
+{% block meta %}
+    <meta name="description" content="Baiser fougueux sur Bisouland, rapport de combat" />
+    <meta name="keywords" content="Bisouland, jeu en ligne, navigateur, baiser, combat" />
+{% endblock %}
+
+{% block title %}Bisouland v2 - Baiser fougueux{% endblock %}
+
+{% block view %}
+    <article>
+        <h2>R&eacute;sultat de la tentative de baiser</h2>
+        
+        <p>
+            {{ attackerName }}
+            {% if hasAttackerHit == true %}
+                a
+                {% if isHitCritical %}
+                    fougueusement
+                {% endif %}
+                embrass&eacute;
+            {% else %}
+                s'est pris un
+                {% if isHitCritical %}
+                    giga
+                {% endif %}
+                r&acirc;teau par
+            {% endif %}
+            {{ defenderName }}
+        </p>
+    </article>
+{% endblock %}

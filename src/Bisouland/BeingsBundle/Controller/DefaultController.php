@@ -6,6 +6,10 @@ use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 
+use Bisouland\BeingsBundle\Controller\SelectionController;
+use Bisouland\BeingsBundle\RandomSystem\Attack;
+use Bisouland\BeingsBundle\RandomSystem\Character;
+
 class DefaultController extends Controller
 {
     /**
@@ -32,5 +36,42 @@ class DefaultController extends Controller
                 ->findOneByName($name);
 
         return array('being' => $being);
+    }
+    
+    /**
+     * @Route("/embrasser/{name}", name="beings_attack")
+     * @Template()
+     */
+    public function attackAction($name)
+    {
+        $attackerName = $this->getRequest()
+                ->getSession()
+                ->get(SelectionController::$sessionKeyForNnameOfBeingSelected);
+        $attackerBeing = $this->getDoctrine()
+                ->getRepository('BisoulandBeingsBundle:Being')
+                ->findOneByName($attackerName);
+
+        $defenderBeing = $this->getDoctrine()
+                ->getRepository('BisoulandBeingsBundle:Being')
+                ->findOneByName($name);
+        
+        $attackManager = new Attack(
+                $this->beingToCharacter($attackerBeing),
+                $this->beingToCharacter($defenderBeing)
+        );
+        
+        return $attackManager->make();
+    }
+    
+    private function beingToCharacter($being)
+    {
+        $character = new Character();
+        $character->name = $being->getName();
+        $character->attack = $being->getSeduction();
+        $character->defense = $being->getSlap();
+        $character->constitution = $being->getHeart();
+        $character->lifePoints = $being->getLovePoints();
+        
+        return $character;
     }
 }

@@ -23,6 +23,8 @@ class Attack {
         $this->defender = $defender;
         
         $this->report = array(
+            'attackerName' => $this->attacker->name,
+            'defenderName' => $this->defender->name,
             'attackerRoll' => 0,
             'defenderRoll' => 0,
             'hasAttackerHit' => false,

@@ -17,7 +17,7 @@ class BeingRepository extends EntityRepositoryWithExceptionManagement
         return $this->tryToGetSingleScalarResultWithDefaultOnFailure($query);
     }
     
-    public function countBirthsToday()
+    public function countBeingsGeneratedToday()
     {
         $query = $this->getEntityManager()
                 ->createQueryBuilder()
@@ -63,5 +63,18 @@ class BeingRepository extends EntityRepositoryWithExceptionManagement
                 ->getQuery();
         
         return $this->tryToGetSingleScalarResultWithDefaultOnFailure($query);
+    }
+    
+    public function findLastOne()
+    {
+        $query = $this->getEntityManager()
+                ->createQueryBuilder()
+                ->select('bisouland_being')
+                ->from('BisoulandBeingsBundle:Being', 'bisouland_being')
+                ->orderBy('bisouland_being.id', 'desc')
+                ->setMaxResults(1)
+                ->getQuery();
+        
+        return $query->getSingleResult();
     }
 }

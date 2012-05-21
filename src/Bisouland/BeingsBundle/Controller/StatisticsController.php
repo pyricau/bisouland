@@ -16,7 +16,7 @@ class StatisticsController extends Controller
     {
         $numberOfBirthsToday = $this->getDoctrine()
                 ->getRepository('BisoulandBeingsBundle:Being')
-                ->countBirthsToday(); 
+                ->countBeingsGeneratedToday(); 
 
         $alivePopulationCount = $this->getDoctrine()
                 ->getRepository('BisoulandBeingsBundle:Being')

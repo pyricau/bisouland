@@ -27,6 +27,14 @@ class Attack {
         $attackerScore = $attackerRoll + Character::calculateBonusPointsFromAttributePoints($this->attacker->attack);
         $defenderScore = $defenderRoll + Character::calculateBonusPointsFromAttributePoints($this->defender->defense);
         
-        return $attackerScore > $defenderScore;
+        $hasHit = $attackerScore > $defenderScore;
+        if (self::$hitDiceNumberOfFace === $attackerRoll) {
+            $hasHit = true;
+        }
+        if (self::$minimumDiceValue === $attackerRoll) {
+            $hasHit = false;
+        }
+        
+        return $hasHit;
     }
 }

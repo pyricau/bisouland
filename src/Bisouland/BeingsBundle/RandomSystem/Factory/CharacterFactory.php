@@ -13,7 +13,7 @@ class CharacterFactory {
     
     static public $minimumDiceValue = 1;
     
-    static public $attributeNumberOfDice = 6;
+    static public $attributeNumberOfDice = 4;
     static public $attributeDiceNumberOfFace = 6;
     static public $attributeNumberOfBestDiceResultToKeep = 3;
 

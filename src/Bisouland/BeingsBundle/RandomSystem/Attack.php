@@ -11,8 +11,10 @@ class Attack {
     private $report;
 
     static public $minimumDiceValue = 1;
+    static public $minimumDamagesValue = 1;
 
     static public $hitDiceNumberOfFace = 20;
+    static public $damagesDiceNumberOfFace = 4;
 
     public function __construct(Character $attacker, Character $defender)
     {
@@ -49,6 +51,17 @@ class Attack {
 
         if (self::$minimumDiceValue === $this->report['attackerRoll']) {
             $this->report['hasAttackerHit'] = false;
+        }
+    }
+    
+    public function damages()
+    {
+        $damagesRoll = mt_rand(self::$minimumDiceValue, self::$damagesDiceNumberOfFace);
+        $attackerBonus = Character::calculateBonusPointsFromAttributePoints($this->attacker->attack);
+
+        $this->report['defenderDamages'] = $damagesRoll + $attackerBonus;
+        if ($this->report['defenderDamages'] < self::$minimumDamagesValue) {
+            $this->report['defenderDamages'] = self::$minimumDamagesValue;
         }
     }
 }

@@ -39,9 +39,14 @@ class Attack {
         $defenderScore = $this->report['defenderRoll'] + $defenderBonus;
         
         $this->report['hasAttackerHit'] = $attackerScore > $defenderScore;
+    }
+    
+    public function criticalHit()
+    {
         if (self::$hitDiceNumberOfFace === $this->report['attackerRoll']) {
             $this->report['hasAttackerHit'] = true;
         }
+
         if (self::$minimumDiceValue === $this->report['attackerRoll']) {
             $this->report['hasAttackerHit'] = false;
         }

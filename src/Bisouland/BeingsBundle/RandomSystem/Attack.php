@@ -9,7 +9,7 @@ class Attack {
     private $defender;
     
     private $report;
-
+    
     static public $minimumDiceValue = 1;
     static public $minimumDamagesValue = 1;
     static public $minimumRewardValue = 0;
@@ -25,8 +25,7 @@ class Attack {
         $this->report = array(
             'attackerName' => $this->attacker->name,
             'defenderName' => $this->defender->name,
-            'attackerRoll' => 0,
-            'defenderRoll' => 0,
+            'isHitCritical' => false,
             'hasAttackerHit' => false,
             'defenderDamages' => 0,
             'attackerReward' => 0,
@@ -36,7 +35,6 @@ class Attack {
     public function make()
     {
         $this->hit();
-        $this->criticalHit();
         $this->damages();
         $this->reward();
         
@@ -45,24 +43,26 @@ class Attack {
     
     private function hit()
     {
-        $this->report['attackerRoll'] = mt_rand(self::$minimumDiceValue, self::$hitDiceNumberOfFace);
+        $attackerRoll = mt_rand(self::$minimumDiceValue, self::$hitDiceNumberOfFace);
         $attackerBonus = Character::calculateBonusPointsFromAttributePoints($this->attacker->attack);
-        $attackerScore = $this->report['attackerRoll'] + $attackerBonus;
+        $attackerScore = $attackerRoll + $attackerBonus;
         
-        $this->report['defenderRoll'] = mt_rand(self::$minimumDiceValue, self::$hitDiceNumberOfFace);
+        $defenderRoll = mt_rand(self::$minimumDiceValue, self::$hitDiceNumberOfFace);
         $defenderBonus = Character::calculateBonusPointsFromAttributePoints($this->defender->defense);
-        $defenderScore = $this->report['defenderRoll'] + $defenderBonus;
+        $defenderScore = $defenderRoll + $defenderBonus;
         
         $this->report['hasAttackerHit'] = $attackerScore > $defenderScore;
+        $this->isHitCritical($attackerRoll);
     }
     
-    private function criticalHit()
+    private function isHitCritical($roll)
     {
-        if (self::$hitDiceNumberOfFace === $this->report['attackerRoll']) {
+        if (self::$hitDiceNumberOfFace === $roll) {
+            $this->report['isHitCritical'] = true;
             $this->report['hasAttackerHit'] = true;
         }
-
-        if (self::$minimumDiceValue === $this->report['attackerRoll']) {
+        if (self::$minimumDiceValue === $roll) {
+            $this->report['isHitCritical'] = true;
             $this->report['hasAttackerHit'] = false;
         }
     }

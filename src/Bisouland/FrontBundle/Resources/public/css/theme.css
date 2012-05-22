@@ -10,16 +10,16 @@ html {
 }
 
 body {
-    background-color: transparent !important;
+    background-color: transparent;
     padding-top: 50px;
 }
 
 body, p {
-    font-size: 16px !important;
+    font-size: 16px;
 }
 
 h1, h2, h3 {
-    color: #333333 !important;
+    color: #333333;
 }
 
 article {
@@ -29,6 +29,7 @@ article {
 
 article, footer > nav {
     background-color: #ffffff;
+    border-radius: 10px;
 }
 
 .marketing {
@@ -37,16 +38,15 @@ article, footer > nav {
 }
 
 .marketing > h2 {
-    color: #ffffff !important;
+    color: #ffffff;
 }
 
-footer > nav {
-    height: 130px;
-    border-radius: 10px;
+#population_statistics {
+    height: 101px;
 }
 
 .number {
-    text-align: right !important;
+    text-align: right;
     font-family: monospace;
     font-weight: bold;
 }

@@ -35,8 +35,10 @@ class Attack {
     public function make()
     {
         $this->hit();
-        $this->damages();
-        $this->reward();
+        if (true === $this->report['hasAttackerHit']) {
+            $this->damages();
+            $this->reward();
+        }
         
         return $this->report;
     }

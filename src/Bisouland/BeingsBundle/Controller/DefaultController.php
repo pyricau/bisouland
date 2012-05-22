@@ -9,6 +9,7 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Bisouland\BeingsBundle\Controller\SelectionController;
 use Bisouland\BeingsBundle\RandomSystem\Attack;
 use Bisouland\BeingsBundle\RandomSystem\Character;
+use Bisouland\BeingsBundle\Entity\Being;
 
 class DefaultController extends Controller
 {
@@ -65,10 +66,13 @@ class DefaultController extends Controller
         $report['defenderDamages'] *= $numberOfSecondsInOneDay;
         $report['attackerReward'] *= $numberOfSecondsInOneDay;
         
+        $this->updateLovePoints($attackerBeing, $report['attackerReward']);
+        $this->updateLovePoints($defenderBeing, -$report['defenderDamages']);
+        
         return $report;
     }
     
-    private function beingToCharacter($being)
+    private function beingToCharacter(Being $being)
     {
         $character = new Character();
         $character->name = $being->getName();
@@ -78,5 +82,16 @@ class DefaultController extends Controller
         $character->lifePoints = $being->getLovePoints();
         
         return $character;
+    }
+    
+    private function updateLovePoints(Being $being, $pointsToAdd)
+    {
+        $lovePoints = $being->getLovePoints();
+        $lovePoints += $pointsToAdd;
+        $being->setLovePoints($lovePoints);
+        
+        $entityManager = $this->getDoctrine()->getEntityManager();
+        $entityManager->persist($being);
+        $entityManager->flush();
     }
 }

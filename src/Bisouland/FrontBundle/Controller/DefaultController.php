@@ -16,4 +16,13 @@ class DefaultController extends Controller
     {
         return array();
     }
+    
+    /**
+     * @Route("/news", name="news")
+     * @Template()
+     */
+    public function newsAction()
+    {
+        return array();
+    }
 }

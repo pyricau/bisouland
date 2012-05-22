@@ -45,7 +45,7 @@ class DefaultController extends Controller
      */
     public function attackAction($name)
     {
-        $numberOfSecondsInOneDay = 24 * 60 * 60;
+        $numberOfSecondsInOneHour = 60 * 60;
 
         $attackerName = $this->getRequest()
                 ->getSession()
@@ -63,8 +63,8 @@ class DefaultController extends Controller
                 $this->beingToCharacter($defenderBeing)
         );
         $report = $attackManager->make();
-        $report['defenderDamages'] *= $numberOfSecondsInOneDay;
-        $report['attackerReward'] *= $numberOfSecondsInOneDay;
+        $report['defenderDamages'] *= $numberOfSecondsInOneHour;
+        $report['attackerReward'] *= $numberOfSecondsInOneHour;
         
         $this->updateLovePoints($attackerBeing, $report['attackerReward']);
         $this->updateLovePoints($defenderBeing, -$report['defenderDamages']);

@@ -7,7 +7,6 @@ use Gedmo\Mapping\Annotation as Gedmo;
 use Doctrine\Common\Collections\ArrayCollection;
 
 use Bisouland\BeingsBundle\RandomSystem\Character;
-use Bisouland\BeingsBundle\Entity\Kiss;
 
 /**
  * Bisouland\BeingsBundle\Entity\Being
@@ -62,12 +61,12 @@ class Being
     private $updated;
     
     /**
-     * @ORM\OneToMany(targetEntity="Kiss", mappedBy="kisser")
+     * @ORM\OneToMany(targetEntity="Attack", mappedBy="kisser")
      */
     private $kisses;
     
     /**
-     * @ORM\OneToMany(targetEntity="Kiss", mappedBy="kissed")
+     * @ORM\OneToMany(targetEntity="Attack", mappedBy="kissed")
      */
     private $kissedBy;
     
@@ -167,25 +166,5 @@ class Being
     public function getUpdated()
     {
         return $this->updated;
-    }
-
-    public function addKisses(Kiss $kisses)
-    {
-        $this->kisses[] = $kisses;
-    }
-    
-    public function addKissedBy(Kiss $kissedBy)
-    {
-        $this->kissedBy[] = $kissedBy;
-    }
-
-    public function getKisses()
-    {
-        return $this->kisses;
-    }
-
-    public function getKissedBy()
-    {
-        return $this->kissedBy;
     }
 }

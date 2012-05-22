@@ -11,6 +11,8 @@ use Bisouland\BeingsBundle\RandomSystem\Attack;
 use Bisouland\BeingsBundle\RandomSystem\Character;
 use Bisouland\BeingsBundle\Entity\Being;
 
+use Bisouland\BeingsBundle\Entity\Factory\KissFactory;
+
 class DefaultController extends Controller
 {
     /**
@@ -68,6 +70,16 @@ class DefaultController extends Controller
         
         $this->updateLovePoints($attackerBeing, $report['attackerReward']);
         $this->updateLovePoints($defenderBeing, -$report['defenderDamages']);
+        
+        $kissFactory = new KissFactory(
+                $attackerBeing,
+                $defenderBeing,
+                $report
+        );
+        $kiss = $kissFactory->make();
+        $entityManager = $this->getDoctrine()->getEntityManager();
+        $entityManager->persist($kiss);
+        $entityManager->flush();
         
         return $report;
     }

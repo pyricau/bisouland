@@ -29,6 +29,7 @@ article {
 
 article, footer > nav {
     background-color: #ffffff;
+    border-radius: 10px;
 }
 
 .marketing {
@@ -40,9 +41,8 @@ article, footer > nav {
     color: #ffffff;
 }
 
-footer > nav {
-    height: 160px;
-    border-radius: 10px;
+#population_statistics {
+    height: 101px;
 }
 
 .number {

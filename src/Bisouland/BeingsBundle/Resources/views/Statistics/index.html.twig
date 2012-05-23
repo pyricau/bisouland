@@ -33,7 +33,7 @@
             , ['Amoureux restant', {{ numberOfOthers }}]
         ])
 
-        var options = {}
+        var options = {'title': 'statistiques'}
 
         var chart = new google.visualization.PieChart(document.getElementById('population_statistics'))
         chart.draw(data, options)

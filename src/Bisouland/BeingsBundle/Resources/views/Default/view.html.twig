@@ -7,7 +7,7 @@
 
 {% block title %}Bisouland v2 - Amoureux {{ being.name }}{% endblock %}
 
-{% block css %}
+{% block stylesheets %}
     {{ parent() }}
     <link rel="stylesheet" href="{{ asset('css/jquery.countdown.css') }}" />
 {% endblock %}
@@ -105,7 +105,7 @@
     </article>
 {% endblock %}
 
-{% block javascript %}
+{% block afterJs %}
     {{ parent() }}
     <script type="text/javascript" src="{{ asset('js/jquery.countdown.pack.js') }}"></script>
     <script type="text/javascript" src="{{ asset('js/jquery.countdown-fr.js') }}"></script>

@@ -25,6 +25,10 @@
             <link rel="apple-touch-icon" sizes="72x72" href="{{ asset('bundles/bisoulandfront/images/apple-touch-icon-72x72.png') }}">
             <link rel="apple-touch-icon" sizes="114x114" href="{{ asset('bundles/bisoulandfront/images/apple-touch-icon-114x114.png') }}">
         {% endblock %}
+        
+        {% block beforeJs %}
+            <script type="text/javascript" src="https://www.google.com/jsapi"></script>
+        {% endblock %}
     </head>
     
     <body>
@@ -36,20 +40,26 @@
                         <span class="icon-bar"></span>
                         <span class="icon-bar"></span>
                     </a>
+
                     <a class="brand" href="{{ path('homepage') }}">
                         Bisouland
                     </a>
-                    <nav class="nav-collapse collapse">
-                        {{ knp_menu_render("BisoulandFrontBundle:Builder:mainMenu", {"currentClass": "active"}) }}
-                    </nav>
+
+                    <div class="nav-collapse">
+                        <nav>
+                            {{ knp_menu_render("BisoulandFrontBundle:Builder:mainMenu", {"currentClass": "active"}) }}
+                        </nav>
+
+                        <nav class="pull-right">
+                            {{ knp_menu_render("BisoulandBeingsBundle:Builder:selectedMenu", {"currentClass": "active"}) }}
+                        </nav>
+                    </div>
                 </div>
             </div>
         </header>
 
         <div class="container">
-            <script type="text/javascript" src="https://www.google.com/jsapi"></script>
             {% render 'BisoulandBeingsBundle:Update:index' %}
-            {% render 'BisoulandBeingsBundle:Selection:index' %}
 
             <div class="content">
                 {% block view %}{% endblock %}
@@ -116,5 +126,5 @@
     <script type="text/javascript" src="//ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"></script>
     <script src="{{ asset('js/bootstrap.min.js') }}"></script>
 
-    {% block javascript %}{% endblock %}
+    {% block afterJs %}{% endblock %}
 </html>

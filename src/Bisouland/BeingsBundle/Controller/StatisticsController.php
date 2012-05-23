@@ -5,14 +5,14 @@ namespace Bisouland\BeingsBundle\Controller;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 
-use Bisouland\BeingsBundle\Entity\Factory\BeingFactory;
+use Bisouland\BeingsBundle\RandomSystem\Character;
 
 class StatisticsController extends Controller
 {
     /**
      * @Template()
      */
-    public function indexAction()
+    public function populationAction()
     {
         $numberOfBeingsGeneratedToday = $this->getDoctrine()
                 ->getRepository('BisoulandBeingsBundle:Being')
@@ -23,7 +23,7 @@ class StatisticsController extends Controller
                 ->count();
         $totalNumberOfBeingsCreated = $this->getDoctrine()
                 ->getRepository('BisoulandBeingsBundle:Being')
-                ->getLastId();
+                ->findLastId();
         $numberOfLosers = $totalNumberOfBeingsCreated - $numberOfBeings;
         $numberOfOthers = $numberOfBeings - $numberOfBeingsGeneratedToday;
 
@@ -31,6 +31,26 @@ class StatisticsController extends Controller
                 'numberOfBeingsGeneratedToday',
                 'numberOfLosers',
                 'numberOfOthers'
+        );
+    }
+
+    /**
+     * @Template()
+     */
+    public function bonusAction()
+    {
+        $averageAttributes = $this->getDoctrine()
+                ->getRepository('BisoulandBeingsBundle:Being')
+                ->getAverageAttributes();
+
+        $averageBonusSeduction = Character::calculateBonusPointsFromAttributePoints($averageAttributes[0][1]);
+        $averageBonusSlap = Character::calculateBonusPointsFromAttributePoints($averageAttributes[0][2]);
+        $averageBonusHeart = Character::calculateBonusPointsFromAttributePoints($averageAttributes[0][3]);
+
+        return compact(
+                'averageBonusSeduction',
+                'averageBonusSlap',
+                'averageBonusHeart'
         );
     }
 }

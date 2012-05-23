@@ -41,7 +41,7 @@ article, footer > nav {
     color: #ffffff;
 }
 
-#population_statistics {
+.statistics {
     height: 101px;
 }
 

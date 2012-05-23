@@ -29,7 +29,7 @@ class BeingRepository extends EntityRepositoryWithExceptionManagement
         return $this->tryToGetSingleScalarResultWithDefaultOnFailure($query);
     }
     
-    public function getLastId()
+    public function findLastId()
     {
         $query = $this->getEntityManager()
                 ->createQueryBuilder()
@@ -42,15 +42,17 @@ class BeingRepository extends EntityRepositoryWithExceptionManagement
         return $this->tryToGetSingleScalarResultWithDefaultOnFailure($query);
     }
     
-    public function updateLovePoints()
+    public function getAverageAttributes()
     {
-        $this->getEntityManager()
+        $query = $this->getEntityManager()
                 ->createQueryBuilder()
-                ->update('BisoulandBeingsBundle:Being', 'bisouland_being')
-                ->set('bisouland_being.love_points', '(bisouland_being.love_points - :now + UNIX_TIMESTAMP(bisouland_being.updated))')
-                ->setParameter(':now', time())
-                ->getQuery()
-                ->execute();
+                ->select('AVG(bisouland_being.seduction)'
+                        .', AVG(bisouland_being.slap)'
+                        .',  AVG(bisouland_being.heart)')
+                ->from('BisoulandBeingsBundle:Being', 'bisouland_being')
+                ->getQuery();
+        
+        return $query->getArrayResult($query);
     }
     
     public function removeLosers()

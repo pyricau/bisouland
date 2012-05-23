@@ -21,14 +21,13 @@
     </dd>
 </dl>
 
-<script type="text/javascript" src="https://www.google.com/jsapi"></script>
 <script type="text/javascript">
     google.load('visualization', '1', { packages:['corechart'] })
-    google.setOnLoadCallback(drawChart)
-    function drawChart() {
+    google.setOnLoadCallback(drawPopulationChart)
+    function drawPopulationChart() {
         var data = google.visualization.arrayToDataTable([
             ['Type', 'Nombre']
-            , ['Coups de foudre jour', {{ numberOfBeingsGeneratedToday }}]
+            , ['Coups de foudre du jour', {{ numberOfBeingsGeneratedToday }}]
             , ['Coeurs fendus', {{ numberOfLosers }}]
             , ['Amoureux restant', {{ numberOfOthers }}]
         ])

@@ -1,20 +1,20 @@
 <dl id="population_statistics" class="dl-horizontal statistics">
     <dt>
-        Naissances du jour
+        Coups de foudre du jour
     </dt>
     <dd class="number">
         {{ numberOfBeingsGeneratedToday }}
     </dd>
 
     <dt>
-        Perdants
+        Coeur bris&eacute;s
     </dt>
     <dd class="number">
         {{ numberOfLosers }}
     </dd>
 
     <dt>
-        Reste
+        Amoureux restant
     </dt>
     <dd class="number">
         {{ numberOfOthers }}
@@ -28,9 +28,9 @@
     function drawChart() {
         var data = google.visualization.arrayToDataTable([
             ['Type', 'Nombre']
-            , ['Naissances du jour', {{ numberOfBeingsGeneratedToday }}]
-            , ['Perdants', {{ numberOfLosers }}]
-            , ['Reste', {{ numberOfOthers }}]
+            , ['Coups de foudre jour', {{ numberOfBeingsGeneratedToday }}]
+            , ['Coeurs fendus', {{ numberOfLosers }}]
+            , ['Amoureux restant', {{ numberOfOthers }}]
         ])
 
         var options = {}

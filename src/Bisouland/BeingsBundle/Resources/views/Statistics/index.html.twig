@@ -1,9 +1,9 @@
-<dl id="population_statistics" class="dl-horizontal">
+<dl id="population_statistics" class="dl-horizontal statistics">
     <dt>
-        Naissances aujourd'hui
+        Naissances du jour
     </dt>
     <dd class="number">
-        {{ numberOfBirthsToday }}
+        {{ numberOfBeingsGeneratedToday }}
     </dd>
 
     <dt>
@@ -14,7 +14,7 @@
     </dd>
 
     <dt>
-        Autres
+        Reste
     </dt>
     <dd class="number">
         {{ numberOfOthers }}
@@ -23,21 +23,19 @@
 
 <script type="text/javascript" src="https://www.google.com/jsapi"></script>
 <script type="text/javascript">
-    google.load("visualization", "1", {packages:["corechart"]});
-    google.setOnLoadCallback(drawChart);
+    google.load('visualization', '1', { packages:['corechart'] })
+    google.setOnLoadCallback(drawChart)
     function drawChart() {
         var data = google.visualization.arrayToDataTable([
-            ['Type', 'Nombre'],
-            ['Naissances du jour', {{ numberOfBirthsToday }}],
-            ['Perdants', {{ numberOfLosers }}],
-            ['Autres', {{ numberOfOthers }}]
-        ]);
+            ['Type', 'Nombre']
+            , ['Naissances du jour', {{ numberOfBeingsGeneratedToday }}]
+            , ['Perdants', {{ numberOfLosers }}]
+            , ['Reste', {{ numberOfOthers }}]
+        ])
 
-        var options = {
-            title: 'Population'
-        };
+        var options = {}
 
-        var chart = new google.visualization.PieChart(document.getElementById('population_statistics'));
-        chart.draw(data, options);
+        var chart = new google.visualization.PieChart(document.getElementById('population_statistics'))
+        chart.draw(data, options)
     }
 </script>

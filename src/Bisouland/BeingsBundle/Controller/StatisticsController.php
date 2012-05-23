@@ -14,21 +14,21 @@ class StatisticsController extends Controller
      */
     public function indexAction()
     {
-        $numberOfBirthsToday = $this->getDoctrine()
+        $numberOfBeingsGeneratedToday = $this->getDoctrine()
                 ->getRepository('BisoulandBeingsBundle:Being')
                 ->countBeingsGeneratedToday(); 
 
-        $alivePopulationCount = $this->getDoctrine()
+        $numberOfBeings = $this->getDoctrine()
                 ->getRepository('BisoulandBeingsBundle:Being')
-                ->countAlivePopulation();
-        $totalNumberOfBirth = $this->getDoctrine()
+                ->count();
+        $totalNumberOfBeingsCreated = $this->getDoctrine()
                 ->getRepository('BisoulandBeingsBundle:Being')
-                ->countTotalBirths();
-        $numberOfLosers = $totalNumberOfBirth - $alivePopulationCount;
-        $numberOfOthers = $alivePopulationCount - $numberOfBirthsToday;
+                ->getLastId();
+        $numberOfLosers = $totalNumberOfBeingsCreated - $numberOfBeings;
+        $numberOfOthers = $numberOfBeings - $numberOfBeingsGeneratedToday;
 
         return compact(
-                'numberOfBirthsToday',
+                'numberOfBeingsGeneratedToday',
                 'numberOfLosers',
                 'numberOfOthers'
         );

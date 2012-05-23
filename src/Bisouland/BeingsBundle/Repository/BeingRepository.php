@@ -6,7 +6,7 @@ use Bisouland\BeingsBundle\Repository\EntityRepositoryWithExceptionManagement;
 
 class BeingRepository extends EntityRepositoryWithExceptionManagement
 {
-    public function countAlivePopulation()
+    public function count()
     {
         $query = $this->getEntityManager()
                 ->createQueryBuilder()
@@ -29,7 +29,7 @@ class BeingRepository extends EntityRepositoryWithExceptionManagement
         return $this->tryToGetSingleScalarResultWithDefaultOnFailure($query);
     }
     
-    public function countTotalBirths()
+    public function getLastId()
     {
         $query = $this->getEntityManager()
                 ->createQueryBuilder()

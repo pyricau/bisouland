@@ -47,6 +47,7 @@
         </header>
 
         <div class="container">
+            <script type="text/javascript" src="https://www.google.com/jsapi"></script>
             {% render 'BisoulandBeingsBundle:Update:index' %}
             {% render 'BisoulandBeingsBundle:Selection:index' %}
 
@@ -55,13 +56,19 @@
             </div>
 
             <footer id="layout-footer" class="row">
-                    <nav class="span6">
-                        <h2>Statistiques</h2>
+                    <nav class="span4">
+                        <h2>Population</h2>
 
-                        {% render 'BisoulandBeingsBundle:Statistics:index' %}
+                        {% render 'BisoulandBeingsBundle:Statistics:population' %}
+                    </nav>
+                    
+                    <nav class="span4">
+                        <h2>Bonus</h2>
+
+                        {% render 'BisoulandBeingsBundle:Statistics:bonus' %}
                     </nav>
 
-                    <nav class="span6">
+                    <nav class="span4">
                         <h2>Cr&eacute;dits &amp; utilisation</h2>
 
                         <ul>

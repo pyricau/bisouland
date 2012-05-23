@@ -34,13 +34,13 @@ class Kiss
 
     /**
      * @ORM\ManyToOne(targetEntity="Being", inversedBy="kisses")
-     * @ORM\JoinColumn(name="kisser_id", referencedColumnName="id")
+     * @ORM\JoinColumn(name="kisser_id", referencedColumnName="id", onDelete="CASCADE")
      */
     protected $kisser;
     
     /**
      * @ORM\ManyToOne(targetEntity="Being", inversedBy="kissedBy")
-     * @ORM\JoinColumn(name="kissed_id", referencedColumnName="id")
+     * @ORM\JoinColumn(name="kissed_id", referencedColumnName="id", onDelete="CASCADE")
      */
     protected $kissed;
     

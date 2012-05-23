@@ -5,32 +5,52 @@ namespace Bisouland\BeingsBundle\Controller;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 
-use Bisouland\BeingsBundle\Entity\Factory\BeingFactory;
+use Bisouland\BeingsBundle\RandomSystem\Character;
 
 class StatisticsController extends Controller
 {
     /**
      * @Template()
      */
-    public function indexAction()
+    public function populationAction()
     {
-        $numberOfBirthsToday = $this->getDoctrine()
+        $numberOfBeingsGeneratedToday = $this->getDoctrine()
                 ->getRepository('BisoulandBeingsBundle:Being')
                 ->countBeingsGeneratedToday(); 
 
-        $alivePopulationCount = $this->getDoctrine()
+        $numberOfBeings = $this->getDoctrine()
                 ->getRepository('BisoulandBeingsBundle:Being')
-                ->countAlivePopulation();
-        $totalNumberOfBirth = $this->getDoctrine()
+                ->count();
+        $totalNumberOfBeingsCreated = $this->getDoctrine()
                 ->getRepository('BisoulandBeingsBundle:Being')
-                ->countTotalBirths();
-        $numberOfLosers = $totalNumberOfBirth - $alivePopulationCount;
-        $numberOfOthers = $alivePopulationCount - $numberOfBirthsToday;
+                ->findLastId();
+        $numberOfLosers = $totalNumberOfBeingsCreated - $numberOfBeings;
+        $numberOfOthers = $numberOfBeings - $numberOfBeingsGeneratedToday;
 
         return compact(
-                'numberOfBirthsToday',
+                'numberOfBeingsGeneratedToday',
                 'numberOfLosers',
                 'numberOfOthers'
+        );
+    }
+
+    /**
+     * @Template()
+     */
+    public function bonusAction()
+    {
+        $averageAttributes = $this->getDoctrine()
+                ->getRepository('BisoulandBeingsBundle:Being')
+                ->getAverageAttributes();
+
+        $averageBonusSeduction = Character::calculateBonusPointsFromAttributePoints($averageAttributes[0][1]);
+        $averageBonusSlap = Character::calculateBonusPointsFromAttributePoints($averageAttributes[0][2]);
+        $averageBonusHeart = Character::calculateBonusPointsFromAttributePoints($averageAttributes[0][3]);
+
+        return compact(
+                'averageBonusSeduction',
+                'averageBonusSlap',
+                'averageBonusHeart'
         );
     }
 }

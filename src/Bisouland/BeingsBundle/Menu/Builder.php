@@ -16,9 +16,10 @@ class Builder extends ContainerAware
         $menu->setChildrenAttribute('class', 'nav');
         $menu->setCurrentUri($request->getRequestUri());
 
-        $menu->addChild($selectedBeingName, array(
+        $menu->addChild('selectedBeing', array(
                     'route' => 'beings_view',
                     'routeParameters' => array('name' => $selectedBeingName),
+                    'label' => $selectedBeingName,
         ));
 
         return $menu;

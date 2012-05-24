@@ -1,5 +1,5 @@
 parameters:
-    bisouland_beings.before_controller.class: Bisouland\BeingsBundle\EventListener\BeforeControllerListener
+    bisouland_beings.kernel_listener.class: Bisouland\BeingsBundle\Listener\Kernel
 
     pronounceable_word_configuration_linked_letters.class: Bisouland\BeingsBundle\PronounceableWord\Configuration\LinkedLetters
     pronounceable_word_linked_letters.class: PronounceableWord_LinkedLetters
@@ -10,6 +10,11 @@ parameters:
     pronounceable_word_generator.class: PronounceableWord_Generator
 
 services:
+    bisouland_beings.kernel_listener:
+        class: %bisouland_beings.kernel_listener.class%
+        tags:
+            - { name: kernel.event_listener, event: kernel.request, method: onRequest }
+
     pronounceable_word_configuration_linked_letters:
         class: %pronounceable_word_configuration_linked_letters.class%
     pronounceable_word_linked_letters:

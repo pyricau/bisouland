@@ -11,9 +11,6 @@ use Bisouland\BeingsBundle\RandomSystem\Factory\CharacterFactory;
 
 class SelectionController extends Controller
 {
-    static public $maximumNumberOfBeingGenerationInOneDay = 42;
-    static public $sessionKeyForNnameOfBeingSelected = 'nameOfSelectedBeing';
-
     /**
      * @Template()
      */
@@ -30,7 +27,6 @@ class SelectionController extends Controller
             ->findOneByName($session->get(self::$sessionKeyForNnameOfBeingSelected));
 
         return compact(
-                'hasGeneratedNewBeing',
                 'selectedBeing'
         );
     }

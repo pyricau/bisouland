@@ -4,25 +4,39 @@ namespace Bisouland\BeingsBundle\Listener\OnEvent;
 
 use Doctrine\Common\Persistence\ManagerRegistry;
 use Bisouland\BeingsBundle\Entity\Factory\BeingFactory;
+use Symfony\Component\HttpFoundation\Session\Session;
+
+use PDOException;
 
 class Generation
 {
     public static $quotaOfGeneration = 42;
+    public static $sessionKey = 'hasGeneratedNewBeing';
 
     private $doctrine;
     private $beingFactory;
+    private $session;
 
-    public function __construct(ManagerRegistry $doctrine, BeingFactory $beingFactory)
+    public function __construct(ManagerRegistry $doctrine, BeingFactory $beingFactory, Session $session)
     {
         $this->doctrine = $doctrine;
         $this->beingFactory = $beingFactory;
+        $this->session = $session;
     }
     
     public function make()
     {
+        $hasGeneratedNewBeing = false;
         if (true === $this->hasToGenerateNewBeing()) {
-            $this->generateNewBeing();
+            $hasGeneratedNewBeing = true;
+            try {
+                $this->generateNewBeing();
+            } catch (PDOException $e) {
+                $hasGeneratedNewBeing = false;
+            }
         }
+        
+        $this->session->setFlash(self::$sessionKey, $hasGeneratedNewBeing);
     }
     
     private function hasToGenerateNewBeing()
@@ -50,5 +64,10 @@ class Generation
         $entityManager = $this->doctrine->getEntityManager();
         $entityManager->persist($this->beingFactory->make());
         $entityManager->flush();
+    }
+    
+    private function flash()
+    {
+        $this->get('session')->setFlash('notice', 'Your changes were saved!');
     }
 }

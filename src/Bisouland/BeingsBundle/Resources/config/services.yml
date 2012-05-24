@@ -20,7 +20,7 @@ services:
         arguments: ["@bisouland_beings.generation"]
     bisouland_beings.generation:
         class: %bisouland_beings.generation.class%
-        arguments: ["@doctrine", "@bisouland_beings.being_factory"]
+        arguments: ["@doctrine", "@bisouland_beings.being_factory", "@session"]
     bisouland_beings.being_factory:
         class: %bisouland_beings.being_factory.class%
         arguments: ["@bisouland_beings.character_factory"]

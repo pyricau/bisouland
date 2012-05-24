@@ -23,7 +23,6 @@ class SelectionController extends Controller
         
         $hasGeneratedNewBeing = false;
         if (true === $this->hasToSelectBeing()) {
-            $hasGeneratedNewBeing = $this->tryGenerateNewBeing();
             $this->setBeingInSessionForNewVisitor();
         }
         $selectedBeing = $this->getDoctrine()
@@ -49,31 +48,6 @@ class SelectionController extends Controller
             ->findOneByName($session->get(self::$sessionKeyForNnameOfBeingSelected));
         
         return (null === $selectedBeing);
-    }
-    
-    private function tryGenerateNewBeing()
-    {
-        $hasGeneratedNewBeing = false;
-
-        $numberOfBeingsGeneratedToday = $this->getDoctrine()
-                ->getRepository('BisoulandBeingsBundle:Being')
-                ->countBeingsGeneratedToday();
-        
-        if (self::$maximumNumberOfBeingGenerationInOneDay > $numberOfBeingsGeneratedToday) {
-            $this->generateNewBeing();
-            $hasGeneratedNewBeing = true;
-        }
-        
-        return $hasGeneratedNewBeing;
-    }
-    
-    private function generateNewBeing()
-    {
-        $beingFactory = new BeingFactory(new CharacterFactory($this->get('pronounceable_word_generator')));
-
-        $entityManager = $this->getDoctrine()->getEntityManager();
-        $entityManager->persist($beingFactory->make());
-        $entityManager->flush();
     }
     
     private function setBeingInSessionForNewVisitor()

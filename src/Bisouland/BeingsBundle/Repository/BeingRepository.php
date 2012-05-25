@@ -55,7 +55,7 @@ class BeingRepository extends EntityRepositoryWithExceptionManagement
         return $query->getArrayResult($query);
     }
     
-    public function removeLosers()
+    public function removeBeingsWithNoMoreLovePoints()
     {
         $query = $this->getEntityManager()
                 ->createQueryBuilder()

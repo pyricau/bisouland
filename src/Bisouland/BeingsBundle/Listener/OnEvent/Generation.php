@@ -11,17 +11,17 @@ use PDOException;
 class Generation
 {
     public static $quotaOfGeneration = 42;
-    public static $sessionKey = 'hasGeneratedNewBeing';
+    public static $flashKey = 'hasGeneratedNewBeing';
 
     private $doctrine;
-    private $beingFactory;
     private $session;
+    private $beingFactory;
 
-    public function __construct(ManagerRegistry $doctrine, BeingFactory $beingFactory, Session $session)
+    public function __construct(ManagerRegistry $doctrine, Session $session, BeingFactory $beingFactory)
     {
         $this->doctrine = $doctrine;
-        $this->beingFactory = $beingFactory;
         $this->session = $session;
+        $this->beingFactory = $beingFactory;
     }
     
     public function make()
@@ -36,7 +36,7 @@ class Generation
             }
         }
         
-        $this->session->setFlash(self::$sessionKey, $hasGeneratedNewBeing);
+        $this->session->setFlash(self::$flashKey, $hasGeneratedNewBeing);
     }
     
     private function hasToGenerateNewBeing()
@@ -64,10 +64,5 @@ class Generation
         $entityManager = $this->doctrine->getEntityManager();
         $entityManager->persist($this->beingFactory->make());
         $entityManager->flush();
-    }
-    
-    private function flash()
-    {
-        $this->get('session')->setFlash('notice', 'Your changes were saved!');
     }
 }

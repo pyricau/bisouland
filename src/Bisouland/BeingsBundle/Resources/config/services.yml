@@ -1,8 +1,14 @@
 parameters:
     bisouland_beings.kernel_listener.class: Bisouland\BeingsBundle\Listener\Kernel
+    
+    bisouland_beings.deletion.class: Bisouland\BeingsBundle\Listener\OnEvent\Deletion
+
     bisouland_beings.generation.class: Bisouland\BeingsBundle\Listener\OnEvent\Generation
     bisouland_beings.being_factory.class: Bisouland\BeingsBundle\Entity\Factory\BeingFactory
     bisouland_beings.character_factory.class: Bisouland\BeingsBundle\RandomSystem\Factory\CharacterFactory
+
+    bisouland_beings.attribution.class: Bisouland\BeingsBundle\Listener\OnEvent\Attribution
+
 
     pronounceable_word_configuration_linked_letters.class: Bisouland\BeingsBundle\PronounceableWord\Configuration\LinkedLetters
     pronounceable_word_linked_letters.class: PronounceableWord_LinkedLetters
@@ -17,16 +23,26 @@ services:
         class: %bisouland_beings.kernel_listener.class%
         tags:
             - { name: kernel.event_listener, event: kernel.request, method: onRequest }
-        arguments: ["@bisouland_beings.generation"]
+        arguments: ["@bisouland_beings.deletion", "@bisouland_beings.generation", "@bisouland_beings.attribution"]
+
+    bisouland_beings.deletion:
+        class: %bisouland_beings.deletion.class%
+        arguments: ["@doctrine", "@session"]
+
     bisouland_beings.generation:
         class: %bisouland_beings.generation.class%
-        arguments: ["@doctrine", "@bisouland_beings.being_factory", "@session"]
+        arguments: ["@doctrine", "@session", "@bisouland_beings.being_factory"]
     bisouland_beings.being_factory:
         class: %bisouland_beings.being_factory.class%
         arguments: ["@bisouland_beings.character_factory"]
     bisouland_beings.character_factory:
         class: %bisouland_beings.character_factory.class%
         arguments: ["@pronounceable_word_generator"]
+
+    bisouland_beings.attribution:
+        class: %bisouland_beings.attribution.class%
+        arguments: ["@doctrine", "@session"]
+
 
     pronounceable_word_configuration_linked_letters:
         class: %pronounceable_word_configuration_linked_letters.class%

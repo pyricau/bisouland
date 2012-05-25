@@ -3,71 +3,53 @@
 namespace Bisouland\BeingsBundle\Listener\OnEvent;
 
 use Doctrine\Common\Persistence\ManagerRegistry;
-use Bisouland\BeingsBundle\Entity\Factory\BeingFactory;
 use Symfony\Component\HttpFoundation\Session\Session;
 
-use PDOException;
-
-class Generation
+class Attribution
 {
-    public static $quotaOfGeneration = 42;
-    public static $sessionKey = 'hasGeneratedNewBeing';
+    public static $sessionKey = 'selectedBeingName';
+    public static $flashKey = 'hasAttributedBeing';
 
     private $doctrine;
-    private $beingFactory;
     private $session;
 
-    public function __construct(ManagerRegistry $doctrine, BeingFactory $beingFactory, Session $session)
+    public function __construct(ManagerRegistry $doctrine, Session $session)
     {
         $this->doctrine = $doctrine;
-        $this->beingFactory = $beingFactory;
         $this->session = $session;
     }
-    
+
     public function make()
     {
-        $hasGeneratedNewBeing = false;
-        if (true === $this->hasToGenerateNewBeing()) {
-            $hasGeneratedNewBeing = true;
-            try {
-                $this->generateNewBeing();
-            } catch (PDOException $e) {
-                $hasGeneratedNewBeing = false;
-            }
+        $hasAttributedBeing = false;
+        if (true === $this->hasToAttributeBeing()) {
+            $this->setBeingNameInSessionForNewVisitor();
+            $hasAttributedBeing = true;
         }
         
-        $this->session->setFlash(self::$sessionKey, $hasGeneratedNewBeing);
+        $this->session->setFlash(self::$flashKey, $hasAttributedBeing);
     }
-    
-    private function hasToGenerateNewBeing()
-    {
-        $numberOfBeings = $this->doctrine
-                ->getRepository('BisoulandBeingsBundle:Being')
-                ->count();
-        $isNumberOfBeingsUnderQuota = self::$quotaOfGeneration > $numberOfBeings;
 
-        $numberOfBeingsGeneratedToday = $this->doctrine
-                ->getRepository('BisoulandBeingsBundle:Being')
-                ->countBeingsGeneratedToday();
-        $isGenerationNumberUnderQuota = self::$quotaOfGeneration > $numberOfBeingsGeneratedToday;
-        
-        $hasToGenerateNewBeing = false;
-        if ($isNumberOfBeingsUnderQuota || $isGenerationNumberUnderQuota) {
-            $hasToGenerateNewBeing = true;
+    private function hasToAttributeBeing()
+    {
+        $hasToAttributeBeing = true;
+        if (true === $this->session->has(self::$sessionKey)) {
+            $selectedBeing = $this->doctrine
+                    ->getRepository('BisoulandBeingsBundle:Being')
+                    ->findOneByName($this->session->get(self::$sessionKey));
+            
+            $hasToAttributeBeing = (null === $selectedBeing);
         }
         
-        return $hasToGenerateNewBeing;
+        return $hasToAttributeBeing;
     }
-    
-    private function generateNewBeing()
+
+    private function setBeingNameInSessionForNewVisitor()
     {
-        $entityManager = $this->doctrine->getEntityManager();
-        $entityManager->persist($this->beingFactory->make());
-        $entityManager->flush();
-    }
-    
-    private function flash()
-    {
-        $this->get('session')->setFlash('notice', 'Your changes were saved!');
+        $being = $this->doctrine
+            ->getRepository('BisoulandBeingsBundle:Being')
+            ->findLastOne();
+
+        $this->session->set(self::$sessionKey, $being->getName());
     }
 }

@@ -3,17 +3,23 @@
 namespace Bisouland\BeingsBundle\Listener;
 
 use Symfony\Component\HttpKernel\Event\GetResponseEvent;
+use Bisouland\BeingsBundle\Listener\OnEvent\Deletion;
 use Bisouland\BeingsBundle\Listener\OnEvent\Generation;
+use Bisouland\BeingsBundle\Listener\OnEvent\Attribution;
 use Symfony\Component\HttpKernel\HttpKernel;
 
 class Kernel
 {
+    private $beingDeletion;
     private $beingGeneration;
+    private $beingAttribution;
     private $session;
-    
-    public function __construct(Generation $beingGeneration)
+
+    public function __construct(Deletion $beingDeletion, Generation $beingGeneration, Attribution $beingAttribution)
     {
+        $this->beingDeletion = $beingDeletion;
         $this->beingGeneration = $beingGeneration;
+        $this->beingAttribution = $beingAttribution;
     }
 
     public function onRequest(GetResponseEvent $event)
@@ -27,9 +33,11 @@ class Kernel
             $this->{$events[$requestType]}();
         }
     }
-    
+
     private function onMasterRequest()
     {
+        $this->beingDeletion->make();
         $this->beingGeneration->make();
+        $this->beingAttribution->make();
     }
 }

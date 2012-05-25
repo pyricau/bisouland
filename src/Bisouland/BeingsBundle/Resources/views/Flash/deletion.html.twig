@@ -1,41 +1,10 @@
-{% extends '::base.html.twig' %}
-
-{% block meta %}
-    <meta name="description" content="Baiser fougueux sur Bisouland, rapport de combat" />
-    <meta name="keywords" content="Bisouland, jeu en ligne, navigateur, baiser, combat" />
-{% endblock %}
-
-{% block title %}Bisouland v2 - Tentative de baiser{% endblock %}
-
-{% block view %}
-    <article>
-        <h2>R&eacute;sultat de la tentative de baiser</h2>
-        
-        <p class="alert alert-{{ hasAttackerHit == true ? 'success' : 'error' }}">
-            {{ attackerName }}
-            {% if hasAttackerHit == true %}
-                a
-                {% if isHitCritical %}
-                    <span class="label label-success">fougueusement</span>
-                {% endif %}
-                embrass&eacute;
-            {% else %}
-                s'est pris un
-                {% if isHitCritical %}
-                    <span class="label label-important">giga</span>
-                {% endif %}
-                r&acirc;teau par
-            {% endif %}
-            <a href="{{ path('beings_view', {"name": defenderName}) }}" title="Voir">
-                {{ defenderName }}
-            </a>
-            {% if hasAttackerHit == true %}
-                et a gagn&eacute;
-                <span class="number">{{ attackerReward|number_format_decimal }}</span>
-                <abbr title="Points d'Amour" class="initialism">PA</abbr> tout
-                en en faisant perdre
-                <span class="number">{{ defenderDamages|number_format_decimal }}</span>.
-            {% endif %}
-        </p>
-    </article>
-{% endblock %}
+{% if app.session.hasFlash('numberOfRemovedBeings') %}
+    {% set numberOfRemovedBeings = app.session.flash('numberOfRemovedBeings') %}
+    {% if 0 < numberOfRemovedBeings %}
+        <div class="alert alert-error">
+            <button class="close" data-dismiss="alert">&times;</button>
+            <span class="label label-important">Coeurs bris&eacute;s</span>
+            {{ numberOfRemovedBeings }} amoureux {{ numberOfRemovedBeings > 1 ? 'viennent' : 'vient' }} de perdre.
+        </div>
+    {% endif %}
+{% endif %}

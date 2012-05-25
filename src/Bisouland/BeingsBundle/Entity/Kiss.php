@@ -21,16 +21,26 @@ class Kiss
      * @ORM\GeneratedValue(strategy="AUTO")
      */
     private $id;
-    
+
     /**
-     * @ORM\Column(name="damages", type="integer")
+     * @ORM\Column(name="kisser_earning", type="integer")
      */
-    private $damages;
-    
+    private $kisser_earning;
+
     /**
-     * @ORM\Column(name="reward", type="integer")
+     * @ORM\Column(name="kissed_loss", type="integer")
      */
-    private $reward;
+    private $kissed_loss;
+
+    /**
+     * @ORM\Column(name="is_critical", type="boolean")
+     */
+    private $is_critical;
+
+    /**
+     * @ORM\Column(name="has_kissed", type="boolean")
+     */
+    private $has_kissed;
 
     /**
      * @ORM\ManyToOne(targetEntity="Being", inversedBy="kisses")
@@ -60,25 +70,47 @@ class Kiss
         return $this->created;
     }
     
-    public function getDamages()
+    public function getKisserEarning()
     {
-        return $this->damages;
+        return $this->kisser_earning;
     }
     
-    public function setDamages($damages)
+    public function setKisserEarning($kisser_earning)
     {
-        $this->damages = $damages;
+        $this->kisser_earning = $kisser_earning;
         return $this;
     }
     
-    public function getReward()
+    public function getKissedLoss()
     {
-        return $this->reward;
+        return $this->kissed_loss;
     }
-    
-    public function setReward($reward)
+
+    public function setKissedLoss($kissed_loss)
     {
-        $this->reward = $reward;
+        $this->kissed_loss = $kissed_loss;
+        return $this;
+    }
+
+    public function getIsCritical()
+    {
+        return $this->is_critical;
+    }
+
+    public function setIsCritical($is_critical)
+    {
+        $this->is_critical = $is_critical;
+        return $this;
+    }
+
+    public function getHasKissed()
+    {
+        return $this->has_kissed;
+    }
+
+    public function setHasKissed($has_kissed)
+    {
+        $this->has_kissed = $has_kissed;
         return $this;
     }
 

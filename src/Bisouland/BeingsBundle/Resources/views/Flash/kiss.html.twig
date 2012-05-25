@@ -1,0 +1,35 @@
+{% if app.session.hasFlash('kissReport') and app.session.flash('kissReport') %}
+    {% set kissedName = app.session.flash('kissedName') %}
+
+
+    {% if app.session.flash('hasKissed') %}
+        <div class="alert alert-success">
+            <button class="close" data-dismiss="alert">&times;</button>
+            {% if app.session.flash('isCritical') %}
+                <span class="label label-success">Baiser fougeux</span>
+            {% endif %}
+            <span class="badge"><i class="icon-heart"></i></span>
+            {{ app.session.flash('kisserName') }} a gagn&eacute;
+            <span class="number">{{ app.session.flash('kisserEarning')|number_format_decimal }}</span>
+            /
+            <span class="number">{{ app.session.flash('kissedLoss')|number_format_decimal }}</span>
+            <abbr title="Points d'Amour" class="initialism">PA</abbr>
+            en embrassant
+            <a href="{{ path('beings_view', {"name": kissedName}) }}" title="Voir">
+                {{ kissedName }}
+            </a>
+        </div>
+    {% else %}
+        <div class="alert alert-error">
+            <button class="close" data-dismiss="alert">&times;</button>
+            {% if app.session.flash('isCritical') %}
+                <span class="label label-important">Gros vent</span>
+            {% endif %}
+            <span class="badge"><i class="icon-heart"></i></span>
+            {{ app.session.flash('kisserName') }} s'est pris un r&acirc;teau par
+            <a href="{{ path('beings_view', {"name": kissedName}) }}" title="Voir">
+                {{ kissedName }}
+            </a>
+        </div>
+    {% endif %}
+{% endif %}

@@ -5,9 +5,10 @@ namespace Bisouland\BeingsBundle\Listener\OnEvent;
 use Doctrine\Common\Persistence\ManagerRegistry;
 use Symfony\Component\HttpFoundation\Session\Session;
 
+use Bisouland\BeingsBundle\Controller\SelectionController;
+
 class Attribution
 {
-    public static $sessionKey = 'selectedBeingName';
     public static $flashKey = 'hasAttributedBeing';
 
     private $doctrine;
@@ -33,10 +34,10 @@ class Attribution
     private function hasToAttributeBeing()
     {
         $hasToAttributeBeing = true;
-        if (true === $this->session->has(self::$sessionKey)) {
+        if (true === $this->session->has(SelectionController::$sessionKey)) {
             $selectedBeing = $this->doctrine
                     ->getRepository('BisoulandBeingsBundle:Being')
-                    ->findOneByName($this->session->get(self::$sessionKey));
+                    ->findOneByName($this->session->get(SelectionController::$sessionKey));
             
             $hasToAttributeBeing = (null === $selectedBeing);
         }
@@ -50,6 +51,6 @@ class Attribution
             ->getRepository('BisoulandBeingsBundle:Being')
             ->findLastOne();
 
-        $this->session->set(self::$sessionKey, $being->getName());
+        $this->session->set(SelectionController::$sessionKey, $being->getName());
     }
 }

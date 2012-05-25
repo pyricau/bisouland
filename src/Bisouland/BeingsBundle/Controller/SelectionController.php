@@ -6,7 +6,9 @@ use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 
 class SelectionController extends Controller
-{   
+{
+    public static $sessionKey = 'selectedBeingName';
+
     /**
      * @Route("/selection/{name}", name="beings_select")
      */
@@ -19,9 +21,9 @@ class SelectionController extends Controller
         if (null !== $selectedBeing) {
             $this->getRequest()
                     ->getSession()
-                    ->set('selectedBeingName', $name);
+                    ->set(self::$sessionKey, $name);
         }
 
-        return $this->redirect($this->generateUrl('homepage'));
+        return $this->redirect($this->generateUrl('beings'));
     }
 }

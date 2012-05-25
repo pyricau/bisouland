@@ -27,8 +27,8 @@ class Attack {
             'defenderName' => $this->defender->name,
             'isHitCritical' => false,
             'hasAttackerHit' => false,
-            'defenderDamages' => 0,
-            'attackerReward' => 0,
+            'defenderLoss' => 0,
+            'attackerEarning' => 0,
         );
     }
     
@@ -74,9 +74,9 @@ class Attack {
         $damagesRoll = mt_rand(self::$minimumDiceValue, self::$damagesDiceNumberOfFace);
         $attackerBonus = Character::calculateBonusPointsFromAttributePoints($this->attacker->attack);
 
-        $this->report['defenderDamages'] = $damagesRoll + $attackerBonus;
-        if ($this->report['defenderDamages'] < self::$minimumDamagesValue) {
-            $this->report['defenderDamages'] = self::$minimumDamagesValue;
+        $this->report['defenderLoss'] = $damagesRoll + $attackerBonus;
+        if ($this->report['defenderLoss'] < self::$minimumDamagesValue) {
+            $this->report['defenderLoss'] = self::$minimumDamagesValue;
         }
     }
     
@@ -84,9 +84,9 @@ class Attack {
     {
         $defenderBonus = Character::calculateBonusPointsFromAttributePoints($this->attacker->constitution);
         
-        $this->report['attackerReward'] = $this->report['defenderDamages'] - $defenderBonus;
-        if ($this->report['attackerReward'] < self::$minimumRewardValue) {
-            $this->report['attackerReward'] = self::$minimumRewardValue;
+        $this->report['attackerEarning'] = $this->report['defenderLoss'] - $defenderBonus;
+        if ($this->report['attackerEarning'] < self::$minimumRewardValue) {
+            $this->report['attackerEarning'] = self::$minimumRewardValue;
         }
     }
 }

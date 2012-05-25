@@ -54,12 +54,14 @@
                             <a href="{{ path('beings_view', {"name": being.name}) }}" title="Voir">
                                 <i class="icon-eye-open"></i>
                             </a>
-                            <a href="{{ path('beings_select', {"name": being.name}) }}" title="S&eacute;lectionner">
-                                <i class="icon-hand-left"></i>
-                            </a>
-                            <a href="{{ path('beings_attack', {"name": being.name}) }}" title="Embrasser">
-                                <i class="icon-heart"></i>
-                            </a>
+                            {% if being.name != app.session.get('selectedBeingName') %}
+                                <a href="{{ path('beings_select', {"name": being.name}) }}" title="S&eacute;lectionner">
+                                    <i class="icon-hand-left"></i>
+                                </a>
+                                <a href="{{ path('kiss', {"kissedName": being.name}) }}" title="Embrasser">
+                                    <i class="icon-heart"></i>
+                                </a>
+                            {% endif %}
                         </td>
                     </tr>
                 {% endfor %}

@@ -61,42 +61,23 @@
                 </td>
             </tr>
         </table>
-        
-        <p>
-            <a href="{{ path('beings_select', {"name": being.name}) }}" class="btn btn-large btn-primary">
-                S&eacute;lectionner
-            </a>
-            <a href="{{ path('beings_attack', {"name": being.name}) }}" class="btn btn-large">
-                Embrasser
-            </a>
-        </p>
-    </article>
-    
-    <article>
-        <h3>Aide</h3>
-        
-        <dl>
-            <dt>
-                S&eacute;duction
-            </dt>
-            <dd>
-                Bonus pour mieux embrasser.
-            </dd>
-            <dt>
-                Baffe
-            </dt>
-            <dd>
-                Bonus pour &eacute;viter de se faire embrasser.
-            </dd>
-            <dt>
-                Coeur
-            </dt>
-            <dd>
-                Bonus pour diminuer le nombre de
-                <abbr title="Points d'Amour" class="initialism">PA</abbr> que
-                peut prendre l'adversaire.
-            </dd>
-        </dl>
+
+        {% if being.name != app.session.get('selectedBeingName') %}
+            <p>
+                <a href="{{ path('kiss', {"kissedName": being.name}) }}" class="btn btn-large btn-primary">
+                    <span class="badge">
+                        <i class="icon-heart"></i>
+                    </span>
+                    Embrasser
+                </a>
+                <a href="{{ path('beings_select', {"name": being.name}) }}" class="btn btn-large">
+                    <span class="badge">
+                        <i class="icon-hand-right"></i>
+                    </span>
+                    S&eacute;lectionner
+                </a>
+            </p>
+        {% endif %}
     </article>
 {% endblock %}
 

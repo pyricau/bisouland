@@ -21,10 +21,10 @@ class StatisticsController extends Controller
         $numberOfBeings = $this->getDoctrine()
                 ->getRepository('BisoulandBeingsBundle:Being')
                 ->count();
-        $totalNumberOfBeingsCreated = $this->getDoctrine()
+        $numberOfBeingsCreatedSinceTheBegining = $this->getDoctrine()
                 ->getRepository('BisoulandBeingsBundle:Being')
                 ->findLastId();
-        $numberOfLosers = $totalNumberOfBeingsCreated - $numberOfBeings;
+        $numberOfLosers = $numberOfBeingsCreatedSinceTheBegining - $numberOfBeings;
         $numberOfOthers = $numberOfBeings - $numberOfBeingsGeneratedToday;
 
         return compact(

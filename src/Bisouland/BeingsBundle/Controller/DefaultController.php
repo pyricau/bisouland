@@ -51,7 +51,7 @@ class DefaultController extends Controller
 
         $attackerName = $this->getRequest()
                 ->getSession()
-                ->get(SelectionController::$sessionKeyForNnameOfBeingSelected);
+                ->get(SelectionController::$sessionKey);
         $attackerBeing = $this->getDoctrine()
                 ->getRepository('BisoulandBeingsBundle:Being')
                 ->findOneByName($attackerName);

@@ -7,11 +7,6 @@
 
 {% block title %}Bisouland v2 - Amoureux {{ being.name }}{% endblock %}
 
-{% block css %}
-    {{ parent() }}
-    <link rel="stylesheet" href="{{ asset('css/jquery.countdown.css') }}" />
-{% endblock %}
-
 {% block view %}
     <article>
         <h2>Amoureux {{ being.name }}</h2>
@@ -105,7 +100,7 @@
     </article>
 {% endblock %}
 
-{% block javascript %}
+{% block afterJs %}
     {{ parent() }}
     <script type="text/javascript" src="{{ asset('js/jquery.countdown.pack.js') }}"></script>
     <script type="text/javascript" src="{{ asset('js/jquery.countdown-fr.js') }}"></script>

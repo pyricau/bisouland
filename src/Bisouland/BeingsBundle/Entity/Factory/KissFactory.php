@@ -9,6 +9,10 @@ use Bisouland\BeingsBundle\Entity\Being;
 use Bisouland\BeingsBundle\RandomSystem\Character;
 use Bisouland\BeingsBundle\Entity\Kiss;
 
+use Bisouland\BeingsBundle\Exception\InvalidKisserException;
+use Bisouland\BeingsBundle\Exception\InvalidKissedException;
+use Bisouland\BeingsBundle\Exception\InvalidKisserAsKissedException;
+
 class KissFactory
 {
     private $doctrine;
@@ -28,12 +32,27 @@ class KissFactory
         $this->kissed = $this->doctrine->getRepository('BisoulandBeingsBundle:Being')
                 ->findOneByName($kissedName);
         
+        $this->checkBeings();
+        
         $kissReport = $this->getKissReport();
         
         $this->updateLovePoints($this->kisser, $kissReport['attackerEarning']);
         $this->updateLovePoints($this->kissed, -$kissReport['defenderLoss']);
 
         return $this->makeKissFromReport($kissReport);
+    }
+    
+    private function checkBeings()
+    {
+        if (null === $this->kisser) {
+            throw new InvalidKisserException();
+        }
+        if (null === $this->kissed) {
+            throw new InvalidKissedException();
+        }
+        if ($this->kisser->getName() === $this->kissed->getName()) {
+            throw new InvalidKisserAsKissedException();
+        }
     }
     
     private function getKissReport()

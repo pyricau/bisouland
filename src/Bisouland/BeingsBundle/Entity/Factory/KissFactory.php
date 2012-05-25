@@ -12,9 +12,13 @@ use Bisouland\BeingsBundle\Entity\Kiss;
 use Bisouland\BeingsBundle\Exception\InvalidKisserException;
 use Bisouland\BeingsBundle\Exception\InvalidKissedException;
 use Bisouland\BeingsBundle\Exception\InvalidKisserAsKissedException;
+use Bisouland\BeingsBundle\Exception\OverflowKissException;
 
 class KissFactory
 {
+    public static $quotaOfKiss = 3;
+    public static $quotaOfSeconds = 43200;
+
     private $doctrine;
     
     private $kisser;
@@ -33,13 +37,17 @@ class KissFactory
                 ->findOneByName($kissedName);
         
         $this->checkBeings();
+        $this->checkTime();
         
         $kissReport = $this->getKissReport();
         
         $this->updateLovePoints($this->kisser, $kissReport['attackerEarning']);
         $this->updateLovePoints($this->kissed, -$kissReport['defenderLoss']);
 
-        return $this->makeKissFromReport($kissReport);
+        $kiss = $this->makeKissFromReport($kissReport);
+        $this->saveKiss($kiss);
+        
+        return $kiss;
     }
     
     private function checkBeings()
@@ -52,6 +60,20 @@ class KissFactory
         }
         if ($this->kisser->getName() === $this->kissed->getName()) {
             throw new InvalidKisserAsKissedException();
+        }
+    }
+    
+    private function checkTime()
+    {
+        $numberOfKiss = $this->doctrine->getRepository('BisoulandBeingsBundle:Kiss')
+                ->countForLastGivenSeconds(
+                        $this->kisser->getId(),
+                        $this->kissed->getId(),
+                        self::$quotaOfSeconds
+                );
+        
+        if (self::$quotaOfKiss <= $numberOfKiss) {
+            throw new OverflowKissException();
         }
     }
     
@@ -92,7 +114,7 @@ class KissFactory
         $entityManager->persist($being);
         $entityManager->flush();
     }
-    
+
     private function makeKissFromReport($report)
     {
         $kiss = new Kiss();
@@ -105,5 +127,12 @@ class KissFactory
         $kiss->setKissed($this->kissed);
         
         return $kiss;
+    }
+
+    private function saveKiss(Kiss $kiss)
+    {
+        $entityManager = $this->doctrine->getEntityManager();
+        $entityManager->persist($kiss);
+        $entityManager->flush();
     }
 }

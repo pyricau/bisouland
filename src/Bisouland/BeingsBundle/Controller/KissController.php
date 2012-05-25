@@ -11,6 +11,7 @@ use Bisouland\BeingsBundle\Controller\SelectionController;
 use Bisouland\BeingsBundle\Exception\InvalidKisserException;
 use Bisouland\BeingsBundle\Exception\InvalidKissedException;
 use Bisouland\BeingsBundle\Exception\InvalidKisserAsKissedException;
+use Bisouland\BeingsBundle\Exception\OverflowKissException;
 
 class KissController extends Controller
 {
@@ -37,7 +38,7 @@ class KissController extends Controller
                     $this->getRequest()->getSession()->get(SelectionController::$sessionKey),
                     $kissedName
             ));
-        } catch (\InvalidArgumentException $e) {
+        } catch (\Exception $e) {
             $this->setErrorFlash($e);
         }
         
@@ -57,17 +58,24 @@ class KissController extends Controller
         $session->setFlash(self::$flashKeyKissedLoss, $kiss->getKissedLoss());
     }
     
-    private function setErrorFlash(\InvalidArgumentException $e)
+    private function setErrorFlash(\Exception $e)
     {
         $message = '';
         if ($e instanceof InvalidKisserException) {
-            $message = 'Embrasseur non valide';
+            $message = 'Vous ne pouvez embrasser avec un amoureux qui n\'existe pas';
         }
         if ($e instanceof InvalidKissedException) {
-            $message = 'Embrass&eacute; non valide';
+            $message = 'Vous ne pouvez embrasser un amoureux qui n\'existe pas';
         }
         if ($e instanceof InvalidKisserAsKissedException) {
             $message = 'Vous ne pouvez vous embrasser vous m&ecirc;me';
+        }
+        if ($e instanceof OverflowKissException) {
+            $message = sprintf(
+                    'Vous ne pouvez pas embrasser plus de %s fois le m&ecirc;me amoureux en moins de %s heures',
+                    KissFactory::$quotaOfKiss,
+                    KissFactory::$quotaOfSeconds / 60 /60
+            );
         }
 
         $session = $this->getRequest()->getSession();

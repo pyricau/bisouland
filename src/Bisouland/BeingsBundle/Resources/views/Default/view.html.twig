@@ -61,21 +61,23 @@
                 </td>
             </tr>
         </table>
-        
-        <p>
-            <a href="{{ path('kiss', {"kissedName": being.name}) }}" class="btn btn-large btn-primary">
-                <span class="badge">
-                    <i class="icon-heart"></i>
-                </span>
-                Embrasser
-            </a>
-            <a href="{{ path('beings_select', {"name": being.name}) }}" class="btn btn-large">
-                <span class="badge">
-                    <i class="icon-hand-right"></i>
-                </span>
-                S&eacute;lectionner
-            </a>
-        </p>
+
+        {% if being.name != app.session.get('selectedBeingName') %}
+            <p>
+                <a href="{{ path('kiss', {"kissedName": being.name}) }}" class="btn btn-large btn-primary">
+                    <span class="badge">
+                        <i class="icon-heart"></i>
+                    </span>
+                    Embrasser
+                </a>
+                <a href="{{ path('beings_select', {"name": being.name}) }}" class="btn btn-large">
+                    <span class="badge">
+                        <i class="icon-hand-right"></i>
+                    </span>
+                    S&eacute;lectionner
+                </a>
+            </p>
+        {% endif %}
     </article>
 {% endblock %}
 

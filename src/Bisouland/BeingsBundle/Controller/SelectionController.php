@@ -8,6 +8,7 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 class SelectionController extends Controller
 {
     public static $sessionKey = 'selectedBeingName';
+    public static $flashKey = 'hasSelectedBeing';
 
     /**
      * @Route("/selection/{name}", name="beings_select")
@@ -19,9 +20,10 @@ class SelectionController extends Controller
             ->findOneByName($name);
         
         if (null !== $selectedBeing) {
-            $this->getRequest()
-                    ->getSession()
-                    ->set(self::$sessionKey, $name);
+            $session = $this->getRequest()->getSession();
+            $session->set(self::$sessionKey, $name);
+            
+            $session->setFlash(self::$flashKey, true);
         }
 
         return $this->redirect($this->generateUrl('beings'));

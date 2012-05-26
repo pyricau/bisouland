@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="fr">
+    {% include 'BisoulandBonusBundle::comment.html.twig' %}
     <head>
         <meta charset="utf-8" />
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -47,11 +48,17 @@
 
                     <div class="nav-collapse">
                         <nav>
-                            {{ knp_menu_render("BisoulandFrontBundle:Builder:mainMenu", {"currentClass": "active"}) }}
+                            {{ knp_menu_render("BisoulandFrontBundle:Builder:mainMenu", {
+                                "currentClass": "active",
+                                "allow_safe_labels": true
+                            }) }}
                         </nav>
 
                         <nav class="pull-right">
-                            {{ knp_menu_render("BisoulandBeingsBundle:Builder:selectedMenu", {"currentClass": "active"}) }}
+                            {{ knp_menu_render("BisoulandBeingsBundle:Builder:selectedMenu", {
+                                "currentClass": "active",
+                                "allow_safe_labels": true
+                            }) }}
                         </nav>
                     </div>
                 </div>
@@ -129,6 +136,7 @@
     
     <script type="text/javascript" src="//ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"></script>
     <script src="{{ asset('js/bootstrap.min.js') }}"></script>
+    {% include 'BisoulandBonusBundle::konami.html.twig' %}
 
     {% block afterJs %}{% endblock %}
 </html>

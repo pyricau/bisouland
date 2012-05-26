@@ -5,11 +5,6 @@
     <meta name="keywords" content="Bisouland, jeu en ligne, navigateur, accueil" />
 {% endblock %}
 
-{% block stylesheets %}
-    {{ parent() }}
-    <link rel="stylesheet" href="{{ asset('bundles/bisoulandfront/css/marketing.css') }}" />
-{% endblock %}
-
 {% block view %}
     <article class="hero-unit">
         <h1>Bisouland v2 <small>Embrassez les tous !</small></h1>
@@ -136,7 +131,7 @@
             <p class="alert">
                 <span class="label label-warning">En d&eacute;velopement</span>
                 Incomplet en l'&eacute;tat actuel, Bisouland &eacute;volue
-                en recevant chaque semaine de nouvelles
+                et re&ccedil;oit chaque semaines de nouvelles
                 fonctionnalit&eacute;es.
             </p>
         </div>
@@ -153,6 +148,29 @@
             </p>
         </div>
     </div>
+
+    <article>
+        <header>
+            <h2>Bisouland version <span class="number">2.2.0</span></h2>
+
+            <p>Le 26/05/2012</p>
+        </header>
+        
+        <p>
+            Fonctionnalit&eacute;s de la v2.2.0 et annonces pour la v2.3.0 et
+            la v2.4.0.
+        </p>
+        
+        <footer>
+            <p>Par ZEA et gnubat</p>
+            
+            <p>
+                <a href="{{ path('news') }}#220" class="btn btn-primary btn-large">
+                    Lire la suite
+                </a>
+            </p>
+        </footer>
+    </article>
 
     <article>
         <header>
@@ -184,7 +202,7 @@
         </header>
         
         <p>
-            Fonctionnalit&eacute;s de la v2.0.0
+            Fonctionnalit&eacute;s de la v2.0.0.
         </p>
         
         <footer>

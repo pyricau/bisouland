@@ -51,6 +51,12 @@ article, footer > nav {
     font-weight: bold;
 }
 
-.help {
-    display: none;
+@media (max-width: 980px) {
+  body {
+    padding-top: 0;
+  }
+  
+  nav.pull-right {
+      float: none;
+  }
 }

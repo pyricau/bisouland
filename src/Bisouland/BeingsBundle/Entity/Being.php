@@ -8,6 +8,7 @@ use Doctrine\Common\Collections\ArrayCollection;
 
 use Bisouland\BeingsBundle\RandomSystem\Character;
 use Bisouland\BeingsBundle\Entity\Kiss;
+use Bisouland\BonusBundle\Entity\Bonus;
 
 /**
  * Bisouland\BeingsBundle\Entity\Being
@@ -70,11 +71,17 @@ class Being
      * @ORM\OneToMany(targetEntity="Kiss", mappedBy="kissed")
      */
     private $kissedBy;
+
+    /**
+     * @ORM\OneToMany(targetEntity="Bisouland\BonusBundle\Entity\Bonus", mappedBy="being")
+     */
+    private $bonuses;
     
     public function __construct()
     {
         $this->kisses = new ArrayCollection();
         $this->kissedBy = new ArrayCollection();
+        $this->bonuses = new ArrayCollection();
     }
 
     public function getId()
@@ -169,9 +176,14 @@ class Being
         return $this->updated;
     }
 
-    public function addKisses(Kiss $kisses)
+    public function addKiss(Kiss $kiss)
     {
-        $this->kisses[] = $kisses;
+        $this->kisses[] = $kiss;
+    }
+
+    public function getKisses()
+    {
+        return $this->kisses;
     }
     
     public function addKissedBy(Kiss $kissedBy)
@@ -179,13 +191,18 @@ class Being
         $this->kissedBy[] = $kissedBy;
     }
 
-    public function getKisses()
-    {
-        return $this->kisses;
-    }
-
     public function getKissedBy()
     {
         return $this->kissedBy;
+    }
+    
+    public function addBonus(Bonus $bonus)
+    {
+        $this->bonuses[] = $bonus;
+    }
+
+    public function getBonuses()
+    {
+        return $this->bonuses;
     }
 }

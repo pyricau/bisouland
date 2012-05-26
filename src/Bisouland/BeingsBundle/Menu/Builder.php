@@ -55,7 +55,9 @@ class Builder extends ContainerAware
             'route' => 'beings_view',
             'routeParameters' => array('name' => $name),
             'label' => sprintf(
-                    '%s'
+                    '<span class="number">'
+                        .'%s'
+                    .'</span>'
                     .' <span class="badge">'
                         .'<abbr class="initialism" title="Points d\'Amour">'
                             .'PA'

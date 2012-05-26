@@ -47,11 +47,17 @@
 
                     <div class="nav-collapse">
                         <nav>
-                            {{ knp_menu_render("BisoulandFrontBundle:Builder:mainMenu", {"currentClass": "active"}) }}
+                            {{ knp_menu_render("BisoulandFrontBundle:Builder:mainMenu", {
+                                "currentClass": "active",
+                                "allow_safe_labels": true
+                            }) }}
                         </nav>
 
                         <nav class="pull-right">
-                            {{ knp_menu_render("BisoulandBeingsBundle:Builder:selectedMenu", {"currentClass": "active"}) }}
+                            {{ knp_menu_render("BisoulandBeingsBundle:Builder:selectedMenu", {
+                                "currentClass": "active",
+                                "allow_safe_labels": true
+                            }) }}
                         </nav>
                     </div>
                 </div>

@@ -57,7 +57,7 @@ class Builder extends ContainerAware
             'label' => sprintf(
                     '%s'
                     .' <span class="badge">'
-                        .'<abbr class"initialism" title"Points d\'Amour">'
+                        .'<abbr class="initialism" title="Points d\'Amour">'
                             .'PA'
                         .'</abbr>'
                     .'</span>',

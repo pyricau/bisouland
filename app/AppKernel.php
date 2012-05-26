@@ -26,6 +26,7 @@ class AppKernel extends Kernel
             /* Bisouland */
             new Bisouland\FrontBundle\BisoulandFrontBundle(),
             new Bisouland\BeingsBundle\BisoulandBeingsBundle(),
+            new Bisouland\BonusBundle\BisoulandBonusBundle(),
             
             /* Extra Doctrine */
             new Doctrine\Bundle\FixturesBundle\DoctrineFixturesBundle(),

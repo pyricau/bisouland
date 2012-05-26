@@ -1,0 +1,25 @@
+{% extends '::base.html.twig' %}
+
+{% block meta %}
+    <meta name="description" content="Bonus de Bisouland, jeu en ligne par navigateur" />
+    <meta name="keywords" content="Bisouland, jeu en ligne, navigateur, bonus" />
+{% endblock %}
+
+{% block title %}Bisouland v2 - Bonus{% endblock %}
+
+{% block view %}
+    <article class="hero-unit">
+        <h1>Bisouland Bonus <small>Parce que c'est encore plus fun quand c'est cach&eacute; !</small></h1>
+
+        <p>
+            F&eacute;licitations, vous venez de d&eacute;couvrir le bonus
+            cach&eacute; de Bisouland !
+        </p>
+        
+        <p>
+            <a href="{{ path('homepage') }}" class="btn btn-primary btn-large">
+                Retour
+            </a>
+        </p>
+    </article>
+{% endblock %}

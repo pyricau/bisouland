@@ -7,6 +7,7 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 
 use Bisouland\BeingsBundle\Controller\SelectionController;
+use Bisouland\BonusBundle\Entity\Bonus;
 
 class DefaultController extends Controller
 {
@@ -16,8 +17,8 @@ class DefaultController extends Controller
      */
     public function indexAction()
     {
-        $lovePointsToGet = 42 * 42 * 60 * 60;
-        $answer = 'not-enough';
+        $lovePointsToGet = 42 * 24 * 60 * 60;
+        $answer = 'before';
 
         $selectedBeingName = $this->getRequest()
                 ->getSession()
@@ -27,9 +28,23 @@ class DefaultController extends Controller
                 ->findOneByName($selectedBeingName);
         
         if ($selectedBeing->getLovePoints() >= $lovePointsToGet) {
-            $answer = 'success';
+            $answer = 'after';
             
+            $numberOfBonuses = count($selectedBeing->getBonuses());
+            if (0 === $numberOfBonuses) {
+                $answer = 'now';
+                
+                $bonus = new Bonus();
+                $bonus->setBeing($selectedBeing);
+                
+                $entityManager = $this->getDoctrine()->getEntityManager();
+                $entityManager->persist($bonus);
+                $entityManager->flush();
+            }
         }
-        return array();
+
+        return compact(
+                'answer'
+        );
     }
 }

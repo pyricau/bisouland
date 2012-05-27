@@ -2,91 +2,135 @@
 
 namespace Bisouland\RolePlayingGameSystemBundle\Entity;
 
+use Doctrine\ORM\Mapping as ORM;
+use Gedmo\Mapping\Annotation as Gedmo;
+
 use Bisouland\RolePlayingGameSystemBundle\Entity\Being;
 
-class Attack {
-    private $attacker;
-    private $defender;
+/**
+ * @ORM\Table()
+ * @ORM\Entity
+ */
+class Attack
+{
+    /**
+     * @ORM\Column(name="id", type="integer")
+     * @ORM\Id
+     * @ORM\GeneratedValue(strategy="AUTO")
+     */
+    private $id;
 
-    private $report;
+    /**
+     * @ORM\Column(name="attacker_earning", type="integer")
+     */
+    private $attacker_earning;
 
-    static public $minimumDiceValue = 1;
-    static public $minimumDamagesValue = 1;
-    static public $minimumRewardValue = 0;
+    /**
+     * @ORM\Column(name="defender_loss", type="integer")
+     */
+    private $defender_loss;
 
-    static public $hitDiceNumberOfFace = 20;
-    static public $damagesDiceNumberOfFace = 4;
+    /**
+     * @ORM\Column(name="is_critical", type="boolean")
+     */
+    private $is_critical;
 
-    public function __construct(Being $attacker, Being $defender)
+    /**
+     * @ORM\Column(name="has_hit", type="boolean")
+     */
+    private $has_hit;
+
+    /**
+     * @ORM\ManyToOne(targetEntity="Being", inversedBy="attacksDone")
+     * @ORM\JoinColumn(name="attacker_id", referencedColumnName="id", onDelete="CASCADE")
+     */
+    protected $attacker;
+
+    /**
+     * @ORM\ManyToOne(targetEntity="Being", inversedBy="defensesDone")
+     * @ORM\JoinColumn(name="defender_id", referencedColumnName="id", onDelete="CASCADE")
+     */
+    protected $defender;
+
+    /**
+     * @Gedmo\Timestampable(on="create")
+     * @ORM\Column(name="created", type="datetime")
+     */
+    private $created;
+
+    public function getId()
+    {
+        return $this->id;
+    }
+
+    public function getCreated()
+    {
+        return $this->created;
+    }
+
+    public function getAttackerEarning()
+    {
+        return $this->attacker_earning;
+    }
+
+    public function setAttackerEarning($attacker_earning)
+    {
+        $this->attacker_earning = $attacker_earning;
+        return $this;
+    }
+
+    public function getDefenderLoss()
+    {
+        return $this->defender_loss;
+    }
+
+    public function setDefenderLoss($defender_loss)
+    {
+        $this->defender_loss = $defender_loss;
+        return $this;
+    }
+
+    public function getIsCritical()
+    {
+        return $this->is_critical;
+    }
+
+    public function setIsCritical($is_critical)
+    {
+        $this->is_critical = $is_critical;
+        return $this;
+    }
+
+    public function getHasHit()
+    {
+        return $this->has_hit;
+    }
+
+    public function setHasHit($has_hit)
+    {
+        $this->has_hit = $has_hit;
+        return $this;
+    }
+
+    public function setAttacker(Being $attacker = null)
     {
         $this->attacker = $attacker;
+        return $this;
+    }
+
+    public function getAttacker()
+    {
+        return $this->attacker;
+    }
+
+    public function setDefender(Being $defender = null)
+    {
         $this->defender = $defender;
-
-        $this->report = array(
-            'attackerName' => $this->attacker->name,
-            'defenderName' => $this->defender->name,
-            'isHitCritical' => false,
-            'hasAttackerHit' => false,
-            'defenderLoss' => 0,
-            'attackerEarning' => 0,
-        );
+        return $this;
     }
 
-    public function make()
+    public function getDefender()
     {
-        $this->hit();
-        if (true === $this->report['hasAttackerHit']) {
-            $this->damages();
-            $this->reward();
-        }
-
-        return $this->report;
-    }
-
-    private function hit()
-    {
-        $attackerRoll = mt_rand(self::$minimumDiceValue, self::$hitDiceNumberOfFace);
-        $attackerBonus = Character::calculateBonusPointsFromAttributePoints($this->attacker->attack);
-        $attackerScore = $attackerRoll + $attackerBonus;
-        
-        $defenderRoll = mt_rand(self::$minimumDiceValue, self::$hitDiceNumberOfFace);
-        $defenderBonus = Character::calculateBonusPointsFromAttributePoints($this->defender->defense);
-        $defenderScore = $defenderRoll + $defenderBonus;
-        
-        $this->report['hasAttackerHit'] = $attackerScore > $defenderScore;
-        $this->isHitCritical($attackerRoll);
-    }
-
-    private function isHitCritical($roll)
-    {
-        if (self::$hitDiceNumberOfFace === $roll) {
-            $this->report['isHitCritical'] = true;
-            $this->report['hasAttackerHit'] = true;
-        }
-        if (self::$minimumDiceValue === $roll) {
-            $this->report['isHitCritical'] = true;
-            $this->report['hasAttackerHit'] = false;
-        }
-    }
-
-    private function damages()
-    {
-        $damagesRoll = mt_rand(self::$minimumDiceValue, self::$damagesDiceNumberOfFace);
-        $attackerBonus = Character::calculateBonusPointsFromAttributePoints($this->attacker->attack);
-
-        $this->report['defenderLoss'] = $damagesRoll + $attackerBonus;
-        if ($this->report['defenderLoss'] < self::$minimumDamagesValue) {
-            $this->report['defenderLoss'] = self::$minimumDamagesValue;
-        }
-    }
-
-    private function reward()
-    {
-        $defenderBonus = Character::calculateBonusPointsFromAttributePoints($this->attacker->constitution);
-
-        $this->report['attackerEarning'] = $this->report['defenderLoss'] - $defenderBonus;
-        if ($this->report['attackerEarning'] < self::$minimumRewardValue) {
-            $this->report['attackerEarning'] = self::$minimumRewardValue;
-        }
+        return $this->defender;
     }
 }

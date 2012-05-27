@@ -27,11 +27,11 @@ class BeingFactory {
     public function make()
     {
         $being = new Being();
-        $being->name = $this->generateName();
-        $being->attack = $this->drawAttribute();
-        $being->defense = $this->drawAttribute();
-        $being->constitution = $this->drawAttribute();
-        $being->initialiseLifePoints();
+        $being->setName($this->generateName());
+        $being->setAttack($this->drawAttribute());
+        $being->setDefense($this->drawAttribute());
+        $being->setConstitution($this->drawAttribute());
+        $being->setLifePoints($this->initialiseLifePoints($being->getBonusConstitution()));
 
         return $being;
     }
@@ -59,5 +59,10 @@ class BeingFactory {
         $attributePoints = array_sum($bestRollResults);
 
         return $attributePoints;
+    }
+
+    private function initialiseLifePoints($bonusConstitution)
+    {
+        return self::$defaultNumberOfLifePoints + $bonusConstitution;
     }
 }

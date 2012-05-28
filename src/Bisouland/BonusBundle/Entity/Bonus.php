@@ -5,7 +5,7 @@ namespace Bisouland\BonusBundle\Entity;
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Mapping\Annotation as Gedmo;
 
-use Bisouland\BeingsBundle\Entity\Being;
+use Bisouland\LoversBundle\Entity\Lover;
 
 /**
  * @ORM\Table()
@@ -21,7 +21,7 @@ class Bonus
     private $id;
 
     /**
-     * @ORM\ManyToOne(targetEntity="Bisouland\BeingsBundle\Entity\Being", inversedBy="bonuses")
+     * @ORM\ManyToOne(targetEntity="Bisouland\LoversBundle\Entity\Lover", inversedBy="bonuses")
      * @ORM\JoinColumn(name="being_id", referencedColumnName="id", onDelete="CASCADE")
      */
     private $being;
@@ -38,13 +38,13 @@ class Bonus
         return $this->id;
     }
 
-    public function setBeing(Being $being)
+    public function setLover(Lover $being)
     {
         $this->being = $being;
         return $this;
     }
 
-    public function getBeing()
+    public function getLover()
     {
         return $this->being;
     }

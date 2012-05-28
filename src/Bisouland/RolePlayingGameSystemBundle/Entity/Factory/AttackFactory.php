@@ -30,7 +30,7 @@ class AttackFactory {
         $this->attack->setAttackerEarning(0);
 
         $this->hit();
-        if (true === $this->attack->hasHit()) {
+        if (true === $this->attack->getHasHit()) {
             $this->loss();
             $this->earning();
         }

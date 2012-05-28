@@ -17,45 +17,36 @@ class Attack
      * @ORM\Id
      * @ORM\GeneratedValue(strategy="AUTO")
      */
-    private $id;
+    protected $id;
 
     /**
      * @ORM\Column(name="attacker_earning", type="integer")
      */
-    private $attacker_earning;
+    protected $attacker_earning;
 
     /**
      * @ORM\Column(name="defender_loss", type="integer")
      */
-    private $defender_loss;
+    protected $defender_loss;
 
     /**
      * @ORM\Column(name="is_critical", type="boolean")
      */
-    private $is_critical;
+    protected $is_critical;
 
     /**
      * @ORM\Column(name="has_hit", type="boolean")
      */
-    private $has_hit;
+    protected $has_hit;
 
-    /**
-     * @ORM\ManyToOne(targetEntity="Being", inversedBy="attacksDone")
-     * @ORM\JoinColumn(name="attacker_id", referencedColumnName="id", onDelete="CASCADE")
-     */
     protected $attacker;
-
-    /**
-     * @ORM\ManyToOne(targetEntity="Being", inversedBy="defensesDone")
-     * @ORM\JoinColumn(name="defender_id", referencedColumnName="id", onDelete="CASCADE")
-     */
     protected $defender;
 
     /**
      * @Gedmo\Timestampable(on="create")
      * @ORM\Column(name="created", type="datetime")
      */
-    private $created;
+    protected $created;
 
     public function getId()
     {

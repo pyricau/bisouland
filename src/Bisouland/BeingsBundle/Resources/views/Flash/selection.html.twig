@@ -1,7 +1,0 @@
-{% if app.session.hasFlash('hasSelectedBeing') and app.session.flash('hasSelectedBeing') %}
-    <div class="alert alert-success">
-        <button class="close" data-dismiss="alert">&times;</button>
-        <span class="badge"><i class="icon-hand-right"></i></span>
-        Vous venez de s&eacute;lectionner {{ app.session.get('selectedBeingName') }} !
-    </div>
-{% endif %}

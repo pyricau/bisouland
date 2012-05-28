@@ -1,5 +1,5 @@
-BisoulandBeingsBundle:
-    resource: "@BisoulandBeingsBundle/Controller/"
+BisoulandLoversBundle:
+    resource: "@BisoulandLoversBundle/Controller/"
     type:     annotation
     prefix:   /amoureux/
 

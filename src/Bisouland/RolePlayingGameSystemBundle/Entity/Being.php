@@ -18,60 +18,57 @@ class Being
      * @ORM\Id
      * @ORM\GeneratedValue(strategy="AUTO")
      */
-    private $id;
+    protected $id;
 
     /**
      * @ORM\Column(name="name", unique=true, type="string", length=255)
      */
-    private $name;
+    protected $name;
 
     /**
      * @ORM\Column(name="life_points", type="integer")
      */
-    private $life_points;
+    protected $life_points;
 
     /**
      * @ORM\Column(name="attack", type="integer")
      */
-    private $attack;
+    protected $attack;
 
     /**
      * @ORM\Column(name="defense", type="integer")
      */
-    private $defense;
+    protected $defense;
 
     /**
      * @ORM\Column(name="constitution", type="integer")
      */
-    private $constitution;
+    protected $constitution;
 
-    /**
-     * @ORM\OneToMany(targetEntity="Attack", mappedBy="attacker")
-     */
-    private $attacksDone;
-
-    /**
-     * @ORM\OneToMany(targetEntity="Attack", mappedBy="defender")
-     */
-    private $defensesDone;
+    protected $attacksDone;
+    protected $defensesDone;
 
     /**
      * @Gedmo\Timestampable(on="create")
      * @ORM\Column(name="created", type="datetime")
      */
-    private $created;
+    protected $created;
 
     /**
      * @Gedmo\Timestampable(on="update")
      * @ORM\Column(name="updated", type="datetime")
      */
-    private $updated;
+    protected $updated;
+
+    public static function getBonusFromGivenAttribute($attributePoints)
+    {
+        return intval(($attributePoints - 10) / 2);
+    }
 
     public function __construct()
     {
         $this->attacksDone = new ArrayCollection();
         $this->defensesDone = new ArrayCollection();
-        $this->bonuses = new ArrayCollection();
     }
 
     public function getId()
@@ -107,9 +104,14 @@ class Being
         return $this;
     }
 
+    public function getAttack()
+    {
+        return $this->attack;
+    }
+
     public function getBonusAttack()
     {
-        return $this->getBonusFromGivenAttribute($this->attack);
+        return self::getBonusFromGivenAttribute($this->attack);
     }
 
     public function setDefense($defense)
@@ -118,9 +120,14 @@ class Being
         return $this;
     }
 
+    public function getDefense()
+    {
+        return $this->defense;
+    }
+
     public function getBonusDefense()
     {
-        return $this->getBonusFromGivenAttribute($this->defense);
+        return self::getBonusFromGivenAttribute($this->defense);
     }
 
     public function setConstitution($constitution)
@@ -128,25 +135,20 @@ class Being
         $this->constitution = $constitution;
         return $this;
     }
-    
-    public function getBonusConstitution()
+
+    public function getConstitution()
     {
-        return $this->getBonusFromGivenAttribute($this->constitution);
+        return $this->constitution;
     }
 
-    private function getBonusFromGivenAttribute($attributePoints)
+    public function getBonusConstitution()
     {
-        return intval(($attributePoints - 10) / 2);
+        return self::getBonusFromGivenAttribute($this->constitution);
     }
 
     public function getCreated()
     {
         return $this->created;
-    }
-
-    public function getAge()
-    {
-        return time() - $this->created->getTimestamp();
     }
 
     public function getUpdated()

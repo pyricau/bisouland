@@ -9,8 +9,7 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Bisouland\RolePlayingGameSystemBundle\Entity\Attack;
 
 /**
- * @ORM\Table()
- * @ORM\Entity
+ * @ORM\MappedSuperclass
  */
 class Being
 {

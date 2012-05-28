@@ -8,8 +8,7 @@ use Gedmo\Mapping\Annotation as Gedmo;
 use Bisouland\RolePlayingGameSystemBundle\Entity\Being;
 
 /**
- * @ORM\Table()
- * @ORM\Entity
+ * @ORM\MappedSuperclass
  */
 class Attack
 {

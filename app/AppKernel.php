@@ -27,6 +27,7 @@ class AppKernel extends Kernel
             new Bisouland\FrontBundle\BisoulandFrontBundle(),
             new Bisouland\BeingsBundle\BisoulandBeingsBundle(),
             new Bisouland\BonusBundle\BisoulandBonusBundle(),
+            new Bisouland\RolePlayingGameSystemBundle\BisoulandRolePlayingGameSystemBundle(),
             
             /* Extra Doctrine */
             new Doctrine\Bundle\FixturesBundle\DoctrineFixturesBundle(),

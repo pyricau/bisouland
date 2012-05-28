@@ -1,7 +1,0 @@
-{% if app.session.hasFlash('hasAttributedBeing') and app.session.flash('hasAttributedBeing') %}
-    <div class="alert alert-info">
-        <button class="close" data-dismiss="alert">&times;</button>
-        <span class="badge"><i class="icon-hand-right"></i></span>
-        Un amoureux ({{ app.session.get('selectedBeingName') }}) vous a &eacute;t&eacute; attribu&eacute; !
-    </div>
-{% endif %}

@@ -12,6 +12,8 @@ Pour les utiliser, il suffit de creer dans votre propre bundle
 des entites qui heriteront des pseudo tables. Il existe une relation `OneToMany`
 entre `Being` et `Attack`, donc il vous faudra aussi les implementer.
 
+L'ajout des champs id est aussi a faire.
+
 L'exemple suivant vous permetta de mieux comprendre comment faire.
 
 ### Being
@@ -33,6 +35,13 @@ use Bisouland\RolePlayingGameSystemBundle\Entity\Attack;
 class MyBeing extends Being
 {
     /**
+     * @ORM\Column(name="id", type="integer")
+     * @ORM\Id
+     * @ORM\GeneratedValue(strategy="AUTO")
+     */
+    private $id;
+
+    /**
      * @ORM\OneToMany(targetEntity="Acme\ExampleBundle\Entity\MyAttack", mappedBy="attacker")
      */
     protected $attacksDone;
@@ -41,6 +50,11 @@ class MyBeing extends Being
      * @ORM\OneToMany(targetEntity="Acme\ExampleBundle\Entity\MyAttack", mappedBy="defender")
      */
     protected $defensesDone;
+
+    public function getId()
+    {
+        return $this->id;
+    }
 }
 ```
 
@@ -62,6 +76,13 @@ use Bisouland\RolePlayingGameSystemBundle\Entity\Attack;
 class MyAttack extends Attack
 {
     /**
+     * @ORM\Column(name="id", type="integer")
+     * @ORM\Id
+     * @ORM\GeneratedValue(strategy="AUTO")
+     */
+    private $id;
+
+    /**
      * @ORM\ManyToOne(targetEntity="Acme\ExampleBundle\Entity\MyBeing", inversedBy="attacksDone")
      * @ORM\JoinColumn(name="attacker_id", referencedColumnName="id", onDelete="CASCADE")
      */
@@ -72,5 +93,10 @@ class MyAttack extends Attack
      * @ORM\JoinColumn(name="defender_id", referencedColumnName="id", onDelete="CASCADE")
      */
     protected $defender;
+
+    public function getId()
+    {
+        return $this->id;
+    }
 }
 ```

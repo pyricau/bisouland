@@ -3,7 +3,6 @@
 namespace Bisouland\RolePlayingGameSystemBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
-use Gedmo\Mapping\Annotation as Gedmo;
 
 use Bisouland\RolePlayingGameSystemBundle\Entity\Being;
 
@@ -12,13 +11,6 @@ use Bisouland\RolePlayingGameSystemBundle\Entity\Being;
  */
 class Attack
 {
-    /**
-     * @ORM\Column(name="id", type="integer")
-     * @ORM\Id
-     * @ORM\GeneratedValue(strategy="AUTO")
-     */
-    protected $id;
-
     /**
      * @ORM\Column(name="attacker_earning", type="integer")
      */
@@ -41,22 +33,6 @@ class Attack
 
     protected $attacker;
     protected $defender;
-
-    /**
-     * @Gedmo\Timestampable(on="create")
-     * @ORM\Column(name="created", type="datetime")
-     */
-    protected $created;
-
-    public function getId()
-    {
-        return $this->id;
-    }
-
-    public function getCreated()
-    {
-        return $this->created;
-    }
 
     public function getAttackerEarning()
     {

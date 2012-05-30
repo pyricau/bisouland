@@ -3,6 +3,7 @@
 namespace Bisouland\LoversBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use Gedmo\Mapping\Annotation as Gedmo;
 use Doctrine\Common\Collections\ArrayCollection;
 
 use Bisouland\RolePlayingGameSystemBundle\Entity\Being;
@@ -15,6 +16,13 @@ use Bisouland\RolePlayingGameSystemBundle\Entity\Attack;
  */
 class Lover extends Being
 {
+    /**
+     * @ORM\Column(name="id", type="integer")
+     * @ORM\Id
+     * @ORM\GeneratedValue(strategy="AUTO")
+     */
+    private $id;
+
     /**
      * @ORM\OneToMany(targetEntity="Bisouland\LoversBundle\Entity\Kiss", mappedBy="attacker")
      */
@@ -30,10 +38,27 @@ class Lover extends Being
      */
     private $bonuses;
 
+    /**
+     * @Gedmo\Timestampable(on="create")
+     * @ORM\Column(name="created", type="datetime")
+     */
+    private $created;
+
+    /**
+     * @Gedmo\Timestampable(on="update")
+     * @ORM\Column(name="updated", type="datetime")
+     */
+    private $updated;
+
     public function __construct()
     {
         $this->bonuses = new ArrayCollection();
         parent::__construct();
+    }
+
+    public function getId()
+    {
+        return $this->id;
     }
 
     public function addBonus(Bonus $bonus)
@@ -51,6 +76,16 @@ class Lover extends Being
         $timeSinceLastUpdateInSeconds = time() - $this->updated->getTimestamp();
 
         return $this->life_points - $timeSinceLastUpdateInSeconds;
+    }
+
+    public function getCreated()
+    {
+        return $this->created;
+    }
+
+    public function getUpdated()
+    {
+        return $this->updated;
     }
 
     public function getAgeInSeconds()

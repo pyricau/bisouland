@@ -3,7 +3,6 @@
 namespace Bisouland\RolePlayingGameSystemBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
-use Gedmo\Mapping\Annotation as Gedmo;
 use Doctrine\Common\Collections\ArrayCollection;
 
 use Bisouland\RolePlayingGameSystemBundle\Entity\Attack;
@@ -13,13 +12,6 @@ use Bisouland\RolePlayingGameSystemBundle\Entity\Attack;
  */
 class Being
 {
-    /**
-     * @ORM\Column(name="id", type="integer")
-     * @ORM\Id
-     * @ORM\GeneratedValue(strategy="AUTO")
-     */
-    protected $id;
-
     /**
      * @ORM\Column(name="name", unique=true, type="string", length=255)
      */
@@ -48,18 +40,6 @@ class Being
     protected $attacksDone;
     protected $defensesDone;
 
-    /**
-     * @Gedmo\Timestampable(on="create")
-     * @ORM\Column(name="created", type="datetime")
-     */
-    protected $created;
-
-    /**
-     * @Gedmo\Timestampable(on="update")
-     * @ORM\Column(name="updated", type="datetime")
-     */
-    protected $updated;
-
     public static function getBonusFromGivenAttribute($attributePoints)
     {
         return intval(($attributePoints - 10) / 2);
@@ -69,11 +49,6 @@ class Being
     {
         $this->attacksDone = new ArrayCollection();
         $this->defensesDone = new ArrayCollection();
-    }
-
-    public function getId()
-    {
-        return $this->id;
     }
 
     public function setName($name)
@@ -144,16 +119,6 @@ class Being
     public function getBonusConstitution()
     {
         return self::getBonusFromGivenAttribute($this->constitution);
-    }
-
-    public function getCreated()
-    {
-        return $this->created;
-    }
-
-    public function getUpdated()
-    {
-        return $this->updated;
     }
 
     public function addAttackDone(Attack $attackDone)

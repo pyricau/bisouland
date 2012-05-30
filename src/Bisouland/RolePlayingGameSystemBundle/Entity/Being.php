@@ -42,7 +42,11 @@ class Being
 
     public static function getBonusFromGivenAttribute($attributePoints)
     {
-        return intval(($attributePoints - 10) / 2);
+        $mediumAttribute = 10;
+        
+        $bonus = floor(($attributePoints - $mediumAttribute) / 2);
+
+        return intval($bonus);
     }
 
     public function __construct()

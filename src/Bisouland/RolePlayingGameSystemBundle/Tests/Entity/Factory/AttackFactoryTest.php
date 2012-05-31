@@ -65,7 +65,10 @@ class AttackFactoryTest extends \PHPUnit_Framework_TestCase
         $attacker = $this->beingFactory->make();
         $defender = $this->beingFactory->make();
 
-        for ($diceResult = 2; $diceResult < 20; $diceResult++) {
+        $minimumDiceResult = AttackFactory::$criticalFail + 1;
+        $maximumDiceResult = AttackFactory::$criticalHit;
+
+        for ($diceResult = $minimumDiceResult; $diceResult < $maximumDiceResult; $diceResult++) {
             $attackFactory = $this->getAttackFactoryWithRollsReturningGivenResult($diceResult);
             $attack = $attackFactory->make($attacker, $defender);
 

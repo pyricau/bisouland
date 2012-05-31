@@ -100,3 +100,8 @@ class MyAttack extends Attack
     }
 }
 ```
+
+## Services
+
+Des services sont mis a disposition afin de faciliter l'utilisation a travers
+le container.

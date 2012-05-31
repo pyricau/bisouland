@@ -35,15 +35,21 @@ class AttackFactoryTest extends \PHPUnit_Framework_TestCase
     {
         $attacker = $this->beingFactory->make();
         $defender = $this->beingFactory->make();
+        
+        $minimumDiceResult = AttackFactory::$criticalFail + 1;
+        $maximumDiceResult = AttackFactory::$damagesDiceNumberOfFace;
 
-        for ($attribute = self::$minimumAttribute; $attribute < self::$maximumAttribute; $attribute += 2) {
-            $defender->setDefense($attribute);
-            $attacker->setAttack($attribute + 2);
+        for ($diceResult = $minimumDiceResult; $diceResult < $maximumDiceResult; $diceResult++) {
+            $attackFactory = $this->getAttackFactoryWithRollsReturningGivenResult($diceResult);
 
-            $attackFactory = $this->getAttackFactoryWithRollsReturningGivenResult(10);
-            $attack = $attackFactory->make($attacker, $defender);
+            for ($attribute = self::$minimumAttribute; $attribute < self::$maximumAttribute; $attribute += 2) {
+                $defender->setDefense($attribute);
+                $attacker->setAttack($attribute + 2);
 
-            $this->assertTrue($attack->getHasHit());
+                $attack = $attackFactory->make($attacker, $defender);
+
+                $this->assertTrue($attack->getHasHit());
+            }
         }
     }
 
@@ -52,14 +58,20 @@ class AttackFactoryTest extends \PHPUnit_Framework_TestCase
         $attacker = $this->beingFactory->make();
         $defender = $this->beingFactory->make();
 
-        for ($attribute = self::$minimumAttribute; $attribute < self::$maximumAttribute; $attribute += 2) {
-            $attacker->setAttack($attribute);
-            $defender->setDefense($attribute + 2);
+        $minimumDiceResult = AttackFactory::$criticalFail + 1;
+        $maximumDiceResult = AttackFactory::$damagesDiceNumberOfFace;
 
-            $attackFactory = $this->getAttackFactoryWithRollsReturningGivenResult(10);
-            $attack = $attackFactory->make($attacker, $defender);
+        for ($diceResult = $minimumDiceResult; $diceResult < $maximumDiceResult; $diceResult++) {
+            $attackFactory = $this->getAttackFactoryWithRollsReturningGivenResult($diceResult);
 
-            $this->assertFalse($attack->getHasHit());
+            for ($attribute = self::$minimumAttribute; $attribute < self::$maximumAttribute; $attribute += 2) {
+                $attacker->setAttack($attribute);
+                $defender->setDefense($attribute + 2);
+
+                $attack = $attackFactory->make($attacker, $defender);
+
+                $this->assertFalse($attack->getHasHit());
+            }
         }
     }
 

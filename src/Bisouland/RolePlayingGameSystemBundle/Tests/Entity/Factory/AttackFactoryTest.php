@@ -28,7 +28,7 @@ class AttackFactoryTest extends \PHPUnit_Framework_TestCase
         return $attackFactory;
     }
 
-    public function testDoesHit()
+    public function testHasHit()
     {
         $attacker = $this->beingFactory->make();
         $defender = $this->beingFactory->make();
@@ -44,7 +44,7 @@ class AttackFactoryTest extends \PHPUnit_Framework_TestCase
         }
     }
 
-    public function testDoesNotHit()
+    public function testHasNotHit()
     {
         $attacker = $this->beingFactory->make();
         $defender = $this->beingFactory->make();
@@ -57,6 +57,19 @@ class AttackFactoryTest extends \PHPUnit_Framework_TestCase
             $attack = $attackFactory->make($attacker, $defender);
 
             $this->assertFalse($attack->getHasHit());
+        }
+    }
+    
+    public function testIsNotCritical()
+    {
+        $attacker = $this->beingFactory->make();
+        $defender = $this->beingFactory->make();
+        
+        for ($diceResult = 2; $diceResult < 20; $diceResult++) {
+            $attackFactory = $this->getAttackFactoryWithRollsReturningGivenResult($diceResult);
+            $attack = $attackFactory->make($attacker, $defender);
+
+            $this->assertFalse($attack->getIsCritical());
         }
     }
 }

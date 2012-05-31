@@ -141,4 +141,34 @@ class AttackFactoryTest extends \PHPUnit_Framework_TestCase
             }
         }
     }
+
+    public function testEarning()
+    {
+        $attacker = $this->beingFactory->make();
+        $defender = $this->beingFactory->make();
+        
+        $defender->setDefense(self::$minimumAttribute);
+
+        $minimumDiceResult = AttackFactory::$criticalFail + 1;
+        $maximumDiceResult = AttackFactory::$damagesDiceNumberOfFace;
+
+        for ($diceResult = $minimumDiceResult; $diceResult < $maximumDiceResult; $diceResult++) {
+            $attackFactory = $this->getAttackFactoryWithRollsReturningGivenResult($diceResult);
+
+            for ($attackAttribute = self::$minimumAttribute + 2; $attackAttribute < self::$maximumAttribute; $attackAttribute += 2) {
+                $attacker->setAttack($attackAttribute);
+                for ($constitutionAttribute = self::$minimumAttribute; $constitutionAttribute < self::$maximumAttribute; $constitutionAttribute += 2) {
+                    $defender->setConstitution($constitutionAttribute);
+                    $attack = $attackFactory->make($attacker, $defender);
+
+                    $earningExpected = $attack->getDefenderLoss() - $defender->getBonusConstitution();
+                    if ($earningExpected < AttackFactory::$minimumEarningValue) {
+                        $earningExpected = AttackFactory::$minimumEarningValue;
+                    }
+
+                    $this->assertSame($attack->getAttackerEarning(), $earningExpected);
+                }
+            }
+        }
+    }
 }

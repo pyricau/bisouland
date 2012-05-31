@@ -78,7 +78,7 @@ class AttackFactoryTest extends \PHPUnit_Framework_TestCase
         $attacker = $this->beingFactory->make();
         $defender = $this->beingFactory->make();
 
-            $attackFactory = $this->getAttackFactoryWithRollsReturningGivenResult(20);
+            $attackFactory = $this->getAttackFactoryWithRollsReturningGivenResult(AttackFactory::$criticalHit);
             $attack = $attackFactory->make($attacker, $defender);
 
             $this->assertTrue($attack->getIsCritical());
@@ -90,7 +90,7 @@ class AttackFactoryTest extends \PHPUnit_Framework_TestCase
         $attacker = $this->beingFactory->make();
         $defender = $this->beingFactory->make();
 
-            $attackFactory = $this->getAttackFactoryWithRollsReturningGivenResult(1);
+            $attackFactory = $this->getAttackFactoryWithRollsReturningGivenResult(AttackFactory::$criticalFail);
             $attack = $attackFactory->make($attacker, $defender);
 
             $this->assertTrue($attack->getIsCritical());

@@ -17,6 +17,9 @@ class AttackFactory
     static public $minimumLossValue = 1;
     static public $minimumEarningValue = 0;
 
+    static public $criticalHit = 20;
+    static public $criticalFail = 1;
+
     static public $hitDiceNumberOfFace = 20;
     static public $damagesDiceNumberOfFace = 4;
 
@@ -65,11 +68,11 @@ class AttackFactory
 
     private function critical($roll)
     {
-        if (self::$hitDiceNumberOfFace === $roll) {
+        if (self::$criticalHit === $roll) {
             $this->attack->setIsCritical(true);
             $this->attack->setHasHit(true);
         }
-        if (self::$minimumDiceValue === $roll) {
+        if (self::$criticalFail === $roll) {
             $this->attack->setIsCritical(true);
             $this->attack->setHasHit(false);
         }

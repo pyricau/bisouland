@@ -32,7 +32,7 @@ class KissController extends Controller
      */
     public function indexAction($kissedName)
     {
-        $kissFactory = new KissFactory($this->getDoctrine(), new AttackFactory());
+        $kissFactory = new KissFactory($this->getDoctrine(), $this->get('bisouland_role_playing_game_system.attack_factory'));
 
         try {
             $this->setReportFlash($kissFactory->make(

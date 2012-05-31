@@ -9,6 +9,6 @@ services:
         arguments: ["@pronounceable_word_generator"]
     bisouland_role_playing_game_system.attack_factory:
         class: %bisouland_role_playing_game_system.attack_factory.class%
-        arguments: ["@roll_factory"]
+        arguments: ["@bisouland_role_playing_game_system.roll_factory"]
     bisouland_role_playing_game_system.roll_factory:
         class: %bisouland_role_playing_game_system.roll_factory.class%

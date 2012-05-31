@@ -2,10 +2,14 @@
 
 namespace Bisouland\RolePlayingGameSystemBundle\Entity\Factory;
 
+use Bisouland\RolePlayingGameSystemBundle\Entity\Factory\RollFactory;
 use Bisouland\RolePlayingGameSystemBundle\Entity\Being;
 use Bisouland\RolePlayingGameSystemBundle\Entity\Attack;
 
-class AttackFactory {
+class AttackFactory
+{
+    private $rollFactory;
+
     private $attacker;
     private $defender;
 
@@ -15,6 +19,11 @@ class AttackFactory {
 
     static public $hitDiceNumberOfFace = 20;
     static public $damagesDiceNumberOfFace = 4;
+
+    public function __construct(RollFactory $rollFactory)
+    {
+        $this->rollFactory = $rollFactory;
+    }
 
     public function make(Being $attacker, Being $defender)
     {
@@ -40,11 +49,13 @@ class AttackFactory {
 
     private function hit()
     {
-        $attackerRoll = mt_rand(self::$minimumDiceValue, self::$hitDiceNumberOfFace);
+        $this->rollFactory->setNumberOfFaces(self::$hitDiceNumberOfFace);
+
+        $attackerRoll = $this->rollFactory->make();
         $attackerBonus = $this->attacker->getBonusAttack();
         $attackerScore = $attackerRoll + $attackerBonus;
 
-        $defenderRoll = mt_rand(self::$minimumDiceValue, self::$hitDiceNumberOfFace);
+        $defenderRoll = $this->rollFactory->make();
         $defenderBonus = $this->defender->getBonusDefense();
         $defenderScore = $defenderRoll + $defenderBonus;
 

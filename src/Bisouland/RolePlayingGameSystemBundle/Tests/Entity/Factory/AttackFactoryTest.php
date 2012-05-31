@@ -8,6 +8,9 @@ use Bisouland\RolePlayingGameSystemBundle\Entity\Factory\AttackFactory;
 
 class AttackFactoryTest extends \PHPUnit_Framework_TestCase
 {
+    private static $minimumAttribute = 3;
+    private static $maximumAttribute = 18;
+
     private $beingFactory;
 
     public function __construct()
@@ -33,7 +36,7 @@ class AttackFactoryTest extends \PHPUnit_Framework_TestCase
         $attacker = $this->beingFactory->make();
         $defender = $this->beingFactory->make();
 
-        for ($attribute = 3; $attribute < 18; $attribute += 2) {
+        for ($attribute = self::$minimumAttribute; $attribute < self::$maximumAttribute; $attribute += 2) {
             $defender->setDefense($attribute);
             $attacker->setAttack($attribute + 2);
 
@@ -49,7 +52,7 @@ class AttackFactoryTest extends \PHPUnit_Framework_TestCase
         $attacker = $this->beingFactory->make();
         $defender = $this->beingFactory->make();
 
-        for ($attribute = 3; $attribute < 18; $attribute += 2) {
+        for ($attribute = self::$minimumAttribute; $attribute < self::$maximumAttribute; $attribute += 2) {
             $attacker->setAttack($attribute);
             $defender->setDefense($attribute + 2);
 
@@ -81,11 +84,11 @@ class AttackFactoryTest extends \PHPUnit_Framework_TestCase
         $attacker = $this->beingFactory->make();
         $defender = $this->beingFactory->make();
 
-            $attackFactory = $this->getAttackFactoryWithRollsReturningGivenResult(AttackFactory::$criticalHit);
-            $attack = $attackFactory->make($attacker, $defender);
+        $attackFactory = $this->getAttackFactoryWithRollsReturningGivenResult(AttackFactory::$criticalHit);
+        $attack = $attackFactory->make($attacker, $defender);
 
-            $this->assertTrue($attack->getIsCritical());
-            $this->assertTrue($attack->getHasHit());
+        $this->assertTrue($attack->getIsCritical());
+        $this->assertTrue($attack->getHasHit());
     }
 
     public function testIsCriticalFail()
@@ -93,10 +96,37 @@ class AttackFactoryTest extends \PHPUnit_Framework_TestCase
         $attacker = $this->beingFactory->make();
         $defender = $this->beingFactory->make();
 
-            $attackFactory = $this->getAttackFactoryWithRollsReturningGivenResult(AttackFactory::$criticalFail);
-            $attack = $attackFactory->make($attacker, $defender);
+        $attackFactory = $this->getAttackFactoryWithRollsReturningGivenResult(AttackFactory::$criticalFail);
+        $attack = $attackFactory->make($attacker, $defender);
 
-            $this->assertTrue($attack->getIsCritical());
-            $this->assertFalse($attack->getHasHit());
+        $this->assertTrue($attack->getIsCritical());
+        $this->assertFalse($attack->getHasHit());
+    }
+
+    public function testLoss()
+    {
+        $attacker = $this->beingFactory->make();
+        $defender = $this->beingFactory->make();
+        
+        $defender->setDefense(self::$minimumAttribute);
+
+        $minimumDiceResult = AttackFactory::$criticalFail + 1;
+        $maximumDiceResult = AttackFactory::$damagesDiceNumberOfFace;
+
+        for ($diceResult = $minimumDiceResult; $diceResult < $maximumDiceResult; $diceResult++) {
+            $attackFactory = $this->getAttackFactoryWithRollsReturningGivenResult($diceResult);
+
+            for ($attribute = self::$minimumAttribute + 2; $attribute < self::$maximumAttribute; $attribute += 2) {
+                $attacker->setAttack($attribute);
+                $attack = $attackFactory->make($attacker, $defender);
+
+                $lossExpected = $diceResult + $attacker->getBonusAttack();
+                if ($lossExpected < AttackFactory::$minimumLossValue) {
+                    $lossExpected = AttackFactory::$minimumLossValue;
+                }
+
+                $this->assertSame($attack->getDefenderLoss(), $lossExpected);
+            }
+        }
     }
 }

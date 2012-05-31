@@ -80,7 +80,9 @@ class AttackFactory
 
     private function loss()
     {
-        $damagesRoll = mt_rand(self::$minimumDiceValue, self::$damagesDiceNumberOfFace);
+        $this->rollFactory->setNumberOfFaces(self::$damagesDiceNumberOfFace);
+
+        $damagesRoll = $this->rollFactory->make();;
         $attackerBonus = $this->attacker->getBonusAttack();
 
         $defenderLoss = $damagesRoll + $attackerBonus;

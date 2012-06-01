@@ -89,6 +89,12 @@ class AttackFactory
         if ($defenderLoss < self::$minimumLossValue) {
             $defenderLoss = self::$minimumLossValue;
         }
+        
+        $lifePoints = $this->defender->getLifePoints();
+        if ($defenderLoss > $lifePoints) {
+            $defenderLoss = $lifePoints;
+        }
+
         $this->attack->setDefenderLoss($defenderLoss);
     }
 

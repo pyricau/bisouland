@@ -34,8 +34,8 @@ EOT
         $container = $this->getApplication()->getKernel()->getContainer();
         $generator = $container->get('bisouland_pronounceable_word.generator');
 
-        $minimumLength = $input->getArgument('minimum-length');
-        $maximumLength = $input->getArgument('maximum-length');
+        $minimumLength = intval($input->getArgument('minimum-length'));
+        $maximumLength = intval($input->getArgument('maximum-length'));
 
         $maximumGenerationNumber = $input->getArgument('number-of-examples');
 

@@ -17,7 +17,7 @@ class LinkedLetters {
         'l' => 'aeiou',
         'm' => 'aeiou',
         'n' => 'aeiou',
-        'o' => 'abcdefgiklmnprstuvwxz',
+        'o' => 'abcdfgiklmnprstuvwxz',
         'p' => 'aeiloru',
         'r' => 'aeiou',
         's' => 'aehiotu',

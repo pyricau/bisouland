@@ -6,7 +6,7 @@ parameters:
 services:
     bisouland_role_playing_game_system.being_factory:
         class: %bisouland_role_playing_game_system.being_factory.class%
-        arguments: ["@pronounceable_word_generator"]
+        arguments: ["@bisouland_pronounceable_word.generator"]
     bisouland_role_playing_game_system.attack_factory:
         class: %bisouland_role_playing_game_system.attack_factory.class%
         arguments: ["@bisouland_role_playing_game_system.roll_factory"]

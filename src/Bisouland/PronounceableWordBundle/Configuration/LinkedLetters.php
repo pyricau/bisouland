@@ -5,9 +5,9 @@ namespace Bisouland\PronounceableWordBundle\Configuration;
 class LinkedLetters {
     public $lettersWithLinkedLetters = array(
         'a' => 'bcdefgklmnoprstuvwxz',
-        'b' => 'aehiloru',
+        'b' => 'aeiloru',
         'c' => 'aehiloru',
-        'd' => 'aehioru',
+        'd' => 'aeioru',
         'e' => 'bcdfgiklmnoprstuvwxz',
         'f' => 'aeiloru',
         'g' => 'aeiloru',

@@ -21,9 +21,11 @@ class EarningUnitTest extends AttackFactoryTestCase
         for ($diceResult = $minimumDiceResult; $diceResult < $maximumDiceResult; $diceResult++) {
             $attackFactory = $this->getAttackFactoryWithRollsReturningGivenResult($diceResult);
 
-            for ($attackAttribute = AttackFactoryTestCase::$minimumAttribute + 2; $attackAttribute < AttackFactoryTestCase::$maximumAttribute; $attackAttribute += 2) {
+            for ($attackAttribute = AttackFactoryTestCase::$minimumAttribute + 2; $attackAttribute < AttackFactoryTestCase::$maximumAttribute; $attackAttribute++) {
                 $attacker->setAttack($attackAttribute);
-                for ($constitutionAttribute = AttackFactoryTestCase::$minimumAttribute; $constitutionAttribute < AttackFactoryTestCase::$maximumAttribute; $constitutionAttribute += 2) {
+                
+                $minimumConstitution = 10;
+                for ($constitutionAttribute = $minimumConstitution; $constitutionAttribute < AttackFactoryTestCase::$maximumAttribute; $constitutionAttribute++) {
                     $defender->setConstitution($constitutionAttribute);
                     $attack = $attackFactory->make($attacker, $defender);
 
@@ -33,6 +35,33 @@ class EarningUnitTest extends AttackFactoryTestCase
                     }
 
                     $this->assertSame($attack->getAttackerEarning(), $earningExpected);
+                }
+            }
+        }
+    }
+
+    public function testEarningInferiorThanLoss()
+    {
+        $attacker = $this->beingFactory->make();
+        $defender = $this->beingFactory->make();
+        
+        $defender->setDefense(AttackFactoryTestCase::$minimumAttribute);
+
+        $minimumDiceResult = AttackFactory::$criticalFail + 1;
+        $maximumDiceResult = AttackFactory::$damagesDiceNumberOfFace;
+
+        for ($diceResult = $minimumDiceResult; $diceResult < $maximumDiceResult; $diceResult++) {
+            $attackFactory = $this->getAttackFactoryWithRollsReturningGivenResult($diceResult);
+
+            for ($attackAttribute = AttackFactoryTestCase::$minimumAttribute + 2; $attackAttribute < AttackFactoryTestCase::$maximumAttribute; $attackAttribute++) {
+                $attacker->setAttack($attackAttribute);
+                
+                $maximumConstitution = 10;
+                for ($constitutionAttribute = AttackFactoryTestCase::$minimumAttribute; $constitutionAttribute < $maximumConstitution; $constitutionAttribute++) {
+                    $defender->setConstitution($constitutionAttribute);
+                    $attack = $attackFactory->make($attacker, $defender);
+
+                    $this->assertSame($attack->getAttackerEarning(), $attack->getDefenderLoss());
                 }
             }
         }

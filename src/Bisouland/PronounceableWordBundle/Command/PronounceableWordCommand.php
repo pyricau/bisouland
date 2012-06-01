@@ -35,12 +35,12 @@ EOT
         $generator = $container->get('bisouland_pronounceable_word.generator');
 
         $minimumLength = $input->getArgument('minimum-length');
-        $minimumLength = $input->getArgument('maximum-length');
+        $maximumLength = $input->getArgument('maximum-length');
 
         $maximumGenerationNumber = $input->getArgument('number-of-examples');
 
         for ($generationNumber = 0; $generationNumber < $maximumGenerationNumber; $generationNumber++) {
-            $length = mt_rand($minimumLength, $minimumLength);
+            $length = mt_rand($minimumLength, $maximumLength);
 
             $output->writeln($generator->generateWordOfGivenLength($length));
         }

@@ -21,7 +21,7 @@ class LinkedLetters {
         'p' => 'aeiloru',
         'r' => 'aeiou',
         's' => 'aehiotu',
-        't' => 'aeiorsu',
+        't' => 'aeioru',
         'u' => 'abcdefgiklmnoprstvwxz',
         'v' => 'aeiloru',
         'w' => 'aeiou',

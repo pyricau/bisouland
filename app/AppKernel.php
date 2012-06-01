@@ -35,6 +35,7 @@ class AppKernel extends Kernel
             
             /* Sonata */
             new Sonata\IntlBundle\SonataIntlBundle(),
+            new Bisouland\PronounceableWordBundle\BisoulandPronounceableWordBundle(),
         );
 
         if (in_array($this->getEnvironment(), array('dev', 'test'))) {

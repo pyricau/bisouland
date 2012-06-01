@@ -12,13 +12,13 @@ class LossUnitTest extends AttackFactoryTestCase
     {
         $attacker = $this->beingFactory->make();
         $defender = $this->beingFactory->make();
-        
+
         $defender->setDefense(AttackFactoryTestCase::$minimumAttribute);
 
         $minimumDiceResult = AttackFactory::$criticalFail + 1;
         $maximumDiceResult = AttackFactory::$damagesDiceNumberOfFace;
 
-        for ($diceResult = $minimumDiceResult; $diceResult < $maximumDiceResult; $diceResult++) {
+        for ($diceResult = $minimumDiceResult; $diceResult <= $maximumDiceResult; $diceResult++) {
             $attackFactory = $this->getAttackFactoryWithRollsReturningGivenResult($diceResult);
 
             for ($attribute = AttackFactoryTestCase::$minimumAttribute + 2; $attribute < AttackFactoryTestCase::$maximumAttribute; $attribute += 2) {
@@ -31,6 +31,34 @@ class LossUnitTest extends AttackFactoryTestCase
                 }
 
                 $this->assertSame($attack->getDefenderLoss(), $lossExpected);
+            }
+        }
+    }
+
+    public function testLossInferiorThanLifePoints()
+    {
+        $attacker = $this->beingFactory->make();
+        $defender = $this->beingFactory->make();
+
+        $defender->setDefense(AttackFactoryTestCase::$minimumAttribute);
+
+        $minimumDiceResult = AttackFactory::$criticalFail + 1;
+        $maximumDiceResult = AttackFactory::$damagesDiceNumberOfFace;
+
+        for ($diceResult = $minimumDiceResult; $diceResult <= $maximumDiceResult; $diceResult++) {
+            $attackFactory = $this->getAttackFactoryWithRollsReturningGivenResult($diceResult);
+
+            for ($attribute = AttackFactoryTestCase::$minimumAttribute + 2; $attribute < AttackFactoryTestCase::$maximumAttribute; $attribute += 2) {
+                $attacker->setAttack($attribute);
+
+                $minimumLifePoints = AttackFactory::$minimumLossValue + 1;
+                $maximumLifePoints = $diceResult + $attacker->getBonusAttack();
+                for ($lifePoints = $minimumLifePoints; $lifePoints < $maximumLifePoints; $lifePoints++) {
+                    $defender->setLifePoints($lifePoints);
+                    $attack = $attackFactory->make($attacker, $defender);
+
+                    $this->assertSame($attack->getDefenderLoss(), $lifePoints);
+                }
             }
         }
     }

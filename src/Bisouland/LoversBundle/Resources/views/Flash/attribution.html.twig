@@ -1,0 +1,7 @@
+{% if app.session.hasFlash('hasAttributedLover') and app.session.flash('hasAttributedLover') %}
+    <div class="alert alert-info">
+        <button class="close" data-dismiss="alert">&times;</button>
+        <span class="badge"><i class="icon-hand-right"></i></span>
+        Un amoureux ({{ app.session.get('selectedLoverName') }}) vous a &eacute;t&eacute; attribu&eacute; !
+    </div>
+{% endif %}

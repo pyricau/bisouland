@@ -14,7 +14,7 @@ class Builder extends ContainerAware
         $menu->setCurrentUri($this->container->get('request')->getRequestUri());
 
         $menu->addChild('Accueil', array('route' => 'homepage'));
-        $menu->addChild('Amoureux', array('route' => 'beings'));
+        $menu->addChild('Amoureux', array('route' => 'lovers'));
         $menu->addChild('News', array('route' => 'news'));
 
         return $menu;

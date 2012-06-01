@@ -109,10 +109,16 @@ class AttackFactory
     {
         $defenderBonus = $this->defender->getBonusConstitution();
 
-        $attackerEarning = $this->attack->getDefenderLoss() - ($defenderBonus * $this->multiplier);
+        $loss = $this->attack->getDefenderLoss();
+
+        $attackerEarning = $loss - ($defenderBonus * $this->multiplier);
         if ($attackerEarning < self::$minimumEarningValue) {
             $attackerEarning = self::$minimumEarningValue;
         }
+        if ($attackerEarning > $loss) {
+            $attackerEarning = $loss;
+        }
+
         $this->attack->setAttackerEarning($attackerEarning);
     }
 }

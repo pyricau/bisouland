@@ -13,6 +13,8 @@ class AttackFactory
     private $attacker;
     private $defender;
 
+    private $multiplier = 1;
+
     static public $minimumDiceValue = 1;
     static public $minimumLossValue = 1;
     static public $minimumEarningValue = 0;
@@ -26,6 +28,11 @@ class AttackFactory
     public function __construct(RollFactory $rollFactory)
     {
         $this->rollFactory = $rollFactory;
+    }
+
+    public function setMultiplier($multiplier)
+    {
+        $this->multiplier = $multiplier;
     }
 
     public function make(Being $attacker, Being $defender)
@@ -85,7 +92,7 @@ class AttackFactory
         $damagesRoll = $this->rollFactory->make();;
         $attackerBonus = $this->attacker->getBonusAttack();
 
-        $defenderLoss = $damagesRoll + $attackerBonus;
+        $defenderLoss = ($damagesRoll + $attackerBonus) * $this->multiplier;
         if ($defenderLoss < self::$minimumLossValue) {
             $defenderLoss = self::$minimumLossValue;
         }
@@ -102,7 +109,7 @@ class AttackFactory
     {
         $defenderBonus = $this->defender->getBonusConstitution();
 
-        $attackerEarning = $this->attack->getDefenderLoss() - $defenderBonus;
+        $attackerEarning = $this->attack->getDefenderLoss() - ($defenderBonus * $this->multiplier);
         if ($attackerEarning < self::$minimumEarningValue) {
             $attackerEarning = self::$minimumEarningValue;
         }

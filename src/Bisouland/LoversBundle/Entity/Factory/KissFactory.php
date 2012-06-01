@@ -28,6 +28,9 @@ class KissFactory
     {
         $this->doctrine = $doctrine;
         $this->attackFacotry = $attackFactory;
+
+        $numberOfSecondsInOneHour = 60 * 60;
+        $this->attackFacotry->setMultiplier($numberOfSecondsInOneHour);
     }
 
     public function make($kisserName, $kissedName)
@@ -79,12 +82,11 @@ class KissFactory
 
     private function makeKiss()
     {
-        $numberOfSecondsInOneHour = 60 * 60;
         $attack = $this->attackFacotry->make($this->kisser, $this->kissed);
         $kiss = new Kiss();
 
-        $kiss->setAttackerEarning($attack->getAttackerEarning() * $numberOfSecondsInOneHour);
-        $kiss->setDefenderLoss($attack->getDefenderLoss() * $numberOfSecondsInOneHour);
+        $kiss->setAttackerEarning($attack->getAttackerEarning());
+        $kiss->setDefenderLoss($attack->getDefenderLoss());
         $kiss->setIsCritical($attack->getIsCritical());
         $kiss->setHasHit($attack->getHasHit());
         $kiss->setAttacker($this->kisser);

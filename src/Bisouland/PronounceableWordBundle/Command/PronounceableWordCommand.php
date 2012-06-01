@@ -3,7 +3,7 @@
 namespace Bisouland\PronounceableWordBundle\Command;
 
 use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
-use Symfony\Component\Console\Input\InputArgument;
+use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 
@@ -15,9 +15,9 @@ class PronounceableWordCommand extends ContainerAwareCommand
             ->setName('pronounceable-word:generate-examples')
             ->setDescription('Generates examples of pronounceable words')
             ->setHelp('Please ask your local curry würst retailer.')
-            ->addArgument('minimum-length', InputArgument::OPTIONAL, 'The minimum length', 4)
-            ->addArgument('maximum-length', InputArgument::OPTIONAL, 'The maximum length', 9)
-            ->addArgument('number-of-examples', InputArgument::OPTIONAL, 'The number of examples to generate', 20)
+            ->addOption('minimum-length', null, InputOption::VALUE_OPTIONAL, 'The minimum length', 4)
+            ->addOption('maximum-length', null, InputOption::VALUE_OPTIONAL, 'The maximum length', 9)
+            ->addOption('number-of-examples', null, InputOption::VALUE_OPTIONAL, 'The number of examples to generate', 20)
             ->setHelp(<<<EOT
 The <info>pronounceable-word:generate-examples</info> command generates examples
 of pronounceable words
@@ -34,10 +34,10 @@ EOT
         $container = $this->getApplication()->getKernel()->getContainer();
         $generator = $container->get('bisouland_pronounceable_word.generator');
 
-        $minimumLength = intval($input->getArgument('minimum-length'));
-        $maximumLength = intval($input->getArgument('maximum-length'));
+        $minimumLength = intval($input->getOption('minimum-length'));
+        $maximumLength = intval($input->getOption('maximum-length'));
 
-        $maximumGenerationNumber = $input->getArgument('number-of-examples');
+        $maximumGenerationNumber = intval($input->getOption('number-of-examples'));
 
         for ($generationNumber = 0; $generationNumber < $maximumGenerationNumber; $generationNumber++) {
             $length = mt_rand($minimumLength, $maximumLength);

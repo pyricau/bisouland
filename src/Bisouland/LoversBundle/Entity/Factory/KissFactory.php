@@ -15,8 +15,9 @@ use Bisouland\LoversBundle\Exception\KissOverflowException;
 
 class KissFactory
 {
+    public static $multiplierIsOneHourInSeconds = 3600;
     public static $quotaOfKiss = 3;
-    public static $quotaOfSeconds = 43200;
+    public static $quotaIsTwelveHoursInSeconds = 43200;
 
     private $doctrine;
     private $attackFacotry;
@@ -29,8 +30,7 @@ class KissFactory
         $this->doctrine = $doctrine;
         $this->attackFacotry = $attackFactory;
 
-        $numberOfSecondsInOneHour = 60 * 60;
-        $this->attackFacotry->setMultiplier($numberOfSecondsInOneHour);
+        $this->attackFacotry->setMultiplier(self::$multiplierIsOneHourInSeconds);
     }
 
     public function make($kisserName, $kissedName)
@@ -72,7 +72,7 @@ class KissFactory
                 ->countForLastGivenSeconds(
                         $this->kisser->getId(),
                         $this->kissed->getId(),
-                        self::$quotaOfSeconds
+                        self::$quotaIsTwelveHoursInSeconds
                 );
 
         if (self::$quotaOfKiss <= $numberOfKiss) {

@@ -9,7 +9,14 @@
 
 {% block view %}
     <article>
-        <h2>Amoureux {{ lover.name }}</h2>
+        <h2>
+            Amoureux {{ lover.name }}
+            {% if lover.bonuses is not empty %}
+                <span class="badge badge-success" title="A acquis le bonus">
+                    <i class="icon-star icon-white"></i>
+                </span>
+            {% endif %}
+        </h2>
 
         <table class="table table-striped">
             <tr>

@@ -31,6 +31,11 @@
                             {{ loop.index }}
                         </td>
                         <td>
+                            {% if lover.bonuses is not empty %}
+                                <span class="badge badge-success" title="A acquis le bonus">
+                                    <i class="icon-star icon-white"></i>
+                                </span>
+                            {% endif %}
                             {{ lover.name }}
                         </td>
                         <td class="love-points number">

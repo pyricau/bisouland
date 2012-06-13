@@ -46,7 +46,7 @@ article, footer > nav {
 }
 
 .number {
-    text-align: right;
+    text-align: right !important;
     font-family: monospace;
     font-weight: bold;
 }

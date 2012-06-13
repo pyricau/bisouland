@@ -7,11 +7,6 @@
 
 {% block title %}Bisouland v2 - Amoureux{% endblock %}
 
-{% block stylesheets %}
-    {{ parent() }}
-    <link rel="stylesheet" href="{{ asset('bundles/bisoulandlovers/css/table-sorting.css') }}" />
-{% endblock %}
-
 {% block view %}
     <article class="table-sorting">
         <h2>Population</h2>
@@ -72,26 +67,12 @@
 
 {% block afterJs %}
     {{ parent() }}
-    <script type="text/javascript" src="{{ asset('js/jquery.dataTables.min.js') }}"></script>
-    <script type="text/javascript" src="{{ asset('bundles/bisoulandlovers/js/table-sorting.js') }}"></script>
-    <script type="text/javascript">
-        $(document).ready(function() {
-            $('#population').dataTable({
-                'sDom': "<'row'<'span6'l><'span6'f>r>t<'row'<'span6'i><'span6'p>>"
-                , 'sPaginationType': 'bootstrap'
-                , 'oLanguage': {
-                    'sLengthMenu': '_MENU_ records per page'
-                }
-            })
-        })
-    </script>
-
     <script type="text/javascript" src="{{ asset('js/jquery.countdown.pack.js') }}"></script>
     <script type="text/javascript" src="{{ asset('js/jquery.countdown-fr.js') }}"></script></script>
 
     <script type="text/javascript">
         $('tr').each(function() {
-            var timeLeftInSeconds = $('.love-points', this).text().replace(/\s/g, '')
+            var timeLeftInSeconds = $('.love-points', this).text().replace(/\s|,/g, '')
 
             $('.love-points', this).countdown({
                 until: timeLeftInSeconds

@@ -14,11 +14,23 @@ class DefaultController extends Controller
      */
     public function indexAction()
     {
-        $displayInOnePage = $this->getDoctrine()
+        $entityManager = $this->getDoctrine()->getEntityManager();
+
+        $today = new \DateTime();
+        $lovers = $entityManager
+                ->getRepository('BisoulandLoversBundle:Lover')
+                ->findAll();
+        foreach ($lovers as $lover) {
+            $lover->setLifePoints($lover->getLifePoints());
+            $entityManager->persist($lover);
+            $entityManager->flush();
+        }
+
+        $displayInOnePage = $entityManager
                 ->getRepository('BisoulandLoversBundle:Lover')
                 ->count();
 
-        $loversQuery = $this->getDoctrine()
+        $loversQuery = $entityManager
                 ->getRepository('BisoulandLoversBundle:Lover')
                 ->findAllAsQuery();
 

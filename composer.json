@@ -38,6 +38,7 @@
         
         "gnugat/PronounceableWord": "dev-master",
         
+        "knplabs/knp-paginator-bundle": "dev-master",
         "knplabs/knp-menu-bundle": "dev-master",
         
         "sonata-project/intl-bundle": "dev-master"

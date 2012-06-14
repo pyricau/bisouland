@@ -2,19 +2,38 @@
 
 namespace Bisouland\RolePlayingGameSystemBundle\Entity\Factory;
 
+use Bisouland\RolePlayingGameSystemBundle\Entity\Factory\RollFactory;
 use Bisouland\RolePlayingGameSystemBundle\Entity\Being;
 use Bisouland\RolePlayingGameSystemBundle\Entity\Attack;
 
-class AttackFactory {
+class AttackFactory
+{
+    private $rollFactory;
+
     private $attacker;
     private $defender;
+
+    private $multiplier = 1;
 
     static public $minimumDiceValue = 1;
     static public $minimumLossValue = 1;
     static public $minimumEarningValue = 0;
 
+    static public $criticalHit = 20;
+    static public $criticalFail = 1;
+
     static public $hitDiceNumberOfFace = 20;
     static public $damagesDiceNumberOfFace = 4;
+
+    public function __construct(RollFactory $rollFactory)
+    {
+        $this->rollFactory = $rollFactory;
+    }
+
+    public function setMultiplier($multiplier)
+    {
+        $this->multiplier = $multiplier;
+    }
 
     public function make(Being $attacker, Being $defender)
     {
@@ -40,11 +59,13 @@ class AttackFactory {
 
     private function hit()
     {
-        $attackerRoll = mt_rand(self::$minimumDiceValue, self::$hitDiceNumberOfFace);
+        $this->rollFactory->setNumberOfFaces(self::$hitDiceNumberOfFace);
+
+        $attackerRoll = $this->rollFactory->make();
         $attackerBonus = $this->attacker->getBonusAttack();
         $attackerScore = $attackerRoll + $attackerBonus;
 
-        $defenderRoll = mt_rand(self::$minimumDiceValue, self::$hitDiceNumberOfFace);
+        $defenderRoll = $this->rollFactory->make();
         $defenderBonus = $this->defender->getBonusDefense();
         $defenderScore = $defenderRoll + $defenderBonus;
 
@@ -54,11 +75,11 @@ class AttackFactory {
 
     private function critical($roll)
     {
-        if (self::$hitDiceNumberOfFace === $roll) {
+        if (self::$criticalHit === $roll) {
             $this->attack->setIsCritical(true);
             $this->attack->setHasHit(true);
         }
-        if (self::$minimumDiceValue === $roll) {
+        if (self::$criticalFail === $roll) {
             $this->attack->setIsCritical(true);
             $this->attack->setHasHit(false);
         }
@@ -66,13 +87,21 @@ class AttackFactory {
 
     private function loss()
     {
-        $damagesRoll = mt_rand(self::$minimumDiceValue, self::$damagesDiceNumberOfFace);
+        $this->rollFactory->setNumberOfFaces(self::$damagesDiceNumberOfFace);
+
+        $damagesRoll = $this->rollFactory->make();;
         $attackerBonus = $this->attacker->getBonusAttack();
 
-        $defenderLoss = $damagesRoll + $attackerBonus;
+        $defenderLoss = ($damagesRoll + $attackerBonus) * $this->multiplier;
         if ($defenderLoss < self::$minimumLossValue) {
             $defenderLoss = self::$minimumLossValue;
         }
+        
+        $lifePoints = $this->defender->getLifePoints();
+        if ($defenderLoss > $lifePoints) {
+            $defenderLoss = $lifePoints;
+        }
+
         $this->attack->setDefenderLoss($defenderLoss);
     }
 
@@ -80,10 +109,16 @@ class AttackFactory {
     {
         $defenderBonus = $this->defender->getBonusConstitution();
 
-        $attackerEarning = $this->attack->getDefenderLoss() + $defenderBonus;
+        $loss = $this->attack->getDefenderLoss();
+
+        $attackerEarning = $loss - ($defenderBonus * $this->multiplier);
         if ($attackerEarning < self::$minimumEarningValue) {
             $attackerEarning = self::$minimumEarningValue;
         }
+        if ($attackerEarning > $loss) {
+            $attackerEarning = $loss;
+        }
+
         $this->attack->setAttackerEarning($attackerEarning);
     }
 }

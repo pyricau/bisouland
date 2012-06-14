@@ -23,7 +23,7 @@ class Builder extends ContainerAware
         $this->menu->setCurrentUri($this->request->getRequestUri());
 
         $this->addSelectedNameChild($loverName);
-        $this->addSelectedLovePointsChild($loverName, $selectedLover->getLifePointsLeft());
+        $this->addSelectedLovePointsChild($loverName, $selectedLover->getLifePoints());
 
         return $this->menu;
     }

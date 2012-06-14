@@ -6,7 +6,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 
-use Bisouland\BeingsBundle\Controller\SelectionController;
+use Bisouland\LoversBundle\Controller\SelectionController;
 use Bisouland\BonusBundle\Entity\Bonus;
 
 class DefaultController extends Controller
@@ -20,22 +20,22 @@ class DefaultController extends Controller
         $lovePointsToGet = 42 * 24 * 60 * 60;
         $answer = 'before';
 
-        $selectedBeingName = $this->getRequest()
+        $selectedLoverName = $this->getRequest()
                 ->getSession()
                 ->get(SelectionController::$sessionKey);
-        $selectedBeing = $this->getDoctrine()
-                ->getRepository('BisoulandBeingsBundle:Being')
-                ->findOneByName($selectedBeingName);
+        $selectedLover = $this->getDoctrine()
+                ->getRepository('BisoulandLoversBundle:Lover')
+                ->findOneByName($selectedLoverName);
         
-        if ($selectedBeing->getLovePoints() >= $lovePointsToGet) {
+        if ($selectedLover->getLifePoints() >= $lovePointsToGet) {
             $answer = 'after';
             
-            $numberOfBonuses = count($selectedBeing->getBonuses());
+            $numberOfBonuses = count($selectedLover->getBonuses());
             if (0 === $numberOfBonuses) {
                 $answer = 'now';
                 
                 $bonus = new Bonus();
-                $bonus->setBeing($selectedBeing);
+                $bonus->setLover($selectedLover);
                 
                 $entityManager = $this->getDoctrine()->getEntityManager();
                 $entityManager->persist($bonus);

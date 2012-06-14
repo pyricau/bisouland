@@ -32,7 +32,7 @@ class KissController extends Controller
      */
     public function indexAction($kissedName)
     {
-        $kissFactory = new KissFactory($this->getDoctrine(), new AttackFactory());
+        $kissFactory = new KissFactory($this->getDoctrine(), $this->get('bisouland_role_playing_game_system.attack_factory'));
 
         try {
             $this->setReportFlash($kissFactory->make(
@@ -75,7 +75,7 @@ class KissController extends Controller
             $message = sprintf(
                     'Vous ne pouvez pas embrasser plus de %s fois le m&ecirc;me amoureux en moins de %s heures',
                     KissFactory::$quotaOfKiss,
-                    KissFactory::$quotaOfSeconds / 60 /60
+                    KissFactory::$quotaIsTwelveHoursInSeconds / 60 /60
             );
         }
 

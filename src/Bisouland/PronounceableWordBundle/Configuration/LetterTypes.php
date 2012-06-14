@@ -1,6 +1,6 @@
 <?php
 
-namespace Bisouland\LoversBundle\PronounceableWord\Configuration;
+namespace Bisouland\PronounceableWordBundle\Configuration;
 
 class LetterTypes {
     public $letterTypesWithLetters = array(

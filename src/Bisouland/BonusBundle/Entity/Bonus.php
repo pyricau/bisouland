@@ -22,9 +22,9 @@ class Bonus
 
     /**
      * @ORM\ManyToOne(targetEntity="Bisouland\LoversBundle\Entity\Lover", inversedBy="bonuses")
-     * @ORM\JoinColumn(name="being_id", referencedColumnName="id", onDelete="CASCADE")
+     * @ORM\JoinColumn(name="lover_id", referencedColumnName="id", onDelete="CASCADE")
      */
-    private $being;
+    private $lover;
 
     /**
      * @Gedmo\Timestampable(on="create")
@@ -38,15 +38,15 @@ class Bonus
         return $this->id;
     }
 
-    public function setLover(Lover $being)
+    public function setLover(Lover $lover)
     {
-        $this->being = $being;
+        $this->lover = $lover;
         return $this;
     }
 
     public function getLover()
     {
-        return $this->being;
+        return $this->lover;
     }
 
     public function getCreated()

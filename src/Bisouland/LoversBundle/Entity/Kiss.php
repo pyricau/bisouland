@@ -3,6 +3,7 @@
 namespace Bisouland\LoversBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use Gedmo\Mapping\Annotation as Gedmo;
 
 use Bisouland\RolePlayingGameSystemBundle\Entity\Attack;
 
@@ -12,6 +13,13 @@ use Bisouland\RolePlayingGameSystemBundle\Entity\Attack;
  */
 class Kiss extends Attack
 {
+    /**
+     * @ORM\Column(name="id", type="integer")
+     * @ORM\Id
+     * @ORM\GeneratedValue(strategy="AUTO")
+     */
+    private $id;
+
     /**
      * @ORM\ManyToOne(targetEntity="Bisouland\LoversBundle\Entity\Lover", inversedBy="attacksDone")
      * @ORM\JoinColumn(name="attacker_id", referencedColumnName="id", onDelete="CASCADE")
@@ -23,4 +31,20 @@ class Kiss extends Attack
      * @ORM\JoinColumn(name="defender_id", referencedColumnName="id", onDelete="CASCADE")
      */
     protected $defender;
+
+    /**
+     * @Gedmo\Timestampable(on="create")
+     * @ORM\Column(name="created", type="datetime")
+     */
+    private $created;
+
+    public function getId()
+    {
+        return $this->id;
+    }
+
+    public function getCreated()
+    {
+        return $this->created;
+    }
 }

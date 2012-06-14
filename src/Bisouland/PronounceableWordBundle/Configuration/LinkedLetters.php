@@ -1,28 +1,28 @@
 <?php
 
-namespace Bisouland\LoversBundle\PronounceableWord\Configuration;
+namespace Bisouland\PronounceableWordBundle\Configuration;
 
 class LinkedLetters {
     public $lettersWithLinkedLetters = array(
         'a' => 'bcdefgklmnoprstuvwxz',
-        'b' => 'aehiloru',
+        'b' => 'aeiloru',
         'c' => 'aehiloru',
-        'd' => 'aehioru',
+        'd' => 'aeioru',
         'e' => 'bcdfgiklmnoprstuvwxz',
         'f' => 'aeiloru',
         'g' => 'aeiloru',
         'h' => 'aeiou',
         'i' => 'abcdefgklmnoprstuvwxz',
-        'k' => 'aeiloru',
+        'k' => 'aeilou',
         'l' => 'aeiou',
         'm' => 'aeiou',
         'n' => 'aeiou',
-        'o' => 'abcdefgiklmnprstuvwxz',
+        'o' => 'abcdfgiklmnprstuvwxz',
         'p' => 'aeiloru',
         'r' => 'aeiou',
         's' => 'aehiotu',
-        't' => 'aeiorsu',
-        'u' => 'abcdefgiklmnoprstvwxz',
+        't' => 'aeioru',
+        'u' => 'abcdefgiklmnprstvwxz',
         'v' => 'aeiloru',
         'w' => 'aeiou',
         'x' => 'aeiou',

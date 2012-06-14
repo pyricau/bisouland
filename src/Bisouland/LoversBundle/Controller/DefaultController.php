@@ -14,6 +14,10 @@ class DefaultController extends Controller
      */
     public function indexAction()
     {
+        $displayInOnePage = $this->getDoctrine()
+                ->getRepository('BisoulandLoversBundle:Lover')
+                ->count();
+
         $loversQuery = $this->getDoctrine()
                 ->getRepository('BisoulandLoversBundle:Lover')
                 ->findAllAsQuery();
@@ -21,7 +25,8 @@ class DefaultController extends Controller
         $paginator = $this->get('knp_paginator');
         $pagination = $paginator->paginate(
                 $loversQuery,
-                $this->get('request')->query->get('page', 1)
+                $this->get('request')->query->get('page', 1),
+                $displayInOnePage
         );
         $pagination->setTemplate('BisoulandLoversBundle:Pagination:pagination.html.twig');
 

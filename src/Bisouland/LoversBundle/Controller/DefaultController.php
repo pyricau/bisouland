@@ -29,6 +29,7 @@ class DefaultController extends Controller
                 $displayInOnePage
         );
         $pagination->setTemplate('BisoulandLoversBundle:Pagination:pagination.html.twig');
+        $pagination->setSortableTemplate('BisoulandLoversBundle:Pagination:sortable.html.twig');
 
         return compact('pagination');
     }

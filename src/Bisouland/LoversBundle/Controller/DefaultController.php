@@ -23,6 +23,7 @@ class DefaultController extends Controller
                 $loversQuery,
                 $this->get('request')->query->get('page', 1)
         );
+        $pagination->setTemplate('BisoulandLoversBundle:Pagination:pagination.html.twig');
 
         return compact('pagination');
     }

@@ -15,17 +15,35 @@
             <thead>
                 <tr>
                     <th>#</th>
-                    <th>Nom</th>
-                    <th><abbr title="Points d'Amour" class="initialism">PA</abbr></th>
-                    <th><abbr title="S&eacute;duction" class="initialism">S</abbr></th>
-                    <th><abbr title="Baffe" class="initialism">B</abbr></th>
-                    <th><abbr title="Coeur" class="initialism">C</abbr></th>
+                    <th>
+                        {{ pagination.sortable('Nom', 'bisouland_lover.name')|raw }}
+                    </th>
+                    <th>
+                        <abbr title="Points d'Amour" class="initialism">
+                            {{ pagination.sortable('PA', 'bisouland_lover.life_points')|raw }}
+                        </abbr>
+                    </th>
+                    <th>
+                        <abbr title="S&eacute;duction" class="initialism">
+                            {{ pagination.sortable('S', 'bisouland_lover.attack')|raw }}
+                        </abbr>
+                    </th>
+                    <th>
+                        <abbr title="Baffe" class="initialism">
+                            {{ pagination.sortable('B', 'bisouland_lover.defense')|raw }}
+                        </abbr>
+                    </th>
+                    <th>
+                        <abbr title="Coeur" class="initialism">
+                            {{ pagination.sortable('C', 'bisouland_lover.constitution')|raw }}
+                        </abbr>
+                    </th>
                     <th>Actions</th>
                 </tr>
             </thead>
 
             <tbody>
-                {% for lover in lovers %}
+                {% for lover in pagination %}
                     <tr>
                         <td class="number">
                             {{ loop.index }}
@@ -67,6 +85,8 @@
                 {% endfor %}
             </tbody>
         </table>
+
+        {{ pagination.render()|raw }}
     </article>
 {% endblock %}
 

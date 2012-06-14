@@ -71,12 +71,26 @@ class LoverRepository extends EntityRepositoryWithExceptionManagement
     {
         $query = $this->getEntityManager()
                 ->createQueryBuilder()
-                ->select('bisouland_lover')
+                ->select(
+                        'bisouland_lover'
+                        .', AS bisouland_lover.life_points'
+                )
                 ->from('BisoulandLoversBundle:Lover', 'bisouland_lover')
                 ->orderBy('bisouland_lover.id', 'desc')
                 ->setMaxResults(1)
                 ->getQuery();
 
         return $query->getSingleResult();
+    }
+
+    public function findAllAsQuery()
+    {
+        $query = $this->getEntityManager()
+                ->createQueryBuilder()
+                ->select('bisouland_lover')
+                ->from('BisoulandLoversBundle:Lover', 'bisouland_lover')
+                ->getQuery();
+        
+        return $query;
     }
 }

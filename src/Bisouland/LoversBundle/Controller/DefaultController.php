@@ -14,11 +14,17 @@ class DefaultController extends Controller
      */
     public function indexAction()
     {
-        $lovers = $this->getDoctrine()
+        $loversQuery = $this->getDoctrine()
                 ->getRepository('BisoulandLoversBundle:Lover')
-                ->findAll();
+                ->findAllAsQuery();
 
-        return array('lovers' => $lovers);
+        $paginator = $this->get('knp_paginator');
+        $pagination = $paginator->paginate(
+                $loversQuery,
+                $this->get('request')->query->get('page', 1)
+        );
+
+        return compact('pagination');
     }
     
     /**

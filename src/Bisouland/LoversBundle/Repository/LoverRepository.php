@@ -79,4 +79,15 @@ class LoverRepository extends EntityRepositoryWithExceptionManagement
 
         return $query->getSingleResult();
     }
+
+    public function findAllAsQuery()
+    {
+        $query = $this->getEntityManager()
+                ->createQueryBuilder()
+                ->select('bisouland_lover')
+                ->from('BisoulandLoversBundle:Lover', 'bisouland_lover')
+                ->getQuery();
+        
+        return $query;
+    }
 }

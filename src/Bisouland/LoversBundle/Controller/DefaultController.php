@@ -16,19 +16,16 @@ class DefaultController extends Controller
     {
         $entityManager = $this->getDoctrine()->getEntityManager();
 
-        $today = new \DateTime();
         $lovers = $entityManager
                 ->getRepository('BisoulandLoversBundle:Lover')
                 ->findAll();
+        $numberOfLovers = count($lovers);
+
         foreach ($lovers as $lover) {
             $lover->setLifePoints($lover->getLifePoints());
             $entityManager->persist($lover);
             $entityManager->flush();
         }
-
-        $displayInOnePage = $entityManager
-                ->getRepository('BisoulandLoversBundle:Lover')
-                ->count();
 
         $loversQuery = $entityManager
                 ->getRepository('BisoulandLoversBundle:Lover')
@@ -38,7 +35,7 @@ class DefaultController extends Controller
         $pagination = $paginator->paginate(
                 $loversQuery,
                 $this->get('request')->query->get('page', 1),
-                $displayInOnePage
+                $numberOfLovers
         );
         $pagination->setTemplate('BisoulandLoversBundle:Pagination:pagination.html.twig');
         $pagination->setSortableTemplate('BisoulandLoversBundle:Pagination:sortable.html.twig');

@@ -16,7 +16,7 @@ class LoverFactory {
     static public $attributeNumberOfBestDiceResultToKeep = 3;
 
     static public $defaultNumberOfLovePoints = 8;
-    static public $lovePointMultiplierAsNumberOfSecondsInOneDay = 86400;
+    static public $lovePointMultiplier = 86400;
 
     private $nameGenerator;
 
@@ -106,6 +106,6 @@ class LoverFactory {
         
         $lovePoints = self::$defaultNumberOfLovePoints + $lovePointBonus;
 
-        return $lovePoints * self::$lovePointMultiplierAsNumberOfSecondsInOneDay;
+        return $lovePoints * self::$lovePointMultiplier;
     }
 }

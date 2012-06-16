@@ -27,4 +27,3 @@ Swift::registerAutoload(__DIR__.'/../vendor/swiftmailer/swiftmailer/lib/swift_in
 
 require_once __DIR__.'/../vendor/uvd/doctrine/UVd/DoctrineFunction/DateFormat.php';
 require_once __DIR__.'/../vendor/uvd/doctrine/UVd/DoctrineFunction/UnixTimestamp.php';
-

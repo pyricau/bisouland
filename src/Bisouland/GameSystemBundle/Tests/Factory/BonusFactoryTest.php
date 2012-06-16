@@ -30,13 +30,15 @@ class BonusFactoryTest extends \PHPUnit_Framework_TestCase
         foreach ($attributesAndBonuses as $attribute => $expectedBonus) {
             $bonus = $this->makeBonusFromGivenAttribute($attribute);
 
-            $this->assertSame($bonus, $expectedBonus);
+            $this->assertSame($expectedBonus, $bonus);
         }
     }
 
     private function makeBonusFromGivenAttribute($attribute)
     {
-        $attributeFactory = $this->getMock('Bisouland\GameSystemBundle\Factory\AttributeFactory');
+        $attributeFactory = $this->getMockBuilder('Bisouland\GameSystemBundle\Factory\AttributeFactory')
+                ->disableOriginalConstructor()
+                ->getMock();
  
         $attributeFactory->expects($this->any())
              ->method('make')

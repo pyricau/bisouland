@@ -1,11 +1,12 @@
 <?php
 
-namespace Bisouland\GameSystemBundle\Factory;
+namespace Bisouland\GameSystemBundle\Kiss\Factory;
 
 use Bisouland\GameSystemBundle\Factory\RollFactory;
 use Bisouland\GameSystemBundle\Entity\Lover;
+use Bisouland\GameSystemBundle\Kiss\Success;
 
-class KissSuccessFactory
+class SuccessFactory
 {
     static public $diceNumberOfSides = 20;
 
@@ -14,48 +15,49 @@ class KissSuccessFactory
 
     private $rollFactory;
 
-    private $success = false;
-    private $critical = false;
+    private $isSuccess;
+    private $isCritical;
 
     public function __construct(RollFactory $rollFactory)
     {
         $this->rollFactory = $rollFactory;
-    }
-
-    public function isSuccess()
-    {
-        return $this->success;
-    }
-
-    public function isCritical()
-    {
-        return $this->critical;
+        $this->rollFactory->setNumberOfSides(self::$diceNumberOfSides);
     }
 
     public function make($kisserBonus, $kissedBonus)
     {
-        $this->rollFactory->setNumberOfSides(self::$diceNumberOfSides);
+        $this->processSuccessAndCritical($kisserBonus, $kissedBonus);
 
+        $success = new Success();
+        $success->setIsSuccess($this->isSuccess);
+        $success->setIsCritical($this->isCritical);
+        
+        return $success;
+    }
+
+    private function processSuccessAndCritical($kisserBonus, $kissedBonus)
+    {
         $kisserRoll = $this->rollFactory->make();
         $kisserScore = $kisserRoll + $kisserBonus;
 
         $kissedRoll = $this->rollFactory->make();
         $kissedScore = $kissedRoll + $kissedBonus;
 
-        $this->success = $kisserScore >= $kissedScore;
+        $this->isSuccess = $kisserScore >= $kissedScore;
 
         $this->setCriticalFromGivenRoll($kisserRoll);
     }
 
     private function setCriticalFromGivenRoll($roll)
     {
+        $this->isCritical = false;
         if (self::$criticalSuccessRoll === $roll) {
-            $this->critical = true;
-            $this->success = true;
+            $this->isCritical = true;
+            $this->isSuccess = true;
         }
         if (self::$criticalFailRoll === $roll) {
-            $this->critical = true;
-            $this->success = false;
+            $this->isCritical = true;
+            $this->isSuccess = false;
         }
     }
 }

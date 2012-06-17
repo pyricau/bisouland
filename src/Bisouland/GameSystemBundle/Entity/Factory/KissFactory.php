@@ -2,6 +2,7 @@
 
 namespace Bisouland\GameSystemBundle\Entity\Factory;
 
+use Bisouland\GameSystemBundle\Factory\KissSuccessFactory;
 use Bisouland\GameSystemBundle\Entity\Factory\RollFactory;
 use Bisouland\GameSystemBundle\Entity\Lover;
 use Bisouland\GameSystemBundle\Entity\Kiss;
@@ -20,14 +21,16 @@ class KissFactory
 
     static public $damagesMultiplier = 3600;
 
+    private $kissSuccessFactory;
     private $rollFactory;
 
     private $kisser;
     private $kissed;
     private $kiss;
 
-    public function __construct(RollFactory $rollFactory)
+    public function __construct(KissSuccessFactory $kissSuccessFactory, RollFactory $rollFactory)
     {
+        $this->kissSuccessFactory = $kissSuccessFactory;
         $this->rollFactory = $rollFactory;
     }
 
@@ -40,29 +43,16 @@ class KissFactory
         $this->kiss->setkisser($this->kisser);
         $this->kiss->setkissed($this->kissed);
         $this->kiss->setIsCritical(false);
-        $this->kiss->setHasSucceeded(false);
+        $this->kiss->setHasSucceeded($this->kissSuccessFactory->make(
+                $this->kisser->getSeductionBonus(),
+                $this->kissed->getDodgeBonus()
+        ));
         $this->kiss->setDamages(0);
 
-        $this->success();
+        $this->critical($this->kissSuccessFactory->getKisserRoll());
         $this->damages();
 
         return $this->kiss;
-    }
-
-    private function success()
-    {
-        $this->rollFactory->setNumberOfSidess(self::$successDiceNumberOfSides);
-
-        $kisserRoll = $this->rollFactory->make();
-        $kisserBonus = $this->kisser->getSeductionBonus();
-        $kisserScore = $kisserRoll + $kisserBonus;
-
-        $kissedRoll = $this->rollFactory->make();
-        $kissedBonus = $this->kissed->getDodgeBonus();
-        $kissedScore = $kissedRoll + $kissedBonus;
-
-        $this->kiss->setHasSucceeded($kisserScore >= $kissedScore);
-        $this->critical($kisserRoll);
     }
 
     private function critical($roll)

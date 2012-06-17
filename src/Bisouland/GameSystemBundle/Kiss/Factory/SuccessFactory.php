@@ -3,7 +3,6 @@
 namespace Bisouland\GameSystemBundle\Kiss\Factory;
 
 use Bisouland\GameSystemBundle\Factory\RollFactory;
-use Bisouland\GameSystemBundle\Entity\Lover;
 use Bisouland\GameSystemBundle\Kiss\Success;
 
 class SuccessFactory

@@ -12,7 +12,7 @@ class SuccessFactoryTest extends \PHPUnit_Framework_TestCase
     private $kissedRoll;
 
     private $successFactory;
-    private $succes;
+    private $success;
 
     public function testSuccess()
     {
@@ -35,6 +35,25 @@ class SuccessFactoryTest extends \PHPUnit_Framework_TestCase
                 }
             }
         }
+    }
+
+    private function makeSuccess()
+    {
+        $this->successFactory = new SuccessFactory(
+                $this->getRollFactoryForGivenTwoRolls($this->kisserRoll, $this->kissedRoll)
+        );
+        $this->success = $this->successFactory->make($this->kisserBonus, $this->kissedBonus);
+    }
+
+    private function getRollFactoryForGivenTwoRolls($kisserRoll, $kissedRoll)
+    {
+        $rollFactory = $this->getMock('Bisouland\GameSystemBundle\Factory\RollFactory');
+ 
+        $rollFactory->expects($this->any())
+                ->method('make')
+                ->will($this->onConsecutiveCalls($kisserRoll, $kissedRoll));
+
+        return $rollFactory;
     }
 
     private function checkCriticalFail()
@@ -73,24 +92,5 @@ class SuccessFactoryTest extends \PHPUnit_Framework_TestCase
             $this->assertTrue($this->success->getIsCritical());
             $this->assertTrue($this->success->getIsSuccess());
         }
-    }
-
-    private function makeSuccess()
-    {
-        $this->successFactory = new SuccessFactory(
-                $this->getRollFactoryForGivenTwoRolls($this->kisserRoll, $this->kissedRoll)
-        );
-        $this->success = $this->successFactory->make($this->kisserBonus, $this->kissedBonus);
-    }
-
-    private function getRollFactoryForGivenTwoRolls($kisserRoll, $kissedRoll)
-    {
-        $rollFactory = $this->getMock('Bisouland\GameSystemBundle\Factory\RollFactory');
- 
-        $rollFactory->expects($this->any())
-                ->method('make')
-                ->will($this->onConsecutiveCalls($kisserRoll, $kissedRoll));
-
-        return $rollFactory;
     }
 }

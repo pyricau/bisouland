@@ -9,16 +9,8 @@ use Bisouland\GameSystemBundle\Entity\Kiss;
 
 class KissFactory
 {
-    static public $minimumDiceValue = 1;
-    static public $minimumLossValue = 1;
-    static public $minimumEarningValue = 0;
-
-    static public $criticalSuccessRoll = 20;
-    static public $criticalFailRoll = 1;
-
-    static public $successDiceNumberOfSides = 20;
+    static public $damagesMinimumValue = 1;
     static public $damagesDiceNumberOfSides = 4;
-
     static public $damagesMultiplier = 3600;
 
     private $kissSuccessFactory;
@@ -39,32 +31,21 @@ class KissFactory
         $this->kisser = $kisser;
         $this->kissed = $kissed;
 
+        $this->kissSuccessFactory->make(
+                $this->kisser->getSeductionBonus(),
+                $this->kissed->getDodgeBonus()
+        );
+
         $this->kiss = new Kiss();
         $this->kiss->setkisser($this->kisser);
         $this->kiss->setkissed($this->kissed);
-        $this->kiss->setIsCritical(false);
-        $this->kiss->setHasSucceeded($this->kissSuccessFactory->make(
-                $this->kisser->getSeductionBonus(),
-                $this->kissed->getDodgeBonus()
-        ));
+        $this->kiss->setIsCritical($this->kissSuccessFactory->isCritical());
+        $this->kiss->setHasSucceeded($this->kissSuccessFactory->isSuccess());
         $this->kiss->setDamages(0);
 
-        $this->critical($this->kissSuccessFactory->getKisserRoll());
         $this->damages();
 
         return $this->kiss;
-    }
-
-    private function critical($roll)
-    {
-        if (self::$criticalSuccessRoll === $roll) {
-            $this->kiss->setIsCritical(true);
-            $this->kiss->setHasSucceeded(true);
-        }
-        if (self::$criticalFailRoll === $roll) {
-            $this->kiss->setIsCritical(true);
-            $this->kiss->setHasSucceeded(false);
-        }
     }
 
     private function damages($bonus)
@@ -80,8 +61,8 @@ class KissFactory
         $damagesRoll = $this->rollFactory->make();
 
         $damages = ($damagesRoll + $bonus) * self::$damagesMultiplier;
-        if ($damages < self::$minimumDamagesValue) {
-            $damages = self::$minimumDamagesValue * self::$damagesMultiplier;
+        if ($damages < self::$damagesMinimumValue) {
+            $damages = self::$damagesMinimumValue * self::$damagesMultiplier;
         }
 
         if (true === $this->kiss->getHasSucceeded()) {
@@ -90,8 +71,8 @@ class KissFactory
             $lovePoints = $this->kisser->getLovePoints();
         }
 
-        if ($damages > $lifePoints) {
-            $damages = $lifePoints;
+        if ($damages > $lovePoints) {
+            $damages = $lovePoints;
         }
 
         $this->kiss->setDamages($damages);

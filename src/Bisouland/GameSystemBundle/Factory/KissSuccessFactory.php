@@ -8,33 +8,54 @@ use Bisouland\GameSystemBundle\Entity\Lover;
 class KissSuccessFactory
 {
     static public $diceNumberOfSides = 20;
-    static public $uninitialisedKisserRoll = -1;
+
+    static public $criticalSuccessRoll = 20;
+    static public $criticalFailRoll = 1;
 
     private $rollFactory;
 
-    private $kisserRoll;
+    private $success = false;
+    private $critical = false;
 
     public function __construct(RollFactory $rollFactory)
     {
         $this->rollFactory = $rollFactory;
-        $this->kisserRoll = self::$uninitialisedKisserRoll;
     }
 
-    public function getKisserRoll()
+    public function isSuccess()
     {
-        return $this->kisserRoll;
+        return $this->success;
+    }
+
+    public function isCritical()
+    {
+        return $this->critical;
     }
 
     public function make($kisserBonus, $kissedBonus)
     {
         $this->rollFactory->setNumberOfSides(self::$diceNumberOfSides);
 
-        $this->kisserRoll = $this->rollFactory->make();
-        $kisserScore = $this->kisserRoll + $kisserBonus;
+        $kisserRoll = $this->rollFactory->make();
+        $kisserScore = $kisserRoll + $kisserBonus;
 
         $kissedRoll = $this->rollFactory->make();
         $kissedScore = $kissedRoll + $kissedBonus;
 
-        return $kisserScore >= $kissedScore;
+        $this->success = $kisserScore >= $kissedScore;
+
+        $this->setCriticalFromGivenRoll($kisserRoll);
+    }
+
+    private function setCriticalFromGivenRoll($roll)
+    {
+        if (self::$criticalSuccessRoll === $roll) {
+            $this->critical = true;
+            $this->success = true;
+        }
+        if (self::$criticalFailRoll === $roll) {
+            $this->critical = true;
+            $this->success = false;
+        }
     }
 }

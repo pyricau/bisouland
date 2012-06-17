@@ -6,38 +6,80 @@ use Bisouland\GameSystemBundle\Factory\KissSuccessFactory;
 
 class KissSuccessFactoryTest extends \PHPUnit_Framework_TestCase
 {
-    public function testHasSucceeded()
-    {
-        for ($kisserBonus = 3; $kisserBonus <= 4; $kisserBonus++) {
-            for ($kissedBonus = -4; $kissedBonus < $kisserBonus; $kissedBonus++) {
-                for ($kisserRoll = 2; $kisserRoll <= KissSuccessFactory::$diceNumberOfSides; $kisserRoll++) {
-                    for ($kissedRoll = 1; $kissedRoll < $kisserRoll; $kissedRoll++) {
-                        $kissSuccessFactory = new KissSuccessFactory(
-                                $this->getRollFactoryForGivenTwoRolls($kisserRoll, $kissedRoll)
-                        );
+    private $kisserBonus;
+    private $kissedBonus;
+    private $kisserRoll;
+    private $kissedRoll;
 
-                        $this->assertTrue($kissSuccessFactory->make($kisserBonus, $kissedBonus));
+    private $kissSuccessFactory;
+
+    public function testSuccess()
+    {
+        $minimumBonus = -4;
+        $maximumBonus = 4;
+        $minimumRoll = 1;
+        $maximumRoll = KissSuccessFactory::$diceNumberOfSides;
+        
+        for ($this->kisserBonus = $minimumBonus; $this->kisserBonus <= $maximumBonus; $this->kisserBonus++) {
+            for ($this->kissedBonus = $minimumBonus; $this->kissedBonus <= $maximumBonus; $this->kissedBonus++) {
+                for ($this->kisserRoll = $minimumRoll; $this->kisserRoll <= $maximumRoll; $this->kisserRoll++) {
+                    for ($this->kissedRoll = $minimumRoll; $this->kissedRoll <= $maximumRoll; $this->kissedRoll++) {
+                        $this->makeKissSuccessFactory();
+
+                        $this->checkCriticalFail();
+                        $this->checkFail();
+                        $this->checkSuccess();
+                        $this->checkCriticalSuccess();
                     }
                 }
             }
         }
     }
 
-    public function testHasNotSucceeded()
+    private function checkCriticalFail()
     {
-        for ($kissedBonus = 3; $kissedBonus <= 4; $kissedBonus++) {
-            for ($kisserBonus = -4; $kisserBonus < $kissedBonus; $kisserBonus++) {
-                for ($kissedRoll = 2; $kissedRoll <= KissSuccessFactory::$diceNumberOfSides; $kissedRoll++) {
-                    for ($kisserRoll = 1; $kisserRoll < $kissedRoll; $kisserRoll++) {
-                        $kissSuccessFactory = new KissSuccessFactory(
-                                $this->getRollFactoryForGivenTwoRolls($kisserRoll, $kissedRoll)
-                        );
-
-                        $this->assertFalse($kissSuccessFactory->make($kisserBonus, $kissedBonus));
-                    }
-                }
-            }
+        if (KissSuccessFactory::$criticalFailRoll === $this->kisserRoll) {
+            $this->assertTrue($this->kissSuccessFactory->isCritical());
+            $this->assertFalse($this->kissSuccessFactory->isSuccess());
         }
+    }
+
+    private function checkFail()
+    {
+        if (KissSuccessFactory::$criticalFailRoll !== $this->kisserRoll
+                and KissSuccessFactory::$criticalSuccessRoll !== $this->kisserRoll
+                and ($this->kisserBonus + $this->kisserRoll < $this->kissedBonus + $this->kissedRoll)
+        ) {
+            $this->assertFalse($this->kissSuccessFactory->isCritical());
+            $this->assertFalse($this->kissSuccessFactory->isSuccess());
+        }
+    }
+
+    private function checkSuccess()
+    {
+        if (KissSuccessFactory::$criticalFailRoll !== $this->kisserRoll
+                and KissSuccessFactory::$criticalSuccessRoll !== $this->kisserRoll
+                and ($this->kisserBonus + $this->kisserRoll >= $this->kissedBonus + $this->kissedRoll)
+        ) {
+            $this->assertFalse($this->kissSuccessFactory->isCritical());
+            $this->assertTrue($this->kissSuccessFactory->isSuccess());
+        }
+    }
+
+    private function checkCriticalSuccess()
+    {
+        if (KissSuccessFactory::$criticalSuccessRoll === $this->kisserRoll) {
+            $this->assertTrue($this->kissSuccessFactory->isCritical());
+            $this->assertTrue($this->kissSuccessFactory->isSuccess());
+        }
+    }
+
+    private function makeKissSuccessFactory()
+    {
+        $this->kissSuccessFactory = new KissSuccessFactory(
+                $this->getRollFactoryForGivenTwoRolls($this->kisserRoll, $this->kissedRoll)
+        );
+        $this->kissSuccessFactory->make($this->kisserBonus, $this->kissedBonus);
     }
 
     private function getRollFactoryForGivenTwoRolls($kisserRoll, $kissedRoll)

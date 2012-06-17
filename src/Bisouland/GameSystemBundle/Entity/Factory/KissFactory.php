@@ -3,48 +3,38 @@
 namespace Bisouland\GameSystemBundle\Entity\Factory;
 
 use Bisouland\GameSystemBundle\Kiss\Factory\SuccessFactory;
-use Bisouland\GameSystemBundle\Entity\Factory\RollFactory;
+use Bisouland\GameSystemBundle\Kiss\Factory\DamagesFactory;
 use Bisouland\GameSystemBundle\Entity\Lover;
 use Bisouland\GameSystemBundle\Entity\Kiss;
 
 class KissFactory
 {
-    static public $damagesMinimumValue = 1;
-    static public $damagesDiceNumberOfSides = 4;
-    static public $damagesMultiplier = 3600;
+    private $successFactory;
+    private $damagesFactory;
 
-    private $SuccessFactory;
-    private $rollFactory;
-
-    private $kisser;
-    private $kissed;
-    private $kiss;
-
-    public function __construct(SuccessFactory $SuccessFactory, RollFactory $rollFactory)
+    public function __construct(SuccessFactory $successFactory, DamagesFactory $damagesFactory)
     {
-        $this->SuccessFactory = $SuccessFactory;
-        $this->rollFactory = $rollFactory;
+        $this->successFactory = $successFactory;
+        $this->damagesFactory = $damagesFactory;
     }
 
     public function make(Lover $kisser, Lover $kissed)
     {
-        $this->kisser = $kisser;
-        $this->kissed = $kissed;
-
-        $success = $this->SuccessFactory->make(
-                $this->kisser->getSeductionBonus(),
-                $this->kissed->getDodgeBonus()
+        $success = $this->successFactory->make(
+                $kisser->getSeductionBonus(),
+                $kissed->getDodgeBonus()
         );
+        $this->damagesFactory->setKisser($kisser);
+        $this->damagesFactory->setKissed($kissed);
+        $this->damagesFactory->setSuccess($success);
 
-        $this->kiss = new Kiss();
-        $this->kiss->setkisser($this->kisser);
-        $this->kiss->setkissed($this->kissed);
-        $this->kiss->setIsCritical($success->getIsCritical());
-        $this->kiss->setHasSucceeded($success->getIsSuccess());
-        $this->kiss->setDamages(0);
+        $kiss = new Kiss();
+        $kiss->setkisser($kisser);
+        $kiss->setkissed($kissed);
+        $kiss->setIsCritical($success->getIsCritical());
+        $kiss->setHasSucceeded($success->getIsSuccess());
+        $kiss->setDamages($this->damagesFactory->make());
 
-        $this->damages();
-
-        return $this->kiss;
+        return $kiss;
     }
 }

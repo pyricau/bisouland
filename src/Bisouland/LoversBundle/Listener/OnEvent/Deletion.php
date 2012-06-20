@@ -28,7 +28,7 @@ class Deletion
     private function deleteLovers()
     {
         return $this->doctrine
-                ->getRepository('BisoulandLoversBundle:Lover')
+                ->getRepository('BisoulandGameSystemBundle:Lover')
                 ->removeLoversWithNoMoreLovePoints();
     }
 }

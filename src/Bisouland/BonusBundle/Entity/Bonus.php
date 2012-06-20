@@ -5,7 +5,7 @@ namespace Bisouland\BonusBundle\Entity;
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Mapping\Annotation as Gedmo;
 
-use Bisouland\LoversBundle\Entity\Lover;
+use Bisouland\GameSystemBundle\Entity\Lover;
 
 /**
  * @ORM\Table()
@@ -21,7 +21,7 @@ class Bonus
     private $id;
 
     /**
-     * @ORM\ManyToOne(targetEntity="Bisouland\LoversBundle\Entity\Lover", inversedBy="bonuses")
+     * @ORM\ManyToOne(targetEntity="Bisouland\GameSystemBundle\Entity\Lover", inversedBy="bonuses")
      * @ORM\JoinColumn(name="lover_id", referencedColumnName="id", onDelete="CASCADE")
      */
     private $lover;

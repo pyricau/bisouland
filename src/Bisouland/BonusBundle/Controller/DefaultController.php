@@ -24,10 +24,10 @@ class DefaultController extends Controller
                 ->getSession()
                 ->get(SelectionController::$sessionKey);
         $selectedLover = $this->getDoctrine()
-                ->getRepository('BisoulandLoversBundle:Lover')
+                ->getRepository('BisoulandGameSystemBundle:Lover')
                 ->findOneByName($selectedLoverName);
         
-        if ($selectedLover->getLifePoints() >= $lovePointsToGet) {
+        if ($selectedLover->getLovePoints() >= $lovePointsToGet) {
             $answer = 'after';
             
             $numberOfBonuses = count($selectedLover->getBonuses());

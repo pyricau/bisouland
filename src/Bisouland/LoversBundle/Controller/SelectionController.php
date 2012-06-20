@@ -16,7 +16,7 @@ class SelectionController extends Controller
     public function selectionAction($name)
     {
         $selectedLover = $this->getDoctrine()
-            ->getRepository('BisoulandLoversBundle:Lover')
+            ->getRepository('BisoulandGameSystemBundle:Lover')
             ->findOneByName($name);
         
         if (null !== $selectedLover) {

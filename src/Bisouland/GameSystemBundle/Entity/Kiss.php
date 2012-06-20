@@ -1,6 +1,6 @@
 <?php
 
-namespace Bisouland\RolePlayingGameSystemBundle\Entity;
+namespace Bisouland\GameSystemBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Mapping\Annotation as Gedmo;

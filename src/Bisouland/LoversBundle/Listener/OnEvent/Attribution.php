@@ -36,7 +36,7 @@ class Attribution
         $hasToAttributeLover = true;
         if (true === $this->session->has(SelectionController::$sessionKey)) {
             $selectedLover = $this->doctrine
-                    ->getRepository('BisoulandLoversBundle:Lover')
+                    ->getRepository('BisoulandGameSystemBundle:Lover')
                     ->findOneByName($this->session->get(SelectionController::$sessionKey));
             
             $hasToAttributeLover = (null === $selectedLover);
@@ -48,7 +48,7 @@ class Attribution
     private function setLoverNameInSessionForNewVisitor()
     {
         $lover = $this->doctrine
-            ->getRepository('BisoulandLoversBundle:Lover')
+            ->getRepository('BisoulandGameSystemBundle:Lover')
             ->findLastOne();
 
         $this->session->set(SelectionController::$sessionKey, $lover->getName());

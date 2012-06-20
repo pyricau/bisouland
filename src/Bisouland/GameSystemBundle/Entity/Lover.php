@@ -122,7 +122,7 @@ class Lover
 
     public function getSeductionBonus()
     {
-        return $this->seductionBonus;
+        return $this->seduction_bonus;
     }
 
     public function setDodgeBonus($dodge_bonus)

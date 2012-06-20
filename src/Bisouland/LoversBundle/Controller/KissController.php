@@ -7,7 +7,6 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 
 use Bisouland\LoversBundle\Entity\Factory\KissFactory;
 use Bisouland\LoversBundle\Controller\SelectionController;
-use Bisouland\RolePlayingGameSystemBundle\Entity\Factory\AttackFactory;
 
 use Bisouland\LoversBundle\Exception\InvalidKisserException;
 use Bisouland\LoversBundle\Exception\InvalidKissedException;

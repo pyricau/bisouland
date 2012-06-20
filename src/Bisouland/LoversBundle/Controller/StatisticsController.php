@@ -5,8 +5,6 @@ namespace Bisouland\LoversBundle\Controller;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 
-use Bisouland\RolePlayingGameSystemBundle\Entity\Being;
-
 class StatisticsController extends Controller
 {
     /**

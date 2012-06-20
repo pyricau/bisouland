@@ -29,7 +29,6 @@ class AppKernel extends Kernel
             new Bisouland\FrontBundle\BisoulandFrontBundle(),
             new Bisouland\LoversBundle\BisoulandLoversBundle(),
             new Bisouland\BonusBundle\BisoulandBonusBundle(),
-            new Bisouland\RolePlayingGameSystemBundle\BisoulandRolePlayingGameSystemBundle(),
             new Bisouland\PronounceableWordBundle\BisoulandPronounceableWordBundle(),
             new Bisouland\GameSystemBundle\BisoulandGameSystemBundle(),
             

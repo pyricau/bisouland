@@ -24,8 +24,9 @@ class DefaultController extends Controller
         foreach ($lovers as $lover) {
             $lover->setLifePoints($lover->getLifePoints());
             $entityManager->persist($lover);
-            $entityManager->flush();
         }
+        $entityManager->flush();
+
 
         $loversQuery = $entityManager
                 ->getRepository('BisoulandLoversBundle:Lover')

@@ -5,16 +5,13 @@ namespace Bisouland\LoversBundle\Controller;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 
-use Bisouland\LoversBundle\Entity\Factory\KissFactory;
+use Bisouland\LoversBundle\Entity\Factory\KissFactory as OldKissFactory;
+use Bisouland\GameSystemBundle\Entity\Factory\KissFactory;
 use Bisouland\LoversBundle\Controller\SelectionController;
-
-use Bisouland\LoversBundle\Exception\InvalidKisserException;
-use Bisouland\LoversBundle\Exception\InvalidKissedException;
-use Bisouland\LoversBundle\Exception\InvalidKisserAsKissedException;
-use Bisouland\LoversBundle\Exception\KissOverflowException;
 
 use Bisouland\GameSystemBundle\Exception\InvalidLoverNameException;
 use Bisouland\GameSystemBundle\Exception\InvalidSelfKissingException;
+use Bisouland\GameSystemBundle\Exception\KissOverflowException;
 
 class KissController extends Controller
 {
@@ -33,7 +30,7 @@ class KissController extends Controller
      */
     public function indexAction($kissedName)
     {
-        $kissFactory = new KissFactory($this->getDoctrine(), $this->get('bisouland_game_system.kiss_factory'));
+        $kissFactory = new OldKissFactory($this->getDoctrine(), $this->get('bisouland_game_system.kiss_factory'));
 
         try {
             $this->setReportFlash($kissFactory->make(
@@ -69,10 +66,14 @@ class KissController extends Controller
             $message = 'L\'amoureux '.$e->getMessage().' ne peut pas s\'embrasser lui-m&ecirc;me';
         }
         if ($e instanceof KissOverflowException) {
+            $kisserAndKissed = $e->getMessage();
+            list($kisserName, $kissedName) = explode(',', $kisserAndKissed);
             $message = sprintf(
-                    'Vous ne pouvez pas embrasser plus de %s fois le m&ecirc;me amoureux en moins de %s heures',
+                    'L\'amoureux %s ne peut embrasser %s plus de %s fois en moins de %s heures',
+                    $kisserName,
+                    $kissedName,
                     KissFactory::$quotaOfKiss,
-                    KissFactory::$quotaIsTwelveHoursInSeconds / 60 /60
+                    KissFactory::$timeBetweenQuotaOfKiss / 60 /60
             );
         }
 

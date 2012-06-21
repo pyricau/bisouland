@@ -8,11 +8,16 @@ use Bisouland\GameSystemBundle\Kiss\Factory\SuccessFactory;
 use Bisouland\GameSystemBundle\Kiss\Factory\DamagesFactory;
 use Bisouland\GameSystemBundle\Entity\Lover;
 use Bisouland\GameSystemBundle\Entity\Kiss;
+
 use Bisouland\GameSystemBundle\Exception\InvalidLoverNameException;
 use Bisouland\GameSystemBundle\Exception\InvalidSelfKissingException;
+use Bisouland\GameSystemBundle\Exception\KissOverflowException;
 
 class KissFactory
 {
+    public static $timeBetweenQuotaOfKiss = 43200;
+    public static $quotaOfKiss = 3;
+
     private $doctrine;
     private $successFactory;
     private $damagesFactory;
@@ -55,6 +60,7 @@ class KissFactory
     public function make()
     {
         $this->checkSelfKissing();
+        $this->checkQuota();
 
         $success = $this->successFactory->make(
                 $this->kisser->getSeductionBonus(),
@@ -79,6 +85,23 @@ class KissFactory
         $kissedName = $this->kissed->getName();
         if ($this->kisser->getName() === $kissedName) {
             throw new InvalidSelfKissingException($kissedName);
+        }
+    }
+
+    private function checkQuota()
+    {
+        $numberOfKiss = $this->doctrine->getRepository('BisoulandGameSystemBundle:Kiss')
+                ->countForLastGivenSeconds(
+                        $this->kisser->getId(),
+                        $this->kissed->getId(),
+                        self::$timeBetweenQuotaOfKiss
+                );
+
+        if (self::$quotaOfKiss <= $numberOfKiss) {
+            throw new KissOverflowException(
+                $this->kisser->getName()
+                .','.$this->kissed->getName()
+            );
         }
     }
 }

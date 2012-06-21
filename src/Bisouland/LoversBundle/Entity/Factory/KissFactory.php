@@ -15,9 +15,6 @@ use Bisouland\LoversBundle\Exception\KissOverflowException;
 
 class KissFactory
 {
-    public static $quotaOfKiss = 3;
-    public static $quotaIsTwelveHoursInSeconds = 43200;
-
     private $doctrine;
     private $kissFactory;
 
@@ -39,8 +36,6 @@ class KissFactory
 
         $this->kisser = $kiss->getKisser();
         $this->kissed = $kiss->getKissed();
-        $this->checkTime();
-
 
         $kisserDamages = $kiss->getDamages();
         $kissedDamages = -$kiss->getDamages();
@@ -54,20 +49,6 @@ class KissFactory
         $this->saveKiss($kiss);
 
         return $kiss;
-    }
-
-    private function checkTime()
-    {
-        $numberOfKiss = $this->doctrine->getRepository('BisoulandGameSystemBundle:Kiss')
-                ->countForLastGivenSeconds(
-                        $this->kisser->getId(),
-                        $this->kissed->getId(),
-                        self::$quotaIsTwelveHoursInSeconds
-                );
-
-        if (self::$quotaOfKiss <= $numberOfKiss) {
-            throw new KissOverflowException();
-        }
     }
 
     private function updateLovePoints(Lover $lover, $pointsToAdd)

@@ -5,8 +5,6 @@ namespace Bisouland\LoversBundle\Controller;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 
-use Bisouland\RolePlayingGameSystemBundle\Entity\Being;
-
 class StatisticsController extends Controller
 {
     /**
@@ -15,15 +13,16 @@ class StatisticsController extends Controller
     public function populationAction()
     {
         $numberOfLoversGeneratedToday = $this->getDoctrine()
-                ->getRepository('BisoulandLoversBundle:Lover')
+                ->getRepository('BisoulandGameSystemBundle:Lover')
                 ->countLoversGeneratedToday(); 
 
         $numberOfLovers = $this->getDoctrine()
-                ->getRepository('BisoulandLoversBundle:Lover')
+                ->getRepository('BisoulandGameSystemBundle:Lover')
                 ->count();
         $numberOfLoversCreatedSinceTheBegining = $this->getDoctrine()
-                ->getRepository('BisoulandLoversBundle:Lover')
-                ->findLastId();
+                ->getRepository('BisoulandGameSystemBundle:Lover')
+                ->findLastOne()
+                ->getId();
         $numberOfLosers = $numberOfLoversCreatedSinceTheBegining - $numberOfLovers;
         $numberOfOthers = $numberOfLovers - $numberOfLoversGeneratedToday;
 
@@ -39,18 +38,10 @@ class StatisticsController extends Controller
      */
     public function bonusAction()
     {
-        $averageAttributes = $this->getDoctrine()
-                ->getRepository('BisoulandLoversBundle:Lover')
-                ->getAverageAttributes();
+        $bonusStatistics = $this->getDoctrine()
+                ->getRepository('BisoulandGameSystemBundle:Lover')
+                ->getBonusStatistics();
 
-        $averageBonusSeduction = Being::getBonusFromGivenAttribute($averageAttributes[0][1]);
-        $averageBonusSlap = Being::getBonusFromGivenAttribute($averageAttributes[0][2]);
-        $averageBonusHeart = Being::getBonusFromGivenAttribute($averageAttributes[0][3]);
-
-        return compact(
-                'averageBonusSeduction',
-                'averageBonusSlap',
-                'averageBonusHeart'
-        );
+        return $bonusStatistics[0];
     }
 }

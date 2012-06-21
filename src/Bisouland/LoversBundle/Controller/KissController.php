@@ -7,7 +7,6 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 
 use Bisouland\LoversBundle\Entity\Factory\KissFactory;
 use Bisouland\LoversBundle\Controller\SelectionController;
-use Bisouland\RolePlayingGameSystemBundle\Entity\Factory\AttackFactory;
 
 use Bisouland\LoversBundle\Exception\InvalidKisserException;
 use Bisouland\LoversBundle\Exception\InvalidKissedException;
@@ -21,8 +20,7 @@ class KissController extends Controller
     public static $flashKeyKissedName = 'kissedName';
     public static $flashKeyIsCritical = 'isCritical';
     public static $flashKeyHasKissed = 'hasKissed';
-    public static $flashKeyKisserEarning = 'kisserEarning';
-    public static $flashKeyKissedLoss = 'kissedLoss';
+    public static $flashKeyDamages = 'damages';
     
     public static $flashKeyHasError = 'hasKissError';
     public static $flashKeyMessageError = 'kissMessageError';
@@ -32,7 +30,7 @@ class KissController extends Controller
      */
     public function indexAction($kissedName)
     {
-        $kissFactory = new KissFactory($this->getDoctrine(), $this->get('bisouland_role_playing_game_system.attack_factory'));
+        $kissFactory = new KissFactory($this->getDoctrine(), $this->get('bisouland_game_system.kiss_factory'));
 
         try {
             $this->setReportFlash($kissFactory->make(
@@ -51,12 +49,11 @@ class KissController extends Controller
         $session = $this->getRequest()->getSession();
         $session->setFlash(self::$flashKeyReport, true);
 
-        $session->setFlash(self::$flashKeyKisserName, $kiss->getAttacker()->getName());
-        $session->setFlash(self::$flashKeyKissedName, $kiss->getDefender()->getName());
+        $session->setFlash(self::$flashKeyKisserName, $kiss->getKisser()->getName());
+        $session->setFlash(self::$flashKeyKissedName, $kiss->getKissed()->getName());
         $session->setFlash(self::$flashKeyIsCritical, $kiss->getIsCritical());
-        $session->setFlash(self::$flashKeyHasKissed, $kiss->getHasHit());
-        $session->setFlash(self::$flashKeyKisserEarning, $kiss->getAttackerEarning());
-        $session->setFlash(self::$flashKeyKissedLoss, $kiss->getDefenderLoss());
+        $session->setFlash(self::$flashKeyHasKissed, $kiss->getHasSucceeded());
+        $session->setFlash(self::$flashKeyDamages, $kiss->getDamages());
     }
     
     private function setErrorFlash(\Exception $e)

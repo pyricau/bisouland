@@ -2,10 +2,7 @@ parameters:
     bisouland_lovers.kernel_listener.class: Bisouland\LoversBundle\Listener\Kernel
     
     bisouland_lovers.deletion.class: Bisouland\LoversBundle\Listener\OnEvent\Deletion
-
     bisouland_lovers.generation.class: Bisouland\LoversBundle\Listener\OnEvent\Generation
-    bisouland_lovers.lover_factory.class: Bisouland\LoversBundle\Entity\Factory\LoverFactory
-
     bisouland_lovers.attribution.class: Bisouland\LoversBundle\Listener\OnEvent\Attribution
 
 services:
@@ -18,14 +15,9 @@ services:
     bisouland_lovers.deletion:
         class: %bisouland_lovers.deletion.class%
         arguments: ["@doctrine", "@session"]
-
     bisouland_lovers.generation:
         class: %bisouland_lovers.generation.class%
-        arguments: ["@doctrine", "@session", "@bisouland_lovers.lover_factory"]
-    bisouland_lovers.lover_factory:
-        class: %bisouland_lovers.lover_factory.class%
-        arguments: ["@bisouland_role_playing_game_system.being_factory"]
-
+        arguments: ["@doctrine", "@session", "@bisouland_game_system.lover_factory"]
     bisouland_lovers.attribution:
         class: %bisouland_lovers.attribution.class%
         arguments: ["@doctrine", "@session"]

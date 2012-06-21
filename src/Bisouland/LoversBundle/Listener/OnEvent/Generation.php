@@ -5,7 +5,7 @@ namespace Bisouland\LoversBundle\Listener\OnEvent;
 use Doctrine\Common\Persistence\ManagerRegistry;
 use Symfony\Component\HttpFoundation\Session\Session;
 
-use Bisouland\LoversBundle\Entity\Factory\LoverFactory;
+use Bisouland\GameSystemBundle\Entity\Factory\LoverFactory;
 
 class Generation
 {
@@ -41,12 +41,12 @@ class Generation
     private function hasToGenerateNewLover()
     {
         $numberOfLovers = $this->doctrine
-                ->getRepository('BisoulandLoversBundle:Lover')
+                ->getRepository('BisoulandGameSystemBundle:Lover')
                 ->count();
         $isNumberOfLoversUnderQuota = self::$quotaOfGeneration > $numberOfLovers;
 
         $numberOfLoversGeneratedToday = $this->doctrine
-                ->getRepository('BisoulandLoversBundle:Lover')
+                ->getRepository('BisoulandGameSystemBundle:Lover')
                 ->countLoversGeneratedToday();
         $isGenerationNumberUnderQuota = self::$quotaOfGeneration > $numberOfLoversGeneratedToday;
 

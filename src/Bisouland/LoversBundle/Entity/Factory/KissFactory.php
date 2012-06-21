@@ -4,9 +4,9 @@ namespace Bisouland\LoversBundle\Entity\Factory;
 
 use Doctrine\Common\Persistence\ManagerRegistry;
 
-use Bisouland\RolePlayingGameSystemBundle\Entity\Factory\AttackFactory;
-use Bisouland\LoversBundle\Entity\Lover;
-use Bisouland\LoversBundle\Entity\Kiss;
+use Bisouland\GameSystemBundle\Entity\Factory\KissFactory as GameSystemKissFactory;
+use Bisouland\GameSystemBundle\Entity\Lover;
+use Bisouland\GameSystemBundle\Entity\Kiss;
 
 use Bisouland\LoversBundle\Exception\InvalidKisserException;
 use Bisouland\LoversBundle\Exception\InvalidKissedException;
@@ -15,38 +15,41 @@ use Bisouland\LoversBundle\Exception\KissOverflowException;
 
 class KissFactory
 {
-    public static $multiplierIsOneHourInSeconds = 3600;
     public static $quotaOfKiss = 3;
     public static $quotaIsTwelveHoursInSeconds = 43200;
 
     private $doctrine;
-    private $attackFacotry;
+    private $kissFactory;
 
     private $kisser;
     private $kissed;
 
-    public function __construct(ManagerRegistry $doctrine, AttackFactory $attackFactory)
+    public function __construct(ManagerRegistry $doctrine, GameSystemKissFactory $kissFactory)
     {
         $this->doctrine = $doctrine;
-        $this->attackFacotry = $attackFactory;
-
-        $this->attackFacotry->setMultiplier(self::$multiplierIsOneHourInSeconds);
+        $this->kissFactory = $kissFactory;
     }
 
     public function make($kisserName, $kissedName)
     {
-        $this->kisser = $this->doctrine->getRepository('BisoulandLoversBundle:Lover')
+        $this->kisser = $this->doctrine->getRepository('BisoulandGameSystemBundle:Lover')
                 ->findOneByName($kisserName);
-        $this->kissed = $this->doctrine->getRepository('BisoulandLoversBundle:Lover')
+        $this->kissed = $this->doctrine->getRepository('BisoulandGameSystemBundle:Lover')
                 ->findOneByName($kissedName);
 
         $this->checkLovers();
         $this->checkTime();
 
-        $kiss = $this->makeKiss();
+        $kiss = $this->kissFactory->make($this->kisser, $this->kissed);
 
-        $this->updateLifePoints($this->kisser, $kiss->getAttackerEarning());
-        $this->updateLifePoints($this->kissed, -$kiss->getDefenderLoss());
+        $kisserDamages = $kiss->getDamages();
+        $kissedDamages = -$kiss->getDamages();
+        if (false === $kiss->getHasSucceeded()) {
+            $kisserDamages *= -1;
+            $kissedDamages *= -1;
+        }
+        $this->updateLovePoints($this->kisser, $kisserDamages);
+        $this->updateLovePoints($this->kissed, $kissedDamages);
 
         $this->saveKiss($kiss);
 
@@ -68,7 +71,7 @@ class KissFactory
 
     private function checkTime()
     {
-        $numberOfKiss = $this->doctrine->getRepository('BisoulandLoversBundle:Kiss')
+        $numberOfKiss = $this->doctrine->getRepository('BisoulandGameSystemBundle:Kiss')
                 ->countForLastGivenSeconds(
                         $this->kisser->getId(),
                         $this->kissed->getId(),
@@ -80,25 +83,10 @@ class KissFactory
         }
     }
 
-    private function makeKiss()
+    private function updateLovePoints(Lover $lover, $pointsToAdd)
     {
-        $attack = $this->attackFacotry->make($this->kisser, $this->kissed);
-        $kiss = new Kiss();
-
-        $kiss->setAttackerEarning($attack->getAttackerEarning());
-        $kiss->setDefenderLoss($attack->getDefenderLoss());
-        $kiss->setIsCritical($attack->getIsCritical());
-        $kiss->setHasHit($attack->getHasHit());
-        $kiss->setAttacker($this->kisser);
-        $kiss->setDefender($this->kissed);
-
-        return $kiss;
-    }
-
-    private function updateLifePoints(Lover $lover, $pointsToAdd)
-    {
-        $lifePoints = $lover->getLifePoints() + $pointsToAdd;
-        $lover->setLifePoints($lifePoints);
+        $lovePoints = $lover->getLovePoints() + $pointsToAdd;
+        $lover->setLovePoints($lovePoints);
 
         $entityManager = $this->doctrine->getEntityManager();
         $entityManager->persist($lover);

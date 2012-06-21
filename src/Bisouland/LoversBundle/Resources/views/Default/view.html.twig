@@ -38,7 +38,7 @@
                         <abbr title="Points d'Amour" class="initialism">PA</abbr>
                     </th>
                     <td id="love-points" class="number">
-                        {{ lover.lifePoints|number_format_decimal }}
+                        {{ lover.lovePoints|number_format_decimal }}
                     </td>
                 </tr>
                 <tr>
@@ -46,7 +46,7 @@
                         Temps restant
                     </th>
                     <td id="time-left" class="number">
-                        {{ lover.lifePoints|number_format_decimal }}
+                        {{ lover.lovePoints|number_format_decimal }}
                     </td>
                 </tr>
                 <tr>
@@ -54,23 +54,31 @@
                         Bonus de s&eacute;duction
                     </th>
                     <td class="number">
-                        {{ lover.bonusAttack|number_format_decimal }}
+                        {{ lover.seductionBonus|number_format_decimal }}
                     </td>
                 </tr>
                 <tr>
                     <th>
-                        Bonus de baffe
+                        Bonus d'esquive
                     </th>
                     <td class="number">
-                        {{ lover.bonusDefense|number_format_decimal }}
+                        {{ lover.dodgeBonus|number_format_decimal }}
                     </td>
                 </tr>
                 <tr>
                     <th>
-                        Bonus de coeur
+                        Bonus de Langue
                     </th>
                     <td class="number">
-                        {{ lover.bonusConstitution|number_format_decimal }}
+                        {{ lover.tongueBonus|number_format_decimal }}
+                    </td>
+                </tr>
+                <tr>
+                    <th>
+                        Bonus de Baffe
+                    </th>
+                    <td class="number">
+                        {{ lover.slapBonus|number_format_decimal }}
                     </td>
                 </tr>
                 <tr>
@@ -108,7 +116,7 @@
                 <thead>
                     <tr>
                         <th>Amoureux</th>
-                        <th>R&eacute;ussite</th>
+                        <th>Baiser fougeux ?</th>
                         <th><abbr title="Points d'Amour" class="initialism">PA</abbr> perdus</th>
                         <th>Date</th>
                         <th>Actions</th>
@@ -116,59 +124,51 @@
                 </thead>
 
                 <tbody>
-                    {% for defenseDone in lover.defensesDone %}
-                        <tbody>
-                            <tr>
-                                <td>{{ defenseDone.attacker.name }}</td>
-                                <td>
-                                    {% if defenseDone.hasHit %}
+                    {% for kissReceived in lover.kissesReceived %}
+                        {% if kissReceived.hasSucceeded %}
+                            <tbody>
+                                <tr>
+                                    <td>{{ kissReceived.kisser.name }}</td>
+                                    <td>
                                         <span class="label label-success">
-                                            {% if defenseDone.isCritical %}
+                                            {% if kissReceived.isCritical %}
                                                 Baiser fougeux
                                             {% else %}
                                                 <i class="icon-ok icon-white"></i>
                                             {% endif %}
                                         </span>
-                                    {% else %}
-                                        <span class="label label-important">
-                                            {% if defenseDone.isCritical %}
-                                                Gros vent
-                                            {% else %}
-                                                <i class="icon-remove icon-white"></i>
-                                            {% endif %}
-                                        </span>
-                                    {% endif %}
-                                </td>
-                                <td class="number">{{ defenseDone.defenderLoss|number_format_decimal }}</td>
-                                <td>{{ defenseDone.created|date("H:m:i d/m/Y") }}</td>
-                                <td>
-                                    <a href="{{ path('lovers_view', {"name": defenseDone.attacker.name}) }}" title="Voir">
-                                        <i class="icon-eye-open"></i>
-                                    </a>
-                                    {% if defenseDone.attacker.name != app.session.get('selectedLoverName') %}
-                                        <a href="{{ path('lovers_select', {"name": defenseDone.attacker.name}) }}" title="S&eacute;lectionner">
-                                            <i class="icon-hand-left"></i>
+                                    </td>
+                                    <td class="number">{{ kissReceived.damages|number_format_decimal }}</td>
+                                    <td>{{ kissReceived.created|date("H:m:i d/m/Y") }}</td>
+                                    <td>
+                                        <a href="{{ path('lovers_view', {"name": kissReceived.kisser.name}) }}" title="Voir">
+                                            <i class="icon-eye-open"></i>
                                         </a>
-                                        <a href="{{ path('kiss', {"kissedName": defenseDone.attacker.name}) }}" title="Embrasser">
-                                            <i class="icon-heart"></i>
-                                        </a>
-                                    {% endif %}
-                                </td>
-                            </tr>
-                        </tbody>
+                                        {% if kissReceived.kisser.name != app.session.get('selectedLoverName') %}
+                                            <a href="{{ path('lovers_select', {"name": kissReceived.kisser.name}) }}" title="S&eacute;lectionner">
+                                                <i class="icon-hand-left"></i>
+                                            </a>
+                                            <a href="{{ path('kiss', {"kissedName": kissReceived.kisser.name}) }}" title="Embrasser">
+                                                <i class="icon-heart"></i>
+                                            </a>
+                                        {% endif %}
+                                    </td>
+                                </tr>
+                            </tbody>
+                        {% endif %}
                     {% endfor %}
                 </tbody>
             </table>
         </article>
 
         <article>
-            <h3>Bisous faits</h3>
+            <h3>Claques donn&eacute;es</h3>
 
             <table class="table table-striped">
                 <thead>
                     <tr>
                         <th>Amoureux</th>
-                        <th>R&eacute;ussite</th>
+                        <th>Gros vent ?</th>
                         <th><abbr title="Points d'Amour" class="initialism">PA</abbr> gagn&eacute;s</th>
                         <th>Date</th>
                         <th>Actions</th>
@@ -176,46 +176,142 @@
                 </thead>
 
                 <tbody>
-                    {% for attackDone in lover.attacksDone %}
-                        <tbody>
-                            <tr>
-                                <td>{{ attackDone.defender.name }}</td>
-                                <td>
-                                    {% if attackDone.hasHit %}
-                                        <span class="label label-success">
-                                            {% if attackDone.isCritical %}
-                                                Baiser fougeux
-                                            {% else %}
-                                                <i class="icon-ok icon-white"></i>
-                                            {% endif %}
-                                        </span>
-                                    {% else %}
+                    {% for kissReceived in lover.kissesReceived %}
+                        {% if not kissReceived.hasSucceeded %}
+                            <tbody>
+                                <tr>
+                                    <td>{{ kissReceived.kisser.name }}</td>
+                                    <td>
                                         <span class="label label-important">
-                                            {% if attackDone.isCritical %}
+                                            {% if kissReceived.isCritical %}
                                                 Gros vent
                                             {% else %}
                                                 <i class="icon-remove icon-white"></i>
                                             {% endif %}
                                         </span>
-                                    {% endif %}
-                                </td>
-                                <td class="number">{{ attackDone.attackerEarning|number_format_decimal }}</td>
-                                <td>{{ attackDone.created|date("H:m:i d/m/Y") }}</td>
-                                <td>
-                                    <a href="{{ path('lovers_view', {"name": attackDone.defender.name}) }}" title="Voir">
-                                        <i class="icon-eye-open"></i>
-                                    </a>
-                                    {% if attackDone.defender.name != app.session.get('selectedLoverName') %}
-                                        <a href="{{ path('lovers_select', {"name": attackDone.defender.name}) }}" title="S&eacute;lectionner">
-                                            <i class="icon-hand-left"></i>
+                                    </td>
+                                    <td class="number">{{ kissReceived.damages|number_format_decimal }}</td>
+                                    <td>{{ kissReceived.created|date("H:m:i d/m/Y") }}</td>
+                                    <td>
+                                        <a href="{{ path('lovers_view', {"name": kissReceived.kisser.name}) }}" title="Voir">
+                                            <i class="icon-eye-open"></i>
                                         </a>
-                                        <a href="{{ path('kiss', {"kissedName": attackDone.defender.name}) }}" title="Embrasser">
-                                            <i class="icon-heart"></i>
+                                        {% if kissReceived.kisser.name != app.session.get('selectedLoverName') %}
+                                            <a href="{{ path('lovers_select', {"name": kissReceived.kisser.name}) }}" title="S&eacute;lectionner">
+                                                <i class="icon-hand-left"></i>
+                                            </a>
+                                            <a href="{{ path('kiss', {"kissedName": kissReceived.kisser.name}) }}" title="Embrasser">
+                                                <i class="icon-heart"></i>
+                                            </a>
+                                        {% endif %}
+                                    </td>
+                                </tr>
+                            </tbody>
+                        {% endif %}
+                    {% endfor %}
+                </tbody>
+            </table>
+        </article>
+
+        <article>
+            <h3>Bisous envoy&eacute;s</h3>
+
+            <table class="table table-striped">
+                <thead>
+                    <tr>
+                        <th>Amoureux</th>
+                        <th>Baiser fougeux ?</th>
+                        <th><abbr title="Points d'Amour" class="initialism">PA</abbr> gagn&eacute;s</th>
+                        <th>Date</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+
+                <tbody>
+                    {% for kissDone in lover.kissesDone %}
+                        {% if kissDone.hasSucceeded %}
+                            <tbody>
+                                <tr>
+                                    <td>{{ kissDone.kissed.name }}</td>
+                                    <td>
+                                        <span class="label label-success">
+                                            {% if kissDone.isCritical %}
+                                                Baiser fougeux
+                                            {% else %}
+                                                <i class="icon-ok icon-white"></i>
+                                            {% endif %}
+                                        </span>
+                                    </td>
+                                    <td class="number">{{ kissDone.damages|number_format_decimal }}</td>
+                                    <td>{{ kissDone.created|date("H:m:i d/m/Y") }}</td>
+                                    <td>
+                                        <a href="{{ path('lovers_view', {"name": kissDone.kissed.name}) }}" title="Voir">
+                                            <i class="icon-eye-open"></i>
                                         </a>
-                                    {% endif %}
-                                </td>
-                            </tr>
-                        </tbody>
+                                        {% if kissDone.kissed.name != app.session.get('selectedLoverName') %}
+                                            <a href="{{ path('lovers_select', {"name": kissDone.kissed.name}) }}" title="S&eacute;lectionner">
+                                                <i class="icon-hand-left"></i>
+                                            </a>
+                                            <a href="{{ path('kiss', {"kissedName": kissDone.kissed.name}) }}" title="Embrasser">
+                                                <i class="icon-heart"></i>
+                                            </a>
+                                        {% endif %}
+                                    </td>
+                                </tr>
+                            </tbody>
+                        {% endif %}
+                    {% endfor %}
+                </tbody>
+            </table>
+        </article>
+
+        <article>
+            <h3>Claques prises</h3>
+
+            <table class="table table-striped">
+                <thead>
+                    <tr>
+                        <th>Amoureux</th>
+                        <th>Gros vent ?</th>
+                        <th><abbr title="Points d'Amour" class="initialism">PA</abbr> perdus</th>
+                        <th>Date</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+
+                <tbody>
+                    {% for kissDone in lover.kissesDone %}
+                        {% if not kissDone.hasSucceeded %}
+                            <tbody>
+                                <tr>
+                                    <td>{{ kissDone.kissed.name }}</td>
+                                    <td>
+                                        <span class="label label-important">
+                                            {% if kissDone.isCritical %}
+                                                Gros vent
+                                            {% else %}
+                                                <i class="icon-remove icon-white"></i>
+                                            {% endif %}
+                                        </span>
+                                    </td>
+                                    <td class="number">{{ kissDone.damages|number_format_decimal }}</td>
+                                    <td>{{ kissDone.created|date("H:m:i d/m/Y") }}</td>
+                                    <td>
+                                        <a href="{{ path('lovers_view', {"name": kissDone.kissed.name}) }}" title="Voir">
+                                            <i class="icon-eye-open"></i>
+                                        </a>
+                                        {% if kissDone.kissed.name != app.session.get('selectedLoverName') %}
+                                            <a href="{{ path('lovers_select', {"name": kissDone.kissed.name}) }}" title="S&eacute;lectionner">
+                                                <i class="icon-hand-left"></i>
+                                            </a>
+                                            <a href="{{ path('kiss', {"kissedName": kissDone.kissed.name}) }}" title="Embrasser">
+                                                <i class="icon-heart"></i>
+                                            </a>
+                                        {% endif %}
+                                    </td>
+                                </tr>
+                            </tbody>
+                        {% endif %}
                     {% endfor %}
                 </tbody>
             </table>

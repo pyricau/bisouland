@@ -17,19 +17,19 @@ class DefaultController extends Controller
         $entityManager = $this->getDoctrine()->getEntityManager();
 
         $lovers = $entityManager
-                ->getRepository('BisoulandLoversBundle:Lover')
+                ->getRepository('BisoulandGameSystemBundle:Lover')
                 ->findAll();
         $numberOfLovers = count($lovers);
 
         foreach ($lovers as $lover) {
-            $lover->setLifePoints($lover->getLifePoints());
+            $lover->setLovePoints($lover->getLovePoints());
             $entityManager->persist($lover);
         }
         $entityManager->flush();
 
 
         $loversQuery = $entityManager
-                ->getRepository('BisoulandLoversBundle:Lover')
+                ->getRepository('BisoulandGameSystemBundle:Lover')
                 ->findAllAsQuery();
 
         $paginator = $this->get('knp_paginator');
@@ -51,7 +51,7 @@ class DefaultController extends Controller
     public function viewAction($name)
     {
         $lover = $this->getDoctrine()
-                ->getRepository('BisoulandLoversBundle:Lover')
+                ->getRepository('BisoulandGameSystemBundle:Lover')
                 ->findOneByName($name);
 
         return array('lover' => $lover);

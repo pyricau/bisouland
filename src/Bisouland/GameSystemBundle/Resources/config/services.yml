@@ -1,0 +1,30 @@
+parameters:
+    bisouland_game_system.lover_factory.class: Bisouland\GameSystemBundle\Entity\Factory\LoverFactory
+    bisouland_game_system.bonus_factory.class: Bisouland\GameSystemBundle\Factory\BonusFactory
+    bisouland_game_system.attribute_factory.class: Bisouland\GameSystemBundle\Factory\AttributeFactory
+    bisouland_game_system.kiss_factory.class: Bisouland\GameSystemBundle\Entity\Factory\KissFactory
+    bisouland_game_system.success_factory.class: Bisouland\GameSystemBundle\Kiss\Factory\SuccessFactory
+    bisouland_game_system.damages_factory.class: Bisouland\GameSystemBundle\Kiss\Factory\DamagesFactory
+    bisouland_game_system.roll_factory.class: Bisouland\GameSystemBundle\Factory\RollFactory
+
+services:
+    bisouland_game_system.lover_factory:
+        class: %bisouland_game_system.lover_factory.class%
+        arguments: ["@bisouland_pronounceable_word.generator", "@bisouland_game_system.bonus_factory"]
+    bisouland_game_system.bonus_factory:
+        class: %bisouland_game_system.bonus_factory.class%
+        arguments: ["@bisouland_game_system.attribute_factory"]
+    bisouland_game_system.attribute_factory:
+        class: %bisouland_game_system.attribute_factory.class%
+        arguments: ["@bisouland_game_system.roll_factory"]
+    bisouland_game_system.kiss_factory:
+        class: %bisouland_game_system.kiss_factory.class%
+        arguments: ["@bisouland_game_system.success_factory", "@bisouland_game_system.damages_factory"]
+    bisouland_game_system.success_factory:
+        class: %bisouland_game_system.success_factory.class%
+        arguments: ["@bisouland_game_system.roll_factory"]
+    bisouland_game_system.damages_factory:
+        class: %bisouland_game_system.damages_factory.class%
+        arguments: ["@bisouland_game_system.roll_factory"]
+    bisouland_game_system.roll_factory:
+        class: %bisouland_game_system.roll_factory.class%

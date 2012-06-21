@@ -20,9 +20,7 @@
             {% endif %}
             <span class="badge"><i class="icon-heart"></i></span>
             {{ app.session.flash('kisserName') }} a gagn&eacute;
-            <span class="number">{{ app.session.flash('kisserEarning')|number_format_decimal }}</span>
-            /
-            <span class="number">{{ app.session.flash('kissedLoss')|number_format_decimal }}</span>
+            <span class="number">{{ app.session.flash('damages')|number_format_decimal }}</span>
             <abbr title="Points d'Amour" class="initialism">PA</abbr>
             en embrassant
             <a href="{{ path('lovers_view', {"name": kissedName}) }}" title="Voir">
@@ -40,6 +38,9 @@
             <a href="{{ path('lovers_view', {"name": kissedName}) }}" title="Voir">
                 {{ kissedName }}
             </a>
+            et a perdu
+            <span class="number">{{ app.session.flash('damages')|number_format_decimal }}</span>
+            <abbr title="Points d'Amour" class="initialism">PA</abbr>
         </div>
     {% endif %}
 {% endif %}

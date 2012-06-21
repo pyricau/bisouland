@@ -32,15 +32,15 @@ class KissFactory
 
     public function make($kisserName, $kissedName)
     {
-        $this->kisser = $this->doctrine->getRepository('BisoulandGameSystemBundle:Lover')
-                ->findOneByName($kisserName);
-        $this->kissed = $this->doctrine->getRepository('BisoulandGameSystemBundle:Lover')
-                ->findOneByName($kissedName);
+        $kiss = $this->kissFactory
+                ->setKisserFromName($kisserName)
+                ->setKissedFromName($kissedName)
+                ->make();
 
-        $this->checkLovers();
+        $this->kisser = $kiss->getKisser();
+        $this->kissed = $kiss->getKissed();
         $this->checkTime();
 
-        $kiss = $this->kissFactory->make($this->kisser, $this->kissed);
 
         $kisserDamages = $kiss->getDamages();
         $kissedDamages = -$kiss->getDamages();
@@ -54,19 +54,6 @@ class KissFactory
         $this->saveKiss($kiss);
 
         return $kiss;
-    }
-
-    private function checkLovers()
-    {
-        if (null === $this->kisser) {
-            throw new InvalidKisserException();
-        }
-        if (null === $this->kissed) {
-            throw new InvalidKissedException();
-        }
-        if ($this->kisser->getName() === $this->kissed->getName()) {
-            throw new InvalidKisserAsKissedException();
-        }
     }
 
     private function checkTime()

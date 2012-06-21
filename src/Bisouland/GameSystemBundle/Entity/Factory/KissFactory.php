@@ -2,39 +2,83 @@
 
 namespace Bisouland\GameSystemBundle\Entity\Factory;
 
+use Doctrine\Common\Persistence\ManagerRegistry;
+
 use Bisouland\GameSystemBundle\Kiss\Factory\SuccessFactory;
 use Bisouland\GameSystemBundle\Kiss\Factory\DamagesFactory;
 use Bisouland\GameSystemBundle\Entity\Lover;
 use Bisouland\GameSystemBundle\Entity\Kiss;
+use Bisouland\GameSystemBundle\Exception\InvalidLoverNameException;
+use Bisouland\GameSystemBundle\Exception\InvalidSelfKissingException;
 
 class KissFactory
 {
+    private $doctrine;
     private $successFactory;
     private $damagesFactory;
 
-    public function __construct(SuccessFactory $successFactory, DamagesFactory $damagesFactory)
+    private $kisser;
+    private $kissed;
+
+    public function __construct(ManagerRegistry $doctrine, SuccessFactory $successFactory, DamagesFactory $damagesFactory)
     {
+        $this->doctrine = $doctrine;
         $this->successFactory = $successFactory;
         $this->damagesFactory = $damagesFactory;
     }
 
-    public function make(Lover $kisser, Lover $kissed)
+    public function setKisserFromName($kisserName)
     {
+        $this->kisser = $this->getLoverFromName($kisserName);
+
+        return $this;
+    }
+
+    public function setKissedFromName($kissedName)
+    {
+        $this->kissed = $this->getLoverFromName($kissedName);
+
+        return $this;
+    }
+
+    private function getLoverFromName($loverName)
+    {
+        $lover = $this->doctrine->getRepository('BisoulandGameSystemBundle:Lover')
+                ->findOneByName($loverName);
+        if (null === $lover) {
+            throw new InvalidLoverNameException($loverName);
+        }
+
+        return $lover;
+    }
+
+    public function make()
+    {
+        $this->checkSelfKissing();
+
         $success = $this->successFactory->make(
-                $kisser->getSeductionBonus(),
-                $kissed->getDodgeBonus()
+                $this->kisser->getSeductionBonus(),
+                $this->kissed->getDodgeBonus()
         );
-        $this->damagesFactory->setKisser($kisser);
-        $this->damagesFactory->setKissed($kissed);
+        $this->damagesFactory->setKisser($this->kisser);
+        $this->damagesFactory->setKissed($this->kissed);
         $this->damagesFactory->setSuccess($success);
 
         $kiss = new Kiss();
-        $kiss->setkisser($kisser);
-        $kiss->setkissed($kissed);
+        $kiss->setkisser($this->kisser);
+        $kiss->setkissed($this->kissed);
         $kiss->setIsCritical($success->getIsCritical());
         $kiss->setHasSucceeded($success->getIsSuccess());
         $kiss->setDamages($this->damagesFactory->make());
 
         return $kiss;
+    }
+
+    private function checkSelfKissing()
+    {
+        $kissedName = $this->kissed->getName();
+        if ($this->kisser->getName() === $kissedName) {
+            throw new InvalidSelfKissingException($kissedName);
+        }
     }
 }

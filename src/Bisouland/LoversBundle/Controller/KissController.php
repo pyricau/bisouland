@@ -13,6 +13,9 @@ use Bisouland\LoversBundle\Exception\InvalidKissedException;
 use Bisouland\LoversBundle\Exception\InvalidKisserAsKissedException;
 use Bisouland\LoversBundle\Exception\KissOverflowException;
 
+use Bisouland\GameSystemBundle\Exception\InvalidLoverNameException;
+use Bisouland\GameSystemBundle\Exception\InvalidSelfKissingException;
+
 class KissController extends Controller
 {
     public static $flashKeyReport = 'kissReport';
@@ -59,14 +62,11 @@ class KissController extends Controller
     private function setErrorFlash(\Exception $e)
     {
         $message = '';
-        if ($e instanceof InvalidKisserException) {
-            $message = 'Vous ne pouvez embrasser avec un amoureux qui n\'existe pas';
+        if ($e instanceof InvalidLoverNameException) {
+            $message = 'L\'amoureux '.$e->getMessage().' n\'existe pas';
         }
-        if ($e instanceof InvalidKissedException) {
-            $message = 'Vous ne pouvez embrasser un amoureux qui n\'existe pas';
-        }
-        if ($e instanceof InvalidKisserAsKissedException) {
-            $message = 'Vous ne pouvez vous embrasser vous m&ecirc;me';
+        if ($e instanceof InvalidSelfKissingException) {
+            $message = 'L\'amoureux '.$e->getMessage().' ne peut pas s\'embrasser lui-m&ecirc;me';
         }
         if ($e instanceof KissOverflowException) {
             $message = sprintf(

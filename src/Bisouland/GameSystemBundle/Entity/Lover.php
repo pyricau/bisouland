@@ -33,6 +33,11 @@ class Lover
     private $love_points;
 
     /**
+     * @ORM\Column(name="level", type="integer")
+     */
+    private $level;
+
+    /**
      * @ORM\Column(name="seduction_bonus", type="integer")
      */
     private $seduction_bonus;
@@ -112,6 +117,17 @@ class Lover
         $secondsSinceLastUpdate = time() - $this->updated->getTimestamp();
 
         return $this->love_points - $secondsSinceLastUpdate;
+    }
+
+    public function setLevel($level)
+    {
+        $this->level = $level;
+        return $this;
+    }
+
+    public function getLevel()
+    {
+        return $this->level;
     }
 
     public function setSeductionBonus($seduction_bonus)

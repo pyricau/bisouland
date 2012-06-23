@@ -15,9 +15,6 @@ use Bisouland\LoversBundle\Exception\KissOverflowException;
 
 class KissFactory
 {
-    public static $quotaOfKiss = 3;
-    public static $quotaIsTwelveHoursInSeconds = 43200;
-
     private $doctrine;
     private $kissFactory;
 
@@ -32,15 +29,13 @@ class KissFactory
 
     public function make($kisserName, $kissedName)
     {
-        $this->kisser = $this->doctrine->getRepository('BisoulandGameSystemBundle:Lover')
-                ->findOneByName($kisserName);
-        $this->kissed = $this->doctrine->getRepository('BisoulandGameSystemBundle:Lover')
-                ->findOneByName($kissedName);
+        $kiss = $this->kissFactory
+                ->setKisserFromName($kisserName)
+                ->setKissedFromName($kissedName)
+                ->make();
 
-        $this->checkLovers();
-        $this->checkTime();
-
-        $kiss = $this->kissFactory->make($this->kisser, $this->kissed);
+        $this->kisser = $kiss->getKisser();
+        $this->kissed = $kiss->getKissed();
 
         $kisserDamages = $kiss->getDamages();
         $kissedDamages = -$kiss->getDamages();
@@ -54,33 +49,6 @@ class KissFactory
         $this->saveKiss($kiss);
 
         return $kiss;
-    }
-
-    private function checkLovers()
-    {
-        if (null === $this->kisser) {
-            throw new InvalidKisserException();
-        }
-        if (null === $this->kissed) {
-            throw new InvalidKissedException();
-        }
-        if ($this->kisser->getName() === $this->kissed->getName()) {
-            throw new InvalidKisserAsKissedException();
-        }
-    }
-
-    private function checkTime()
-    {
-        $numberOfKiss = $this->doctrine->getRepository('BisoulandGameSystemBundle:Kiss')
-                ->countForLastGivenSeconds(
-                        $this->kisser->getId(),
-                        $this->kissed->getId(),
-                        self::$quotaIsTwelveHoursInSeconds
-                );
-
-        if (self::$quotaOfKiss <= $numberOfKiss) {
-            throw new KissOverflowException();
-        }
     }
 
     private function updateLovePoints(Lover $lover, $pointsToAdd)

@@ -19,7 +19,7 @@ services:
         arguments: ["@bisouland_game_system.roll_factory"]
     bisouland_game_system.kiss_factory:
         class: %bisouland_game_system.kiss_factory.class%
-        arguments: ["@bisouland_game_system.success_factory", "@bisouland_game_system.damages_factory"]
+        arguments: ["@doctrine", "@bisouland_game_system.success_factory", "@bisouland_game_system.damages_factory"]
     bisouland_game_system.success_factory:
         class: %bisouland_game_system.success_factory.class%
         arguments: ["@bisouland_game_system.roll_factory"]

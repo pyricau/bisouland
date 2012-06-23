@@ -6,6 +6,24 @@ use Bisouland\GameSystemBundle\Entity\Lover;
 
 class LoverTest extends \PHPUnit_Framework_TestCase
 {
+    public function testNextLevelCost()
+    {
+        $levelsAndCosts = array(
+            1 => 6,
+            2 => 28,
+            3 => 66,
+            4 => 120,
+            5 => 190,
+        );
+
+        foreach ($levelsAndCosts as $level => $expectedCost) {
+            $lover = $this->makeLover(array('setLevel' => $level));
+            $cost = $lover->getNextLevelCost() / Lover::$nextLevelCostMultiplier;
+
+            $this->assertSame($expectedCost, $cost);
+        }
+    }
+
     public function testUpdatedLovePoints()
     {
         $secondsSinceLastUpdate = 42;
@@ -22,7 +40,7 @@ class LoverTest extends \PHPUnit_Framework_TestCase
         $this->assertSame($expectedLovePoints, $lover->getLovePoints());
     }
 
-    public function testageInSeconds()
+    public function testAgeInSeconds()
     {
         $created = new \DateTime('yesterday');
 

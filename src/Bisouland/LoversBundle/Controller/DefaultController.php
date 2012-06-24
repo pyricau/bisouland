@@ -54,6 +54,22 @@ class DefaultController extends Controller
                 ->getRepository('BisoulandGameSystemBundle:Lover')
                 ->findOneByName($name);
 
-        return array('lover' => $lover);
+        $form = $this->createFormBuilder()
+            ->add('levelUp', 'choice')
+            ->getForm();
+
+        return array(
+            'lover' => $lover,
+            'form' => $form->createView(),
+        );
+    }
+
+    /**
+     * @Route("/amelioration", name="lovers_level_up")
+     * @Template()
+     */
+    public function levelUpAction()
+    {
+        
     }
 }

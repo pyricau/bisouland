@@ -114,6 +114,18 @@
                     </td>
                 </tr>
             </table>
+
+            {% if lover.name != app.session.get('selectedLoverName') %}
+                <h4>Am&eacute;liorer un bonus</h4>
+
+                <form action="{{ path('lovers_level_up') }}" method="post" {{ form_enctype(form) }} class="well">
+                    {{ form_widget(form) }}
+
+                    <button type="submit" class="btn">
+                        Am&eacute;liorer
+                    </button>
+                </form>
+            {% endif %}
         </article>
 
         <article>

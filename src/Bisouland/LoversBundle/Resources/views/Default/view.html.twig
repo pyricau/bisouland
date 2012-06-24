@@ -51,6 +51,38 @@
                 </tr>
                 <tr>
                     <th>
+                        &Acirc;ge
+                    </th>
+                    <td id="age" class="number">
+                        {{ lover.ageInSeconds|number_format_decimal }}
+                    </td>
+                </tr>
+            </table>
+
+            {% if lover.name != app.session.get('selectedLoverName') %}
+                <p>
+                    <a href="{{ path('kiss', {"kissedName": lover.name}) }}" class="btn btn-large btn-primary">
+                        <span class="badge">
+                            <i class="icon-heart"></i>
+                        </span>
+                        Embrasser
+                    </a>
+                    <a href="{{ path('lovers_select', {"name": lover.name}) }}" class="btn btn-large">
+                        <span class="badge">
+                            <i class="icon-hand-right"></i>
+                        </span>
+                        S&eacute;lectionner
+                    </a>
+                </p>
+            {% endif %}
+        </article>
+
+        <article>
+            <h3>Bonus</h3>
+
+            <table class="table table-striped">
+                <tr>
+                    <th>
                         Bonus de s&eacute;duction
                     </th>
                     <td class="number">
@@ -81,32 +113,7 @@
                         {{ lover.slapBonus|number_format_decimal }}
                     </td>
                 </tr>
-                <tr>
-                    <th>
-                        &Acirc;ge
-                    </th>
-                    <td id="age" class="number">
-                        {{ lover.ageInSeconds|number_format_decimal }}
-                    </td>
-                </tr>
             </table>
-
-            {% if lover.name != app.session.get('selectedLoverName') %}
-                <p>
-                    <a href="{{ path('kiss', {"kissedName": lover.name}) }}" class="btn btn-large btn-primary">
-                        <span class="badge">
-                            <i class="icon-heart"></i>
-                        </span>
-                        Embrasser
-                    </a>
-                    <a href="{{ path('lovers_select', {"name": lover.name}) }}" class="btn btn-large">
-                        <span class="badge">
-                            <i class="icon-hand-right"></i>
-                        </span>
-                        S&eacute;lectionner
-                    </a>
-                </p>
-            {% endif %}
         </article>
 
         <article>

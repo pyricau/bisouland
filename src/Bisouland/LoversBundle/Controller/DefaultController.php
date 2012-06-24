@@ -55,7 +55,16 @@ class DefaultController extends Controller
                 ->findOneByName($name);
 
         $form = $this->createFormBuilder()
-            ->add('levelUp', 'choice')
+            ->add('levelUp', 'choice', array(
+                'choices' => array(
+                    'seduction',
+                    'tongue',
+                    'dodge',
+                    'slap',
+                ),
+                'multiple' => false,
+                'expanded' => true,
+            ))
             ->getForm();
 
         return array(

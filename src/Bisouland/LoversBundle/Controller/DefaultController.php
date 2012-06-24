@@ -6,6 +6,8 @@ use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 
+use Bisouland\LoversBundle\Form\LevelUpForm;
+
 class DefaultController extends Controller
 {
     /**
@@ -54,22 +56,11 @@ class DefaultController extends Controller
                 ->getRepository('BisoulandGameSystemBundle:Lover')
                 ->findOneByName($name);
 
-        $form = $this->createFormBuilder()
-            ->add('levelUp', 'choice', array(
-                'choices' => array(
-                    'seduction',
-                    'tongue',
-                    'dodge',
-                    'slap',
-                ),
-                'multiple' => false,
-                'expanded' => true,
-            ))
-            ->getForm();
+        $levelUpform = $this->createForm(new LevelUpForm());
 
         return array(
             'lover' => $lover,
-            'form' => $form->createView(),
+            'form' => $levelUpform->createView(),
         );
     }
 

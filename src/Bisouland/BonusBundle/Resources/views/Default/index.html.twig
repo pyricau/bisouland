@@ -1,0 +1,40 @@
+{% extends '::base.html.twig' %}
+
+{% block meta %}
+    <meta name="description" content="Bonus de Bisouland, jeu en ligne par navigateur" />
+    <meta name="keywords" content="Bisouland, jeu en ligne, navigateur, bonus" />
+{% endblock %}
+
+{% block title %}Bisouland v2 - Bonus{% endblock %}
+
+{% block view %}
+    <article class="hero-unit">
+        <h1>Bisouland Bonus <small>Parce que c'est encore plus fun quand c'est cach&eacute; !</small></h1>
+
+        {% if answer == 'before' %}
+            <p>
+                Indice 3 : revenez sur cette page quand votre amoureux aura
+                plus de <span class="number">3 628 800</span>
+                <abbr class="initialism" title="Points d'Amour">PA</abbr>.
+            </p>
+        {% elseif answer == 'now' %}
+            <p>
+                F&eacute;licitations, vous venez de d&eacute;bloquer un bonus
+                pour votre amoureux !<br />
+                Si vous arrivez &agrave; maintenir son amour jusqu'&agrave;
+                la version <span class="number">2.4</span>, vous pourrez
+                utiliser ce bonus pour l'am&eacute;liorer !
+            </p>
+        {% else %}
+            <p>
+                Votre amoureux a d&eacute;j&agrave; un bonus !
+            </p>
+        {% endif %}
+        
+        <p>
+            <a href="{{ path('homepage') }}" class="btn btn-primary btn-large">
+                Retour
+            </a>
+        </p>
+    </article>
+{% endblock %}

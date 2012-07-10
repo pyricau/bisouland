@@ -1,116 +1,102 @@
 {% extends '::base.html.twig' %}
 
-{% block title %}Bisouland v2 - Population{% endblock %}
+{% block meta %}
+    <meta name="description" content="Population de Bisouland, liste des personnages du jeu" />
+    <meta name="keywords" content="Bisouland, jeu en ligne, navigateur, population, liste personnages" />
+{% endblock %}
 
-{% block css %}
+{% block title %}Bisouland v2 - Amoureux{% endblock %}
+
+{% block stylesheets %}
     {{ parent() }}
-    <link rel="stylesheet" href="{{ asset('css/jquery.countdown.css') }}" />
+    <link rel="stylesheet" href="{{ asset('bundles/bisoulandbeings/css/table-sorting.css') }}" />
 {% endblock %}
 
 {% block view %}
-    <article>
+    <article class="table-sorting">
         <h2>Population</h2>
         
-        <section class="help">
-            <h3>Aide</h3>
-
-            <ul class="tabs">
-                <li>
-                    <a class="active" href="#population">
-                        Population
-                    </a>
-                </li>
-                <li>
-                    <a href="#love-points">
-                        <abbr title="Points d'Amour">PA</abbr>
-                    </a>
-                </li>
-            </ul>
-
-            <ul class="tabs-content">
-                <li class="active" id="population">
-                    <p>
-                        La population est r&eacute;gul&eacute;e naturellement
-                        par la cr&eacute;ation et suppression automatique de
-                        personnages.<br />
-                        &Agrave; chaque visite sur le site, un nouveau
-                        personnage est automatiquement cr&eacute;&eacute; et
-                        &agrave; chaque fois qu'un personnage perd le jeu, il
-                        est supprim&eacute; automatiquement.
-                    </p>
-                </li>
-                <li id="love-points">
-                    <p>
-                        Les Points d'Amour
-                        (<abbr title="Points d'Amour">PA</abbr>) sont la
-                        ressource de ce jeu : ils se traduisent par le temps
-                        restant, en secondes, avant que le personnage ne perde
-                        le jeu.<br />
-                        Les <abbr title="Points d'Amour">PA</abbr> diminuent
-                        naturellement d'un point par seconde.<br />
-                        Lorsqu'un personnage atteind 0
-                        <abbr title="Points d'Amour">PA</abbr>, il perd le jeu
-                        et est supprim&eacute;.
-                    </p>
-                </li>
-            </ul>
-        </section>
-        
-        <button type="button" id="show-help">
-            Afficher l'aide
-        </button>
-        
-        <table id="population">
-            <tr>
-                <th>#</th>
-                <th>Nom</th>
-                <th><abbr title="Points d'Amour">PA</abbr></th>
-                <th>&Acirc;ge</th>
-            </tr>
-
-            {% for being in beings %}
+        <table id="population" class="table table-striped">
+            <thead>
                 <tr>
-                    <td>
-                        {{ loop.index }}
-                    </td>
-                    <td>
-                        {{ being.name }}
-                    </td>
-                    <td class="time-left number">
-                        {{ being.lovePoints|number_format_decimal }}
-                    </td>
-                    <td class="age number">
-                        {{ being.age|number_format_decimal }}
-                    </td>
+                    <th>#</th>
+                    <th>Nom</th>
+                    <th><abbr title="Points d'Amour" class="initialism">PA</abbr></th>
+                    <th><abbr title="S&eacute;duction" class="initialism">S</abbr></th>
+                    <th><abbr title="Baffe" class="initialism">B</abbr></th>
+                    <th><abbr title="Coeur" class="initialism">C</abbr></th>
+                    <th>Actions</th>
                 </tr>
-            {% endfor %}
+            </thead>
+
+            <tbody>
+                {% for being in beings %}
+                    <tr>
+                        <td class="number">
+                            {{ loop.index }}
+                        </td>
+                        <td>
+                            {{ being.name }}
+                        </td>
+                        <td class="love-points number">
+                            {{ being.lovePoints|number_format_decimal }}
+                        </td>
+                        <td class="number">
+                            {{ being.bonusSeduction|number_format_decimal }}
+                        </td>
+                        <td class="number">
+                            {{ being.bonusSlap|number_format_decimal }}
+                        </td>
+                        <td class="number">
+                            {{ being.bonusHeart|number_format_decimal }}
+                        </td>
+                        <td>
+                            <a href="{{ path('beings_view', {"name": being.name}) }}" title="Voir">
+                                <i class="icon-eye-open"></i>
+                            </a>
+                            {% if being.name != app.session.get('selectedBeingName') %}
+                                <a href="{{ path('beings_select', {"name": being.name}) }}" title="S&eacute;lectionner">
+                                    <i class="icon-hand-left"></i>
+                                </a>
+                                <a href="{{ path('kiss', {"kissedName": being.name}) }}" title="Embrasser">
+                                    <i class="icon-heart"></i>
+                                </a>
+                            {% endif %}
+                        </td>
+                    </tr>
+                {% endfor %}
+            </tbody>
         </table>
     </article>
 {% endblock %}
 
-{% block javascript %}
+{% block afterJs %}
     {{ parent() }}
-    <script type="text/javascript" src="{{ asset('js/jquery.countdown.pack.js') }}"></script>
-    <script type="text/javascript" src="{{ asset('js/jquery.countdown-fr.js') }}"></script>
+    <script type="text/javascript" src="{{ asset('js/jquery.dataTables.min.js') }}"></script>
+    <script type="text/javascript" src="{{ asset('bundles/bisoulandbeings/js/table-sorting.js') }}"></script>
     <script type="text/javascript">
-        $('#show-help').click(function() {
-            $('.help').show('slow');
-            $(this).hide();
-        });
-
-        $('tr').each(function() {
-            var ageInSeconds = $('.age', this).text().replace(/\s/g, '')
-            var timeLeftInSeconds = $('.time-left', this).text().replace(/\s/g, '')
-
-            $('.age', this).countdown({
-                since: -1 * ageInSeconds
-                , compact: true
-                , format: 'DHMS'
+        $(document).ready(function() {
+            $('#population').dataTable({
+                'sDom': "<'row'<'span6'l><'span6'f>r>t<'row'<'span6'i><'span6'p>>"
+                , 'sPaginationType': 'bootstrap'
+                , 'oLanguage': {
+                    'sLengthMenu': '_MENU_ records per page'
+                }
             })
-            $('.time-left', this).countdown({
+        })
+    </script>
+
+    <script type="text/javascript" src="{{ asset('js/jquery.countdown.pack.js') }}"></script>
+    <script type="text/javascript" src="{{ asset('js/jquery.countdown-fr.js') }}"></script></script>
+
+    <script type="text/javascript">
+        $('tr').each(function() {
+            var timeLeftInSeconds = $('.love-points', this).text().replace(/\s/g, '')
+
+            $('.love-points', this).countdown({
                 until: timeLeftInSeconds
                 , compact: true
-                , format: 'DHMS'
+                , format: 'S'
             })
         })
     </script>

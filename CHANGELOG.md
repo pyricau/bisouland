@@ -2,6 +2,22 @@
 
 Ce fichier permet de tracer les changements entre les versions.
 
+## v 2.2.0
+
+* ajout des statistiques de bonus ;
+* mise a jour des liens du footer ;
+* separation des news sur une nouvelle page ;
+* amelioration du systeme de generation et de suppression d'amoureux ;
+* possibilite d'embrasser un amoureux pour lui voler des bisous ;
+* ajout de l'attribution et de la selection d'amoureux ;
+* amelioration de l'affichage des amoureux ;
+* possibilite de visualiser un amoureux ;
+* utilisation d'un vocabulaire amoureux ;
+* ajout des attributs seduction, baffe et coeur ;
+* ajout de l'aide sur la page d'accueil ;
+* remaniement du design ;
+* utilisation de Twitter Bootstrap.
+
 ## v 2.1.0
 
 * mise en place de la suppression automatique des personnages ;

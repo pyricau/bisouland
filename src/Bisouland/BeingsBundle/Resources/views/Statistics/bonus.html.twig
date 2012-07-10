@@ -1,0 +1,40 @@
+<dl id="bonus_statistics" class="dl-horizontal statistics">
+    <dt>
+        S&eacute;duction
+    </dt>
+    <dd class="number">
+        {{ averageBonusSeduction }}
+    </dd>
+
+    <dt>
+        Baffe
+    </dt>
+    <dd class="number">
+        {{ averageBonusSlap }}
+    </dd>
+
+    <dt>
+        Coeur
+    </dt>
+    <dd class="number">
+        {{ averageBonusHeart }}
+    </dd>
+</dl>
+
+<script type="text/javascript">
+    google.load('visualization', '1', { packages:['corechart'] })
+    google.setOnLoadCallback(drawBonusChart)
+    function drawBonusChart() {
+        var data = google.visualization.arrayToDataTable([
+            ['Type', 'Moyenne']
+            , ['Seduction', {{ averageBonusSeduction }}]
+            , ['Baffe', {{ averageBonusSlap }}]
+            , ['Coeur', {{ averageBonusHeart }}]
+        ])
+
+        var options = {'title': 'statistiques'}
+
+        var chart = new google.visualization.ColumnChart(document.getElementById('bonus_statistics'))
+        chart.draw(data, options)
+    }
+</script>

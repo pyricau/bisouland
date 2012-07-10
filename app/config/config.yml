@@ -48,12 +48,12 @@ doctrine:
     orm:
         auto_generate_proxy_classes: %kernel.debug%
         entity_managers:
-                default:
-                    auto_mapping: true
-                    dql:
-                        string_functions:
-                            unix_timestamp: UltravioletDesign\DoctrineFunction\UnixTimestamp
-                            date_format: UVd\DoctrineFunction\DoctrineFunction\DateFormat
+            default:
+                auto_mapping: true
+                dql:
+                    string_functions:
+                        unix_timestamp: UltravioletDesign\DoctrineFunction\UnixTimestamp
+                        date_format: UVd\DoctrineFunction\DoctrineFunction\DateFormat
 
 # Swiftmailer Configuration
 swiftmailer:

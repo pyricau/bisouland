@@ -5,66 +5,52 @@ namespace Bisouland\BeingsBundle\Controller;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 
-use Bisouland\BeingsBundle\Filters\Before;
-use Bisouland\BeingsBundle\Entity\Factory\BeingFactory;
+use Bisouland\BeingsBundle\RandomSystem\Character;
 
-/**
- * @Before("beforeFilter")
- */
 class StatisticsController extends Controller
 {
-    static public $maximumNumberOfBirthInOneDay = 42;
-
-    public function beforeFilter()
+    /**
+     * @Template()
+     */
+    public function populationAction()
     {
-        $this->generateBirth();
-        $this->removeLosers();
-    }
-    
-    private function generateBirth()
-    {
-        $numberOfBirthsToday = $this->getDoctrine()
+        $numberOfBeingsGeneratedToday = $this->getDoctrine()
                 ->getRepository('BisoulandBeingsBundle:Being')
-                ->countBirthsToday();
-        
-        if (self::$maximumNumberOfBirthInOneDay > $numberOfBirthsToday) {
-            $beingFactory = new BeingFactory($this->get('pronounceable_word_generator'));
+                ->countBeingsGeneratedToday(); 
 
-            $entityManager = $this->getDoctrine()->getEntityManager();
-            $entityManager->persist($beingFactory->make());
-            $entityManager->flush();
-        }
-    }
-    
-    private function removeLosers()
-    {
-        $this->getDoctrine()
+        $numberOfBeings = $this->getDoctrine()
                 ->getRepository('BisoulandBeingsBundle:Being')
-                ->removeLosers();
+                ->count();
+        $numberOfBeingsCreatedSinceTheBegining = $this->getDoctrine()
+                ->getRepository('BisoulandBeingsBundle:Being')
+                ->findLastId();
+        $numberOfLosers = $numberOfBeingsCreatedSinceTheBegining - $numberOfBeings;
+        $numberOfOthers = $numberOfBeings - $numberOfBeingsGeneratedToday;
+
+        return compact(
+                'numberOfBeingsGeneratedToday',
+                'numberOfLosers',
+                'numberOfOthers'
+        );
     }
 
     /**
      * @Template()
      */
-    public function indexAction()
+    public function bonusAction()
     {
-        $numberOfBirthsToday = $this->getDoctrine()
+        $averageAttributes = $this->getDoctrine()
                 ->getRepository('BisoulandBeingsBundle:Being')
-                ->countBirthsToday(); 
+                ->getAverageAttributes();
 
-        $alivePopulationCount = $this->getDoctrine()
-                ->getRepository('BisoulandBeingsBundle:Being')
-                ->countAlivePopulation();
-        $totalNumberOfBirth = $this->getDoctrine()
-                ->getRepository('BisoulandBeingsBundle:Being')
-                ->countTotalBirths();
-        $numberOfLosers = $totalNumberOfBirth - $alivePopulationCount;
-        $numberOfOthers = $alivePopulationCount - $numberOfBirthsToday;
+        $averageBonusSeduction = Character::calculateBonusPointsFromAttributePoints($averageAttributes[0][1]);
+        $averageBonusSlap = Character::calculateBonusPointsFromAttributePoints($averageAttributes[0][2]);
+        $averageBonusHeart = Character::calculateBonusPointsFromAttributePoints($averageAttributes[0][3]);
 
         return compact(
-                'numberOfBirthsToday',
-                'numberOfLosers',
-                'numberOfOthers'
+                'averageBonusSeduction',
+                'averageBonusSlap',
+                'averageBonusHeart'
         );
     }
 }

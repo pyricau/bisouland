@@ -21,13 +21,12 @@ class AppKernel extends Kernel
             new JMS\DiExtraBundle\JMSDiExtraBundle($this),
             new JMS\SecurityExtraBundle\JMSSecurityExtraBundle(),
             
-            new Dhgamache\SkeletonBundle\DhgamacheSkeletonBundle(),
-            
             new Knp\Bundle\MenuBundle\KnpMenuBundle(),
 
             /* Bisouland */
             new Bisouland\FrontBundle\BisoulandFrontBundle(),
             new Bisouland\BeingsBundle\BisoulandBeingsBundle(),
+            new Bisouland\BonusBundle\BisoulandBonusBundle(),
             
             /* Extra Doctrine */
             new Doctrine\Bundle\FixturesBundle\DoctrineFixturesBundle(),

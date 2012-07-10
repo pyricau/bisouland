@@ -4,6 +4,11 @@ namespace Bisouland\BeingsBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Mapping\Annotation as Gedmo;
+use Doctrine\Common\Collections\ArrayCollection;
+
+use Bisouland\BeingsBundle\RandomSystem\Character;
+use Bisouland\BeingsBundle\Entity\Kiss;
+use Bisouland\BonusBundle\Entity\Bonus;
 
 /**
  * Bisouland\BeingsBundle\Entity\Being
@@ -31,6 +36,21 @@ class Being
     private $love_points;
     
     /**
+     * @ORM\Column(name="seduction", type="integer")
+     */
+    private $seduction;
+    
+    /**
+     * @ORM\Column(name="slap", type="integer")
+     */
+    private $slap;
+    
+    /**
+     * @ORM\Column(name="heart", type="integer")
+     */
+    private $heart;
+    
+    /**
      * @Gedmo\Timestampable(on="create")
      * @ORM\Column(name="created", type="datetime")
      */
@@ -41,6 +61,28 @@ class Being
      * @ORM\Column(name="updated", type="datetime")
      */
     private $updated;
+    
+    /**
+     * @ORM\OneToMany(targetEntity="Kiss", mappedBy="kisser")
+     */
+    private $kisses;
+    
+    /**
+     * @ORM\OneToMany(targetEntity="Kiss", mappedBy="kissed")
+     */
+    private $kissedBy;
+
+    /**
+     * @ORM\OneToMany(targetEntity="Bisouland\BonusBundle\Entity\Bonus", mappedBy="being")
+     */
+    private $bonuses;
+    
+    public function __construct()
+    {
+        $this->kisses = new ArrayCollection();
+        $this->kissedBy = new ArrayCollection();
+        $this->bonuses = new ArrayCollection();
+    }
 
     public function getId()
     {
@@ -71,6 +113,54 @@ class Being
         return $this->love_points - $timeSinceLastUpdate;
     }
     
+    public function setSeduction($seduction)
+    {
+        $this->seduction = $seduction;
+        return $this;
+    }
+
+    public function getSeduction()
+    {
+        return $this->seduction;
+    }
+    
+    public function getBonusSeduction()
+    {
+        return Character::calculateBonusPointsFromAttributePoints($this->seduction);
+    }
+    
+    public function setSlap($slap)
+    {
+        $this->slap = $slap;
+        return $this;
+    }
+
+    public function getSlap()
+    {
+        return $this->slap;
+    }
+    
+    public function getBonusSlap()
+    {
+        return Character::calculateBonusPointsFromAttributePoints($this->slap);
+    }
+    
+    public function setHeart($heart)
+    {
+        $this->heart = $heart;
+        return $this;
+    }
+
+    public function getHeart()
+    {
+        return $this->heart;
+    }
+    
+    public function getBonusHeart()
+    {
+        return Character::calculateBonusPointsFromAttributePoints($this->heart);
+    }
+    
     public function getCreated()
     {
         return $this->created;
@@ -84,5 +174,35 @@ class Being
     public function getUpdated()
     {
         return $this->updated;
+    }
+
+    public function addKiss(Kiss $kiss)
+    {
+        $this->kisses[] = $kiss;
+    }
+
+    public function getKisses()
+    {
+        return $this->kisses;
+    }
+    
+    public function addKissedBy(Kiss $kissedBy)
+    {
+        $this->kissedBy[] = $kissedBy;
+    }
+
+    public function getKissedBy()
+    {
+        return $this->kissedBy;
+    }
+    
+    public function addBonus(Bonus $bonus)
+    {
+        $this->bonuses[] = $bonus;
+    }
+
+    public function getBonuses()
+    {
+        return $this->bonuses;
     }
 }

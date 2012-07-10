@@ -1,14 +1,14 @@
 BisoulandBeingsBundle:
     resource: "@BisoulandBeingsBundle/Controller/"
     type:     annotation
-    prefix:   /beings/
+    prefix:   /amoureux/
 
 BisoulandFrontBundle:
     resource: "@BisoulandFrontBundle/Controller/"
     type:     annotation
     prefix:   /
 
-# Internal routing configuration to handle ESI
-#_internal:
-#    resource: "@FrameworkBundle/Resources/config/routing/internal.xml"
-#    prefix:   /_internal
+BisoulandBonusBundle:
+    resource: "@BisoulandBonusBundle/Controller/"
+    type:     annotation
+    prefix:   /bonus/

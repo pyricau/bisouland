@@ -1,52 +1,142 @@
-{% extends 'DhgamacheSkeletonBundle::layout.html.twig' %}
+<!DOCTYPE html>
+<html lang="fr">
+    {% include 'BisoulandBonusBundle::comment.html.twig' %}
+    <head>
+        <meta charset="utf-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        {% block meta %}{% endblock %}
 
-{% block title %}Bisouland v2{% endblock %}
+        <title>
+            {% block title %}Bisouland v2{% endblock %}
+        </title>
 
-{% block stylesheets %}
-    <link rel="stylesheet" href="{{ asset('bundles/bisoulandfront/css/main.css') }}" />
-    <link rel="stylesheet" href="{{ asset('bundles/bisoulandfront/css/article.css') }}" />
-    <link rel="stylesheet" href="{{ asset('bundles/bisoulandfront/css/footer.css') }}" />
-    <link rel="stylesheet" href="{{ asset('bundles/bisoulandfront/css/header.css') }}" />
-    <link rel="stylesheet" href="{{ asset('bundles/bisoulandfront/css/table.css') }}" />
-    <link rel="stylesheet" href="{{ asset('bundles/bisoulandfront/css/dl.css') }}" />
-{% endblock %}
+        {% block stylesheets %}
+            <link rel="stylesheet" href="{{ asset('css/bootstrap.min.css') }}" />
+            <link rel="stylesheet" href="{{ asset('bundles/bisoulandfront/css/theme.css') }}" />
+            <link rel="stylesheet" href="{{ asset('bundles/bisoulandfront/css/dl.css') }}" />
+        {% endblock %}
+            
+        <!--[if lt IE 9]>
+            <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
+        <![endif]-->
 
-{% block favicons %}
-    <link rel="shortcut icon" href="{{ asset('bundles/bisoulandfront/images/favicon.ico') }}" />
-    <link rel="apple-touch-icon" href="{{ asset('bundles/bisoulandfront/images/apple-touch-icon.png') }}">
-    <link rel="apple-touch-icon" sizes="72x72" href="{{ asset('bundles/bisoulandfront/images/apple-touch-icon-72x72.png') }}">
-    <link rel="apple-touch-icon" sizes="114x114" href="{{ asset('bundles/bisoulandfront/images/apple-touch-icon-114x114.png') }}">
-{% endblock %}
+        {% block favicons %}
+            <link rel="shortcut icon" href="{{ asset('bundles/bisoulandfront/images/favicon.ico') }}" />
+            <link rel="apple-touch-icon" href="{{ asset('bundles/bisoulandfront/images/apple-touch-icon.png') }}">
+            <link rel="apple-touch-icon" sizes="72x72" href="{{ asset('bundles/bisoulandfront/images/apple-touch-icon-72x72.png') }}">
+            <link rel="apple-touch-icon" sizes="114x114" href="{{ asset('bundles/bisoulandfront/images/apple-touch-icon-114x114.png') }}">
+        {% endblock %}
+        
+        {% block beforeJs %}
+            <script type="text/javascript" src="https://www.google.com/jsapi"></script>
+        {% endblock %}
+    </head>
+    
+    <body>
+        <header class="navbar navbar-fixed-top">
+            <div class="navbar-inner">
+                <div class="container">
+                    <a class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                    </a>
 
-{% block content %}
-    <header id="layout-header" class="sixteen columns content">
-        <a href="{{ path('homepage') }}"><img alt="Bisouland" src="{{ asset('bundles/bisoulandfront/images/logo.gif') }}" /></a>
+                    <a class="brand" href="{{ path('homepage') }}">
+                        Bisouland
+                    </a>
 
-        <nav>
-            {{ knp_menu_render("BisoulandFrontBundle:Builder:mainMenu") }}
-        </nav>    
-    </header>
+                    <div class="nav-collapse">
+                        <nav>
+                            {{ knp_menu_render("BisoulandFrontBundle:Builder:mainMenu", {
+                                "currentClass": "active",
+                                "allow_safe_labels": true
+                            }) }}
+                        </nav>
 
-    <div class="sixteen columns content">
-        {% block view %}{% endblock %}
-    </div>
+                        <nav class="pull-right">
+                            {{ knp_menu_render("BisoulandBeingsBundle:Builder:selectedMenu", {
+                                "currentClass": "active",
+                                "allow_safe_labels": true
+                            }) }}
+                        </nav>
+                    </div>
+                </div>
+            </div>
+        </header>
 
-    <footer id="layout-footer">
-        <nav class="seven columns offset-by-one content">
-            <h2>Statistiques</h2>
+        <div class="container">
+            {% include 'BisoulandBeingsBundle:Flash:deletion.html.twig' %}
+            {% include 'BisoulandBeingsBundle:Flash:generation.html.twig' %}
+            {% include 'BisoulandBeingsBundle:Flash:attribution.html.twig' %}
+            {% include 'BisoulandBeingsBundle:Flash:selection.html.twig' %}
+            {% include 'BisoulandBeingsBundle:Flash:kiss.html.twig' %}
 
-            {% render 'BisoulandBeingsBundle:Statistics:index' %}
-        </nav>
+            <div class="content">
+                {% block view %}{% endblock %}
+            </div>
 
-        <nav class="seven columns offset-by-one content">
-            <h2>Cr&eacute;dits</h2>
+            <footer id="layout-footer" class="row">
+                    <nav class="span4">
+                        <h2>Population</h2>
 
-            <ul>
-                <li><a href="http://www.piwai.info/" title="Auteur original">Piwa&iuml;</a></li>
-                <li><a href="https://github.com/pyricau/bisouland" title="D&eacute;p&ocirc;t des sources">Code source</a></li>
-                <li><a href="http://symfony.com/" title="Symfony2 framework">Symfony</a></li>
-                <li><a href="http://www.styleshout.com/" title="CSS template et ressources">Styleshout</a></li>
-            </ul>
-        </nav>
-    </footer>
-{% endblock %}
+                        {% render 'BisoulandBeingsBundle:Statistics:population' %}
+                    </nav>
+                    
+                    <nav class="span4">
+                        <h2>Bonus</h2>
+
+                        {% render 'BisoulandBeingsBundle:Statistics:bonus' %}
+                    </nav>
+
+                    <nav class="span4">
+                        <h2>Cr&eacute;dits &amp; utilisation</h2>
+
+                        <ul>
+                            <li>
+                                <a href="http://www.piwai.info/">
+                                    Auteur original : Piwa&iuml;
+                                </a>
+                            </li>
+                            <li>
+                                <a href="https://github.com/pyricau/bisouland">
+                                    Code source disponible sur Github
+                                </a>
+                            </li>
+                            <li>
+                                <a href="http://symfony.com/">
+                                    Symfony2
+                                </a>
+                            </li>
+                            <li>
+                                <a href="http://twitter.github.com/bootstrap/">
+                                    Twitter Bootstrap
+                                </a>
+                            </li>
+                            <li>
+                                <a href="http://datatables.net/">
+                                    DataTables
+                                </a>
+                            </li>
+                            <li>
+                                <a href="http://keith-wood.name/countdown.html">
+                                    jQuery Countdown
+                                </a>
+                            </li>
+                            <li>
+                                <a href="https://developers.google.com/chart/">
+                                    Google Chart Tools
+                                </a>
+                            </li>
+                        </ul>
+                    </nav>
+            </footer>
+        </div>
+    </body>
+    
+    <script type="text/javascript" src="//ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"></script>
+    <script src="{{ asset('js/bootstrap.min.js') }}"></script>
+    {% include 'BisoulandBonusBundle::konami.html.twig' %}
+
+    {% block afterJs %}{% endblock %}
+</html>

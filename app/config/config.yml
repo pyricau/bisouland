@@ -4,7 +4,7 @@ imports:
 
 framework:
     #esi:             ~
-    #translator:      { fallback: %locale% }
+    translator:      { fallback: fr }
     secret:          %secret%
     charset:         UTF-8
     router:          { resource: "%kernel.root_dir%/config/routing.yml" }
@@ -12,7 +12,7 @@ framework:
     csrf_protection: true
     validation:      { enable_annotations: true }
     templating:      { engines: ['twig'] } #assets_version: SomeVersionScheme
-    default_locale:  %locale%
+    default_locale:  fr
     session:
         auto_start:     true
 
@@ -47,7 +47,13 @@ doctrine:
 
     orm:
         auto_generate_proxy_classes: %kernel.debug%
-        auto_mapping: true
+        entity_managers:
+                default:
+                    auto_mapping: true
+                    dql:
+                        string_functions:
+                            unix_timestamp: UltravioletDesign\DoctrineFunction\UnixTimestamp
+                            date_format: UVd\DoctrineFunction\DoctrineFunction\DateFormat
 
 # Swiftmailer Configuration
 swiftmailer:

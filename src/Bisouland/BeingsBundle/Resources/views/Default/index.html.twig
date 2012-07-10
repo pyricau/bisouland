@@ -1,23 +1,117 @@
 {% extends '::base.html.twig' %}
 
-{% block title %}Bisouland v2 - Personnages{% endblock %}
+{% block title %}Bisouland v2 - Population{% endblock %}
+
+{% block css %}
+    {{ parent() }}
+    <link rel="stylesheet" href="{{ asset('css/jquery.countdown.css') }}" />
+{% endblock %}
 
 {% block view %}
     <article>
-        <h2>Personnages</h2>
+        <h2>Population</h2>
+        
+        <section class="help">
+            <h3>Aide</h3>
 
-        <table>
+            <ul class="tabs">
+                <li>
+                    <a class="active" href="#population">
+                        Population
+                    </a>
+                </li>
+                <li>
+                    <a href="#love-points">
+                        <abbr title="Points d'Amour">PA</abbr>
+                    </a>
+                </li>
+            </ul>
+
+            <ul class="tabs-content">
+                <li class="active" id="population">
+                    <p>
+                        La population est r&eacute;gul&eacute;e naturellement
+                        par la cr&eacute;ation et suppression automatique de
+                        personnages.<br />
+                        &Agrave; chaque visite sur le site, un nouveau
+                        personnage est automatiquement cr&eacute;&eacute; et
+                        &agrave; chaque fois qu'un personnage perd le jeu, il
+                        est supprim&eacute; automatiquement.
+                    </p>
+                </li>
+                <li id="love-points">
+                    <p>
+                        Les Points d'Amour
+                        (<abbr title="Points d'Amour">PA</abbr>) sont la
+                        ressource de ce jeu : ils se traduisent par le temps
+                        restant, en secondes, avant que le personnage ne perde
+                        le jeu.<br />
+                        Les <abbr title="Points d'Amour">PA</abbr> diminuent
+                        naturellement d'un point par seconde.<br />
+                        Lorsqu'un personnage atteind 0
+                        <abbr title="Points d'Amour">PA</abbr>, il perd le jeu
+                        et est supprim&eacute;.
+                    </p>
+                </li>
+            </ul>
+        </section>
+        
+        <button type="button" id="show-help">
+            Afficher l'aide
+        </button>
+        
+        <table id="population">
             <tr>
+                <th>#</th>
                 <th>Nom</th>
-                <th>Date de naissance</th>
+                <th><abbr title="Points d'Amour">PA</abbr></th>
+                <th>&Acirc;ge</th>
             </tr>
 
             {% for being in beings %}
                 <tr>
-                    <td>{{ being.name }}</td>
-                    <td>{{ being.created|date("h:m:s d/m/Y") }}</td>
+                    <td>
+                        {{ loop.index }}
+                    </td>
+                    <td>
+                        {{ being.name }}
+                    </td>
+                    <td class="time-left number">
+                        {{ being.lovePoints|number_format_decimal }}
+                    </td>
+                    <td class="age number">
+                        {{ being.age|number_format_decimal }}
+                    </td>
                 </tr>
             {% endfor %}
         </table>
     </article>
+{% endblock %}
+
+{% block javascript %}
+    {{ parent() }}
+    <script type="text/javascript" src="{{ asset('js/jquery.countdown.pack.js') }}"></script>
+    <script type="text/javascript" src="{{ asset('js/jquery.countdown-fr.js') }}"></script>
+    <script type="text/javascript">
+        $('#show-help').click(function() {
+            $('.help').show('slow');
+            $(this).hide();
+        });
+
+        $('tr').each(function() {
+            var ageInSeconds = $('.age', this).text().replace(/\s/g, '')
+            var timeLeftInSeconds = $('.time-left', this).text().replace(/\s/g, '')
+
+            $('.age', this).countdown({
+                since: -1 * ageInSeconds
+                , compact: true
+                , format: 'DHMS'
+            })
+            $('.time-left', this).countdown({
+                until: timeLeftInSeconds
+                , compact: true
+                , format: 'DHMS'
+            })
+        })
+    </script>
 {% endblock %}

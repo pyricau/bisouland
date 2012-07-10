@@ -14,7 +14,7 @@ class DefaultControllerTest extends WebTestCase
 
         $crawler = $client->request('GET', '/beings/');
 
-        $this->assertTrue($crawler->filter('title:contains("Bisouland v2 - Personnages")')->count() > 0);
+        $this->assertTrue($crawler->filter('title:contains("Bisouland v2 - Population")')->count() > 0);
     }
     
     public function testPresenceOfNamesInView()
@@ -29,36 +29,15 @@ class DefaultControllerTest extends WebTestCase
         }
     }
     
-    public function testBeingGeneration()
+    public function testAbsenceOfNamesInView()
     {
         $client = static::createClient();
-        $em = $client->getContainer()->get('doctrine.orm.entity_manager');
-        
-        $routes = array(
-            '/beings/',
-        );
-        foreach ($routes as $route) {
-            $numberBefore = $em->getRepository('BisoulandBeingsBundle:Being')->count();
 
-            $client->request('GET', $route);
-            
-            $numberAfter = $em->getRepository('BisoulandBeingsBundle:Being')->count();
+        $crawler = $client->request('GET', '/beings/');
 
-            $this->assertTrue(1 === $numberAfter - $numberBefore);
+        $beings = LoadBeingData::getFixturesToBeRemoved();
+        foreach ($beings as $being) {
+            $this->assertTrue(0 === $crawler->filter('td:contains("'.$being['name'].'")')->count());
         }
-    }
-    
-    public function testNumberMaxOfBirthPerDay()
-    {
-        $client = static::createClient();
-        $em = $client->getContainer()->get('doctrine.orm.entity_manager');
-
-        for ($numberOfBirth = 0; $numberOfBirth < DefaultController::$numberMaxOfBirthPerDay; $numberOfBirth++) {
-            $client->request('GET', '/beings/');
-        }
-        
-        $client->request('GET', '/beings/');
-
-        $this->assertTrue(DefaultController::$numberMaxOfBirthPerDay == $em->getRepository('BisoulandBeingsBundle:Being')->countBirthsToday());
     }
 }

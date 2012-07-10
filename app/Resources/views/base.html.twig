@@ -55,7 +55,7 @@
                         </nav>
 
                         <nav class="pull-right">
-                            {{ knp_menu_render("BisoulandBeingsBundle:Builder:selectedMenu", {
+                            {{ knp_menu_render("BisoulandLoversBundle:Builder:selectedMenu", {
                                 "currentClass": "active",
                                 "allow_safe_labels": true
                             }) }}
@@ -66,11 +66,11 @@
         </header>
 
         <div class="container">
-            {% include 'BisoulandBeingsBundle:Flash:deletion.html.twig' %}
-            {% include 'BisoulandBeingsBundle:Flash:generation.html.twig' %}
-            {% include 'BisoulandBeingsBundle:Flash:attribution.html.twig' %}
-            {% include 'BisoulandBeingsBundle:Flash:selection.html.twig' %}
-            {% include 'BisoulandBeingsBundle:Flash:kiss.html.twig' %}
+            {% include 'BisoulandLoversBundle:Flash:deletion.html.twig' %}
+            {% include 'BisoulandLoversBundle:Flash:generation.html.twig' %}
+            {% include 'BisoulandLoversBundle:Flash:attribution.html.twig' %}
+            {% include 'BisoulandLoversBundle:Flash:selection.html.twig' %}
+            {% include 'BisoulandLoversBundle:Flash:kiss.html.twig' %}
 
             <div class="content">
                 {% block view %}{% endblock %}
@@ -80,13 +80,13 @@
                     <nav class="span4">
                         <h2>Population</h2>
 
-                        {% render 'BisoulandBeingsBundle:Statistics:population' %}
+                        {% render 'BisoulandLoversBundle:Statistics:population' %}
                     </nav>
                     
                     <nav class="span4">
                         <h2>Bonus</h2>
 
-                        {% render 'BisoulandBeingsBundle:Statistics:bonus' %}
+                        {% render 'BisoulandLoversBundle:Statistics:bonus' %}
                     </nav>
 
                     <nav class="span4">
@@ -133,6 +133,18 @@
             </footer>
         </div>
     </body>
+    
+    <script type="text/javascript">
+        var _gaq = _gaq || [];
+        _gaq.push(['_setAccount', 'UA-32299315-1']);
+        _gaq.push(['_trackPageview']);
+
+        (function() {
+            var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+            ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+            var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+        })();
+    </script>
     
     <script type="text/javascript" src="//ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"></script>
     <script src="{{ asset('js/bootstrap.min.js') }}"></script>

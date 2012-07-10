@@ -2,6 +2,20 @@
 
 Ce fichier permet de tracer les changements entre les versions.
 
+## v2.3.0
+
+* refactoring de RandomSystem dans RolePlayingGameSystemBundle ;
+* more tests for RolePlayingGameSystemBundle ;
+* documentation for RolePlayingGameSystemBundle ;
+* correction du bug des bisous qui prennent plus que l'amoureux n'a ;
+* correction du bug du ration de PA pris > 1 ;
+* correction du bug du bonus de coeur et du gain ;
+* refactoring de PronounceableWord dans PronounceableWordBundle ;
+* suppression des noms en kr, ts, oe, bh, dh et uo ;
+* correction du bug de tri par PA ;
+* correction du bug d'affichage inferieur ;
+* affichage des bisous recus et faits.
+
 ## v 2.2.0
 
 * ajout des statistiques de bonus ;

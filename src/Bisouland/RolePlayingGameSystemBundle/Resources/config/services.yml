@@ -1,0 +1,14 @@
+parameters:
+    bisouland_role_playing_game_system.being_factory.class: Bisouland\RolePlayingGameSystemBundle\Entity\Factory\BeingFactory
+    bisouland_role_playing_game_system.attack_factory.class: Bisouland\RolePlayingGameSystemBundle\Entity\Factory\AttackFactory
+    bisouland_role_playing_game_system.roll_factory.class: Bisouland\RolePlayingGameSystemBundle\Entity\Factory\RollFactory
+
+services:
+    bisouland_role_playing_game_system.being_factory:
+        class: %bisouland_role_playing_game_system.being_factory.class%
+        arguments: ["@bisouland_pronounceable_word.generator"]
+    bisouland_role_playing_game_system.attack_factory:
+        class: %bisouland_role_playing_game_system.attack_factory.class%
+        arguments: ["@bisouland_role_playing_game_system.roll_factory"]
+    bisouland_role_playing_game_system.roll_factory:
+        class: %bisouland_role_playing_game_system.roll_factory.class%

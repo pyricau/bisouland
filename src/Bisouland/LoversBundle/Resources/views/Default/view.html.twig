@@ -91,14 +91,6 @@
                 </tr>
                 <tr>
                     <th>
-                        Esquive
-                    </th>
-                    <td class="number">
-                        {{ lover.heartBonus|number_format_decimal }}
-                    </td>
-                </tr>
-                <tr>
-                    <th>
                         Langue
                     </th>
                     <td class="number">
@@ -111,6 +103,14 @@
                     </th>
                     <td class="number">
                         {{ lover.slapBonus|number_format_decimal }}
+                    </td>
+                </tr>
+                <tr>
+                    <th>
+                        Coeur
+                    </th>
+                    <td class="number">
+                        {{ lover.heartBonus|number_format_decimal }}
                     </td>
                 </tr>
             </table>
@@ -135,11 +135,11 @@
                 <a href="{{ path('level_up', {'bonus': 'langue', 'name': lover.name}) }}" class="btn">
                     Langue
                 </a>
-                <a href="{{ path('level_up', {'bonus': 'coeur', 'name': lover.name}) }}" class="btn">
-                    Coeur
-                </a>
                 <a href="{{ path('level_up', {'bonus': 'baffe', 'name': lover.name}) }}" class="btn">
                     Baffe
+                </a>
+                <a href="{{ path('level_up', {'bonus': 'coeur', 'name': lover.name}) }}" class="btn">
+                    Coeur
                 </a>
             </p>
         </article>

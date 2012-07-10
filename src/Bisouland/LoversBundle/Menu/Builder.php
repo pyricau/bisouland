@@ -20,7 +20,6 @@ class Builder extends ContainerAware
 
         $this->menu = $factory->createItem('root');
         $this->menu->setChildrenAttribute('class', 'nav');
-        $this->menu->setCurrentUri($this->request->getRequestUri());
 
         $this->addSelectedNameChild($loverName);
         $this->addSelectedLovePointsChild($loverName, $selectedLover->getLovePoints());

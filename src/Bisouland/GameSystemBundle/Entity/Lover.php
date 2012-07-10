@@ -15,6 +15,8 @@ use Bisouland\BonusBundle\Entity\Bonus;
  */
 class Lover
 {
+    static public $nextLevelCostMultiplier = 3600;
+
     /**
      * @ORM\Column(name="id", type="integer")
      * @ORM\Id
@@ -31,6 +33,11 @@ class Lover
      * @ORM\Column(name="love_points", type="integer")
      */
     private $love_points;
+
+    /**
+     * @ORM\Column(name="level", type="integer")
+     */
+    private $level;
 
     /**
      * @ORM\Column(name="seduction_bonus", type="integer")
@@ -112,6 +119,27 @@ class Lover
         $secondsSinceLastUpdate = time() - $this->updated->getTimestamp();
 
         return $this->love_points - $secondsSinceLastUpdate;
+    }
+
+    public function setLevel($level)
+    {
+        $this->level = $level;
+        return $this;
+    }
+
+    public function getLevel()
+    {
+        return $this->level;
+    }
+
+    public function getNextLevelCost()
+    {
+        $cost = 0;
+        for ($i = 1; $i < $this->level * 4; $i++) {
+             $cost += $i;
+        }
+        
+        return $cost * self::$nextLevelCostMultiplier;
     }
 
     public function setSeductionBonus($seduction_bonus)

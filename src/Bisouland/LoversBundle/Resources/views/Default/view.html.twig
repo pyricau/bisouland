@@ -51,38 +51,6 @@
                 </tr>
                 <tr>
                     <th>
-                        Bonus de s&eacute;duction
-                    </th>
-                    <td class="number">
-                        {{ lover.seductionBonus|number_format_decimal }}
-                    </td>
-                </tr>
-                <tr>
-                    <th>
-                        Bonus d'esquive
-                    </th>
-                    <td class="number">
-                        {{ lover.dodgeBonus|number_format_decimal }}
-                    </td>
-                </tr>
-                <tr>
-                    <th>
-                        Bonus de Langue
-                    </th>
-                    <td class="number">
-                        {{ lover.tongueBonus|number_format_decimal }}
-                    </td>
-                </tr>
-                <tr>
-                    <th>
-                        Bonus de Baffe
-                    </th>
-                    <td class="number">
-                        {{ lover.slapBonus|number_format_decimal }}
-                    </td>
-                </tr>
-                <tr>
-                    <th>
                         &Acirc;ge
                     </th>
                     <td id="age" class="number">
@@ -107,6 +75,73 @@
                     </a>
                 </p>
             {% endif %}
+        </article>
+
+        <article>
+            <h2>Bonus</h2>
+
+            <table class="table table-striped">
+                <tr>
+                    <th>
+                        S&eacute;duction
+                    </th>
+                    <td class="number">
+                        {{ lover.seductionBonus|number_format_decimal }}
+                    </td>
+                </tr>
+                <tr>
+                    <th>
+                        Esquive
+                    </th>
+                    <td class="number">
+                        {{ lover.dodgeBonus|number_format_decimal }}
+                    </td>
+                </tr>
+                <tr>
+                    <th>
+                        Langue
+                    </th>
+                    <td class="number">
+                        {{ lover.tongueBonus|number_format_decimal }}
+                    </td>
+                </tr>
+                <tr>
+                    <th>
+                        Baffe
+                    </th>
+                    <td class="number">
+                        {{ lover.slapBonus|number_format_decimal }}
+                    </td>
+                </tr>
+            </table>
+
+            <h3>
+                Am&eacute;liorer un bonus
+                <small>
+                    Co&ucirc;t :
+                    <span class="number">
+                        {{ lover.nextLevelCost|number_format_decimal }}
+                    </span>
+                    <abbr class="initialism" title="Points d'Amour">
+                        PA
+                    </abbr>
+                </small>
+            </h3>
+
+            <p>
+                <a href="{{ path('level_up', {'bonus': 'seduction', 'name': lover.name}) }}" class="btn">
+                    S&eacute;duction
+                </a>
+                <a href="{{ path('level_up', {'bonus': 'langue', 'name': lover.name}) }}" class="btn">
+                    Langue
+                </a>
+                <a href="{{ path('level_up', {'bonus': 'esquive', 'name': lover.name}) }}" class="btn">
+                    Esquive
+                </a>
+                <a href="{{ path('level_up', {'bonus': 'baffe', 'name': lover.name}) }}" class="btn">
+                    Baffe
+                </a>
+            </p>
         </article>
 
         <article>

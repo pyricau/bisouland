@@ -19,17 +19,20 @@ class LoadLoverData implements FixtureInterface
                 'tongue_bonus' => 1,
                 'dodge_bonus' => 1,
                 'slap_bonus' => 1,
+                'level' => 1,
             ),
         );
 
         foreach ($lovers as $lover) {
             $newLover = new lover();
-            $newLover->setName($lover['name']);
-            $newLover->setLovePoints($lover['love_points']);
-            $newLover->setSeductionBonus($lover['seduction_bonus']);
-            $newLover->setTongueBonus($lover['tongue_bonus']);
-            $newLover->setDodgeBonus($lover['dodge_bonus']);
-            $newLover->setSlapBonus($lover['slap_bonus']);
+            $newLover
+                ->setName($lover['name'])
+                ->setLovePoints($lover['love_points'])
+                ->setSeductionBonus($lover['seduction_bonus'])
+                ->setTongueBonus($lover['tongue_bonus'])
+                ->setDodgeBonus($lover['dodge_bonus'])
+                ->setSlapBonus($lover['slap_bonus'])
+                ->setLevel($lover['level']);
             
             $manager->persist($newLover);
         }

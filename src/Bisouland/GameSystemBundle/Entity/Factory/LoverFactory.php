@@ -14,6 +14,8 @@ class LoverFactory
     static public $defaultNumberOfLovePoints = 8;
     static public $lovePointMultiplier = 86400;
 
+    static public $firstLevel = 1;
+
     private $nameGenerator;
     private $bonusFactory;
 
@@ -27,6 +29,7 @@ class LoverFactory
     {
         $lover = new Lover();
         $lover->setName($this->generateName());
+        $lover->setLevel(self::$firstLevel);
         $lover->setSeductionBonus($this->bonusFactory->make());
         $lover->setDodgeBonus($this->bonusFactory->make());
         $lover->setSlapBonus($this->bonusFactory->make());

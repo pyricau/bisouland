@@ -30,11 +30,15 @@ class LoverFactory
         $lover = new Lover();
         $lover->setName($this->generateName());
         $lover->setLevel(self::$firstLevel);
+
         $lover->setSeductionBonus($this->bonusFactory->make());
-        $lover->setDodgeBonus($this->bonusFactory->make());
+        $lover->setHeartBonus($this->bonusFactory->make());
         $lover->setSlapBonus($this->bonusFactory->make());
         $lover->setTongueBonus($this->bonusFactory->make());
-        $lover->setLovePoints($this->initialiseLovePoints());
+
+        $lover->setLovePoints($this->initialiseLovePoints(
+            $lover->getHeartBonus()
+        ));
 
         return $lover;
     }
@@ -49,10 +53,9 @@ class LoverFactory
         return $randomName;
     }
 
-    private function initialiseLovePoints()
+    private function initialiseLovePoints($heartBonus)
     {
-        $lovePointBonus = $this->bonusFactory->make();
-        $lovePoints = self::$defaultNumberOfLovePoints + $lovePointBonus;
+        $lovePoints = self::$defaultNumberOfLovePoints + $heartBonus;
 
         return $lovePoints * self::$lovePointMultiplier;
     }

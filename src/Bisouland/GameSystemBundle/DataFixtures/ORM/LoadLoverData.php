@@ -17,7 +17,7 @@ class LoadLoverData implements FixtureInterface
                 'love_points' => 42,
                 'seduction_bonus' => 1,
                 'tongue_bonus' => 1,
-                'dodge_bonus' => 1,
+                'heart_bonus' => 1,
                 'slap_bonus' => 1,
                 'level' => 1,
             ),
@@ -30,10 +30,10 @@ class LoadLoverData implements FixtureInterface
                 ->setLovePoints($lover['love_points'])
                 ->setSeductionBonus($lover['seduction_bonus'])
                 ->setTongueBonus($lover['tongue_bonus'])
-                ->setDodgeBonus($lover['dodge_bonus'])
+                ->setHeartBonus($lover['heart_bonus'])
                 ->setSlapBonus($lover['slap_bonus'])
                 ->setLevel($lover['level']);
-            
+
             $manager->persist($newLover);
         }
         $manager->flush();

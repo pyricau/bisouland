@@ -45,9 +45,9 @@ class Lover
     private $seduction_bonus;
 
     /**
-     * @ORM\Column(name="dodge_bonus", type="integer")
+     * @ORM\Column(name="heart_bonus", type="integer")
      */
-    private $dodge_bonus;
+    private $heart_bonus;
 
     /**
      * @ORM\Column(name="tongue_bonus", type="integer")
@@ -138,7 +138,7 @@ class Lover
         for ($i = 1; $i < $this->level * 4; $i++) {
              $cost += $i;
         }
-        
+
         return $cost * self::$nextLevelCostMultiplier;
     }
 
@@ -153,15 +153,15 @@ class Lover
         return $this->seduction_bonus;
     }
 
-    public function setDodgeBonus($dodge_bonus)
+    public function setHeartBonus($heart_bonus)
     {
-        $this->dodge_bonus = $dodge_bonus;
+        $this->heart_bonus = $heart_bonus;
         return $this;
     }
 
-    public function getDodgeBonus()
+    public function getHeartBonus()
     {
-        return $this->dodge_bonus;
+        return $this->heart_bonus;
     }
 
     public function setTongueBonus($tongue_bonus)

@@ -14,21 +14,21 @@
             <tr>
                 <th>Minimum</th>
                 <td>{{ minimum_seduction }}</td>
-                <td>{{ minimum_dodge }}</td>
+                <td>{{ minimum_heart }}</td>
                 <td>{{ minimum_tongue }}</td>
                 <td>{{ minimum_slap }}</td>
             </tr>
             <tr>
                 <th>Moyenne</th>
                 <td>{{ average_seduction }}</td>
-                <td>{{ average_dodge }}</td>
+                <td>{{ average_heart }}</td>
                 <td>{{ average_tongue }}</td>
                 <td>{{ average_slap }}</td>
             </tr>
             <tr>
                 <th>Maximum</th>
                 <td>{{ maximum_seduction }}</td>
-                <td>{{ maximum_dodge }}</td>
+                <td>{{ maximum_heart }}</td>
                 <td>{{ maximum_tongue }}</td>
                 <td>{{ maximum_slap }}</td>
             </tr>
@@ -43,7 +43,7 @@
         var data = google.visualization.arrayToDataTable([
             ['Type', 'Minimum', 'Moyenne', 'Maximum']
             , ['Seduction', {{ minimum_seduction }}, {{ average_seduction }}, {{ maximum_seduction }}]
-            , ['Esquive', {{ minimum_dodge }}, {{ average_dodge }}, {{ maximum_dodge }}]
+            , ['Esquive', {{ minimum_heart }}, {{ average_heart }}, {{ maximum_heart }}]
             , ['Langue', {{ minimum_tongue }}, {{ average_tongue }}, {{ maximum_tongue }}]
             , ['Baffe', {{ minimum_slap }}, {{ average_slap }}, {{ maximum_slap }}]
         ])

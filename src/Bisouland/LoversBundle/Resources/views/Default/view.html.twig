@@ -16,7 +16,7 @@
     {% if lover.name is not defined %}
         <article>
             <h2>Erreur</h2>
-            
+
             <p>
                 L'amoureux que vous essayez de voir n'existe pas (ou plus).
             </p>
@@ -94,7 +94,7 @@
                         Esquive
                     </th>
                     <td class="number">
-                        {{ lover.dodgeBonus|number_format_decimal }}
+                        {{ lover.heartBonus|number_format_decimal }}
                     </td>
                 </tr>
                 <tr>
@@ -135,8 +135,8 @@
                 <a href="{{ path('level_up', {'bonus': 'langue', 'name': lover.name}) }}" class="btn">
                     Langue
                 </a>
-                <a href="{{ path('level_up', {'bonus': 'esquive', 'name': lover.name}) }}" class="btn">
-                    Esquive
+                <a href="{{ path('level_up', {'bonus': 'coeur', 'name': lover.name}) }}" class="btn">
+                    Coeur
                 </a>
                 <a href="{{ path('level_up', {'bonus': 'baffe', 'name': lover.name}) }}" class="btn">
                     Baffe

@@ -34,15 +34,15 @@ class LoverRepository extends EntityRepositoryWithExceptionManagement
         $query = $this->getEntityManager()
                 ->createQueryBuilder()
                 ->select('AVG(bisouland_lover.seduction_bonus) AS average_seduction'
-                        .', AVG(bisouland_lover.dodge_bonus) AS average_dodge'
+                        .', AVG(bisouland_lover.heart_bonus) AS average_heart'
                         .', AVG(bisouland_lover.tongue_bonus) AS average_tongue'
                         .', AVG(bisouland_lover.slap_bonus) AS average_slap'
                         .', MIN(bisouland_lover.seduction_bonus) AS minimum_seduction'
-                        .', MIN(bisouland_lover.dodge_bonus) AS minimum_dodge'
+                        .', MIN(bisouland_lover.heart_bonus) AS minimum_heart'
                         .', MIN(bisouland_lover.tongue_bonus) AS minimum_tongue'
                         .', MIN(bisouland_lover.slap_bonus) AS minimum_slap'
                         .', MAX(bisouland_lover.seduction_bonus) AS maximum_seduction'
-                        .', MAX(bisouland_lover.dodge_bonus) AS maximum_dodge'
+                        .', MAX(bisouland_lover.heart_bonus) AS maximum_heart'
                         .', MAX(bisouland_lover.tongue_bonus) AS maximum_tongue'
                         .', MAX(bisouland_lover.slap_bonus) AS maximum_slap')
                 ->from('BisoulandGameSystemBundle:Lover', 'bisouland_lover')
@@ -83,7 +83,7 @@ class LoverRepository extends EntityRepositoryWithExceptionManagement
                 ->select('bisouland_lover')
                 ->from('BisoulandGameSystemBundle:Lover', 'bisouland_lover')
                 ->getQuery();
-        
+
         return $query;
     }
 }

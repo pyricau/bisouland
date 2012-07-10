@@ -18,7 +18,7 @@ class LevelUpController extends Controller
         $bonuses = array(
             'seduction' => 'SeductionBonus',
             'langue' => 'TongueBonus',
-            'esquive' => 'DodgueBonus',
+            'coeur' => 'HeartBonus',
             'baffe' => 'SlapBonus',
         );
 

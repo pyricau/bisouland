@@ -10,7 +10,7 @@
 {% block view %}
     <article class="table-sorting">
         <h2>Population</h2>
-        
+
         {{ pagination.render()|raw }}
 
         <table id="population" class="table table-striped">
@@ -31,11 +31,6 @@
                         </abbr>
                     </th>
                     <th>
-                        <abbr title="Esquive" class="initialism">
-                            {{ pagination.sortable('E', 'bisouland_lover.dodge_bonus')|raw }}
-                        </abbr>
-                    </th>
-                    <th>
                         <abbr title="Langue" class="initialism">
                             {{ pagination.sortable('L', 'bisouland_lover.tongue_bonus')|raw }}
                         </abbr>
@@ -45,7 +40,11 @@
                             {{ pagination.sortable('B', 'bisouland_lover.slap_bonus')|raw }}
                         </abbr>
                     </th>
-                    <th>Actions</th>
+                    <th>
+                        <abbr title="Esquive" class="initialism">
+                            {{ pagination.sortable('E', 'bisouland_lover.heart_bonus')|raw }}
+                        </abbr>
+                    </th>
                 </tr>
             </thead>
 
@@ -70,7 +69,7 @@
                             {{ lover.seductionBonus|number_format_decimal }}
                         </td>
                         <td class="number">
-                            {{ lover.DodgeBonus|number_format_decimal }}
+                            {{ lover.HeartBonus|number_format_decimal }}
                         </td>
                         <td class="number">
                             {{ lover.TongueBonus|number_format_decimal }}

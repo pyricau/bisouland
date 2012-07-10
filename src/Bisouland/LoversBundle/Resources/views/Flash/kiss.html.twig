@@ -38,8 +38,6 @@
             <a href="{{ path('lovers_view', {"name": kissedName}) }}" title="Voir">
                 {{ kissedName }}
             </a>
-            et a perdu
-            <span class="number">{{ app.session.flash('damages')|number_format_decimal }}</span>
             <abbr title="Points d'Amour" class="initialism">PA</abbr>
         </div>
     {% endif %}

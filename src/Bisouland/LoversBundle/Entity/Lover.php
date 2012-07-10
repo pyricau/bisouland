@@ -71,7 +71,7 @@ class Lover extends Being
         return $this->bonuses;
     }
     
-    public function getLifePointsLeft()
+    public function getLifePoints()
     {
         $timeSinceLastUpdateInSeconds = time() - $this->updated->getTimestamp();
 

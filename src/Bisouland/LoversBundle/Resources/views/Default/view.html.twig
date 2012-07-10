@@ -128,38 +128,20 @@
                 </small>
             </h3>
 
-            <form action="{{ path('lover_level_up', {'name': lover.name}) }}" method="post" {{ form_enctype(form) }} class="form-horizontal">
-                <fieldset>
-                    <div class="control-group">
-                        <label class="control-label">Bonus</label>
-
-                        <div class="controls">
-                            <label class="radio">
-                                <input type="radio" name="form[levelUp]" id="form_levelUp_0" required="required" value="0" />
-                                S&eacute;duction
-                            </label>
-                            <label class="radio">
-                                <input type="radio" name="form[levelUp]" id="form_levelUp_1" required="required" value="1" />
-                                Langue
-                            </label>
-                            <label class="radio">
-                                <input type="radio" name="form[levelUp]" id="form_levelUp_2" required="required" value="2" />
-                                Esquive
-                            </label>
-                            <label class="radio">
-                                <input type="radio" name="form[levelUp]" id="form_levelUp_3" required="required" value="3" />
-                                Baffe
-                            </label>
-                        </div>
-                    </div>
-
-                    <div class="form-actions">
-                        <button type="submit" class="btn btn-primary">
-                            Am&eacute;liorer
-                        </button>
-                    </div>
-                </fieldset>
-            </form>
+            <p>
+                <a href="{{ path('level_up', {'bonus': 'seduction', 'name': lover.name}) }}" class="btn">
+                    S&eacute;duction
+                </a>
+                <a href="{{ path('level_up', {'bonus': 'langue', 'name': lover.name}) }}" class="btn">
+                    Langue
+                </a>
+                <a href="{{ path('level_up', {'bonus': 'esquive', 'name': lover.name}) }}" class="btn">
+                    Esquive
+                </a>
+                <a href="{{ path('level_up', {'bonus': 'baffe', 'name': lover.name}) }}" class="btn">
+                    Baffe
+                </a>
+            </p>
         </article>
 
         <article>

@@ -42,25 +42,17 @@ class DamagesFactory
 
     public function make()
     {
-        $bonus = $this->getBonusFromWinner();
-        $damagesRoll = $this->rollFactory->make();
-        $damages = ($damagesRoll + $bonus) * self::$damagesMultiplier;
-
-        $damages = $this->checkAgainstMinimumValue($damages);
-        $damages = $this->checkAgainstMaximumValue($damages);
-
-        return $damages;
-    }
-
-    private function getBonusFromWinner()
-    {
+        $damages = 0;
         if (true === $this->success->getIsSuccess()) {
             $bonus = $this->kisser->getTongueBonus();
-        } else {
-            $bonus = $this->kissed->getSlapBonus();
+            $damagesRoll = $this->rollFactory->make();
+            $damages = ($damagesRoll + $bonus) * self::$damagesMultiplier;
+
+            $damages = $this->checkAgainstMinimumValue($damages);
+            $damages = $this->checkAgainstMaximumValue($damages);
         }
-        
-        return $bonus;
+
+        return $damages;
     }
 
     private function checkAgainstMinimumValue($damages)
@@ -74,11 +66,7 @@ class DamagesFactory
 
     private function checkAgainstMaximumValue($damages)
     {
-        if (true === $this->success->getIsSuccess()) {
-            $maximumDamages = $this->kissed->getLovePoints();
-        } else {
-            $maximumDamages = $this->kisser->getLovePoints();
-        }
+        $maximumDamages = $this->kissed->getLovePoints();
 
         if ($damages > $maximumDamages) {
             $damages = $maximumDamages;

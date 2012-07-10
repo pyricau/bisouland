@@ -31,15 +31,16 @@ class DamagesFactoryTest extends \PHPUnit_Framework_TestCase
     {
         $roll = 2;
         $bonus = 2;
-        $expectedDamages = ($roll + $bonus) * DamagesFactory::$damagesMultiplier;
+        $expectedDamages = 0;
+        $kissedLovePoints = ($roll + $bonus) * DamagesFactory::$damagesMultiplier;
 
         $damagesFactory = new DamagesFactory($this->makeRollFactory($roll));
         $damagesFactory->setKisser($this->makeLover(array(
-            'setLovePoints' => $expectedDamages * 2,
-            'setUpdated' => new \DateTime(),
+            'setTongueBonus' => $bonus,
         )));
         $damagesFactory->setKissed($this->makeLover(array(
-            'setSlapBonus' => $bonus,
+            'setLovePoints' => $kissedLovePoints * 2,
+            'setUpdated' => new \DateTime(),
         )));
         $damagesFactory->setSuccess($this->makeSuccess(false, true));
 
@@ -69,19 +70,18 @@ class DamagesFactoryTest extends \PHPUnit_Framework_TestCase
     {
         $roll = 2;
         $bonus = 2;
-        $expectedDamages = ($roll + $bonus) * DamagesFactory::$damagesMultiplier;
+        $expectedDamages = 0;
+        $kissedLovePoints = ($roll + $bonus) * DamagesFactory::$damagesMultiplier;
 
         $damagesFactory = new DamagesFactory($this->makeRollFactory($roll));
         $damagesFactory->setKisser($this->makeLover(array(
-            'setLovePoints' => $expectedDamages * 2,
-            'setUpdated' => new \DateTime(),
+            'setTongueBonus' => $bonus,
         )));
         $damagesFactory->setKissed($this->makeLover(array(
-            'setSlapBonus' => $bonus,
+            'setLovePoints' => $kissedLovePoints * 2,
+            'setUpdated' => new \DateTime(),
         )));
         $damagesFactory->setSuccess($this->makeSuccess(false, false));
-
-        $this->assertSame($expectedDamages, $damagesFactory->make());
     }
 
     public function testMinimumValue()
@@ -126,7 +126,7 @@ class DamagesFactoryTest extends \PHPUnit_Framework_TestCase
     private function makeRollFactory($roll)
     {
         $rollFactory = $this->getMock('Bisouland\GameSystemBundle\Factory\RollFactory');
- 
+
         $rollFactory->expects($this->any())
                 ->method('make')
                 ->will($this->returnValue($roll));

@@ -64,7 +64,7 @@ class KissFactory
 
         $success = $this->successFactory->make(
                 $this->kisser->getSeductionBonus(),
-                $this->kissed->getDodgeBonus()
+                $this->kissed->getSlapBonus()
         );
         $this->damagesFactory->setKisser($this->kisser);
         $this->damagesFactory->setKissed($this->kissed);

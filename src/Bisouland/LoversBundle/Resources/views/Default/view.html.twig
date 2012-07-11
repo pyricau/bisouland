@@ -16,7 +16,7 @@
     {% if lover.name is not defined %}
         <article>
             <h2>Erreur</h2>
-            
+
             <p>
                 L'amoureux que vous essayez de voir n'existe pas (ou plus).
             </p>
@@ -38,7 +38,7 @@
                         <abbr title="Points d'Amour" class="initialism">PA</abbr>
                     </th>
                     <td id="love-points" class="number">
-                        {{ lover.lifePoints|number_format_decimal }}
+                        {{ lover.lovePoints|number_format_decimal }}
                     </td>
                 </tr>
                 <tr>
@@ -46,31 +46,7 @@
                         Temps restant
                     </th>
                     <td id="time-left" class="number">
-                        {{ lover.lifePoints|number_format_decimal }}
-                    </td>
-                </tr>
-                <tr>
-                    <th>
-                        Bonus de s&eacute;duction
-                    </th>
-                    <td class="number">
-                        {{ lover.bonusAttack|number_format_decimal }}
-                    </td>
-                </tr>
-                <tr>
-                    <th>
-                        Bonus de baffe
-                    </th>
-                    <td class="number">
-                        {{ lover.bonusDefense|number_format_decimal }}
-                    </td>
-                </tr>
-                <tr>
-                    <th>
-                        Bonus de coeur
-                    </th>
-                    <td class="number">
-                        {{ lover.bonusConstitution|number_format_decimal }}
+                        {{ lover.lovePoints|number_format_decimal }}
                     </td>
                 </tr>
                 <tr>
@@ -102,6 +78,73 @@
         </article>
 
         <article>
+            <h2>Bonus</h2>
+
+            <table class="table table-striped">
+                <tr>
+                    <th>
+                        S&eacute;duction
+                    </th>
+                    <td class="number">
+                        {{ lover.seductionBonus|number_format_decimal }}
+                    </td>
+                </tr>
+                <tr>
+                    <th>
+                        Langue
+                    </th>
+                    <td class="number">
+                        {{ lover.tongueBonus|number_format_decimal }}
+                    </td>
+                </tr>
+                <tr>
+                    <th>
+                        Baffe
+                    </th>
+                    <td class="number">
+                        {{ lover.slapBonus|number_format_decimal }}
+                    </td>
+                </tr>
+                <tr>
+                    <th>
+                        Coeur
+                    </th>
+                    <td class="number">
+                        {{ lover.heartBonus|number_format_decimal }}
+                    </td>
+                </tr>
+            </table>
+
+            <h3>
+                Am&eacute;liorer un bonus
+                <small>
+                    Co&ucirc;t :
+                    <span class="number">
+                        {{ lover.nextLevelCost|number_format_decimal }}
+                    </span>
+                    <abbr class="initialism" title="Points d'Amour">
+                        PA
+                    </abbr>
+                </small>
+            </h3>
+
+            <p>
+                <a href="{{ path('level_up', {'bonus': 'seduction', 'name': lover.name}) }}" class="btn">
+                    S&eacute;duction
+                </a>
+                <a href="{{ path('level_up', {'bonus': 'langue', 'name': lover.name}) }}" class="btn">
+                    Langue
+                </a>
+                <a href="{{ path('level_up', {'bonus': 'baffe', 'name': lover.name}) }}" class="btn">
+                    Baffe
+                </a>
+                <a href="{{ path('level_up', {'bonus': 'coeur', 'name': lover.name}) }}" class="btn">
+                    Coeur
+                </a>
+            </p>
+        </article>
+
+        <article>
             <h3>Bisous re&ccedil;us</h3>
 
             <table class="table table-striped">
@@ -116,14 +159,14 @@
                 </thead>
 
                 <tbody>
-                    {% for defenseDone in lover.defensesDone %}
+                    {% for kissReceived in lover.kissesReceived %}
                         <tbody>
                             <tr>
-                                <td>{{ defenseDone.attacker.name }}</td>
+                                <td>{{ kissReceived.kisser.name }}</td>
                                 <td>
-                                    {% if defenseDone.hasHit %}
+                                    {% if kissReceived.hasSucceeded %}
                                         <span class="label label-success">
-                                            {% if defenseDone.isCritical %}
+                                            {% if kissReceived.isCritical %}
                                                 Baiser fougeux
                                             {% else %}
                                                 <i class="icon-ok icon-white"></i>
@@ -131,7 +174,7 @@
                                         </span>
                                     {% else %}
                                         <span class="label label-important">
-                                            {% if defenseDone.isCritical %}
+                                            {% if kissReceived.isCritical %}
                                                 Gros vent
                                             {% else %}
                                                 <i class="icon-remove icon-white"></i>
@@ -139,17 +182,17 @@
                                         </span>
                                     {% endif %}
                                 </td>
-                                <td class="number">{{ defenseDone.defenderLoss|number_format_decimal }}</td>
-                                <td>{{ defenseDone.created|date("H:m:i d/m/Y") }}</td>
+                                <td class="number">{{ kissReceived.damages|number_format_decimal }}</td>
+                                <td>{{ kissReceived.created|date("H:m:i d/m/Y") }}</td>
                                 <td>
-                                    <a href="{{ path('lovers_view', {"name": defenseDone.attacker.name}) }}" title="Voir">
+                                    <a href="{{ path('lovers_view', {"name": kissReceived.kisser.name}) }}" title="Voir">
                                         <i class="icon-eye-open"></i>
                                     </a>
-                                    {% if defenseDone.attacker.name != app.session.get('selectedLoverName') %}
-                                        <a href="{{ path('lovers_select', {"name": defenseDone.attacker.name}) }}" title="S&eacute;lectionner">
+                                    {% if kissReceived.kisser.name != app.session.get('selectedLoverName') %}
+                                        <a href="{{ path('lovers_select', {"name": kissReceived.kisser.name}) }}" title="S&eacute;lectionner">
                                             <i class="icon-hand-left"></i>
                                         </a>
-                                        <a href="{{ path('kiss', {"kissedName": defenseDone.attacker.name}) }}" title="Embrasser">
+                                        <a href="{{ path('kiss', {"kissedName": kissReceived.kisser.name}) }}" title="Embrasser">
                                             <i class="icon-heart"></i>
                                         </a>
                                     {% endif %}
@@ -176,14 +219,14 @@
                 </thead>
 
                 <tbody>
-                    {% for attackDone in lover.attacksDone %}
+                    {% for kissDone in lover.kissesDone %}
                         <tbody>
                             <tr>
-                                <td>{{ attackDone.defender.name }}</td>
+                                <td>{{ kissDone.kissed.name }}</td>
                                 <td>
-                                    {% if attackDone.hasHit %}
+                                    {% if kissDone.hasSucceeded %}
                                         <span class="label label-success">
-                                            {% if attackDone.isCritical %}
+                                            {% if kissDone.isCritical %}
                                                 Baiser fougeux
                                             {% else %}
                                                 <i class="icon-ok icon-white"></i>
@@ -191,7 +234,7 @@
                                         </span>
                                     {% else %}
                                         <span class="label label-important">
-                                            {% if attackDone.isCritical %}
+                                            {% if kissDone.isCritical %}
                                                 Gros vent
                                             {% else %}
                                                 <i class="icon-remove icon-white"></i>
@@ -199,17 +242,17 @@
                                         </span>
                                     {% endif %}
                                 </td>
-                                <td class="number">{{ attackDone.attackerEarning|number_format_decimal }}</td>
-                                <td>{{ attackDone.created|date("H:m:i d/m/Y") }}</td>
+                                <td class="number">{{ kissDone.damages|number_format_decimal }}</td>
+                                <td>{{ kissDone.created|date("H:m:i d/m/Y") }}</td>
                                 <td>
-                                    <a href="{{ path('lovers_view', {"name": attackDone.defender.name}) }}" title="Voir">
+                                    <a href="{{ path('lovers_view', {"name": kissDone.kissed.name}) }}" title="Voir">
                                         <i class="icon-eye-open"></i>
                                     </a>
-                                    {% if attackDone.defender.name != app.session.get('selectedLoverName') %}
-                                        <a href="{{ path('lovers_select', {"name": attackDone.defender.name}) }}" title="S&eacute;lectionner">
+                                    {% if kissDone.kissed.name != app.session.get('selectedLoverName') %}
+                                        <a href="{{ path('lovers_select', {"name": kissDone.kissed.name}) }}" title="S&eacute;lectionner">
                                             <i class="icon-hand-left"></i>
                                         </a>
-                                        <a href="{{ path('kiss', {"kissedName": attackDone.defender.name}) }}" title="Embrasser">
+                                        <a href="{{ path('kiss', {"kissedName": kissDone.kissed.name}) }}" title="Embrasser">
                                             <i class="icon-heart"></i>
                                         </a>
                                     {% endif %}

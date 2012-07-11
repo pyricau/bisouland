@@ -20,10 +20,9 @@ class Builder extends ContainerAware
 
         $this->menu = $factory->createItem('root');
         $this->menu->setChildrenAttribute('class', 'nav');
-        $this->menu->setCurrentUri($this->request->getRequestUri());
 
         $this->addSelectedNameChild($loverName);
-        $this->addSelectedLovePointsChild($loverName, $selectedLover->getLifePoints());
+        $this->addSelectedLovePointsChild($loverName, $selectedLover->getLovePoints());
 
         return $this->menu;
     }
@@ -33,7 +32,7 @@ class Builder extends ContainerAware
         $selectedLoverName = $this->request->getSession()->get(SelectionController::$sessionKey);
 
         $doctrine = $this->container->get('doctrine');
-        $lover = $doctrine->getRepository('BisoulandLoversBundle:Lover')
+        $lover = $doctrine->getRepository('BisoulandGameSystemBundle:Lover')
                 ->findOneByName($selectedLoverName);
 
         return $lover;

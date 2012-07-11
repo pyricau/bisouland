@@ -11,7 +11,6 @@ class Builder extends ContainerAware
     {
         $menu = $factory->createItem('root');
         $menu->setChildrenAttribute('class', 'nav');
-        $menu->setCurrentUri($this->container->get('request')->getRequestUri());
 
         $menu->addChild('Accueil', array('route' => 'homepage'));
         $menu->addChild('Amoureux', array('route' => 'lovers'));

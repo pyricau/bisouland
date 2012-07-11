@@ -1,24 +1,39 @@
 <dl id="bonus_statistics" class="dl-horizontal statistics">
-    <dt>
-        S&eacute;duction
-    </dt>
-    <dd class="number">
-        {{ averageBonusSeduction }}
-    </dd>
+    <table class="table table-striped table-condensed">
+        <thead>
+            <tr>
+                <th>Stat.</th>
+                <th>S&eacute;duction</th>
+                <th>Esquive</th>
+                <th>Langue</th>
+                <th>Baffe</th>
+            </tr>
+        </thead>
 
-    <dt>
-        Baffe
-    </dt>
-    <dd class="number">
-        {{ averageBonusSlap }}
-    </dd>
-
-    <dt>
-        Coeur
-    </dt>
-    <dd class="number">
-        {{ averageBonusHeart }}
-    </dd>
+        <tbody>
+            <tr>
+                <th>Minimum</th>
+                <td>{{ minimum_seduction }}</td>
+                <td>{{ minimum_heart }}</td>
+                <td>{{ minimum_tongue }}</td>
+                <td>{{ minimum_slap }}</td>
+            </tr>
+            <tr>
+                <th>Moyenne</th>
+                <td>{{ average_seduction }}</td>
+                <td>{{ average_heart }}</td>
+                <td>{{ average_tongue }}</td>
+                <td>{{ average_slap }}</td>
+            </tr>
+            <tr>
+                <th>Maximum</th>
+                <td>{{ maximum_seduction }}</td>
+                <td>{{ maximum_heart }}</td>
+                <td>{{ maximum_tongue }}</td>
+                <td>{{ maximum_slap }}</td>
+            </tr>
+        </tbody>
+    </table>
 </dl>
 
 <script type="text/javascript">
@@ -26,10 +41,11 @@
     google.setOnLoadCallback(drawBonusChart)
     function drawBonusChart() {
         var data = google.visualization.arrayToDataTable([
-            ['Type', 'Moyenne']
-            , ['Seduction', {{ averageBonusSeduction }}]
-            , ['Baffe', {{ averageBonusSlap }}]
-            , ['Coeur', {{ averageBonusHeart }}]
+            ['Type', 'Minimum', 'Moyenne', 'Maximum']
+            , ['Seduction', {{ minimum_seduction }}, {{ average_seduction }}, {{ maximum_seduction }}]
+            , ['Esquive', {{ minimum_heart }}, {{ average_heart }}, {{ maximum_heart }}]
+            , ['Langue', {{ minimum_tongue }}, {{ average_tongue }}, {{ maximum_tongue }}]
+            , ['Baffe', {{ minimum_slap }}, {{ average_slap }}, {{ maximum_slap }}]
         ])
 
         var options = {'title': 'statistiques'}

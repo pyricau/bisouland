@@ -6,15 +6,16 @@ framework:
     #esi:             ~
     translator:      { fallback: fr }
     secret:          %secret%
-    charset:         UTF-8
-    router:          { resource: "%kernel.root_dir%/config/routing.yml" }
+    router:
+        resource: "%kernel.root_dir%/config/routing.yml"
+        strict_parameters: %kernel.debug%
     form:            true
     csrf_protection: true
     validation:      { enable_annotations: true }
     templating:      { engines: ['twig'] } #assets_version: SomeVersionScheme
     default_locale:  fr
-    session:
-        auto_start:     true
+    trust_proxy_headers: false # Should Request object should trust proxy headers (X_FORWARDED_FOR/HTTP_CLIENT_IP)
+    session:        ~
 
 # Twig Configuration
 twig:

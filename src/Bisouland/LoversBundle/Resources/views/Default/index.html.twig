@@ -10,22 +10,46 @@
 {% block view %}
     <article class="table-sorting">
         <h2>Population</h2>
-        
+
+        {{ pagination.render()|raw }}
+
         <table id="population" class="table table-striped">
             <thead>
                 <tr>
                     <th>#</th>
-                    <th>Nom</th>
-                    <th><abbr title="Points d'Amour" class="initialism">PA</abbr></th>
-                    <th><abbr title="S&eacute;duction" class="initialism">S</abbr></th>
-                    <th><abbr title="Baffe" class="initialism">B</abbr></th>
-                    <th><abbr title="Coeur" class="initialism">C</abbr></th>
-                    <th>Actions</th>
+                    <th>
+                        {{ pagination.sortable('Nom', 'bisouland_lover.name')|raw }}
+                    </th>
+                    <th>
+                        <abbr title="Points d'Amour" class="initialism">
+                            {{ pagination.sortable('PA', 'bisouland_lover.love_points')|raw }}
+                        </abbr>
+                    </th>
+                    <th>
+                        <abbr title="S&eacute;duction" class="initialism">
+                            {{ pagination.sortable('S', 'bisouland_lover.seduction_bonus')|raw }}
+                        </abbr>
+                    </th>
+                    <th>
+                        <abbr title="Langue" class="initialism">
+                            {{ pagination.sortable('L', 'bisouland_lover.tongue_bonus')|raw }}
+                        </abbr>
+                    </th>
+                    <th>
+                        <abbr title="Baffe" class="initialism">
+                            {{ pagination.sortable('B', 'bisouland_lover.slap_bonus')|raw }}
+                        </abbr>
+                    </th>
+                    <th>
+                        <abbr title="Esquive" class="initialism">
+                            {{ pagination.sortable('E', 'bisouland_lover.heart_bonus')|raw }}
+                        </abbr>
+                    </th>
                 </tr>
             </thead>
 
             <tbody>
-                {% for lover in lovers %}
+                {% for lover in pagination %}
                     <tr>
                         <td class="number">
                             {{ loop.index }}
@@ -39,16 +63,19 @@
                             {{ lover.name }}
                         </td>
                         <td class="love-points number">
-                            {{ lover.lifePoints|number_format_decimal }}
+                            {{ lover.lovePoints|number_format_decimal }}
                         </td>
                         <td class="number">
-                            {{ lover.bonusAttack|number_format_decimal }}
+                            {{ lover.seductionBonus|number_format_decimal }}
                         </td>
                         <td class="number">
-                            {{ lover.bonusDefense|number_format_decimal }}
+                            {{ lover.HeartBonus|number_format_decimal }}
                         </td>
                         <td class="number">
-                            {{ lover.bonusConstitution|number_format_decimal }}
+                            {{ lover.TongueBonus|number_format_decimal }}
+                        </td>
+                        <td class="number">
+                            {{ lover.SlapBonus|number_format_decimal }}
                         </td>
                         <td>
                             <a href="{{ path('lovers_view', {"name": lover.name}) }}" title="Voir">
@@ -67,6 +94,8 @@
                 {% endfor %}
             </tbody>
         </table>
+
+        {{ pagination.render()|raw }}
     </article>
 {% endblock %}
 

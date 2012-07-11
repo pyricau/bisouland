@@ -21,13 +21,16 @@ class AppKernel extends Kernel
             new JMS\DiExtraBundle\JMSDiExtraBundle($this),
             new JMS\SecurityExtraBundle\JMSSecurityExtraBundle(),
             
+            /* KnpLabs */
             new Knp\Bundle\MenuBundle\KnpMenuBundle(),
+            new Knp\Bundle\PaginatorBundle\KnpPaginatorBundle(),
 
             /* Bisouland */
             new Bisouland\FrontBundle\BisoulandFrontBundle(),
             new Bisouland\LoversBundle\BisoulandLoversBundle(),
             new Bisouland\BonusBundle\BisoulandBonusBundle(),
-            new Bisouland\RolePlayingGameSystemBundle\BisoulandRolePlayingGameSystemBundle(),
+            new Bisouland\PronounceableWordBundle\BisoulandPronounceableWordBundle(),
+            new Bisouland\GameSystemBundle\BisoulandGameSystemBundle(),
             
             /* Extra Doctrine */
             new Doctrine\Bundle\FixturesBundle\DoctrineFixturesBundle(),
@@ -35,7 +38,6 @@ class AppKernel extends Kernel
             
             /* Sonata */
             new Sonata\IntlBundle\SonataIntlBundle(),
-            new Bisouland\PronounceableWordBundle\BisoulandPronounceableWordBundle(),
         );
 
         if (in_array($this->getEnvironment(), array('dev', 'test'))) {

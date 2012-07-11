@@ -2,6 +2,10 @@
 
 Ce fichier permet de tracer les changements entre les versions.
 
+## v2.4.1
+
+* correction de l'oubli dans la news du systeme de niveaux.
+
 ## v2.4.0
 
 * ajout du tri dans le tableau listant les amoureux ;

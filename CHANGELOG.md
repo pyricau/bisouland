@@ -2,6 +2,17 @@
 
 Ce fichier permet de tracer les changements entre les versions.
 
+## v2.4.0
+
+* ajout du tri dans le tableau listant les amoureux ;
+* refactoring de RolePlayGameSystemBundle en GameSystemBundle ;
+* GameSystemBundle utilise des Factories ;
+* exceptions gerees dans GameSystemBundle ;
+* ajout des niveaux et des ameliorations de bonus ;
+* ajout du bonus Langue pour les degats ;
+* simplification des bisous : on gagne directement ce qu'on fait perdre ;
+* mise a jour de symfony-standard et des vendors.
+
 ## v2.3.0
 
 * refactoring de RandomSystem dans RolePlayingGameSystemBundle ;

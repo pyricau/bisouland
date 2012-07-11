@@ -8,26 +8,238 @@
 {% block title %}Bisouland v2 - News{% endblock %}
 
 {% block view %}
+    <article id="240">
+        <header>
+            <h2>Bisouland version <span class="number">2.4.0</span></h2>
+
+            <p>Le 11/07/2012</p>
+        </header>
+
+        <p>
+            Envie de simplicit&eacute; et de progression ? Avec la v2.4 c'est
+            enfin chose faite !<br />
+            Malheureusement l'id&eacute;e des strat&eacute;gies et des types
+            a &eacute;t&eacute; abandonn&eacute;e au profit d'un jeu plus simple
+            &agrave; prendre en main, mais comme promis les niveaux sont au
+            rendez vous !
+        </p>
+
+        <h3>Modification des bonus</h3>
+
+        <p>
+            Voici un tableau r&eacutesumant les r&ocirc;les des bonus avant et
+            depuis la v2.4 :
+        </p>
+
+        <table class="table table-striped table-bordered">
+            <tr>
+                <th>Bonus</th>
+                <th>R&ocirc;le avant la v2.4</th>
+                <th>R&ocirc;le depuis la v2.4</th>
+            </th>
+            <tr>
+                <td>S&eacute;duction</td>
+                <td>
+                    <ul>
+                        <li>Augmente les chances de r&eacute;ussir un bisou ;</li>
+                        <li>
+                            Augmente le nombre de
+                            <abbr title="Points d'Amour" class="initialism">PA</abbr>
+                            pris.
+                        </li>
+                    </ul>
+                </td>
+                <td>
+                    Augmente les chances de r&eacute;ussir un bisou.
+                </td>
+            </tr>
+            <tr>
+                <td>Langue</td>
+                <td>
+                    N'existait pas.
+                </td>
+                <td>
+                    Augmente le nombre de
+                    <abbr title="Points d'Amour" class="initialism">PA</abbr>
+                    pris.
+                </td>
+            </tr>
+            <tr>
+                <td>Baffe</td>
+                <td colspan="2">
+                    Augmente les chances d'&eacute;viter un bisou.
+                </td>
+            </tr>
+            <tr>
+                <td>Coeur</td>
+                <td>
+                    <ul>
+                        <li>
+                            Augmente le nombre de
+                            <abbr title="Points d'Amour" class="initialism">PA</abbr>
+                            lors de la cr&eacute;ion de l'amoureux ;
+                        </li>
+                        <li>
+                            diminue le nombre de
+                            <abbr title="Points d'Amour" class="initialism">PA</abbr>
+                            que gagnera l'embrasseur.
+                        </li>
+                    </ul>
+                </td>
+                <td>
+                    Augmente le nombre de
+                    <abbr title="Points d'Amour" class="initialism">PA</abbr>
+                    lors de la cr&eacute;ion de l'amoureux.
+                </td>
+            </tr>
+        </table>
+
+        <h3>Nouveau syst&egrave;me de bisous</h3>
+
+        <p>
+            Lors des pr&eacute;c&eacute;dentes versions, la s&eacute;duction
+            permettait &agrave; la fois d'augmenter les chances de
+            succ&egrave;s et le nombre de
+            <abbr title="Points d'Amour" class="initialism">PA</abbr>
+            qu'on faisait perdre, pendant que le
+            coeur de l'embrass&eacute; permettait de diminuer le nombre de
+            <abbr title="Points d'Amour" class="initialism">PA</abbr>
+            que gagnait l'embrasseur.<br />
+            Le syst&egrave;me &eacute;tait donc un peu complexe car on ne
+            gagnait pas forcement ce que l'on faisait perdre.
+        </p>
+
+        <p>
+            Avec le nouveau syst&egrave;me, voici ce qu'il se passe pas &agrave;
+            pas :
+        </p>
+
+        <ul>
+            <li>
+                On tire un nombre entre <span class="number">1</span> et
+                <span class="number">20</span> pour l'embrasseur :
+                <ul>
+                    <li>
+                        si on obtient <span class="number">1</span>, c'est
+                        un <span class="label label-important">Gros vent</span>
+                        et l'embrasseur se prend un r&acirc;teau ;
+                    </li>
+                    <li>
+                        si on obtient <span class="number">20</span>, c'est
+                        un <span class="label label-success">Baiser fougeux</span>
+                        et le bisou r&eacute;ussit ;
+                    </li>
+                    <li>
+                        sinon :
+                        <ul>
+                            <li>
+                                on ajoute au r&eacute;sulta de l'embrasseur
+                                son bonus de s&eacute;duction ;
+                            </li>
+                            <li>
+                                on tire un nombre entre <span class="number">1</span>
+                                et <span class="number">20</span> pour
+                                l'embrass&eacute; ;
+                            </li>
+                            <li>
+                                on ajoute au r&eacute;sultat de l'embrass&eacute;
+                                son propre bonus de baffe ;
+                            </li>
+                            <li>
+                                en fonction du r&eacute;sultat :
+                                <ul>
+                                    <li>
+                                        si le r&eacute;sultat de l'embrasseur
+                                        est sup&eacute;rieur ou &eacute;gal
+                                        &agrave; celui de l'embrass&eacute;,
+                                        alors le bisou r&eacute;ussit ;
+                                    </li>
+                                    <li>
+                                        sinon l'embrasseur se prend un
+                                        r&acirc;teau.
+                                    </li>
+                                </ul>
+                            </li>
+                        </ul>
+                    </li>
+                </ul>
+            </li>
+            <li>
+                si le bisou r&eacute;ussit :
+                <ul>
+                    <li>
+                        on tire un nombre entre <span class="number">1</span> et
+                        <span class="number">4</span> ;
+                    </li>
+                    <li>
+                        on ajoute le bonus de langue de l'embrasseur ;
+                    </li>
+                    <li>
+                        on multiplie par le nombre de seconde dans une heure
+                        (<span class="number">3 600</span>) ;
+                    </li>
+                    <li>
+                        on enl&egrave;ve le nombre de
+                        <abbr title="Points d'Amour" class="initialism">PA</abbr>
+                        ainsi obtenu &agrave; l'embrass&eacute; ;
+                    </li>
+                    <li>
+                        on ajoute le nombre m&ecirc;me nombre de
+                        <abbr title="Points d'Amour" class="initialism">PA</abbr>
+                        &agrave; l'embrasseur.
+                    </li>
+                </ul>
+            </li>
+        </ul>
+
+
+        <h3>Autres mises &agrave; jour</h3>
+
+        <p>
+            <a href="">Le tableau listant les amoureux</a> peut &ecirc;tre
+            de nouveau tri&eacute;, et cette fois sans bugs.<br />
+            Le reste des mises &agrave; jour sont des am&eacute;liorations
+            techniques.
+        </p>
+
+        <h3>Pr&eacute;visions pour la v2.5.0</h3>
+
+        <p>
+            La version <span class="number">2.5.0</span> sera une mise &agrave;
+            jour technique ayant pour but de mettre en place une
+            <abbr title="Application Programming Interface" class="initialism">API</abbr>
+            qui permettra aux d&eacute;veloppeur de cr&eacute;er des
+            applications pour Bisouland !<br />
+            Elle servira de pretexte pour solidifier le code et permettra aussi
+            l'ajout futur de fonctionnalit&eacute;s tel que la visualisation
+            des donn&eacute;es d'un amoureux depuis la liste des amoureux.
+        </p>
+
+        <footer>
+            <p>Par gnubat</p>
+        </footer>
+    </article>
+
     <article id="230">
         <header>
             <h2>Bisouland version <span class="number">2.3.0</span></h2>
 
             <p>Le 13/06/2012</p>
         </header>
-        
+
         <p>
             La v2.3 vient enfin de sortir, amenant plus de challenge !<br />
             Les changements ont principalement &eacute;t&eacute; technique
             et les bugs connus ont &eacute;t&eacute; corrig&eacute;s.
         </p>
-        
+
         <p>
             Jusqu'ici, un seul amoureux a r&eacute;ussit &agrave; obtenir le
             bonus cach&eacute;... Allez vous vous aussi le trouver ?
         </p>
 
         <h3>Fonctionnalit&eacute;s ajout&eacute;es</h3>
-        
+
         <p>
             On peut r&eacute;sumer la v2.2 par des corrections de bugs.<br />
             Voici une liste plus compl&egrave;te des changements :
@@ -78,7 +290,7 @@
             strat&eacute;gies (c&eacute;libataire, fid&egrave;le et libertin),
             la v2.4 mettra aussi en place des niveaux !
         </p>
-        
+
         <footer>
             <p>Par gnubat</p>
         </footer>
@@ -90,7 +302,7 @@
 
             <p>Le 26/05/2012</p>
         </header>
-        
+
         <p>
             C'est avec fiert&eacute; que nous vous annon&ccedil;ons la sortie
             de Bisouland v2.2, la premi&egrave;re version vraiment jouable de
@@ -98,7 +310,7 @@
         </p>
 
         <h3>Fonctionnalit&eacute;s ajout&eacute;es</h3>
-        
+
         <p>
             On peut r&eacute;sumer la v2.2 par des attributs (s&eacute;duction,
             baffe et coeur), des bisous et un nouveau design.<br />
@@ -122,7 +334,7 @@
         </ul>
 
         <h3>Pr&eacute;visions pour la v2.3.0</h3>
-        
+
         <p>
             La prochaine version sera surtout technique et administrative
             (tests plus solides, nettoyage du code et  mise en place d'un vrai
@@ -157,7 +369,7 @@
                 Conte R&ocirc;le Yu, dans <cite>Inde issin</cite>.
             </small>
         </blockquote>
-        
+
         <footer>
             <p>Par gnubat</p>
         </footer>
@@ -169,14 +381,14 @@
 
             <p>Le 14/05/2012</p>
         </header>
-        
+
         <p>
             Comme promis, nous ajoutons r&eacute;guli&egrave;rement des
             nouveaut&eacute; &agrave; Bisouland !
         </p>
 
         <h3>Fonctionnalit&eacute;s ajout&eacute;es</h3>
-        
+
         <p>
             Lors de la version <span class="number">2.0.0</span>, en tappant le
             <a href="http://fr.wikipedia.org/wiki/Code_Konami" title="lien Wikip&eacute;dia">
@@ -199,15 +411,15 @@
             <li>les <abbr title="Points d'Amour" class="initialism">PA</abbr> diminuent automatiquement d'une unit&eacute; par seconde ;</li>
             <li>lorsqu'ils atteignent <span class="number">0</span>, le personnage perd le jeu et est automatiquement supprim&eacute;.</li>
         </ul>
-        
+
         <h3 id="fin_v1">Fin de la v1</h3>
-        
+
         <p>
             La v2 est d&eacute;sormais disponible depuis l'adresse normale, ce
             qui signifie que la v1 est termin&eacute;e : merci &agrave; tous
             d'avoir jou&eacute;, et f&eacute;licitations aux vainqueurs !
         </p>
-        
+
         <p>
             La version <span class="number">1</span> aura fini avec
             <span class="number">64</span> nuages,
@@ -218,7 +430,7 @@
             compter ceux qui ont &eacute;t&eacute; d&eacute;pens&eacute;s).<br />
             Et voici le top <span class="number">20</span> final :
         </p>
-        
+
         <table class="table table-striped">
             <tr>
                 <th>Place</th>
@@ -348,7 +560,7 @@
                 <td class="number">137.0312</td>
             </tr>
         </table>
-        
+
         <footer>
             <p>Par gnubat</p>
         </footer>
@@ -360,7 +572,7 @@
 
             <p>Le 02/05/2012</p>
         </header>
-        
+
         <p>
             Voici enfin la version tant attendue : Bisouland v2 !<br />
             C'est une refont compl&egrave;te du jeu, donc attendez vous
@@ -371,7 +583,7 @@
         </p>
 
         <h3>Fonctionnalit&eacute;s ajout&eacute;es</h3>
-        
+
         <p>
             Pour le moment, le plus gros du travail a &eacute;t&eacute;
             l'installation de
@@ -384,7 +596,7 @@
         <ul>
             <li>Ajout d'un easter egg sur la population.</li>
         </ul>
-        
+
         <footer>
             <p>Par ZEA et gnubat</p>
         </footer>

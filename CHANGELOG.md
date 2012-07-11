@@ -11,7 +11,8 @@ Ce fichier permet de tracer les changements entre les versions.
 * ajout des niveaux et des ameliorations de bonus ;
 * ajout du bonus Langue pour les degats ;
 * simplification des bisous : on gagne directement ce qu'on fait perdre ;
-* mise a jour de symfony-standard et des vendors.
+* mise a jour de symfony-standard et des vendors ;
+* statistiques minimales et maximales des bonus.
 
 ## v2.3.0
 

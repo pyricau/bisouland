@@ -5,4 +5,4 @@ Ce fichier permet d'indiquer la version du projet Bisouland.
 Current version
 ---------------
 
-2.3.0
+2.4.0

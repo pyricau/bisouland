@@ -2,7 +2,11 @@
 
 Ce fichier permet de tracer les changements entre les versions.
 
-## v4.4.2
+## v2.4.3
+
+* correction du tri.
+
+## v2.4.2
 
 * suppression definitive de l'esquive.
 

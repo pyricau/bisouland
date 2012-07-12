@@ -2,6 +2,10 @@
 
 Ce fichier permet de tracer les changements entre les versions.
 
+## v4.4.2
+
+* suppression definitive de l'esquive.
+
 ## v2.4.1
 
 * correction de l'oubli dans la news du systeme de niveaux.

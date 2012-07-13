@@ -20,7 +20,7 @@ class AppKernel extends Kernel
             new JMS\AopBundle\JMSAopBundle(),
             new JMS\DiExtraBundle\JMSDiExtraBundle($this),
             new JMS\SecurityExtraBundle\JMSSecurityExtraBundle(),
-            
+
             /* KnpLabs */
             new Knp\Bundle\MenuBundle\KnpMenuBundle(),
             new Knp\Bundle\PaginatorBundle\KnpPaginatorBundle(),
@@ -31,11 +31,12 @@ class AppKernel extends Kernel
             new Bisouland\BonusBundle\BisoulandBonusBundle(),
             new Bisouland\PronounceableWordBundle\BisoulandPronounceableWordBundle(),
             new Bisouland\GameSystemBundle\BisoulandGameSystemBundle(),
-            
+            new Bisouland\ApiBundle\BisoulandApiBundle(),
+
             /* Extra Doctrine */
             new Doctrine\Bundle\FixturesBundle\DoctrineFixturesBundle(),
             new Stof\DoctrineExtensionsBundle\StofDoctrineExtensionsBundle(),
-            
+
             /* Sonata */
             new Sonata\IntlBundle\SonataIntlBundle(),
         );

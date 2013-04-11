@@ -13,6 +13,16 @@ Take your opponents love points by sending them kisses!
  4. put the admin email in the variable `$destinataire`
  	from [web/news/mail.php](web/news/mail.php).
 
+## Structure
+
+A Symfony2 application will be the entry point of every requests. If the route
+is not found, the legacy application will be boostraped.
+
+**Warning**: this legacy application lies in the `web` directory
+and has been created in 2005 while learning web development,
+which means that tt probably contains security holes, bugs, low quality code
+and bad design pattern.
+
 ## Further documentation
 
 You can find more documentation at the following links:

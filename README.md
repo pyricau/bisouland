@@ -20,6 +20,8 @@ You can find more documentation at the following links:
  * Copyright and Apache 2 license: [LICENSE.md](LICENSE.md);
  * version and change logs: [VERSION.md](VERSION.md)
    and [CHANGELOG.md](CHANGELOG.md);
+ * versioning and branching models,
+   as well as public API: [VERSIONING.md](VERSIONING.md);
  * contribution instructions: [CONTRIBUTING.md](CONTRIBUTING.md).
 
 ## Project history

@@ -23,6 +23,7 @@ The branching model is inspired by this article:
   * `feature/*` for new functionalities;
   * `test/*` for new tests;
   * `fix/*` to fix bugs only present in `develop`;
+  * `refactoring/*` for code improvements and cleaning;
   * `documentation/*` for documentation.
 
 ## Public API

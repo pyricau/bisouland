@@ -26,6 +26,7 @@ We prefix our branch names with the type of work done, which might be:
  * `fix`: a correction of the code (bug, security hole, typos);
  * `test`: creation or correction of tests;
  * `documentation`: creation or correction of documentation;
+ * `refactoring`: improvement or cleaning of code;
  * `feature`: everything else (creation, modification
    or removal of a functionality);
 

@@ -1,0 +1,424 @@
+body
+{
+
+	line-height:18px;
+    background-color: #99ccff;
+    background-image: url("../images/Nuages.jpg");
+    background-repeat: repeat;
+	font-family: Verdana, Georgia, Arial, 'Times new roman', Times, serif;
+	font-size:11px;
+	margin:0px 0px 0px 0px;
+}
+
+#superbig {position:relative;margin:auto;width:770px;padding:0;}
+
+img{border:none;posiion:fixed;}
+#break_firefox {}
+
+#Ban
+{
+	position:absolute;
+	top:0;left:0;
+	width:770px;
+	height:100px;
+	background:url('../images/bandeaub.jpg') no-repeat;
+	text-decoration:none;
+}
+
+#pub
+{
+	position:absolute;
+	top:101px;
+	left:0;
+	width:768px;
+	height:90px;
+	text-decoration:none;
+	text-align:center;
+	border-left: 1px dotted #000099;
+	border-top: 1px dotted #000099;
+}
+
+/* Speedbarre */
+
+#speedbarre
+{
+	position:absolute;
+	top:184px;
+	left:0;
+	list-style-type: none;
+	margin-left:0;
+	padding-left: 0;
+	background-color:rgb(215,235,255);
+    border-left: 1px dotted #000099;
+	border-top: 1px dotted #000099;
+	height: 28px;
+	width:768px;
+	
+}
+* html #speedbarre {top:195px;}     /* Css Hack   Seul IE lit les lignes précédées par " * html " */
+
+#speedbarre li
+{
+	color: #000066;
+
+	padding-left: 15px;
+	padding-right: 15px;
+	text-align: left;
+	padding-top: 6px;
+	font-size:11px;
+	font-style: normal;
+	text-decoration: none;
+	font-weight:bold;
+
+	height: 22px;
+
+}
+
+.speeddroite
+{
+	float: right;
+	//border-left: 1px solid  #000099;
+}
+.speedgauche
+{
+	float: left;
+//	border-right: 1px solid  #000099;	
+}
+
+#speedbarre a
+{
+	color: #4477ff;
+	font-style: normal;
+	text-decoration: none;
+	font-weight:bold;
+}
+
+
+#speedbarre a:hover
+{
+	text-decoration:underline overline;
+	color: #3366ff;
+}
+
+/* Le menu */
+
+#Menu
+{
+   position:absolute;
+   top:229px;
+left:0;
+   width: 120px;
+   
+}
+
+.sMenu
+{
+  background-color:rgb(215,235,255);
+   background-image: url("../images/menubar.png");
+   background-repeat:repeat-x;
+   
+border-left: 1px dotted  #000099;
+border-top: 1px dotted  #000099;
+
+   
+   /*Pourquoi ca fait ca ?? : entre 0 et 1, grosse difference*/
+   padding: 5px;
+   padding-top : 0px;
+
+   font-size:small;
+   text-align: left;
+   color: #4477ff;
+   
+   margin-bottom: 10px;
+}
+
+.sMenu em
+{
+font-style:bold;
+color: #000099;
+}
+
+.sMenu h3
+{    
+   color: #000066;
+   text-align: center;
+   font-size:medium;
+   font-weight:bold;
+   font-style:normal;
+   text-decoration:none;
+   font-variant:small-caps ;
+}
+
+.sMenu ul
+{
+   list-style-image: url("../images/puce.png");
+   padding: 0px;
+   padding-left: 20px;
+   margin: 0px;
+   margin-bottom: 5px;
+}
+/*.sMenu li {height:22px;}*/
+
+.sMenu li a {text-decoration:none;}
+
+.sMenu a 
+{
+   color: #4477ff;
+}
+
+#corps a, #Bas a
+{
+   color: #4477ff;
+   text-decoration:none;
+}
+
+
+.sMenu a:visited , #corps a:visited
+{
+   color: #6699ff;
+}
+
+.sMenu a:hover, #corps a:hover, #speedbarre a:hover
+{
+   color: #1144ff;
+   text-decoration:overline underline;
+}
+
+/* Menu droite */
+#dMenu
+{
+   width: 120px;
+	position:absolute;
+	top:229px;
+	right:0;
+}
+
+#corps, #Bas, .news, .livreor
+{
+   color: #000099;
+ //  background-color: #99ccff;
+   background-image: url("../images/bar.png");
+   background-repeat: repeat-x;
+   
+}
+
+#corps
+{
+  border:0px;
+   
+}
+
+
+.news, .livreor,#Bas
+{
+border-top: 1px dotted #000099;
+border-left: 1px dotted #000099;
+}
+
+
+/* Le corps de la page */
+
+#corps
+{
+position:relative;
+top:229px;
+width: 480px;
+padding: 20px;
+text-align: left;
+margin:0px 125px 249px 125px;
+}
+* html #corps {margin:229px 125px 10px 125px;position:static;}
+
+#corps h1
+{
+
+	color: #000066;
+	text-align: center;
+	font-weight:bold;
+    font-size:20px;
+letter-spacing:1px;
+}
+
+#corps h2
+{
+	font-size: 20px;
+	font-weight:normal;
+	background-image: url("../images/gdpuce.png");
+	background-repeat: no-repeat;
+	color: #000066;
+	padding-left: 25px;
+
+	text-align: left;
+}
+
+#corps table
+{
+   border-collapse: collapse;
+   text-align: center;
+}
+
+#corps td, #corps th /* Mettre une bordure sur les td ET les th */
+{
+   border: 1px solid #4477ff;
+}
+
+#corps .info
+{
+	font-size: x-small;
+	color: #6699ff;
+	font-weight:bold;
+}
+
+.cache
+{
+	font-size:xx-small;
+}
+
+#Bas
+{
+	width: 480px;
+
+	padding: 5px;
+	padding-left: 20px;
+	padding-right: 20px;
+	text-align: center;
+	font-size:small;
+	margin:auto;
+	background-color:rgb(215,235,255);
+
+}
+
+
+
+.news, .livreor, .formul, .message
+{
+   margin-left: 0px;
+   margin-right: 0px;
+   margin-bottom: 40px;
+   padding: 20px;
+line-height:18px;
+
+   
+}
+
+.message, .news, .formul
+{
+background-color:rgb(177,208,245);
+	border-left: 1px dotted #000099;
+	border-top: 1px dotted #000099;
+	}
+	
+	
+.news em
+{
+   font-size:xx-small;
+   
+   color: #000099;
+   text-align: left;
+   font-style:bold;
+}
+
+.Tpetit
+{
+	font-size:xx-small;
+	font-style:normal;
+}
+
+.news
+{
+	color: #000099;
+}
+
+.news h3
+{
+   font-size:medium;
+   font-variant:small-caps ;
+   font-weight:bold;
+   color: #000066;
+   text-align: center;
+}
+
+.formul
+{
+	margin-top: 15px;
+	text-align: center;
+}
+
+.message
+{
+	margin-top: 15px;
+	text-align: left;
+}
+
+
+input[type=submit], input[type=button]
+{
+
+	//background:url('../images/bton.png') repeat-x 0px -22px;
+	border-style:outset;
+	border-width:1px;
+	color: #4477ff;
+	font-weight:normal;
+	font-size:small;
+	//background-color:rgb(177,208,245);
+	background-color:rgb(255,255,215);
+	margin-top: 5px;
+	
+}
+
+input[type=submit]:hover, input[type=submit]:focus, input[type=button]:hover, input[type=button]:focus
+{
+	background-position:0px 0px;
+	cursor:pointer;
+}
+
+input[type=submit]:active, input[type=button]:active
+{
+	border-style:inset;
+}
+
+.formul .petit, .message .petit
+{
+font-size:1em;
+}
+
+table
+{
+    margin-left: auto;
+    margin-right: auto;
+}
+
+a.bulle 
+{
+   position: relative;
+   color: black;
+   text-decoration: none;
+   border-bottom: none;
+}
+
+a.bulle span 
+{
+   display: none; /* on masque l'infobulle */
+}
+
+a.bulle:hover {
+   background: none; /* correction d'un bug IE */
+   z-index: 500; /* on dýfinit une valeur pour l'ordre d'affichage */
+}
+
+a.bulle:hover span {
+   display: inline; /* on affiche l'infobulle */
+   position: absolute;
+   white-space: nowrap; /* on change la valeur de la propriýtý whiteýspace pour qu'il n'y ait pas de retour ý la ligne nonýdýsirý */
+
+   top: 20px; /* on positionne notre infobulle */
+   left: 20px;
+
+   background-color:rgb(255,255,215);
+
+   color:#4477ff;
+   padding: 3px;
+   
+   border-top: 1px dotted #000099;
+   border-left: 1px dotted #000099;
+}

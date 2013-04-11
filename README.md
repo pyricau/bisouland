@@ -8,7 +8,7 @@ Take your opponents love points by sending them kisses!
 ## Installation
 
  1. Create the file `web/news/.htpasswd`;
- 2. configure the database in [web/phpincludes/db.php](web/phpincludes/db.php);
+ 2. configure the database in [web/phpincludes/bd.php](web/phpincludes/bd.php);
  3. check email sending for registration;
  4. put the admin email in the variable `$destinataire`
  	from [web/news/mail.php](web/news/mail.php).

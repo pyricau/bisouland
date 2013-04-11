@@ -15,14 +15,15 @@ Take your opponents love points by sending them kisses!
 
 ## Further documentation
 
-You can find more documentation at the following link:
+You can find more documentation at the following links:
 
-* Copyright and Apache 2 license: `./LICENSE.txt`.
+ * Copyright and Apache 2 license: `LICENSE.txt`;
+ * contribution instructions: `CONTRIBUTING.md`.
 
 ## Project history
 
-* 2013: roll back to the version 1, which becomes the version 3;
-* 2012: release of the version 2;
-* 2011: the project became open source, Marc Epron, Thomas Gay
-  and Loïc Chardonnet take over the work;
-* 2005: **Pierre-Yves Ricau** creates the project.
+ * 2013: roll back to the version 1, which becomes the version 3;
+ * 2012: release of the version 2;
+ * 2011: the project became open source, Marc Epron, Thomas Gay
+   and Loïc Chardonnet take over the work;
+ * 2005: **Pierre-Yves Ricau** creates the project.

@@ -18,7 +18,8 @@ Take your opponents love points by sending them kisses!
 You can find more documentation at the following links:
 
  * Copyright and Apache 2 license: [LICENSE.md](LICENSE.md);
- * version: [VERSION.md](VERSION.md);
+ * version and change logs: [VERSION.md](VERSION.md)
+   and [CHANGELOG.md](CHANGELOG.md);
  * contribution instructions: [CONTRIBUTING.md](CONTRIBUTING.md).
 
 ## Project history

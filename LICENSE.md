@@ -1,7 +1,10 @@
-************************************
-This project is available under the following license:
-************************************
-Copyright 2011 Pierre-Yves Ricau
+# LICENSE
+
+License for the Bisouland project.
+
+## Apache 2 license
+
+Copyright (c) 2011-2013 Pierre-Yves Ricau
 
 Licensed under the Apache License, Version 2.0 (the "License"); you may not
 use this file except in compliance with the License. You may obtain a copy of

@@ -1,22 +1,43 @@
-# Introduction
-Bisouland est un jeu par navigateur. Volez des points d'amour à vos adversaires en leur envoyant des bisous !
+# Bisouland
 
-# Le site a disparu ?
-Bisouland change de maison. Le code devient Open Source, et des joueurs motivés ont décidé d'en reprendre le développement. Dans l'intervalle, le site est désactivé pour éviter tout problème de désynchronisation. Soyez assurés qu'ils se démènent pour que le déménagement soit terminé le plus rapidement possible !
+Bisouland is a free online strategy-game. In order to play you only need a
+web browser.
 
-# License
-Le code source de Bisouland est open source, sous licence Apache 2.
+Take your opponents love points by sending them kisses!
 
-# Historique
-Pierre-Yves Ricau a créé le site http://bisouland.piwai.info en 2005, et ce fût pour lui l'occasion de découvrir la programmation PHP. Aujourd'hui (2011), le site devient open source et est repris par une équipe motivée. Soyez donc indulgent sur la qualité du code, qui, si elle ne saurait que s'améliorer, part vraiment de très loin.
+## Installation
 
-# Instructions
-TODO pour publier le site online :
+ 1. Create the file `web/news/.htpasswd`;
+ 2. configure the database in [web/phpincludes/bd.php](web/phpincludes/bd.php);
+ 3. check email sending for registration;
+ 4. put the admin email in the variable `$destinataire`
+ 	from [web/news/mail.php](web/news/mail.php).
 
-Remplacer le contenu de news/.htpasswd par un contenu valide (user ayant accès aux news)
+## Structure
 
-Remplacer les identifiants de connexion à la bd dans phpIncludes/bd.php
+A Symfony2 application will be the entry point of every requests. If the route
+is not found, the legacy application will be boostraped.
 
-S'assurer que l'envoi de mails (inscription) fonctionne
+**Warning**: this legacy application lies in the `web` directory
+and has been created in 2005 while learning web development,
+which means that tt probably contains security holes, bugs, low quality code
+and bad design pattern.
 
-Remplacer dans news/mail.php l'email d'admin qui permet de checker les inscrits non validés (variable $destinataire)
+## Further documentation
+
+You can find more documentation at the following links:
+
+ * Copyright and Apache 2 license: [LICENSE.md](LICENSE.md);
+ * version and change logs: [VERSION.md](VERSION.md)
+   and [CHANGELOG.md](CHANGELOG.md);
+ * versioning and branching models,
+   as well as public API: [VERSIONING.md](VERSIONING.md);
+ * contribution instructions: [CONTRIBUTING.md](CONTRIBUTING.md).
+
+## Project history
+
+ * 2013: roll back to the version 1, which becomes the version 3;
+ * 2012: release of the version 2;
+ * 2011: the project became open source, Marc Epron, Thomas Gay
+   and Loïc Chardonnet take over the work;
+ * 2005: **Pierre-Yves Ricau** creates the project.

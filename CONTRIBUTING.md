@@ -4,16 +4,23 @@ Everybody should be able to help. Here's how you can make Bisouland more
 awesome:
 
  1. [Fork the repository](https://github.com/gnugat/SoulMeMaybe/fork_select);
- 2. checkout to the unstable branch: `git checkout develop`;
- 3. create your own branch: `git checkout -b <type-of-work>/<micro-title>`;
- 4. make your changes and don't forget to:
+ 2. track the upstream (original) repository: `git remote add upstream https://github.com/pyricau/bisouland.git`;
+ 3. checkout to the unstable branch: `git checkout develop`;
+ 4. create your own branch: `git checkout -b <type-of-work>/<micro-title>`;
+ 5. make your changes and don't forget to:
      * check that the tests pass;
      * add some new tests;
      * check the coding standards;
      * look up for typos.
- 5. save your changes: `git commit -am '[<tag>] <descriptive message>'`;
- 6. make them public: `git push origin <type-of-work>/<micro-title>`;
- 7. submit a
+ 6. save your changes: `git commit -am '[<tag>] <descriptive message>'`;
+ 7. get the upstream changes:
+     * `git checkout develop`;
+     * `git pull --rebase origin`
+     * `git pull --rebase upstream`;
+     * `git checkout <type-of-work>/<micro-title>`;
+     * `git rebase develop`.
+ 8. publish your changes: `git push -f origin <type-of-work>/<micro-title>`;
+ 9. submit a
  	[pull request](https://help.github.com/articles/creating-a-pull-request).
 
 At this point you're waiting on us. We will review your pull request as fast

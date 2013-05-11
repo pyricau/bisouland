@@ -15,12 +15,12 @@ Take your opponents love points by sending them kisses!
 
 ## Structure
 
-A Symfony2 application will be the entry point of every requests. If the route
-is not found, the legacy application will be boostraped.
+Every request will go to the Symfony2 application. If the route is not found
+in it, the legacy application will be boostraped.
 
-**Warning**: this legacy application lies in the `web` directory
-and has been created in 2005 while learning web development,
-which means that tt probably contains security holes, bugs, low quality code
+**Warning**: the legacy application, which lies in the `web` directory,
+has been created in 2005 by a someone who was learning web development.
+Therefore it probably contains security holes, bugs, low quality code
 and bad design pattern.
 
 ## Further documentation

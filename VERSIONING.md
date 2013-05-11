@@ -1,31 +1,22 @@
 # VERSIONING
 
-This file explains the versioning and branching models of this project
-and its public API.
+This file explains the versioning, branching and API model of this project.
 
-## Semantic Versioning
+## Versioning
 
-[Semantic Versioning](http://semver.org/) is used.
-For a version `X.Y.Z`, we have:
- * removal or modification of the public API will increase the major number `X`;
- * new features will increase the minor number `Y`;
- * fixes or new tests will increase the patch number `Z`.
+The versioning is inspired by [Semantic Versioning](http://semver.org/):
+
+* fixes or new tests will increase patch number (Z);
+* new functionalities and options will increase minor number (Y);
+* removal and modification of functionalities and options will increase major
+  number (X).
 
 ## Branching Model
 
-The branching model is inspired by this article:
+The branching model is inspired by the article
 [A successful Git branching model](http://nvie.com/posts/a-successful-git-branching-model/):
-* `master` branch is the main stable one;
-* `develop` is the main unstable one;
-* `hotfix/*` are used to fix `master`;
-* `release/*` branches are between `develop` and `master`;
-* the other branches come from `develop`:
-  * `feature/*` for new functionalities;
-  * `test/*` for new tests;
-  * `fix/*` to fix bugs only present in `develop`;
-  * `refactoring/*` for code improvements and cleaning;
-  * `documentation/*` for documentation.
-
-## Public API
-
-The public API will be defined by the game actions a user will be able to do.
+* __master__ branch is the main stable one;
+* __develop__ is the main unstable one;
+* functionality branches come from __develop__;
+* __release/*__ branches are between __develop__ and __master__;
+* __refactoring/*__ branches come from __develop__.

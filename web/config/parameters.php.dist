@@ -4,3 +4,6 @@ define('DATABASE_HOST', '');
 define('DATABASE_USER', '');
 define('DATABASE_PASSWORD', '');
 define('DATABASE_NAME', '');
+
+define('EMAIL_ADMIN', '');
+define('EMAIL_EXPEDITOR', '');

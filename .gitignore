@@ -1,4 +1,20 @@
-# Configuration files
+# Assets
+/web/bundles/
+
+# Continuous integration
+/build/
+
+# Dependencies
+/vendor/
+/bin/
+/composer.phar
+
+# Temporary files
+/app/cache/*
+/app/logs/*
+/app/bootstrap.php.cache
+
+# Legacy configuration files
 web/config/parameters.php
 web/news/.htaccess
 web/news/.htpasswd

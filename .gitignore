@@ -1,2 +1,2 @@
 # Configuration files
-web/phpincludes/bd.php
+web/config/parameters.php

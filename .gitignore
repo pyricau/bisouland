@@ -1,0 +1,4 @@
+# Configuration files
+web/config/parameters.php
+web/news/.htaccess
+web/news/.htpasswd

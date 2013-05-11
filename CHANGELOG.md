@@ -6,5 +6,5 @@ This file logs the changes between versions.
 
 ### build 1
 
- * Added english documentation;
- * roll back to version 1.
+* Added english documentation;
+* roll back to version 1.

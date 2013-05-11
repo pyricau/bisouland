@@ -14,7 +14,8 @@
 /app/logs/*
 /app/bootstrap.php.cache
 
-# Legacy configuration files
+# Configuration files
+app/config/parameters.yml
 web/config/parameters.php
 web/news/.htaccess
 web/news/.htpasswd

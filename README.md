@@ -38,6 +38,6 @@ You can find more documentation at the following links:
 
  * 2013: roll back to the version 1, which becomes the version 3;
  * 2012: release of the version 2;
- * 2011: the project became open source, Marc Epron, Thomas Gay
-   and Loïc Chardonnet take over the work;
- * 2005: **Pierre-Yves Ricau** creates the project.
+ * 2011: Open-sourcing of the project, new team to take over the project with
+   Marc Epron, Thomas Gay and Loïc Chardonnet;
+ * 2005: creation of the project by **Pierre-Yves Ricau**.

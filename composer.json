@@ -1,8 +1,8 @@
 {
-    "name": "gnugat/symfony-framework-empty-edition",
-    "license": "MIT",
+    "name": "pyricau/bisouland",
+    "license": "Apache-2.0",
     "type": "project",
-    "description": "The \"Symfony Empty Edition\" distribution",
+    "description": "Free online strategy-game playable via web browser.",
     "autoload": {
         "psr-0": { "": "src/" }
     },

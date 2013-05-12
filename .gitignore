@@ -6,7 +6,7 @@
 
 # Dependencies
 /vendor/
-/bin/
+/bin/*
 /composer.phar
 
 # Temporary files

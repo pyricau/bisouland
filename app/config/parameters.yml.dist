@@ -6,6 +6,14 @@ parameters:
     database_user: root
     database_password: ~
 
+    mailer_transport: smtp
+    mailer_host: 127.0.0.1
+    mailer_user: ~
+    mailer_password: ~
+    mailer_encryption: ~
+    mailer_auth_mode: ~
+    mailer_port: 25
+
     email_admin: admin@example.com
     email_expeditor: expeditor@example.com
 
@@ -15,5 +23,5 @@ parameters:
     uglifyjs.bin: /usr/local/bin/uglifyjs
     uglifycss.bin: /usr/local/bin/uglifycss
 
-    less.node:       /usr/local/bin/node
+    less.node: /usr/local/bin/node
     less.node_paths: [/usr/local/lib/node, /usr/local/lib/node_modules]

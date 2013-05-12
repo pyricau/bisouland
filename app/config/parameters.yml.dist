@@ -11,3 +11,9 @@ parameters:
 
     locale: fr
     secret: ThisTokenIsNotSoSecretChangeIt
+
+    uglifyjs.bin: /usr/local/bin/uglifyjs
+    uglifycss.bin: /usr/local/bin/uglifycss
+
+    less.node:       /usr/local/bin/node
+    less.node_paths: [/usr/local/lib/node, /usr/local/lib/node_modules]

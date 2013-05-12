@@ -9,6 +9,18 @@ cd bisouland
 echo 'Getting Composer, the PHP dependency manager'
 curl -sS https://getcomposer.org/installer | php
 
+echo 'Getting npm, the Javascript package manager'
+curl -sS https://npmjs.org/install.sh | sudo sh
+
+echo 'Installing UglifyJs, the Javascript parser/compressor/beautifier toolkit'
+sudo npm install -g uglify-js@1
+
+echo 'Installing UglifyCss, the CSS parser/compressor/beautifier toolkit'
+sudo npm install -g uglifycss
+
+echo 'Installing LESS, Dynamic stylesheet language (extends CSS)'
+sudo npm install -g less
+
 # Configuring the project
 
 echo 'Setting the rights'

@@ -27,3 +27,10 @@ monolog:
             type:  stream
             path:  %kernel.logs_dir%/%kernel.environment%.log
             level: debug
+
+assetic:
+    filters:
+        uglifyjs:
+            apply_to: "\.js$"
+        uglifycss:
+            apply_to: "\.css$"

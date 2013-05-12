@@ -53,7 +53,7 @@ if (isset($_POST['inscription']))
                         {
 						
 							//A ajouter
-							$entete='From:bisouland@piwai.info';
+							$entete='From:'.EMAIL_EXPEDITOR;
 							//On éxécute la requête qui enregistre un nouveau membre.
 							
 							//Hashage du mot de passe avec md5().

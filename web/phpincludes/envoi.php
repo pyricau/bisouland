@@ -43,7 +43,7 @@ A bientot sur BisouLand !!!
 
 La BisouTeam.';
 								
-mail($donnees['email'], 'Nouveau message privé sur BisouLand', $message, 'From:bisouland@piwai.info');
+mail($donnees['email'], 'Nouveau message privé sur BisouLand', $message, 'From:'.EMAIL_EXPEDITOR);
 
 	}
 }

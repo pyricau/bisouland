@@ -345,8 +345,8 @@
 		//-----------------------------------------------
 		//DECLARE LES VARIABLES
 		//-----------------------------------------------
-		$email_expediteur='bisouland@piwai.fr';
-		$email_reply='bisouland@piwai.fr';
+		$email_expediteur=EMAIL_EXPEDITOR;
+		$email_reply=EMAIL_EXPEDITOR;
 
 		$message_html='<html>
 		<head>

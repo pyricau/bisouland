@@ -26,7 +26,7 @@ $OK=false;
 					$messageBrut='
 					Ce courriel vous a &eacute;t&eacute; adress&eacute; suite à votre demande. Si ce n\'est pas le
 cas, il s\'agit d\'une erreur de notre part et nous vous serions reconnaissant de
-bien vouloir indiquer cette anomalie à l\'adresse suivante : <a href="mailto:bisouland@piwai.info">bisouland@piwai.info</a>
+bien vouloir indiquer cette anomalie à l\'adresse suivante : <a href="mailto:'.EMAIL_EXPEDITOR.'">'.EMAIL_EXPEDITOR.'</a>
 avant de supprimer ce mail. Nous vous en remercions par avance.<br />
 					<br />
 					Bonjour !!<br />
@@ -45,10 +45,10 @@ avant de supprimer ce mail. Nous vous en remercions par avance.<br />
 					//-----------------------------------------------
 //DECLARE LES VARIABLES
 //-----------------------------------------------
-$email_expediteur='bisouland@piwai.fr';
-$email_reply='bisouland@piwai.fr';
+$email_expediteur=EMAIL_EXPEDITOR;
+$email_reply=EMAIL_EXPEDITOR;
 $message_texte='Ce courriel vous a été adressé suite à votre demande. 
-Si ce n\'est pas le cas, il s\'agit d\'une erreur de notre part et nous vous serions reconnaissant de bien vouloir indiquer cette anomalie à l\'adresse suivante : bisouland@piwai.info avant de supprimer ce mail.
+Si ce n\'est pas le cas, il s\'agit d\'une erreur de notre part et nous vous serions reconnaissant de bien vouloir indiquer cette anomalie à l\'adresse suivante : '.EMAIL_EXPEDITOR.' avant de supprimer ce mail.
 Nous vous en remercions par avance.
 
 Bonjour !!

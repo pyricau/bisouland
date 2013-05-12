@@ -186,7 +186,7 @@ if ($nbE[2][3]==0)
 <table width="80%">
    <tr>
        <th width="10%">Position</th>
-		<th width="5%"><a class="bulle" style="cursor: default;" onclick="return false;" href=""><img src="images/onoff.png" alt="Statut" title="" /><span>Statut de connexion du joueur</span></a></th>	   
+		<th width="5%"><a class="bulle" style="cursor: default;" onclick="return false;" href=""><img src="/images/onoff.png" alt="Statut" title="" /><span>Statut de connexion du joueur</span></a></th>	   
        <th width="60%">Nom</th>
        <th width="30%">Actions</th>
    </tr>
@@ -204,11 +204,11 @@ if ($nbE[2][3]==0)
 			echo '<tr><td>',$i,'</td><td>';
 			if ($donnees_info['lastconnect']>time()-300)
 			{
-				echo '<a class="bulle" style="cursor: default;" onclick="return false;" href=""><img src="images/on.png" alt="Connect&eacute;" title=""/><span>'.$donnees_info['pseudo'].' est connect&eacute;</span></a> ';
+				echo '<a class="bulle" style="cursor: default;" onclick="return false;" href=""><img src="/images/on.png" alt="Connect&eacute;" title=""/><span>'.$donnees_info['pseudo'].' est connect&eacute;</span></a> ';
 			}
 			else
 			{
-				echo '<a class="bulle" style="cursor: default;" onclick="return false;" href=""><img src="images/off.png" alt="Non connect&eacute;" title="" /><span>'.$donnees_info['pseudo'].' n\'est pas connect&eacute;</span></a> ';
+				echo '<a class="bulle" style="cursor: default;" onclick="return false;" href=""><img src="/images/off.png" alt="Non connect&eacute;" title="" /><span>'.$donnees_info['pseudo'].' n\'est pas connect&eacute;</span></a> ';
 			}
 			echo'</td><td>';
 			if ($donnees_info['id']!=$id)
@@ -259,7 +259,7 @@ if ($nbE[2][3]==0)
 			{
 				echo '<td>
 				<a class="bulle" href="',$donnees_info['pseudo'],'.envoi.html">
-				<img src="images/mess.png" title="" alt="" /><span>Envoyer un message à '.$donnees_info['pseudo'].'</span></a> ';
+				<img src="/images/mess.png" title="" alt="" /><span>Envoyer un message à '.$donnees_info['pseudo'].'</span></a> ';
 				$distance = abs(16*($nuageL-$nuageSource) + $i - $positionSource);		
 				//Si on a des bisous a disposition
 				if (($nbE[1][0]+$nbE[1][1]+$nbE[1][2])>0 && $Niveau==0)
@@ -273,7 +273,7 @@ if ($nbE[2][3]==0)
 						if ($joueurBloque==0)
 						{
 							echo '<a class="bulle" href="',$nuageL,'.',$i,'.action.html" >
-							<img src="images/puce.png" title="" alt="" /><span>Embrasser : ',$donnees_info['pseudo'],'<br />
+							<img src="/images/puce.png" title="" alt="" /><span>Embrasser : ',$donnees_info['pseudo'],'<br />
 							Nécessite '.formaterNombre(ceil($cout)).' Points d\'Amour<br />
 							Distance : '.$distance.'<br />
 							Durée : '.strTemps($duree).'</span></a> ';
@@ -281,7 +281,7 @@ if ($nbE[2][3]==0)
 						else
 						{
 							echo '<a class="bulle" onclick="return false;" style="cursor: default;" href="" >
-							<img src="images/puce.png" title="" alt="" /><span>Embrasser : ',$donnees_info['pseudo'],'<br />
+							<img src="/images/puce.png" title="" alt="" /><span>Embrasser : ',$donnees_info['pseudo'],'<br />
 							Nécessite '.formaterNombre(ceil($cout)).' Points d\'Amour<br />
 							Distance : '.$distance.'<br />
 							Durée : '.strTemps($duree).'<br />
@@ -291,7 +291,7 @@ if ($nbE[2][3]==0)
 					else
 					{
 							echo '<a class="bulle" onclick="return false;" style="cursor: default;" href="" >
-							<img src="images/puceOff.png" title="" alt="" /><span>Embrasser : ',$donnees_info['pseudo'],'<br />
+							<img src="/images/puceOff.png" title="" alt="" /><span>Embrasser : ',$donnees_info['pseudo'],'<br />
 							Distance : '.$distance.'<br />
 							Durée : '.strTemps($duree).'<br />
 							Impossible car ce joueur est hors de portée</span></a> ';					
@@ -302,7 +302,7 @@ if ($nbE[2][3]==0)
 					$cout=1000*$distance;
 				
 					echo '<a class="bulle" href="'.$nuageL.'.'.$i.'.yeux.html" >
-					<img src="images/oeil.png" title="" alt="" /><span>Dévisager : ',$donnees_info['pseudo'],'<br />
+					<img src="/images/oeil.png" title="" alt="" /><span>Dévisager : ',$donnees_info['pseudo'],'<br />
 					Nécessite '.formaterNombre(ceil($cout)).' Points d\'Amour<br />
 					Distance : '.$distance.'<br />
 					</span></a> ';			
@@ -335,7 +335,7 @@ if ($nbE[2][3]==0)
 				{
 				echo '<td>
 						<a class="bulle" href="',$nuageL,'.',$i,'.nuage.html" >
-						<img src="images/saut.png" title="" alt="" /><span>Sauter :<br />
+						<img src="/images/saut.png" title="" alt="" /><span>Sauter :<br />
 						Nécessite '.formaterNombre(ceil($cout)).' Points d\'Amour<br />
 						Distance : '.$distance.'</span></a>
 					</td></tr>';
@@ -344,7 +344,7 @@ if ($nbE[2][3]==0)
 				{
 				echo '<td>
 						<a class="bulle" style="cursor: default;" onclick="return false;" href="" >
-						<img src="images/saut.png" title="" alt="" /><span>Sauter :<br />
+						<img src="/images/saut.png" title="" alt="" /><span>Sauter :<br />
 						Nécessite '.formaterNombre(ceil($cout)).' Points d\'Amour<br />
 						Distance : '.$distance.'<br />
 						Impossible car une action est déjà en cours</span></a>

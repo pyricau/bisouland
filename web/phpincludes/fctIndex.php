@@ -269,20 +269,20 @@
 				);
 
 				$out=array(
-					'<img src="smileys/blink.gif" alt="un smiley" title="o_O"/>',
-					'<img src="smileys/clin.png" alt="un smiley" title=";)"/>',
-					'<img src="smileys/heureux.png" alt="un smiley" title=":D"/>',
-					'<img src="smileys/hihi.png" alt="un smiley" title="^^"/>',
-					'<img src="smileys/huh.png" alt="un smiley" title=":o"/>',
-					'<img src="smileys/langue.png" alt="un smiley" title=":p"/>',
-					'<img src="smileys/mechant.png" alt="un smiley" title=":colere:"/>',
-					'<img src="smileys/noel.png" alt="un smiley" title=":noel:"/>',
-					'<img src="smileys/smile.png" alt="un smiley" title=":)"/>',
-					'<img src="smileys/rire.gif" alt="un smiley" title=":lol:"/>',
-					'<img src="smileys/siffle.png" alt="un smiley" title=":-&deg;"/>',
-					'<img src="smileys/triste.png" alt="un smiley" title=":("/>',
-					'<img src="smileys/unsure.gif" alt="un smiley" title=":euh:"/>',
-					'<img src="images/puce.png" alt="un smiley" title=":coeur:"/>'
+					'<img src="/smileys/blink.gif" alt="un smiley" title="o_O"/>',
+					'<img src="/smileys/clin.png" alt="un smiley" title=";)"/>',
+					'<img src="/smileys/heureux.png" alt="un smiley" title=":D"/>',
+					'<img src="/smileys/hihi.png" alt="un smiley" title="^^"/>',
+					'<img src="/smileys/huh.png" alt="un smiley" title=":o"/>',
+					'<img src="/smileys/langue.png" alt="un smiley" title=":p"/>',
+					'<img src="/smileys/mechant.png" alt="un smiley" title=":colere:"/>',
+					'<img src="/smileys/noel.png" alt="un smiley" title=":noel:"/>',
+					'<img src="/smileys/smile.png" alt="un smiley" title=":)"/>',
+					'<img src="/smileys/rire.gif" alt="un smiley" title=":lol:"/>',
+					'<img src="/smileys/siffle.png" alt="un smiley" title=":-&deg;"/>',
+					'<img src="/smileys/triste.png" alt="un smiley" title=":("/>',
+					'<img src="/smileys/unsure.gif" alt="un smiley" title=":euh:"/>',
+					'<img src="/images/puce.png" alt="un smiley" title=":coeur:"/>'
 				);
 
 				return str_replace($in,$out,$texte);

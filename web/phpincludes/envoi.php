@@ -119,7 +119,7 @@ if ($_SESSION['logged'] == true)
 	}
 
 ?>
-<script language="javascript" type="text/javascript" src="includes/prev.js"></script><!-- on appelle le fichier prev.js pour faire fonctionne la prévisualisation -->
+<script language="javascript" type="text/javascript" src="/includes/prev.js"></script><!-- on appelle le fichier prev.js pour faire fonctionne la prévisualisation -->
 <script language="Javascript">
 
 </script>
@@ -139,20 +139,20 @@ if ($_SESSION['logged'] == true)
 		
 <input type="button" id="gras" name="gras" value="Gras" onClick="javascript:bbcode('[b]', '[/b]');return(false)" />
 <input type="button" id="italic" name="italic" value="Italique" onClick="javascript:bbcode('[i]', '[/i]');return(false)" /><br />
-<img src="smileys/blink.gif" title="o_O" alt="" onClick="javascript:smilies('o_O');return(false)" />
-<img src="smileys/clin.png" title=";)" alt="" onClick="javascript:smilies(';)');return(false)" />
-<img src="smileys/heureux.png" title=":D" alt="" onClick="javascript:smilies(':D');return(false)" />
-<img src="smileys/hihi.png" title="^^" alt="" onClick="javascript:smilies('^^');return(false)" />
-<img src="smileys/huh.png" title=":o" alt="" onClick="javascript:smilies(':o');return(false)" />
-<img src="smileys/langue.png" title=":p" alt="" onClick="javascript:smilies(':p');return(false)" />
-<img src="smileys/mechant.png" title=":colere:" alt="" onClick="javascript:smilies(':colere:');return(false)" />
-<img src="smileys/noel.png" title=":noel:" alt="" onClick="javascript:smilies(':noel:');return(false)" />
-<img src="smileys/rire.gif" title=":lol:" alt="" onClick="javascript:smilies(':lol:');return(false)" />
-<img src="smileys/siffle.png" title=":-°" alt="" onClick="javascript:smilies(':-°');return(false)" />
-<img src="smileys/smile.png" title=":)" alt="" onClick="javascript:smilies(':)');return(false)" />
-<img src="smileys/triste.png" title=":(" alt="" onClick="javascript:smilies(':(');return(false)" />
-<img src="smileys/unsure.gif" title=":euh:" alt="" onClick="javascript:smilies(':euh:');return(false)" />
-<img src="images/puce.png" title=":coeur:" alt="" onClick="javascript:smilies(':coeur:');return(false)" />
+<img src="/smileys/blink.gif" title="o_O" alt="" onClick="javascript:smilies('o_O');return(false)" />
+<img src="/smileys/clin.png" title=";)" alt="" onClick="javascript:smilies(';)');return(false)" />
+<img src="/smileys/heureux.png" title=":D" alt="" onClick="javascript:smilies(':D');return(false)" />
+<img src="/smileys/hihi.png" title="^^" alt="" onClick="javascript:smilies('^^');return(false)" />
+<img src="/smileys/huh.png" title=":o" alt="" onClick="javascript:smilies(':o');return(false)" />
+<img src="/smileys/langue.png" title=":p" alt="" onClick="javascript:smilies(':p');return(false)" />
+<img src="/smileys/mechant.png" title=":colere:" alt="" onClick="javascript:smilies(':colere:');return(false)" />
+<img src="/smileys/noel.png" title=":noel:" alt="" onClick="javascript:smilies(':noel:');return(false)" />
+<img src="/smileys/rire.gif" title=":lol:" alt="" onClick="javascript:smilies(':lol:');return(false)" />
+<img src="/smileys/siffle.png" title=":-°" alt="" onClick="javascript:smilies(':-°');return(false)" />
+<img src="/smileys/smile.png" title=":)" alt="" onClick="javascript:smilies(':)');return(false)" />
+<img src="/smileys/triste.png" title=":(" alt="" onClick="javascript:smilies(':(');return(false)" />
+<img src="/smileys/unsure.gif" title=":euh:" alt="" onClick="javascript:smilies(':euh:');return(false)" />
+<img src="/images/puce.png" title=":coeur:" alt="" onClick="javascript:smilies(':coeur:');return(false)" />
 
 <br />		
         <label>Message :<br />

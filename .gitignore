@@ -16,6 +16,5 @@
 
 # Configuration files
 app/config/parameters.yml
-web/config/parameters.php
 web/news/.htaccess
 web/news/.htpasswd

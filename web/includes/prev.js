@@ -24,47 +24,47 @@ t=remblaie(t)
 
 
 // smilies Smile <!-- on oublie pas les smilies -->
-t=remplace_tag(/o_O/g,'<img src="smileys/blink.gif" alt="" />',t) 
+t=remplace_tag(/o_O/g,'<img src="/smileys/blink.gif" alt="" />',t) 
 t=remblaie(t)
 
 // smilies Smile <!-- on oublie pas les smilies -->
-t=remplace_tag(/;\)/g,'<img src="smileys/clin.png" alt="" />',t) 
+t=remplace_tag(/;\)/g,'<img src="/smileys/clin.png" alt="" />',t) 
 t=remblaie(t)
 // smilies Smile <!-- on oublie pas les smilies -->
-t=remplace_tag(/:D/g,'<img src="smileys/heureux.png" alt="" />',t) 
+t=remplace_tag(/:D/g,'<img src="/smileys/heureux.png" alt="" />',t) 
 t=remblaie(t)
 // smilies Smile <!-- on oublie pas les smilies -->
-t=remplace_tag(/\^\^/g,'<img src="smileys/hihi.png" alt="" />',t) 
+t=remplace_tag(/\^\^/g,'<img src="/smileys/hihi.png" alt="" />',t) 
 t=remblaie(t)
 // smilies Smile <!-- on oublie pas les smilies -->
-t=remplace_tag(/:o/g,'<img src="smileys/huh.png" alt="" />',t) 
+t=remplace_tag(/:o/g,'<img src="/smileys/huh.png" alt="" />',t) 
 t=remblaie(t)
 // smilies Smile <!-- on oublie pas les smilies -->
-t=remplace_tag(/:p/g,'<img src="smileys/langue.png" alt="" />',t) 
+t=remplace_tag(/:p/g,'<img src="/smileys/langue.png" alt="" />',t) 
 t=remblaie(t)
 // smilies Smile <!-- on oublie pas les smilies -->
-t=remplace_tag(/:colere:/g,'<img src="smileys/mechant.png" alt="" />',t) 
+t=remplace_tag(/:colere:/g,'<img src="/smileys/mechant.png" alt="" />',t) 
 t=remblaie(t)
 // smilies Smile <!-- on oublie pas les smilies -->
-t=remplace_tag(/:noel:/g,'<img src="smileys/noel.png" alt="" />',t) 
+t=remplace_tag(/:noel:/g,'<img src="/smileys/noel.png" alt="" />',t) 
 t=remblaie(t)
 // smilies Smile <!-- on oublie pas les smilies -->
-t=remplace_tag(/:lol:/g,'<img src="smileys/rire.gif" alt="" />',t) 
+t=remplace_tag(/:lol:/g,'<img src="/smileys/rire.gif" alt="" />',t) 
 t=remblaie(t)
 // smilies Smile <!-- on oublie pas les smilies -->
-t=remplace_tag(/:-°/g,'<img src="smileys/siffle.png" alt="" />',t) 
+t=remplace_tag(/:-°/g,'<img src="/smileys/siffle.png" alt="" />',t) 
 t=remblaie(t)
 // smilies Smile <!-- on oublie pas les smilies -->
-t=remplace_tag(/:\)/g,'<img src="smileys/smile.png" alt="" />',t) 
+t=remplace_tag(/:\)/g,'<img src="/smileys/smile.png" alt="" />',t) 
 t=remblaie(t)
 // smilies Smile <!-- on oublie pas les smilies -->
-t=remplace_tag(/:\(/g,'<img src="smileys/triste.png" alt="" />',t) 
+t=remplace_tag(/:\(/g,'<img src="/smileys/triste.png" alt="" />',t) 
 t=remblaie(t)
 // smilies Smile <!-- on oublie pas les smilies -->
-t=remplace_tag(/:euh:/g,'<img src="smileys/unsure.gif" alt="" />',t) 
+t=remplace_tag(/:euh:/g,'<img src="/smileys/unsure.gif" alt="" />',t) 
 t=remblaie(t)
 // smilies Smile <!-- on oublie pas les smilies -->
-t=remplace_tag(/:coeur:/g,'<img src="images/puce.png" alt="" />',t) 
+t=remplace_tag(/:coeur:/g,'<img src="/images/puce.png" alt="" />',t) 
 t=remblaie(t)
 
 t=unkhol(t)

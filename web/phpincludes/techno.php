@@ -37,7 +37,7 @@ if (arbre($evolPage,$i,$nbE))
 	elseif ($evolution == $i)
 	{
 	?>
-	<script src="includes/compteur.js" type="text/javascript"></script>
+	<script src="/includes/compteur.js" type="text/javascript"></script>
 	<div id="compteur"><?php echo strTemps($timeFin-time()); ?></div>
 	<script language="JavaScript">
 		duree="<?php echo ($timeFin-time());?>";

@@ -8,7 +8,7 @@
 if ($_SESSION['logged'] == true)
 {
 	echo '
-		<th width="5%"><a class="bulle" style="cursor: default;" onclick="return false;" href=""><img src="images/onoff.png" alt="Statut" title="" /><span>Statut de connexion du joueur</span></a></th>
+		<th width="5%"><a class="bulle" style="cursor: default;" onclick="return false;" href=""><img src="/images/onoff.png" alt="Statut" title="" /><span>Statut de connexion du joueur</span></a></th>
 		<th width="45%">Nom</th>
 		<th width="20%">Points</th>
 		<th width="20%">Actions</th>
@@ -17,7 +17,7 @@ if ($_SESSION['logged'] == true)
 else
 {
 	echo '
-		<th width="5%"><a class="bulle" style="cursor: default;" onclick="return false;" href=""><img src="images/onoff.png" alt="Statut" title="" /><span>Statut de connexion du joueur</span></a></th>
+		<th width="5%"><a class="bulle" style="cursor: default;" onclick="return false;" href=""><img src="/images/onoff.png" alt="Statut" title="" /><span>Statut de connexion du joueur</span></a></th>
 		<th width="65%">Nom</th>
 		<th width="20%">Points</th>
 		';
@@ -45,11 +45,11 @@ if ($_SESSION['logged'] == true && ($nbE[1][0]+$nbE[1][1]+$nbE[1][2])>0)
 				
 		if ($donnees_info['lastconnect']>time()-300)
 		{
-			echo ' <a class="bulle" style="cursor: default;" onclick="return false;" href=""><img src="images/on.png" alt="Connect&eacute;" title=""/><span>',$donnees_info['pseudo'],' est connect&eacute;</span></a>';
+			echo ' <a class="bulle" style="cursor: default;" onclick="return false;" href=""><img src="/images/on.png" alt="Connect&eacute;" title=""/><span>',$donnees_info['pseudo'],' est connect&eacute;</span></a>';
 		}
 		else
 		{
-			echo ' <a class="bulle" style="cursor: default;" onclick="return false;" href=""><img src="images/off.png" alt="Non connect&eacute;" title="" /><span>',$donnees_info['pseudo'],' n\'est pas connect&eacute;</span></a>';
+			echo ' <a class="bulle" style="cursor: default;" onclick="return false;" href=""><img src="/images/off.png" alt="Non connect&eacute;" title="" /><span>',$donnees_info['pseudo'],' n\'est pas connect&eacute;</span></a>';
 		}	
 				
 		echo   '</td>
@@ -66,10 +66,10 @@ if ($_SESSION['logged'] == true && ($nbE[1][0]+$nbE[1][1]+$nbE[1][2])>0)
 			{
 				//Envoyer un message.
 				echo '<a class="bulle" href="',$donnees_info['pseudo'],'.envoi.html">
-				<img src="images/mess.png" title="" alt="" /><span>Envoyer un message à '.$donnees_info['pseudo'].'</span></a> ';
+				<img src="/images/mess.png" title="" alt="" /><span>Envoyer un message à '.$donnees_info['pseudo'].'</span></a> ';
 			}
 			echo '<a class="bulle" href="',$donnees_info['nuage'],'.nuage.html" >
-			<img src="images/nuage.png" title="" alt="" /><span>Nuage : ',$donnees_info['nuage'],'</span></a></td>';
+			<img src="/images/nuage.png" title="" alt="" /><span>Nuage : ',$donnees_info['nuage'],'</span></a></td>';
 		}
 		
 		echo '</tr>';

@@ -527,7 +527,7 @@ header('Content-type: text/html; charset=ISO-8859-1');
 			?>
 		</title>
         <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" /> 
-		<link rel="stylesheet" media="screen" type="text/css" title="bisouStyle2" href="includes/bisouStyle2.css" /> 
+		<link rel="stylesheet" media="screen" type="text/css" title="bisouStyle2" href="/includes/bisouStyle2.css" /> 
 		<link rel="shorcut icon" href="http://bisouland.piwai.info/favicon.ico"/>
 		<meta name="description" content="<?php echo $title;?>"/>
 		<meta http-equiv="Content-Language" content="fr" />
@@ -543,7 +543,7 @@ header('Content-type: text/html; charset=ISO-8859-1');
 			<?php if ($_SESSION['logged'] == true)
 			{?>
 				<li class="speedgauche">
-					<strong><?php echo formaterNombre(floor($amour)); ?></strong> <img src="images/puce.png" title = "Nombre de points d'amour" alt="Nombre de points d'amour" />
+					<strong><?php echo formaterNombre(floor($amour)); ?></strong> <img src="/images/puce.png" title = "Nombre de points d'amour" alt="Nombre de points d'amour" />
 				</li>
 				<li class="speedgauche">Adoptez la strat&eacute;gie BisouLand !!</li>
 				<li class="speeddroite">

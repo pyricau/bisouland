@@ -7,20 +7,12 @@ Take your opponents love points by sending them kisses!
 
 ## Installation
 
-To install Bisouland, first get its sources:
+To install Bisouland, download and use its installation script:
 
-    git clone git://github.com/pyricau/bisouland.git
+    curl -sS  https://raw.github.com/pyricau/bisouland/master/bin/install.sh
+    sh install.sh
 
-Then follow these 3 small steps to configure it.
-
-### Project configuration
-
-Bisouland needs database access and administrator/expeditor emails. To provide
-them, create the configuration file:
-
-    cp web/config/parameters.php.dist web/config/parameters.php
-
-Then open the `web/config/parameters.php` file and fill in the blanks (`''`)!
+Then follow these 2 small steps to configure it.
 
 ### Administration access
 

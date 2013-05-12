@@ -113,7 +113,7 @@ if (arbre($evolPage,$i,$nbE))
 	{
 	?>
 	<span class="info">[ Ce Bisou est en cours de cr&eacute;ation ]<br /></span>
-	<script src="includes/compteur.js" type="text/javascript"></script>
+	<script src="/includes/compteur.js" type="text/javascript"></script>
 	<div id="compteur"><?php echo strTemps($timeFin-time()); ?></div>
 	<script language="JavaScript">
 		duree="<?php echo ($timeFin-time());?>";

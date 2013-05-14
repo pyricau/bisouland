@@ -9,18 +9,18 @@ DirectoryIndex app.php
     RewriteEngine On
 
     # Legacy application
-    RewriteRule ^(.+)\.confirmation\.html$ app_dev.php?page=confirmation&id=$1 [QSA,L]
-    RewriteRule ^(.+)\.envoi\.html$ app_dev.php?page=envoi&destinataire=$1 [QSA,L]
-    RewriteRule ^(.+)\.bisous\.html$ app_dev.php?page=bisous&cancel=$1 [QSA,L]
-    RewriteRule ^(.+)\.(.+)\.nuage\.html$ app_dev.php?page=nuage&saut=1&sautnuage=$1&sautposition=$2 [QSA,L]
-    RewriteRule ^(.+)\.nuage\.html$ app_dev.php?page=nuage&nuage=$1 [QSA,L]
-    RewriteRule ^(.+)\.(.+)\.action\.html$ app_dev.php?page=action&nuage=$1&position=$2 [QSA,L]
-    RewriteRule ^(.+)\.(.+)\.yeux\.html$ app_dev.php?page=yeux&Dnuage=$1&Dpos=$2 [QSA,L]
-    RewriteRule ^(.+)\.(.+)\.newpass\.html$ app_dev.php?page=newpass&Cid=$1&Ccle=$2 [QSA,L]
-    RewriteRule ^(.+)\.lire\.html$ app_dev.php?page=lire&idmsg=$1 [QSA,L]
-    RewriteRule ^livreor\.(.+)\.html$ app_dev.php?page=livreor&or=$1 [QSA,L]
-    RewriteRule ^membres\.(.+)\.html$ app_dev.php?page=membres&num=$1 [QSA,L]
-    RewriteRule ^(.+)\.html$ app_dev.php/?page=$1 [QSA,L]
+    RewriteRule ^(.+)\.confirmation\.html$ index.php?page=confirmation&id=$1 [QSA,L]
+    RewriteRule ^(.+)\.envoi\.html$ index.php?page=envoi&destinataire=$1 [QSA,L]
+    RewriteRule ^(.+)\.bisous\.html$ index.php?page=bisous&cancel=$1 [QSA,L]
+    RewriteRule ^(.+)\.(.+)\.nuage\.html$ index.php?page=nuage&saut=1&sautnuage=$1&sautposition=$2 [QSA,L]
+    RewriteRule ^(.+)\.nuage\.html$ index.php?page=nuage&nuage=$1 [QSA,L]
+    RewriteRule ^(.+)\.(.+)\.action\.html$ index.php?page=action&nuage=$1&position=$2 [QSA,L]
+    RewriteRule ^(.+)\.(.+)\.yeux\.html$ index.php?page=yeux&Dnuage=$1&Dpos=$2 [QSA,L]
+    RewriteRule ^(.+)\.(.+)\.newpass\.html$ index.php?page=newpass&Cid=$1&Ccle=$2 [QSA,L]
+    RewriteRule ^(.+)\.lire\.html$ index.php?page=lire&idmsg=$1 [QSA,L]
+    RewriteRule ^livreor\.(.+)\.html$ index.php?page=livreor&or=$1 [QSA,L]
+    RewriteRule ^membres\.(.+)\.html$ index.php?page=membres&num=$1 [QSA,L]
+    RewriteRule ^(.+)\.html$ index.php/?page=$1 [QSA,L]
 
     # Determine the RewriteBase automatically and set it as environment variable.
     # If you are using Apache aliases to do mass virtual hosting or installed the

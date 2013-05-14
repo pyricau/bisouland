@@ -1,0 +1,10 @@
+class_name: PreregistrationGuy
+
+modules:
+    enabled:
+        - PhpBrowser
+        - WebHelper
+
+    config:
+        PhpBrowser:
+            url: 'http://bisouland.local/app_test.php'

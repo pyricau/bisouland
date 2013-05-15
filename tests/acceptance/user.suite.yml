@@ -1,4 +1,4 @@
-class_name: PreregistrationGuy
+class_name: UserGuy
 
 modules:
     enabled:

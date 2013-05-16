@@ -5,6 +5,8 @@
 /build/
 
 # Dependencies
+!/bin/install.sh
+!/bin/tests.sh
 /vendor/
 !/bin/install.sh
 /bin/*

@@ -41,6 +41,9 @@ assetic:
             node: %less.node%
             node_paths: %less.node_paths%
             apply_to: "\.less$"
+        lessphp:
+            file: %kernel.root_dir%/../vendor/leafo/lessphp/lessc.inc.php
+            apply_to: "\.less$"
 
 # Doctrine Configuration
 doctrine:
@@ -70,3 +73,9 @@ swiftmailer:
     encryption:  %mailer_encryption%
     auth_mode:  %mailer_auth_mode%
     port:  %mailer_port%
+
+# FOSUserBundle Configuration
+fos_user:
+    db_driver: orm
+    firewall_name: main
+    user_class: Bisouland\UserBundle\Entity\User

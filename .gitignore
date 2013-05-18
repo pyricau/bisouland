@@ -6,11 +6,14 @@
 
 # Dependencies
 /vendor/
+!/bin/install.sh
 /bin/*
 /composer.phar
 
 # Temporary files
+!/app/cache/.gitkeep
 /app/cache/*
+!/app/logs/.gitkeep
 /app/logs/*
 /app/bootstrap.php.cache
 

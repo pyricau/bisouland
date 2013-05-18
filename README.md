@@ -9,8 +9,7 @@ Take your opponents love points by sending them kisses!
 
 To install Bisouland, download and use its installation script:
 
-    curl -sS  https://raw.github.com/pyricau/bisouland/master/bin/install.sh
-    sh install.sh
+    curl -sS  https://raw.github.com/pyricau/bisouland/master/bin/install.sh | sh
 
 Then follow these 2 small steps to configure it.
 

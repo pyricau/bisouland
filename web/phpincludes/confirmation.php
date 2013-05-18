@@ -67,7 +67,7 @@ if ($_SESSION['logged'] == false)
 if (isset($_GET['id']) && !empty($_GET['id']))
 {
    //Mesure de sécurité, notamment pour éviter les injections sql.
-   $id = htmlentities(addslashes($_GET['id']));
+   $id = htmlentities(addslashes($_GET['id']), ENT_IGNORE);
    
    //La requête qui compte le nombre de pseudos
    $sql = mysql_query("SELECT COUNT(*) AS nb_id FROM membres WHERE id='".$id."'");

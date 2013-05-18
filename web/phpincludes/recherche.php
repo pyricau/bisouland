@@ -4,7 +4,7 @@ if (isset($_POST['recherche']))
 {
 	if (isset($_POST['nomCherche']) && !empty($_POST['nomCherche']))
 	{
-		$pseudoCherche=htmlentities(addslashes($_POST['nomCherche']));
+		$pseudoCherche=htmlentities(addslashes($_POST['nomCherche']), ENT_IGNORE);
 		$sql_info = mysql_query("SELECT id, pseudo, confirmation, nuage, lastconnect FROM membres WHERE pseudo='$pseudoCherche'");
 		if($donnees = mysql_fetch_assoc($sql_info))
 		{

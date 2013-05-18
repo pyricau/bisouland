@@ -15,19 +15,19 @@ if ($_SESSION['logged'] == true)
 	
 	if (isset($_POST['nuage']) && !empty($_POST['nuage']))
 	{
-		$nuageL=htmlentities($_POST['nuage']);
+		$nuageL=htmlentities($_POST['nuage'], ENT_IGNORE);
 		if ($nuageL<1) {$nuageL=1;}
 		if ($nuageL>$NbNuages) {$nuageL=$NbNuages;}
 	}
 	elseif (isset($_GET['nuage']) && !empty($_GET['nuage']))
 	{
-		$nuageL=htmlentities($_GET['nuage']);
+		$nuageL=htmlentities($_GET['nuage'], ENT_IGNORE);
 		if($nuageL<1) {$nuageL=1;}
 		if($nuageL>$NbNuages) {$nuageL=$NbNuages;}
 	}
 	elseif (isset($_GET['saut']) && !empty($_GET['saut']) && isset($_GET['sautnuage']) && !empty($_GET['sautnuage']))
 	{
-		$nuageL=htmlentities(addslashes($_GET['sautnuage']));
+		$nuageL=htmlentities(addslashes($_GET['sautnuage']), ENT_IGNORE);
 		if ($nuageL>0)
 		{
 			if($nuageL<=$NbNuages)

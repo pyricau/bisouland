@@ -2,6 +2,8 @@
 
 use Symfony\Component\Yaml\Parser;
 
+$loader = require_once __DIR__.'/../../vendor/autoload.php';
+
 $yaml = new Parser();
 
 $configPath = __DIR__.'/../../app/config/parameters.yml';

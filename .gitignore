@@ -10,6 +10,7 @@
 # Dependencies
 /vendor/
 !/bin/install.sh
+!/bin/test.sh
 /bin/*
 /composer.phar
 

@@ -12,7 +12,10 @@ use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 class DefaultController extends Controller
 {
     /**
-     * @Route("/")
+     * @Route(
+     *     pattern = "/",
+     *     name = "home"
+     * )
      * @Template()
      */
     public function indexAction()

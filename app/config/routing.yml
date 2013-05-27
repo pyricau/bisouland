@@ -1,3 +1,9 @@
+# PreRegistrationBundle routes
+bisouland_pre_registration:
+    resource: "@BisoulandPreRegistrationBundle/Controller/"
+    type:     annotation
+    prefix:   /
+
 # FOSUserBundle routes
 fos_user_security:
     resource: "@FOSUserBundle/Resources/config/routing/security.xml"

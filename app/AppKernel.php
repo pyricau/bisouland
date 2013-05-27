@@ -22,6 +22,7 @@ class AppKernel extends Kernel
 
             new Knp\Bundle\MenuBundle\KnpMenuBundle(),
             new Bisouland\MenuBundle\BisoulandMenuBundle(),
+            new Bisouland\PreRegistrationBundle\BisoulandPreRegistrationBundle(),
         );
 
         if (in_array($this->getEnvironment(), array('dev', 'test'))) {

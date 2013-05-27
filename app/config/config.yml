@@ -79,3 +79,8 @@ fos_user:
     db_driver: orm
     firewall_name: main
     user_class: Bisouland\UserBundle\Entity\User
+
+# KnpMenuBundle Configuration
+knp_menu:
+    twig:
+        template: BisoulandMenuBundle::menu.html.twig

@@ -19,6 +19,9 @@ class AppKernel extends Kernel
 
             new FOS\UserBundle\FOSUserBundle(),
             new Bisouland\UserBundle\BisoulandUserBundle(),
+
+            new Knp\Bundle\MenuBundle\KnpMenuBundle(),
+            new Bisouland\MenuBundle\BisoulandMenuBundle(),
         );
 
         if (in_array($this->getEnvironment(), array('dev', 'test'))) {

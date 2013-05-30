@@ -80,6 +80,14 @@ fos_user:
     firewall_name: main
     user_class: Bisouland\UserBundle\Entity\User
 
+    from_email:
+        address: %email_expeditor%
+        sender_name: Bisouland
+
+    registration:
+        form:
+            type: bisouland_user_registration
+
 # KnpMenuBundle Configuration
 knp_menu:
     twig:

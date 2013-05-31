@@ -20,7 +20,6 @@
 
 # Build files
 /app/bootstrap.php.cache
-/tests/acceptance/*/*Guy.php
 
 # Configuration files
 app/config/parameters.yml

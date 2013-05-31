@@ -8,5 +8,8 @@ app/console doctrine:fixtures:load --no-interaction --env=test
 
 app/console cache:clear --env=test
 
-bin/codecept build -c app/config/codeception.yml
-bin/codecept run -c app/config/codeception.yml
+for bundle in BisoulandUserBundle
+do
+    echo "Testing ${bundle}..."
+    bin/behat -c=app/config/behat.yml @${bundle} $*
+done

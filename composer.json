@@ -33,7 +33,9 @@
         "doctrine/data-fixtures": "1.0.*@dev"
     },
     "require-dev": {
-        "codeception/codeception": "1.5.*"
+        "behat/symfony2-extension": "1.0.*",
+        "behat/mink-extension": "1.1.*",
+        "behat/mink-browserkit-driver": "1.1.*"
     },
     "scripts": {
         "post-install-cmd": [

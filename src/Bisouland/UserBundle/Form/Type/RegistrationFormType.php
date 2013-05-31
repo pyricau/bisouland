@@ -3,6 +3,7 @@
 namespace Bisouland\UserBundle\Form\Type;
 
 use FOS\UserBundle\Form\Type\RegistrationFormType as BaseType;
+
 use Symfony\Component\Form\FormBuilderInterface;
 
 /**

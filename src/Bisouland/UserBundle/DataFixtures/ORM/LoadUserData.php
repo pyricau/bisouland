@@ -4,9 +4,10 @@ namespace Bisouland\UserBundle\DataFixtures\ORM;
 
 use Bisouland\UserBundle\Entity\User;
 
-use Doctrine\Common\DataFixtures\AbstractFixture,
-    Doctrine\Common\DataFixtures\OrderedFixtureInterface,
-    Doctrine\Common\Persistence\ObjectManager;
+use Doctrine\Common\DataFixtures\AbstractFixture;
+use Doctrine\Common\DataFixtures\OrderedFixtureInterface;
+
+use Doctrine\Common\Persistence\ObjectManager;
 
 /**
  * @author Loic Chardonnet <loic.chardonnet@gmail.com>

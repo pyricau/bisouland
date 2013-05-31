@@ -4,6 +4,7 @@ namespace Bisouland\UserBundle\Features\Context;
 
 use Behat\Behat\Context\BehatContext;
 use Behat\Behat\Context\Step;
+
 use Behat\Behat\Exception\PendingException;
 
 use Behat\Gherkin\Node\PyStringNode;
@@ -16,15 +17,22 @@ use Behat\Symfony2Extension\Context\KernelAwareInterface;
 use Symfony\Component\HttpKernel\KernelInterface;
 
 /**
- * Feature context.
+ * @author Loic Chardonnet <loic.chardonnet@gmail.com>
  */
 class FeatureContext extends MinkContext implements KernelAwareInterface
 {
+    /**
+     * @var Symfony\Component\HttpKernel\KernelInterface
+     */
     private $kernel;
+
+    /**
+     * @var array
+     */
     private $parameters;
 
     /**
-     * Initializes context with parameters from behat.yml.
+     * Get parameters from behat.yml.
      *
      * @param array $parameters
      */
@@ -34,10 +42,9 @@ class FeatureContext extends MinkContext implements KernelAwareInterface
     }
 
     /**
-     * Sets HttpKernel instance.
-     * This method will be automatically called by Symfony2Extension ContextInitializer.
+     * Automatically called by Symfony2Extension ContextInitializer.
      *
-     * @param KernelInterface $kernel
+     * @param Symfony\Component\HttpKernel\KernelInterface $kernel
      */
     public function setKernel(KernelInterface $kernel)
     {

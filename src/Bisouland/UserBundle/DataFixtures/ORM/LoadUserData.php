@@ -21,11 +21,13 @@ class LoadUserData extends AbstractFixture implements OrderedFixtureInterface
     {
         return array(
             'admin',
+            'simple.user',
 
             'to.login',
             'to.logout',
             'already.registered',
-            'simple.user',
+            'change',
+            'existing',
         );
     }
 

@@ -3,7 +3,7 @@ Feature: Registration
     As a visitor
     I need to be able to register
 
-    Scenario: Registration
+    Scenario: Register with username, email and password
         Given I am on "/register"
 
         When I fill in the following:
@@ -14,7 +14,7 @@ Feature: Registration
 
         Then I should see "layout.logout"
 
-    Scenario: Registration failure
+    Scenario: Fail Registration with existing username and email
         Given I am on "/register"
 
         When I fill in the following:

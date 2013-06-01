@@ -13,7 +13,7 @@ Feature: Login
 
         Then I should see "layout.logout"
 
-    Scenario: Login failure with wrong username and password
+    Scenario: Fail login with wrong username and password
         Given I am on "/login"
 
         When I fill in the following:

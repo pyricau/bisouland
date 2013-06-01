@@ -2,13 +2,7 @@
 
 namespace Bisouland\UserBundle\Features\Context;
 
-use Behat\Behat\Context\BehatContext;
 use Behat\Behat\Context\Step;
-
-use Behat\Behat\Exception\PendingException;
-
-use Behat\Gherkin\Node\PyStringNode;
-use Behat\Gherkin\Node\TableNode;
 
 use Behat\MinkExtension\Context\MinkContext;
 

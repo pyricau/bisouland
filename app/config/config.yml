@@ -35,16 +35,9 @@ assetic:
     filters:
         cssrewrite: ~
         uglifyjs:
-            bin: %uglifyjs.bin%
+            bin: %uglifyjs_bin%
         uglifycss:
-            bin: %uglifycss.bin%
-        less:
-            node: %less.node%
-            node_paths: %less.node_paths%
-            apply_to: "\.less$"
-        lessphp:
-            file: %kernel.root_dir%/../vendor/leafo/lessphp/lessc.inc.php
-            apply_to: "\.less$"
+            bin: %uglifycss_bin%
 
 # Doctrine Configuration
 doctrine:

@@ -21,7 +21,6 @@
 
         "symfony/assetic-bundle": "2.1.*",
         "kriswallsmith/assetic": "1.1.*@beta",
-        "leafo/lessphp": "0.3.*",
 
         "incenteev/composer-parameter-handler": "~2.0",
 

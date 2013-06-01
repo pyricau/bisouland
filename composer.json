@@ -19,7 +19,7 @@
         "sensio/framework-extra-bundle": "2.2.*",
         "sensio/generator-bundle": "2.2.*",
 
-        "symfony/assetic-bundle": "2.1.*",
+        "symfony/assetic-bundle": "2.3.*",
         "kriswallsmith/assetic": "1.1.*@beta",
 
         "incenteev/composer-parameter-handler": "~2.0",
@@ -29,7 +29,9 @@
         "knplabs/knp-menu-bundle": "1.1.*@dev",
 
         "doctrine/doctrine-fixtures-bundle": "2.1.*@dev",
-        "doctrine/data-fixtures": "1.0.*@dev"
+        "doctrine/data-fixtures": "1.0.*@dev",
+
+        "components/html5-boilerplate": "dev-master"
     },
     "require-dev": {
         "behat/symfony2-extension": "1.0.*",
@@ -41,19 +43,18 @@
             "Incenteev\\ParameterHandler\\ScriptHandler::buildParameters",
             "Sensio\\Bundle\\DistributionBundle\\Composer\\ScriptHandler::buildBootstrap",
             "Sensio\\Bundle\\DistributionBundle\\Composer\\ScriptHandler::clearCache",
-            "bower install",
             "Sensio\\Bundle\\DistributionBundle\\Composer\\ScriptHandler::installAssets"
         ],
         "post-update-cmd": [
             "Incenteev\\ParameterHandler\\ScriptHandler::buildParameters",
             "Sensio\\Bundle\\DistributionBundle\\Composer\\ScriptHandler::buildBootstrap",
             "Sensio\\Bundle\\DistributionBundle\\Composer\\ScriptHandler::clearCache",
-            "bower install",
             "Sensio\\Bundle\\DistributionBundle\\Composer\\ScriptHandler::installAssets"
         ]
     },
     "config": {
-        "bin-dir": "bin"
+        "bin-dir": "bin",
+        "component-dir": "vendor"
     },
     "extra": {
         "symfony-app-dir": "app",

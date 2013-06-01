@@ -25,7 +25,6 @@ class LoadUserData extends AbstractFixture implements OrderedFixtureInterface
 
             'to.login',
             'to.logout',
-            'already.registered',
             'change',
             'existing',
         );

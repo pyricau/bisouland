@@ -12,15 +12,16 @@ Feature: Registration
             | form.password | password |
         And I press "registration.submit"
 
-        Then I should see "layout.logout"
+        Then I should see "registration.flash.user_created"
 
-    Scenario: Fail Registration with existing username and email
+    Scenario: Fail registration with existing username and email
         Given I am on "/register"
 
         When I fill in the following:
-            | form.username | to.register |
-            | form.email | to.register@example.com |
+            | form.username | existing |
+            | form.email | existing@example.com |
             | form.password | password |
         And I press "registration.submit"
 
-        Then I should not see "layout.logout"
+        Then I should see "fos_user.username.already_used"
+        And I should see "fos_user.email.already_used"

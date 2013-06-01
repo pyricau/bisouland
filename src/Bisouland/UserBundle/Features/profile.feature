@@ -26,3 +26,4 @@ Feature:
         And press "profile.edit.submit"
 
         Then I should see "fos_user.username.already_used"
+        And I should see "fos_user.email.already_used"

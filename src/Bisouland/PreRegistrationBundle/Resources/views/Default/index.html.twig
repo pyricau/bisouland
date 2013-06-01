@@ -1,4 +1,84 @@
 {% extends '::layout.html.twig' %}
 
 {% block view %}
+    <div>
+        <h1>
+            {{ 'pre_registration.main.title'|trans() }}
+            <small>
+                {{ 'pre_registration.main.small_title'|trans() }}
+            </small>
+        </h1>
+
+        <p>
+            {{ 'pre_registration.main.description'|trans() }}
+        </p>
+
+        <p>
+            <a href="{{ path('fos_user_registration_register') }}">
+                {{ 'layout.register'|trans() }}
+            </a>
+        </p>
+    <div>
+
+    <div>
+        <h2>{{ 'pre_registration.resource.title'|trans() }}</h2>
+
+        <p>
+            {{ 'pre_registration.resource.description'|trans()  }}
+        </p>
+
+        <p>
+            {{ 'pre_registration.resource.attributes'|trans() }}
+        </p>
+    <div>
+
+    <div>
+        <h2>{{ 'pre_registration.attack.title'|trans() }}</h2>
+
+        <p>
+            {{ 'pre_registration.attack.description'|trans() }}
+        </p>
+
+        <p>
+            {{ 'pre_registration.attack.attributes'|trans() }}
+        </p>
+    </div>
+
+    <div>
+        <h2>{{ 'pre_registration.travel.title'|trans() }}</h2>
+
+        <p>
+            {{ 'pre_registration.travel.description'|trans() }}
+        </p>
+
+        <p>
+            {{ 'pre_registration.travel.attributes'|trans() }}
+        </p>
+    </div>
+
+    <div>
+        <h2>{{ 'pre_registration.spying.title'|trans() }}</h2>
+
+        <p>
+            {{ 'pre_registration.spying.description'|trans() }}
+        </p>
+
+        <p>
+            {{ 'pre_registration.spying.attributes'|trans() }}
+        </p>
+    </div>
+
+    <div>
+        <h2>{{ 'pre_registration.work_in_progress.title'|trans() }}</h2>
+
+        <p>
+            {{ 'pre_registration.work_in_progress.description'|trans() }}
+        </p>
+
+        <p>
+            <a href="{{ path('fos_user_registration_register') }}">
+                {{ 'layout.register'|trans() }}
+            </a>
+        </p>
+    <div>
 {% endblock %}

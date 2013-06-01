@@ -25,3 +25,5 @@ parameters:
 
     less.node: /usr/local/bin/node
     less.node_paths: [/usr/local/lib/node, /usr/local/lib/node_modules]
+
+    website_url: bisouland.piwai.info

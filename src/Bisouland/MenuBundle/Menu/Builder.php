@@ -58,7 +58,10 @@ class Builder
         $menu = $this->menuFactory->createItem('userMenu');
         $menu->setCurrentUri($request->getRequestUri());
 
-        $menu->addChild($this->securityContext->getToken()->getUser()->getUsername());
+        $menu->addChild(
+            $this->securityContext->getToken()->getUser()->getUsername(),
+            array('route' => 'fos_user_profile_show')
+        );
         $menu->addChild('layout.logout', array('route' => 'fos_user_security_logout'));
 
         return $menu;

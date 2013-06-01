@@ -2,6 +2,8 @@
 !.gitkeep
 
 # Assets
+/web/css/*
+/web/js/*
 /web/bundles/
 
 # Continuous integration

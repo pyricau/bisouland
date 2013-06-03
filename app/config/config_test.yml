@@ -33,8 +33,3 @@ assetic:
 
 swiftmailer:
     disable_delivery: true
-
-# Doctrine Configuration
-doctrine:
-    dbal:
-        dbname: %database_name%_test

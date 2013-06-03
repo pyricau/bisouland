@@ -11,14 +11,13 @@ framework:
         strict_requirements: %kernel.debug%
     form: ~
     csrf_protection: ~
-    validation: { enable_annotations: true }
+    validation:
+        enable_annotations: true
     templating:
         engines: ['twig']
-        #assets_version: SomeVersionScheme
     default_locale: "%locale%"
     trusted_proxies: ~
-    session:
-        name: %website_url%
+    session: ~
     fragments: ~
 
 # Twig Configuration
@@ -45,7 +44,7 @@ doctrine:
         driver: %database_driver%
         host: %database_host%
         port: %database_port%
-        dbname: %database_name%
+        dbname: %database_name%_%kernel.environment%
         user: %database_user%
         password: %database_password%
         charset: UTF8

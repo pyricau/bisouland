@@ -11,17 +11,16 @@ use Symfony\Component\Form\FormBuilderInterface;
  */
 class RegistrationFormType extends BaseType
 {
+    /**
+     * Overriding FOSUserBundle's FormType to remove password confirmation.
+     *
+     * @{inheritdoc}
+     */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
+        parent::buildForm($builder, $options);
         $builder
-            ->add('username', null, array(
-                'label' => 'form.username',
-                'translation_domain' => 'FOSUserBundle',
-            ))
-            ->add('email', 'email', array(
-                'label' => 'form.email',
-                'translation_domain' => 'FOSUserBundle',
-            ))
+            ->remove('plainPassword')
             ->add('plainPassword', 'password', array(
                 'translation_domain' => 'FOSUserBundle',
                 'label' => 'form.password',
@@ -29,6 +28,9 @@ class RegistrationFormType extends BaseType
         ;
     }
 
+    /**
+     * @{inheritdoc}
+     */
     public function getName()
     {
         return 'bisouland_user_registration';

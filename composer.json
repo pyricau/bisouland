@@ -31,7 +31,8 @@
         "doctrine/doctrine-fixtures-bundle": "2.1.*@dev",
         "doctrine/data-fixtures": "1.0.*@dev",
 
-        "components/html5-boilerplate": "dev-master"
+        "components/html5-boilerplate": "dev-master",
+        "twitter/bootstrap": "2.3.*"
     },
     "require-dev": {
         "behat/symfony2-extension": "1.0.*",

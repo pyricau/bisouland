@@ -32,6 +32,9 @@ assetic:
     bundles: [ ]
     #java: /usr/bin/java
     filters:
+        less:
+           node: %less_bin%
+           node_paths: %less_paths%
         cssrewrite: ~
         uglifyjs:
             bin: %uglifyjs_bin%

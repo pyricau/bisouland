@@ -20,6 +20,9 @@ parameters:
     locale: fr
     secret: ThisTokenIsNotSoSecretChangeIt
 
+    less_bin: /usr/local/bin/node
+    less_paths: [/usr/local/lib/node, /usr/local/lib/node_modules]
+
     uglifyjs_bin: /usr/local/bin/uglifyjs
     uglifycss_bin: /usr/local/bin/uglifycss
 

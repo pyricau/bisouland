@@ -31,7 +31,8 @@
         "doctrine/doctrine-fixtures-bundle": "2.1.*@dev",
         "doctrine/data-fixtures": "1.0.*@dev",
 
-        "components/html5-boilerplate": "dev-master",
+        "components/jquery": "1.9.*",
+        "components/modernizr": "2.6.*",
         "twitter/bootstrap": "2.3.*"
     },
     "require-dev": {

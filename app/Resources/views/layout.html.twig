@@ -39,8 +39,8 @@
             to improve your experience.</p>
         <![endif]-->
 
-        <header class="header">
-            <nav class="header menu">
+        <header class="main-menu">
+            <nav class="content">
                 <h1 class="brand">
                     <a href="{{ path('home') }}">
                         {{ 'layout.brand'|trans() }}
@@ -56,7 +56,7 @@
             </nav>
         </header>
 
-        <div class="container">
+        <div class="page">
             {% for class, messages in app.session.flashbag.all() %}
                 {% for message in messages %}
                     <div class="{{ class }}">
@@ -65,7 +65,9 @@
                 {% endfor %}
             {% endfor %}
 
-            {% block view %}{% endblock %}
+            <div class="main-content">
+                {% block view %}{% endblock %}
+            </div>
         </div>
 
         {% javascripts

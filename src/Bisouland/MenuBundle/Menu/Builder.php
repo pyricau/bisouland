@@ -41,7 +41,7 @@ class Builder
     public function createLoginMenu(Request $request)
     {
         $menu = $this->menuFactory->createItem('loginMenu');
-        $menu->setChildrenAttribute('class', 'nav');
+        $menu->setChildrenAttribute('class', 'menu');
         $menu->setCurrentUri($request->getRequestUri());
 
         $menu->addChild('layout.login', array('route' => 'fos_user_security_login'));
@@ -57,7 +57,7 @@ class Builder
     public function createUserMenu(Request $request)
     {
         $menu = $this->menuFactory->createItem('userMenu');
-        $menu->setChildrenAttribute('class', 'nav');
+        $menu->setChildrenAttribute('class', 'menu');
         $menu->setCurrentUri($request->getRequestUri());
 
         $menu->addChild(

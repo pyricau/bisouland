@@ -1,20 +1,19 @@
-//
-// Layouts
-// --------------------------------------------------
+// Variables.
+@navbarHeight: 57px;
 
+// Pushing the body under the header menu.
 body {
     padding-top: @navbarHeight;
 }
 
-// Header
-.header {
-    background-color: @boldColor;
+.main-menu {
+    background-color: @backgroundBoldColor;
     .navbar;
     .navbar-fixed-top;
     min-height: @navbarHeight;
 }
 
-.header.menu {
+.main-menu > .content {
     .container;
 
     // .navbar-inner adaptation
@@ -35,17 +34,19 @@ body {
     float: left;
 }
 
-.nav {
+.main-menu > .content > .menu {
     .navbar.nav;
+    .navbar.nav.pull-right;
+    font-size: 17px;
 }
 
-.nav > ul {
+.main-menu > .content > ul {
     // ul.unstyled adaptation
     margin-left: 0;
     list-style: none;
 }
 
-.nav > li {
+.main-menu > .content > ul > li {
     //.navbar .nav > li adaptation
     float: left;
 
@@ -57,7 +58,7 @@ body {
 }
 
 // Links
-.nav > li > a, .brand > a {
+.main-menu > .content > ul > li > a, .brand > a {
     // Fix vertical alignement
     display: table-cell;
 
@@ -65,7 +66,7 @@ body {
     float: none;
     // Vertically center the text given @navbarHeight
     padding: ((@navbarHeight - @baseLineHeight) / 2) 15px ((@navbarHeight - @baseLineHeight) / 2);
-    color: @menuLinkColor;
+    color: @textLightColor;
     text-decoration: none;
 }
 

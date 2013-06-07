@@ -4,17 +4,18 @@ imports:
 
 framework:
     #esi: ~
-    translator: { fallback: %locale% }
+    #translator: { fallback: %locale% }
     secret: %secret%
+    http_method_override: true
     router:
         resource: "%kernel.root_dir%/config/routing.yml"
         strict_requirements: %kernel.debug%
     form: ~
     csrf_protection: ~
-    validation: { enable_annotations: true }
+    validation:
+        enable_annotations: true
     templating:
         engines: ['twig']
-        #assets_version: SomeVersionScheme
     default_locale: "%locale%"
     trusted_proxies: ~
     session: ~
@@ -32,15 +33,14 @@ assetic:
     bundles: [ ]
     #java: /usr/bin/java
     filters:
+        less:
+           node: %less_bin%
+           node_paths: %less_paths%
         cssrewrite: ~
         uglifyjs:
-            bin: %uglifyjs.bin%
+            bin: %uglifyjs_bin%
         uglifycss:
-            bin: %uglifycss.bin%
-        less:
-            node: %less.node%
-            node_paths: %less.node_paths%
-            apply_to: "\.less$"
+            bin: %uglifycss_bin%
 
 # Doctrine Configuration
 doctrine:
@@ -48,7 +48,7 @@ doctrine:
         driver: %database_driver%
         host: %database_host%
         port: %database_port%
-        dbname: %database_name%
+        dbname: %database_name%_%kernel.environment%
         user: %database_user%
         password: %database_password%
         charset: UTF8
@@ -70,3 +70,22 @@ swiftmailer:
     encryption:  %mailer_encryption%
     auth_mode:  %mailer_auth_mode%
     port:  %mailer_port%
+
+# FOSUserBundle Configuration
+fos_user:
+    db_driver: orm
+    firewall_name: main
+    user_class: Bisouland\UserBundle\Entity\User
+
+    from_email:
+        address: %email_expeditor%
+        sender_name: Bisouland
+
+    registration:
+        form:
+            type: bisouland_user_registration
+
+# KnpMenuBundle Configuration
+knp_menu:
+    twig:
+        template: BisoulandMenuBundle::menu.html.twig

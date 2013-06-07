@@ -5,6 +5,20 @@ web browser.
 
 Take your opponents love points by sending them kisses!
 
+## Requirements
+
+Bisouland uses [npm](https://npmjs.org/), to install it, use the following commands:
+
+    # npm installation (through nodejs)
+    wget http://nodejs.org/dist/latest/node-v0.10.7.tar.gz
+    tar zxvf node-v0.10.7.tar.gz
+    cd node-v0.10.7
+    ./configure
+    make
+    sudo ake install
+    cd ..
+    rm -rf node-v0.10.7*
+
 ## Installation
 
 To install Bisouland, download and use its installation script:

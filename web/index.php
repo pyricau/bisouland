@@ -31,7 +31,7 @@ header('Content-type: text/html; charset=ISO-8859-1');
 	if (!isset($_SESSION['logged'])) $_SESSION['logged'] = false;
 			
 	//Gestion de la page courante : Permet de désigner la page a inclure. Si la variable est vide, alors ca sera 'accueil'.
-	$page = (!empty($_GET['page'])) ? htmlentities($_GET['page']) : 'accueil';
+	$page = (!empty($_GET['page'])) ? htmlentities($_GET['page'], ENT_IGNORE) : 'accueil';
 	
 	//Test en cas de suppression de compte
 	//Il faudra a jouter ici une routine de suppression des messages dans la bdd.
@@ -54,8 +54,8 @@ header('Content-type: text/html; charset=ISO-8859-1');
 		//On récupère les cookies enregistrés chez l'utilisateurs, s'ils sont la.
 		if (isset($_COOKIE['pseudo']) && isset($_COOKIE['mdp']))
 		{
-			$pseudo = htmlentities(addslashes($_COOKIE['pseudo']));
-			$mdp = htmlentities(addslashes($_COOKIE['mdp']));
+			$pseudo = htmlentities(addslashes($_COOKIE['pseudo']), ENT_IGNORE);
+			$mdp = htmlentities(addslashes($_COOKIE['mdp']), ENT_IGNORE);
 			//La requête qui compte le nombre de pseudos
 			$sql = mysql_query("SELECT COUNT(*) AS nb_pseudo FROM membres WHERE pseudo='".$pseudo."'");
    
@@ -368,7 +368,7 @@ header('Content-type: text/html; charset=ISO-8859-1');
 			
 			if (!preg_match("![^ ]{14,}!", $chatmess))
 			{
-				$chatmess = addslashes(htmlentities ($chatmess));
+				$chatmess = addslashes(htmlentities ($chatmess, ENT_IGNORE));
 				$requete = mysql_query("SELECT message FROM chatbisous ORDER BY id DESC LIMIT 1");
 				$last = mysql_fetch_assoc($requete);
 				if ($last['message']!=$chatmess)

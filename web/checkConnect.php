@@ -17,7 +17,7 @@
 	L'équipe BisouLand
 	";
 
-	$message_html=nl2br(htmlentities($message_texte));
+	$message_html=nl2br(htmlentities($message_texte), ENT_IGNORE);
 	
 	$objet="N'oublie pas de te connecter à BisouLand";
 	

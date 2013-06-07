@@ -26,7 +26,7 @@ Il est désormais possible de changer de mot de passe, si l'ancien ne vous convie
 				{
 					if (preg_match("!^\w+$!", $newpass))
 					{
-						$newpass=htmlentities(addslashes($_POST['newpass']));//Normalement inutile.
+						$newpass=htmlentities(addslashes($_POST['newpass']), ENT_IGNORE);//Normalement inutile.
 						$taille = strlen(trim($newpass));
                         if ( $taille >= 5 && $taille <= 15 )
 						{

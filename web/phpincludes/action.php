@@ -6,8 +6,8 @@ if ($_SESSION['logged'] == true)
 if (isset($_POST['action']))
 {
 	$cout=0;
-	$nuageCible=htmlentities($_POST['nuage']);
-	$positionCible=htmlentities($_POST['position']);
+	$nuageCible=htmlentities($_POST['nuage'], ENT_IGNORE);
+	$positionCible=htmlentities($_POST['position'], ENT_IGNORE);
 
 	if ($joueurBloque==0)
 	{
@@ -125,8 +125,8 @@ if (isset($_POST['action']))
 }
 elseif(isset($_GET['nuage']) && isset($_GET['position']))
 {
-	$nuageCible=htmlentities($_GET['nuage']);
-	$positionCible=htmlentities($_GET['position']);
+	$nuageCible=htmlentities($_GET['nuage'], ENT_IGNORE);
+	$positionCible=htmlentities($_GET['position'], ENT_IGNORE);
 	
 	$nuageSource=$_SESSION['nuage'];
 		

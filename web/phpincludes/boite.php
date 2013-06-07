@@ -96,7 +96,7 @@ if ($_SESSION['logged'] == true)
 
 	if (isset($_POST['supprimer']))
 	{
-		$idmsg = htmlentities(addslashes($_POST['supprimer']));
+		$idmsg = htmlentities(addslashes($_POST['supprimer']), ENT_IGNORE);
 		mysql_query("DELETE FROM messages WHERE id=".$idmsg." AND destin=".$id);
 	}
 	else
@@ -104,7 +104,7 @@ if ($_SESSION['logged'] == true)
 	if (isset($_POST['supboite'])) {
 		foreach($_POST['supboite'] AS $key=>$value)
 		{
-			$key=htmlentities(addslashes($key));
+			$key=htmlentities(addslashes($key), ENT_IGNORE);
 			mysql_query('DELETE FROM messages WHERE id='.$key." AND destin=".$id);
 		}
 		}

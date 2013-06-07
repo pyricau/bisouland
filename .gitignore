@@ -1,4 +1,9 @@
+# Keep told directories
+!.gitkeep
+
 # Assets
+/web/css/*
+/web/js/*
 /web/bundles/
 
 # Continuous integration
@@ -7,14 +12,15 @@
 # Dependencies
 /vendor/
 !/bin/install.sh
+!/bin/test.sh
 /bin/*
 /composer.phar
 
 # Temporary files
-!/app/cache/.gitkeep
 /app/cache/*
-!/app/logs/.gitkeep
 /app/logs/*
+
+# Build files
 /app/bootstrap.php.cache
 
 # Configuration files

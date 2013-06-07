@@ -157,8 +157,8 @@ Il te suffit de remplir le formulaire qui suit.<br />
 ?>
 
 <form method="post" class="formul" action="perdu.html">
-	<label>Pseudo :<br /><span class="petit">(Entre 4 et 15 caractères)</span><br /><input type="text" name="Ppseudo" tabindex="10" size="15" maxlength="15" value="<?php echo htmlentities($Ppseudo);?>"/></label><br />
-    <label>Email : <br /><span class="petit">(Un mail d'activation du nouveau mot de passe te sera envoyé)</span><br /><input type="text" name="Pemail" tabindex="20" size="30" value="<?php echo htmlentities($Pemail);?>"/></label><br />
+	<label>Pseudo :<br /><span class="petit">(Entre 4 et 15 caractères)</span><br /><input type="text" name="Ppseudo" tabindex="10" size="15" maxlength="15" value="<?php echo htmlentities($Ppseudo, ENT_IGNORE);?>"/></label><br />
+    <label>Email : <br /><span class="petit">(Un mail d'activation du nouveau mot de passe te sera envoyé)</span><br /><input type="text" name="Pemail" tabindex="20" size="30" value="<?php echo htmlentities($Pemail, ENT_IGNORE);?>"/></label><br />
 	<input type="submit" name="perdu" value="J'ai perdu mon mot de passe." />
 </form>
 

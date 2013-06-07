@@ -43,9 +43,8 @@ if ($_SESSION['logged'] == true && $pseudo=='admin')
                 '<a href="', "</a>",
                 "<a href=\"mailto:", "</a>",
                 );
-				
-		$text=htmlentities(stripslashes($text));
-		
+		$text=htmlentities(stripslashes($text), ENT_IGNORE);
+
 
 		$text = str_replace($bbcode, $htmlcode, $text);
 		
@@ -59,6 +58,7 @@ if ($_SESSION['logged'] == true && $pseudo=='admin')
 		$text=smileys($text);
 		
 		$text=nl2br($text);
+
 		
 		return $text;
 	}

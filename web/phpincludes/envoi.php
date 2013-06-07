@@ -57,16 +57,16 @@ if ($_SESSION['logged'] == true)
 
 	if (isset($_GET['destinataire']) && !empty($_GET['destinataire']))
 	{
-		$destinataire = htmlentities($_GET['destinataire']);
+		$destinataire = htmlentities($_GET['destinataire'], ENT_IGNORE);
 	}
 	elseif (isset($_POST['destinataire']) && isset($_POST['titre']))
 	{
-		$destinataire = htmlentities($_POST['destinataire']);
-		$titre = htmlentities($_POST['titre']);
+		$destinataire = htmlentities($_POST['destinataire'], ENT_IGNORE);
+		$titre = htmlentities($_POST['titre'], ENT_IGNORE);
 	if (isset($_POST['message']))
 	{
 
-		$message = htmlentities($_POST['message']);
+		$message = htmlentities($_POST['message'], ENT_IGNORE);
 
 		if (!empty($destinataire))
 		{

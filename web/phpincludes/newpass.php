@@ -8,8 +8,8 @@ $affich=false;
 if (isset($_GET['Cid'], $_GET['Ccle']) && !empty($_GET['Cid']) && !empty($_GET['Ccle']) )
 {
 	$resultat='Tu n\'as rien a faire ici :D';
-	$Cid=htmlentities(addslashes($_GET['Cid']));
-	$Ccle=htmlentities(addslashes($_GET['Ccle']));
+	$Cid=htmlentities(addslashes($_GET['Cid']), ENT_IGNORE);
+	$Ccle=htmlentities(addslashes($_GET['Ccle']), ENT_IGNORE);
 	$cle=$Ccle-$Cid;
 	$sql = mysql_query("SELECT newpass FROM membres WHERE id=$Cid");
 	if ($donnees = mysql_fetch_assoc($sql))
@@ -28,8 +28,8 @@ elseif (isset ($_POST['newpswd']))
 	if (isset ($_POST['Cid'],$_POST['Ccle']) && !empty($_POST['Cid']) && !empty($_POST['Ccle']) )
 	{
 	
-		$Cid=htmlentities(addslashes($_POST['Cid']));
-		$Ccle=htmlentities(addslashes($_POST['Ccle']));
+		$Cid=htmlentities(addslashes($_POST['Cid']), ENT_IGNORE);
+		$Ccle=htmlentities(addslashes($_POST['Ccle']), ENT_IGNORE);
 		$cle=$Ccle-$Cid;
 		$sql = mysql_query("SELECT newpass FROM membres WHERE id=$Cid");
 		if ($donnees = mysql_fetch_assoc($sql))
@@ -47,7 +47,7 @@ elseif (isset ($_POST['newpswd']))
 				{
 					if (preg_match("!^\w+$!", $newpass))
 					{
-						$newpass=htmlentities(addslashes($_POST['newpass']));//Normalement inutile.
+						$newpass=htmlentities(addslashes($_POST['newpass']), ENT_IGNORE);//Normalement inutile.
 						$taille = strlen(trim($newpass));
                         if ( $taille >= 5 && $taille <= 15 )
 						{

@@ -8,10 +8,10 @@ $email='';
 if (isset($_POST['inscription']))
 {
 	//Mesure de sécurité.
-    $pseudo = htmlentities(addslashes($_POST['Ipseudo']));
-    $mdp = htmlentities(addslashes($_POST['Imdp']));
-	$mdp2 = htmlentities(addslashes($_POST['Imdp2']));
-    $email = htmlentities(addslashes($_POST['Iemail']));
+    $pseudo = htmlentities(addslashes($_POST['Ipseudo']), ENT_IGNORE);
+    $mdp = htmlentities(addslashes($_POST['Imdp']), ENT_IGNORE);
+	$mdp2 = htmlentities(addslashes($_POST['Imdp2']), ENT_IGNORE);
+    $email = htmlentities(addslashes($_POST['Iemail']), ENT_IGNORE);
 		//Prévoir empecher de prendre un pseudo déjà existant
         //Si les variables contenant le pseudo, le mot de passe et l'email existent et contiennent quelque chose.
         if (isset($_POST['Ipseudo'], $_POST['Imdp'], $_POST['Imdp2'], $_POST['Iemail']) && !empty($_POST['Ipseudo']) && !empty($_POST['Imdp']) && !empty($_POST['Imdp2']) && !empty($_POST['Iemail']))

@@ -3,8 +3,8 @@
 
 	if (isset($_GET['Dnuage'], $_GET['Dpos']) && !empty($_GET['Dnuage']) && !empty($_GET['Dpos']))
 	{
-		$Dnuage=htmlentities(addslashes($_GET['Dnuage']));
-		$Dpos=htmlentities(addslashes($_GET['Dpos']));
+		$Dnuage=htmlentities(addslashes($_GET['Dnuage']), ENT_IGNORE);
+		$Dpos=htmlentities(addslashes($_GET['Dpos']), ENT_IGNORE);
 		if ($nbE[0][5]>0)
 		{
 			$sql = mysql_query("SELECT id, oeil, score, pseudo FROM membres WHERE nuage=$Dnuage AND position=$Dpos");
@@ -133,7 +133,7 @@
 	}
 	if (isset($resDev))
 	{
-		echo nl2br(htmlentities($resDev));
+		echo nl2br(htmlentities($resDev, ENT_IGNORE));
 		if ($lvlInfo!=0)
 		{
 			if ($espionSource==1)

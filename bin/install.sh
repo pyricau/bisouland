@@ -9,8 +9,8 @@ cd bisouland
 echo 'Getting Composer, the PHP dependency manager'
 curl -sS https://getcomposer.org/installer | php
 
-echo 'Getting npm, the Javascript package manager'
-curl -sS https://npmjs.org/install.sh | sudo sh
+echo 'Installing bower, the package manager for the web'
+sudo npm install -g bower
 
 echo 'Installing UglifyJs, the Javascript parser/compressor/beautifier toolkit'
 sudo npm install -g uglify-js@1

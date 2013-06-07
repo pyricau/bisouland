@@ -8,7 +8,7 @@ if (isset($_POST['message']))
 {
     if ($_SESSION['logged'] == true)
 	{
-		$psd = htmlentities($_SESSION['pseudo']);
+		$psd = htmlentities($_SESSION['pseudo'], ENT_IGNORE);
         
 		$message = htmlentities(addslashes($_POST['message']), ENT_QUOTES); // De même pour le message
 		$message = nl2br($message); // Pour le message, comme on utilise un textarea, il faut remplacer les Entrées par des <br />

@@ -3,7 +3,3 @@ layout:
     login: Connexion
     logout: Déconnexion
     register: Pré-Inscription
-
-registration:
-    flash:
-        user_created: Vous venez de vous pré-inscrire !

@@ -1,0 +1,7 @@
+profile:
+    flash:
+        updated: Votre profil a bien été mis à jour
+
+registration:
+    flash:
+        user_created: Vous venez de vous pré-inscrire !

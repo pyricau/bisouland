@@ -1,0 +1,7 @@
+{% extends "::layout.html.twig" %}
+
+{% block view %}
+    <h2>{{ 'profile.title'|trans() }}</h2>
+
+    {% include "BisoulandUserBundle:Profile:edit_content.html.twig" %}
+{% endblock view %}

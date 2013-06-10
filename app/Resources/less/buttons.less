@@ -1,8 +1,5 @@
 .button {
     .btn;
-}
-
-.button.important {
     .btn-large;
 
     border: 1px solid @borderBoldColor;
@@ -14,6 +11,19 @@
     text-align: center;
     letter-spacing: .05em;
     text-decoration: none;
+
+    // Active state
+    &.active, &:active, &.focus, &:focus, &.hover, &:hover {
+        background: lighten(@backgroundBoldColor, 5%);
+        color: @textLightColor;
+    }
+}
+
+.button-login {
+    float: left;
+}
+
+.button-important {
     padding: 1em 0;
     width: 240px;
 }

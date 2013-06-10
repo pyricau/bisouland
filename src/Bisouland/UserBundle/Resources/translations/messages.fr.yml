@@ -1,7 +1,12 @@
 profile:
+    title: Tes informations
     flash:
-        updated: Votre profil a bien été mis à jour
+        updated: tes informations ont bien été mis à jour
 
 registration:
+    title: Pré-inscription
     flash:
-        user_created: Vous venez de vous pré-inscrire !
+        user_created: Tu viens de te pré-inscrire !
+
+login:
+    title: Connexion

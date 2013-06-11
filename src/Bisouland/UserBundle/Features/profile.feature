@@ -27,3 +27,15 @@ Feature:
 
         Then I should see "fos_user.username.already_used"
         And I should see "fos_user.email.already_used"
+
+    Scenario: Remove the account
+        Given I am logged in as "to.remove"
+        And I am on "/profile"
+
+        When I follow "profile.removal.button"
+
+        Then I should see "account.removal_confirmation.title"
+
+        When I press "account.removal_confirmation.button"
+
+        Then I should see "account.removal_confirmation.flash"

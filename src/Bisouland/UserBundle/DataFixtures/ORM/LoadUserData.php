@@ -27,6 +27,7 @@ class LoadUserData extends AbstractFixture implements OrderedFixtureInterface
             'to.logout',
             'change',
             'existing',
+            'to.remove',
         );
     }
 

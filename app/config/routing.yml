@@ -4,6 +4,12 @@ bisouland_pre_registration:
     type:     annotation
     prefix:   /
 
+# UserBundle routes
+bisouland_user:
+    resource: "@BisoulandUserBundle/Controller/"
+    type:     annotation
+    prefix:   /account
+
 # FOSUserBundle routes
 fos_user_security:
     resource: "@FOSUserBundle/Resources/config/routing/security.xml"

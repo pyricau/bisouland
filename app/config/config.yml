@@ -42,6 +42,8 @@ assetic:
         cssrewrite: ~
         uglifyjs:
             bin: %uglifyjs_bin%
+            compress: true
+            mangle: true
         uglifycss:
             bin: %uglifycss_bin%
 

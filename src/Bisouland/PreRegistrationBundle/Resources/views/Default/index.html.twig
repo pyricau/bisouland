@@ -14,11 +14,13 @@
                 {{ 'pre_registration.main.description'|trans() }}
             </p>
 
-            <p>
-                <a href="{{ path('fos_user_registration_register') }}" class="button button-important">
-                    {{ 'layout.register'|trans() }}
-                </a>
-            </p>
+            {% if not is_granted('IS_AUTHENTICATED_FULLY') %}
+                <p>
+                    <a href="{{ path('fos_user_registration_register') }}" class="button button-important">
+                        {{ 'layout.register'|trans() }}
+                    </a>
+                </p>
+            {% endif %}
         </section>
     </article>
 
@@ -78,15 +80,21 @@
         <section>
             <h3>{{ 'pre_registration.work_in_progress.title'|trans() }}</h3>
 
-            <p>
-                {{ 'pre_registration.work_in_progress.description'|trans() }}
-            </p>
+            {% if is_granted('IS_AUTHENTICATED_FULLY') %}
+                <p>
+                    {{ 'pre_registration.work_in_progress.advantages'|trans() }}
+                </p>
+            {% else %}
+                <p>
+                    {{ 'pre_registration.work_in_progress.description'|trans() }}
+                </p>
 
-            <p>
-                <a href="{{ path('fos_user_registration_register') }}" class="button button-important">
-                    {{ 'layout.register'|trans() }}
-                </a>
-            </p>
+                <p>
+                    <a href="{{ path('fos_user_registration_register') }}" class="button button-important">
+                        {{ 'layout.register'|trans() }}
+                    </a>
+                </p>
+            {% endif %}
         </section>
     </article>
 {% endblock %}

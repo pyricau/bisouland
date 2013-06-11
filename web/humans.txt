@@ -7,7 +7,7 @@
     Twitter: @Piwai
     From: France
 
-    Developer: Loic Chardonnet
+    Lead developer: Loïc Chardonnet
     Twitter: @epiloic
     From: France
 
@@ -21,12 +21,11 @@
 
 /* THANKS */
 
-    .htaccess fix: Romain Gautier
+    Contributor: Romain Gautier
     Twitter: @my_kiwi
     From: France
+    Glorious actions:
+        * fixed .htaccess
 
 /* SITE */
-    Language: English / French
-    IDE: Sublime Text
-    Programming languages: PHP, HTML5, CSS3, javascript, shell script, ruby
-    Technologies: Symfony2, html5boilerplate
+    Sources: https://github.com/pyricau/bisouland

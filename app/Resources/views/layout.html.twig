@@ -48,7 +48,7 @@
                 </h1>
 
 
-                {% if is_granted('IS_AUTHENTICATED_FULLY') %}
+                {% if app.user and is_granted('IS_AUTHENTICATED_FULLY') %}
                     {{ knp_menu_render('user_menu') }}
                 {% else %}
                     {{ knp_menu_render('login_menu') }}

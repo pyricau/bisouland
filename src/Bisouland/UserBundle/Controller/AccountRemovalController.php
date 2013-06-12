@@ -38,10 +38,9 @@ class AccountRemovalController extends Controller
             $em->remove($entity);
             $em->flush();
 
-
             $this->get('session')
                 ->getFlashBag()
-                ->add('account_removal', 'account.removal_confirmation.flash')
+                ->add('success', 'account.removal_confirmation.flash')
             ;
 
             return $this->redirect($this->generateUrl('fos_user_security_logout'));
@@ -59,10 +58,10 @@ class AccountRemovalController extends Controller
      */
     public function getEntityManager()
     {
-        if (!$this->container->has('doctrine.orm.entity_manager')) {
+        if (!$this->container->has('doctrine.orm.default_entity_manager')) {
             throw new \LogicException('The DoctrineBundle is not registered in your application.');
         }
 
-        return $this->container->get('doctrine.orm.entity_manager');
+        return $this->container->get('doctrine.orm.default_entity_manager');
     }
 }

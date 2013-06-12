@@ -5,7 +5,7 @@ Feature:
 
     Scenario: Change username and email with password
         Given I am logged in as "change"
-        And I am on "/profile"
+        And I am on "/account"
 
         When I fill in the following:
             | form.username | changed |
@@ -17,7 +17,7 @@ Feature:
 
     Scenario: Fail changing username and email to existing ones, with password
         Given I am logged in as "changed"
-        And I am on "/profile"
+        And I am on "/account"
 
         When I fill in the following:
             | form.username | existing |
@@ -30,7 +30,7 @@ Feature:
 
     Scenario: Remove the account
         Given I am logged in as "to.remove"
-        And I am on "/profile"
+        And I am on "/account"
 
         When I follow "profile.removal.button"
 

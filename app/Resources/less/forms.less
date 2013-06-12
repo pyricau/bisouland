@@ -34,6 +34,7 @@
     padding: 10px 15px 10px @horizontalComponentOffset !important;
     position: relative;
     z-index: 2;
+    margin-bottom: 0 !important;
 
     // Super jank IE7 fix to ensure the inputs in .input-append and input-prepend
     // don't inherit the margin of the parent, in this case .controls
@@ -56,4 +57,15 @@
 .input-remember {
     margin-right: 10px !important;
     float: left;
+}
+
+.field-error {
+    background: @backgroundErrorColor;
+    color: @textErrorColor;
+    width: 343px;
+    font-size: 14px;
+
+    // ul.unstyled adaptation
+    margin: 0;
+    list-style: none;
 }

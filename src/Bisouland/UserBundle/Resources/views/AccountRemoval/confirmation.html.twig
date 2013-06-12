@@ -1,0 +1,15 @@
+{% extends '::layout.html.twig' %}
+
+{% block view %}
+    <h2>{{ 'account.removal_confirmation.title'|trans() }}</h2>
+
+    <p>
+        {{ 'account.removal_confirmation.description'|trans() }}
+    </p>
+
+    <form action="{{ path('account_removal_confirmation') }}" method="POST">
+        <fieldset>
+            <input type="submit" class="button" value="{{ 'account.removal_confirmation.button'|trans() }}" />
+        </fieldset>
+    </form>
+{% endblock %}

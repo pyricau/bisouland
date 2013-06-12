@@ -59,7 +59,7 @@
         <div class="page">
             {% for class, messages in app.session.flashbag.all() %}
                 {% for message in messages %}
-                    <div class="{{ class }}">
+                    <div class="flash {{ class }}">
                         {{ message|trans() }}
                     </div>
                 {% endfor %}

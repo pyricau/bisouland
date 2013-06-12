@@ -10,12 +10,28 @@ h3 {
     font-size: @baseFontSize * 2.25; // ~32px
 }
 
-body {
+html, body {
     background-color: @backgroundMediumColor;
+    height: 100%;
+}
+
+a {
+    font-size: 100%;
+    vertical-align: baseline;
+    text-decoration: underline;
 }
 
 .page {
     .container;
     background-color: @backgroundLightColor;
     padding: 20px;
+    min-height: 100%;
+}
+
+.flash {
+    .alert;
+}
+
+.flash.success {
+    .alert-success;
 }

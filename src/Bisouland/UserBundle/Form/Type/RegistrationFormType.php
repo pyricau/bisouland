@@ -11,6 +11,8 @@ use Symfony\Component\Form\FormBuilderInterface;
  */
 class RegistrationFormType extends BaseType
 {
+    private $class;
+
     /**
      * Overriding FOSUserBundle's FormType to remove password confirmation.
      *

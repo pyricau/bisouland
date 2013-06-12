@@ -5,7 +5,7 @@ Feature:
 
     Scenario: Change username and email with password
         Given I am logged in as "change"
-        And I am on "/profile"
+        And I am on "/account"
 
         When I fill in the following:
             | form.username | changed |
@@ -17,7 +17,7 @@ Feature:
 
     Scenario: Fail changing username and email to existing ones, with password
         Given I am logged in as "changed"
-        And I am on "/profile"
+        And I am on "/account"
 
         When I fill in the following:
             | form.username | existing |
@@ -27,3 +27,15 @@ Feature:
 
         Then I should see "fos_user.username.already_used"
         And I should see "fos_user.email.already_used"
+
+    Scenario: Remove the account
+        Given I am logged in as "to.remove"
+        And I am on "/account"
+
+        When I follow "profile.removal.button"
+
+        Then I should see "account.removal_confirmation.title"
+
+        When I press "account.removal_confirmation.button"
+
+        Then I should see "account.removal_confirmation.flash"

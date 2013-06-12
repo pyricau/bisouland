@@ -1,0 +1,7 @@
+{% extends "::layout.html.twig" %}
+
+{% block view %}
+    <h2>{{ 'registration.title'|trans() }}</h2>
+
+    {% include "BisoulandUserBundle:Registration:register_content.html.twig" %}
+{% endblock view %}

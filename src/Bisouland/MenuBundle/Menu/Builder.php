@@ -45,6 +45,7 @@ class Builder
         $menu->setCurrentUri($request->getRequestUri());
 
         $menu->addChild('layout.login', array('route' => 'fos_user_security_login'));
+        $menu->addChild('layout.register', array('route' => 'fos_user_registration_register'));
 
         return $menu;
     }

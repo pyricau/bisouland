@@ -34,12 +34,15 @@ pre_registration:
     spying:
         title: De la séduction
         description: >
-            Dévisage ton adversaire pour connaitre son niveau !
+            Dévisage ton adversaire pour connaître son niveau !
         attributes: >
             Augmente ton niveau d'oeil pour récupérer plus d'informations.
 
     work_in_progress:
         title: Ouverture proche !
         description: >
-            Pré-inscrit toi pour connaitre la date d'ouverture
+            Pré-inscrit toi pour connaître la date d'ouverture
             et être le premier à jouer.
+        advantages: >
+            Un email sera envoyé une semaine avant l'ouverture du jeu, tu feras
+            donc parti des premiers joueurs, ce qui procure un gros avantage !

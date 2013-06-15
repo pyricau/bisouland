@@ -32,16 +32,6 @@ file, and put a
 Now that everything is configured, check email sending for registration and
 newsletter.
 
-## Structure
-
-Every request will go to the Symfony2 application. If the route is not found
-in it, the legacy application will be boostraped.
-
-**Warning**: the legacy application, which lies in the `web` directory,
-has been created in 2005 by a someone who was learning web development.
-Therefore it probably contains security holes, bugs, low quality code
-and bad design pattern.
-
 ## Further documentation
 
 You can find more documentation at the following links:

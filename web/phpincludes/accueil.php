@@ -13,8 +13,6 @@ if ($_SESSION['logged'] == true && $pseudo=='admin')
 	Tu peux visiter la page d'aide pour apprendre les bases.<br />
 	<br />
 	Ce site est en perp&eacute;tuelle &eacute;volution, n'h&eacute;site donc pas &agrave; me signaler tout bug.<br />
-	<span class="info">[ Ce site est optimis&eacute; pour <a href="http://www.mozilla-europe.org/fr/products/firefox/">Mozilla Firefox</a> ]</span><br />
-	<br />
 	Piwaï (admin)
 </p>
 <h1>.:Les News:.</h1>
@@ -22,23 +20,23 @@ if ($_SESSION['logged'] == true && $pseudo=='admin')
 <?php
 
 
-			
+
 	function bb2html($text)
 	{
 		$bbcode = array("<", ">",
-                "[list]", "[*]","[/*]", "[/list]", 
-                "[img]", "[/img]", 
-                "[b]", "[/b]", 
-                "[u]", "[/u]", 
+                "[list]", "[*]","[/*]", "[/list]",
+                "[img]", "[/img]",
+                "[b]", "[/b]",
+                "[u]", "[/u]",
                 "[i]", "[/i]",
                 '[url="', "[/url]",
                 "[mail=\"", "[/mail]",
                 );
 		$htmlcode = array("&lt;", "&gt;",
-                "<ul>", "<li>","</li>", "</ul>", 
-                "<img src=\"", "\">", 
-                "<strong>", "</strong>", 
-                "<u>", "</u>", 
+                "<ul>", "<li>","</li>", "</ul>",
+                "<img src=\"", "\">",
+                "<strong>", "</strong>",
+                "<u>", "</u>",
                 "<em>", "</em>",
                 '<a href="', "</a>",
                 "<a href=\"mailto:", "</a>",
@@ -47,19 +45,19 @@ if ($_SESSION['logged'] == true && $pseudo=='admin')
 
 
 		$text = str_replace($bbcode, $htmlcode, $text);
-		
-		$text = preg_replace('!\[color=(red|green|blue|yellow|purple|olive|white|black)\](.+)\[/color\]!isU', '<span style="color:$1">$2</span>', $text);
-		$text = preg_replace('!\[size=(xx-small|x-small|small|medium|large|x-large|xx-large)\](.+)\[/size\]!isU', '<span style="font-size:$1">$2</span>', $text);	
 
-		
+		$text = preg_replace('!\[color=(red|green|blue|yellow|purple|olive|white|black)\](.+)\[/color\]!isU', '<span style="color:$1">$2</span>', $text);
+		$text = preg_replace('!\[size=(xx-small|x-small|small|medium|large|x-large|xx-large)\](.+)\[/size\]!isU', '<span style="font-size:$1">$2</span>', $text);
+
+
 		$text = preg_replace('![^\"]http://[a-z0-9._/?&=-]+!i', '<a href="$0">$0</a>', $text);
 		$text = preg_replace('![^\"][a-z0-9._-]+@[a-z0-9._-]{2,}\.[a-z]{2,4}!','<a href="mailto:$0">$0</a>',$text);
-		
+
 		$text=smileys($text);
-		
+
 		$text=nl2br($text);
 
-		
+
 		return $text;
 	}
 
@@ -85,7 +83,7 @@ while ($donnees = mysql_fetch_array($retour))
 
 			$contenu=bb2html($donnees['contenu']);
 			echo $contenu;
-			
+
 		?>
 		</p>
 </div>

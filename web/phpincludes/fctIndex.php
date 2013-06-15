@@ -3,16 +3,16 @@
 	function microtime_float() {
 		return array_sum(explode(' ', microtime()));
 	}
-	
+
 	function calculterAmour($CalAmour,$timeDiff,$LvlCoeur,$nb1,$nb2,$nb3)
 	{
 		$CalAmour=calculerGenAmour($CalAmour,$timeDiff,$LvlCoeur,$nb1,$nb2,$nb3);
 		//Cette fonction ajoute un frein sur le minima.
 		if ($CalAmour<0) {$CalAmour=0;}
-		
+
 		return $CalAmour;
 	}
-	
+
 	function calculerGenAmour($CalAmour,$timeDiff,$LvlCoeur,$nb1,$nb2,$nb3)
 	{
 		$diff=$LvlCoeur - (0.3*$nb1 + 0.7*$nb2 + $nb3);
@@ -27,7 +27,7 @@
 		}
 		return $CalAmour;
 	}
-	
+
 	//Permet de convertir un timestamp en chaine sous la forme heure:minutes:secondes.
 	function strTemps($s)
 	{
@@ -66,19 +66,19 @@
         $h = $d.' jours '.$h;
       }
       return	$h.' h '.$tm.' min '.$ts.' sec';
-    }        
+    }
 	}
-	
+
 	//Renvoi un s (ou^$lettre) si le nombre est plus grand que 1, renvoi '' (ou $alt) sinon.
 	function pluriel($nombre, $lettre = 's', $alt='') {
         return ( $nombre > 1 ) ? $lettre : $alt;
 	}
-	
+
 	function expo($a, $b, $val, $int=0)
 	{
-	
+
 		$ret=$a*exp($b*$val);
-	
+
 		if ($int==1)
 		{
 			return ceil($ret);
@@ -87,9 +87,9 @@
 		{
 			return $ret;
 		}
-	
+
 	}
-	
+
 	//Val doit être différent de 0.
 	function InvExpo($a, $b, $val, $int=0)
 	{
@@ -97,7 +97,7 @@
 	if ($val==0) $val=1;
 
 		$ret=$a*exp($b/$val);
-	
+
 		if ($int==1)
 		{
 			return ceil($ret);
@@ -106,17 +106,17 @@
 		{
 			return $ret;
 		}
-	
+
 	}
-	
+
 	//Plus a augmente, plus on augmente la valeur de seuil
 	//Plus b augmente, plus on éloigne le moment ou on atteint le seuil .
 	function ExpoSeuil($a, $b, $val, $int=0)
 	{
-	
+
 		if ($val<=0) {$val=1;}
 		$ret=$a*exp((-1*$b)/$val);
-	
+
 		if ($int==1)
 		{
 			return ceil($ret);
@@ -125,14 +125,14 @@
 		{
 			return $ret;
 		}
-	
+
 	}
-	
+
 	function AdminMP($cible,$objet,$message,$lu=0)
 	{
 		$message = nl2br(addslashes($message));
 		$objet=addslashes($objet);
-		
+
 		$sql = mysql_query("SELECT COUNT(*) AS nbmsg FROM messages WHERE destin=".$cible);
 		if(mysql_result($sql,0,'nbmsg')>=20)
 		{
@@ -140,10 +140,10 @@
 			$date48=time()-172800;
 			mysql_query("DELETE FROM messages WHERE destin=".$cible." AND timestamp<=$date48 ORDER BY id LIMIT $Asuppr");
 		}
-		
+
 		mysql_query("INSERT INTO messages VALUES('', 1, '" .$cible. "', '" . $message . "', '" .time(). "', $lu, '" .$objet."')");
 	}
-	
+
 	function SupprimerCompte($idCompteSuppr)
 	{
 		mysql_query("DELETE FROM membres WHERE id=$idCompteSuppr");
@@ -171,14 +171,14 @@
 		}
 
 	}
-	
+
 	//Présuppose que toutes les vérifications ont été faites.
 	function ChangerMotPasse($idChange,$newMdp)
 	{
 		$newMdp = md5($newMdp);
 		mysql_query("UPDATE membres SET mdp='".$newMdp."' WHERE id='".$idChange."'");
 	}
-	
+
 	//Présuppose que toutes les vérifications ont été faites.
 	function AjouterScore($idScore,$valeur)
 	{
@@ -186,7 +186,7 @@
 		$donnees_info = mysql_fetch_assoc($sql_info);
 		mysql_query("UPDATE membres SET score=".($donnees_info['score']+$valeur)." WHERE id=".$idScore);
 	}
-	
+
 	//Présuppose que toutes les vérifications ont été faites.
 	function ForcerAttaque($auteur,$cible,$duree,$pseudoAuteur,$nuageSource,$positionSource)
 	{
@@ -202,23 +202,12 @@
   {
     return number_format($nombre, 0, ',', ' ');
   }
-	
-	//Fonction modifiable à souhait, destinée à l'administrateur.
-	function actionAdmin()
-	{
-		//AdminMP(12,"Test","Youuhouuu");
-		//ChangerMotPasse(14,"elimaroyalispau");
-		//ChangerMotPasse(47,"michael");
-		//SupprimerCompte(71);
-		//ForcerAttaque(47,13,10000,'kaelkael',4,7);
-		//autoriserImage(12);
-	}
-	
+
 	function distanceMax($coeur, $jambes)
 	{
 		return $coeur + 8*$jambes;
 	}
-	
+
 	//Fonction qui retourne 0 si joueurAutre est même niveau, 1 s'il est intouchable parce que trop faible, 2 s'il est intouchable parce que trop fort.
 	function voirNiveau($scoreJoueur,$scoreAutre)
 	{
@@ -247,10 +236,10 @@
 			return 2;
 		}
 	}
-	
+
 			//transformation de bbcode smiley en images.
 			function smileys($texte)
-			{ 
+			{
 				$in=array(
 					"o_O",
 					";)",
@@ -291,42 +280,42 @@
 	function bbLow($text)
 	{
 		$bbcode = array(
-                "[b]", "[/b]", 
-                "[u]", "[/u]", 
+                "[b]", "[/b]",
+                "[u]", "[/u]",
                 "[i]", "[/i]",
                 );
 		$htmlcode = array(
-                "<strong>", "</strong>", 
-                "<u>", "</u>", 
+                "<strong>", "</strong>",
+                "<u>", "</u>",
                 "<em>", "</em>",
                 );
-				
+
 		$text=stripslashes($text);
-		
+
 
 		$text = str_replace($bbcode, $htmlcode, $text);
-		
+
 		$text = preg_replace('!\[color=(red|green|blue|yellow|purple|olive|white|black)\](.+)\[/color\]!isU', '<span style="color:$1">$2</span>', $text);
-		$text = preg_replace('!\[size=(xx-small|x-small|small|medium|large|x-large|xx-large)\](.+)\[/size\]!isU', '<span style="font-size:$1">$2</span>', $text);	
+		$text = preg_replace('!\[size=(xx-small|x-small|small|medium|large|x-large|xx-large)\](.+)\[/size\]!isU', '<span style="font-size:$1">$2</span>', $text);
 
 		$text=smileys($text);
-	
-		
+
+
 		return $text;
 	}
-			
+
 	function tempsAttaque($distance, $jambes)
 	{
 		return floor(($distance*1000)/(1 + 0.3*$jambes));
 	}
-	
+
 	function coutAttaque($distance, $jambes)
 	{
 		$exp=$distance-$jambes;
 		if ($exp<0){$exp==0;}
 		return expo(100, 0.4, $exp, 1);
 	}
-	
+
 	function autoriserImage($idAuteur)
 	{
 		mysql_query("INSERT INTO ban VALUES('', $idAuteur)");
@@ -338,8 +327,8 @@
 	{
 		mysql_query("DELETE FROM ban WHERE auteur=$idAuteur");
 	}
-	
-	
+
+
 	function envoyerMail($email,$message_html,$message_texte,$objet)
 	{
 		//-----------------------------------------------

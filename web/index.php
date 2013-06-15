@@ -13,10 +13,6 @@ header('Content-type: text/html; charset=ISO-8859-1');
 
     $inMainPage=true;
 
-    //Mesures de temps pour évaluer le temps que met la page a se créer.
-    $temps_debut = microtime_float();
-
-
     //Si la variable $_SESSION['logged'] n'existe pas, on la créée, et on l'initialise a false
     if (!isset($_SESSION['logged'])) $_SESSION['logged'] = false;
 
@@ -77,12 +73,6 @@ header('Content-type: text/html; charset=ISO-8859-1');
 
         //l'id du membre.
         $id=$_SESSION['id'];
-
-        //Fonction destinée à l'administration
-        if (isset($_POST['UnAct']) && $id==12)
-        {
-            actionAdmin();
-        }
 
         $sql_info = mysql_query("SELECT timestamp, coeur, bouche, amour, jambes, smack, baiser, pelle, tech1, tech2, tech3, tech4, dent, langue, bloque, soupe, oeil FROM membres WHERE id='".$id."'");
         $donnees_info = mysql_fetch_assoc($sql_info);
@@ -433,15 +423,7 @@ header('Content-type: text/html; charset=ISO-8859-1');
         $include='phpincludes/erreur404.php';
     }
 
-    // ETAPE 2 : on supprime toutes les entrées dont le timestamp est plus vieux que 5 minutes
-    $timestamp_5min = time() - 300;
-    mysql_query('DELETE FROM connectbisous WHERE timestamp < ' . $timestamp_5min);
-
     //Etape 3 : on demande maintenant le nombre de gens connectés.
-    //Nombre de visiteurs
-    $retour = mysql_query("SELECT COUNT(*) AS nbre_visit FROM connectbisous");
-    $donnees = mysql_fetch_assoc($retour);
-    $NbVisit=$donnees['nbre_visit'];
     $retour = mysql_query("SELECT COUNT(*) AS nb_membres FROM membres WHERE lastconnect>=".$timestamp_5min);
     $NbMemb=mysql_result($retour,0,'nb_membres');
 ?>
@@ -601,37 +583,9 @@ header('Content-type: text/html; charset=ISO-8859-1');
                 <?php include($include); ?>
             </div>
 
-<?php
-    if ($_SESSION['logged'] == true)
-    {
-        mysql_query("UPDATE membres SET lastconnect=".time().", timestamp='".time()."' , amour='".$amour."' WHERE id='".$id."'");
-    }
-?>
-
-            <div id="Bas">
-                <p>Il y a actuellement<strong>
-<?php
-echo $NbVisit.'</strong> visiteur';
-if ($NbVisit>1) {echo 's';}
-echo ' et <strong>'.$NbMemb.'</strong> membre';
-if ($NbMemb>1) {echo 's';}
-echo ' connect&eacute;';
-if ($NbMemb+$NbVisit>1) {echo 's';}
-?> sur BisouLand.</p>
-<p><?php
-$temps_fin = microtime_float();
-echo '<p class="Tpetit" >Page g&eacute;n&eacute;r&eacute;e en '.round($temps_fin - $temps_debut, 4).' secondes</p>';
-if ($_SESSION['logged'] == true)
-{
-    if ($id == 12 && $page=='cerveau')
-    {
-        echo '<form class="Tpetit" method="post" action="accueil.html"><input type="submit" name="UnAct" tabindex="100" value="Action Unique" /></form>';
-    }
-}
-?>
-</p>
-                <p class="Tpetit">Tous droits r&eacute;serv&eacute;s &copy; <a href="mailto:bisouland (arobase) piwai.info">BisouLand</a> - Site respectant les r&egrave;gles de la CNIL</p>
-            </div>
+			<?php if ($_SESSION['logged'] == true): ?>
+	        	<?php mysql_query("UPDATE membres SET lastconnect=".time().", timestamp='".time()."' , amour='".$amour."' WHERE id='".$id."'"); ?>
+	        <?php endif; ?>
         </div>
 
         <script src="js/bisouland.min.js"></script>

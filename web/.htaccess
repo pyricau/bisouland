@@ -9,14 +9,12 @@ DirectoryIndex app.php
     RewriteEngine On
 
     # Legacy application
-    RewriteRule ^(.+)\.confirmation\.html$ index.php?page=confirmation&id=$1 [QSA,L]
     RewriteRule ^(.+)\.envoi\.html$ index.php?page=envoi&destinataire=$1 [QSA,L]
     RewriteRule ^(.+)\.bisous\.html$ index.php?page=bisous&cancel=$1 [QSA,L]
     RewriteRule ^(.+)\.(.+)\.nuage\.html$ index.php?page=nuage&saut=1&sautnuage=$1&sautposition=$2 [QSA,L]
     RewriteRule ^(.+)\.nuage\.html$ index.php?page=nuage&nuage=$1 [QSA,L]
     RewriteRule ^(.+)\.(.+)\.action\.html$ index.php?page=action&nuage=$1&position=$2 [QSA,L]
     RewriteRule ^(.+)\.(.+)\.yeux\.html$ index.php?page=yeux&Dnuage=$1&Dpos=$2 [QSA,L]
-    RewriteRule ^(.+)\.(.+)\.newpass\.html$ index.php?page=newpass&Cid=$1&Ccle=$2 [QSA,L]
     RewriteRule ^(.+)\.lire\.html$ index.php?page=lire&idmsg=$1 [QSA,L]
     RewriteRule ^livreor\.(.+)\.html$ index.php?page=livreor&or=$1 [QSA,L]
     RewriteRule ^membres\.(.+)\.html$ index.php?page=membres&num=$1 [QSA,L]

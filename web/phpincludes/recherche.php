@@ -20,7 +20,7 @@ if (isset($_POST['recherche']))
 				else
 				{
 					$resultat.='<a class="bulle" style="cursor: default;" onclick="return false;" href=""><img src="/images/off.png" alt="Non connect&eacute;" title="" /><span>'.$pseudoCherche.' n\'est pas connect&eacute;</span></a> ';
-				}		
+				}
 				if ($_SESSION['logged'] == true)
 				{
 					if ($donnees['id']!=$id)
@@ -35,7 +35,7 @@ if (isset($_POST['recherche']))
 				if ($_SESSION['logged'] == false)
 				{
 					$resultat.='<br /><br />Toi aussi, n\'hésite pas à rejoindre la communauté BisouLand.<br />
-					Tu peux t\'inscrire en cliquant <a href="inscription.html" title="S\'inscrire sur BisouLand">ici</a>.';
+					Tu peux t\'inscrire en cliquant <a href="/register" title="S\'inscrire sur BisouLand">ici</a>.';
 				}
 			}
 			else

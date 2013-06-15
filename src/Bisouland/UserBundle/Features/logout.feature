@@ -3,8 +3,9 @@ Feature: Logout
     As a user
     I need to be able to logout
 
-    Scenario: Logout
+    Scenario: Successfully logout
         Given I am logged in as "to.logout"
+        And I am on homepage
 
         When I follow "layout.logout"
 

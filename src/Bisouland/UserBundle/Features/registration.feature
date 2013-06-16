@@ -5,7 +5,7 @@ Feature: Registration
 
     Scenario: Successfully register with valid email, username and password
         Given I am on homepage
-        And I follow "layout.register"
+        And I follow "menu.logged_out.register"
 
         When I fill in the following:
             | form.username | to.register             |
@@ -17,7 +17,7 @@ Feature: Registration
 
     Scenario Outline: Can not register with invalid email
         Given I am on homepage
-        And I follow "layout.register"
+        And I follow "menu.logged_out.register"
 
         When I fill in the following:
             | form.username | username |
@@ -36,7 +36,7 @@ Feature: Registration
 
     Scenario Outline: Can not register with invalid username
         Given I am on homepage
-        And I follow "layout.register"
+        And I follow "menu.logged_out.register"
 
         When I fill in the following:
             | form.username | <Username>        |
@@ -55,7 +55,7 @@ Feature: Registration
 
     Scenario Outline: Can not register with invalid password
         Given I am on homepage
-        And I follow "layout.register"
+        And I follow "menu.logged_out.register"
 
         When I fill in the following:
             | form.username | username          |

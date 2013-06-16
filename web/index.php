@@ -478,7 +478,7 @@ header('Content-type: text/html; charset=ISO-8859-1');
                         </li>
                         <li class="last">
                             <a href="/register/">
-                                Pré-Inscription
+                                Inscription
                             </a>
                         </li>
                     <?php else: ?>

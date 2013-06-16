@@ -17,7 +17,7 @@
             {% if not is_granted('IS_AUTHENTICATED_FULLY') %}
                 <p>
                     <a href="{{ path('fos_user_registration_register') }}" class="button button-important">
-                        {{ 'layout.register'|trans() }}
+                        {{ 'menu.logged_out.register'|trans() }}
                     </a>
                 </p>
             {% endif %}
@@ -91,7 +91,7 @@
 
                 <p>
                     <a href="{{ path('fos_user_registration_register') }}" class="button button-important">
-                        {{ 'layout.register'|trans() }}
+                        {{ 'menu.logged_out.register'|trans() }}
                     </a>
                 </p>
             {% endif %}

@@ -24,7 +24,6 @@ class RegistrationFormType extends BaseType
         $builder
             ->remove('plainPassword')
             ->add('plainPassword', 'password', array(
-                'translation_domain' => 'FOSUserBundle',
                 'label' => 'form.password',
             ))
         ;

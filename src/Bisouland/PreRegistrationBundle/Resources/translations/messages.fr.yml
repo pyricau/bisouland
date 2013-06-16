@@ -1,4 +1,9 @@
 pre_registration:
+    warning: >
+        Bisouland est encore en cours de création, mais tu peux dès à présent
+        te pré-inscrire afin d'être tenu au courant de la date d'ouverture pour
+        faire parti des premiers à jouer !
+
     main:
         title: Bisouland v3
         small_title: Embrassez les tous !

@@ -5,18 +5,18 @@ Feature: Login
 
     Scenario: Successfully authenticating with correct credentials
         Given I am on homepage
-        And I follow "layout.login"
+        And I follow "menu.logged_out.login"
 
         When I fill in the following:
             | security.login.username | to.login |
             | security.login.password | password |
         And I press "security.login.submit"
 
-        Then I should see "layout.logout"
+        Then I should see "menu.logged_in.logout"
 
     Scenario: Can not authenticate with bad credentials
         Given I am on homepage
-        And I follow "layout.login"
+        And I follow "menu.logged_out.login"
 
         When I fill in the following:
             | security.login.username | wrong.login |

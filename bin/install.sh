@@ -72,6 +72,7 @@ fi
 
 if ! type capifony; then
     echo 'Installing Capifony, the Symfony application deployment tool'
+    sudo gem install capistrano_colors
     sudo gem install capifony
 fi
 

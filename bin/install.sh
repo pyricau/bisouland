@@ -65,6 +65,16 @@ if ! type less; then
     sudo npm install -g less
 fi
 
+if ! type gem; then
+    echo 'Installing RubyGems, the Ruby package manager'
+    sudo apt-get install rubygems
+fi
+
+if ! type capifony; then
+    echo 'Installing Capifony, the Symfony application deployment tool'
+    sudo gem install capifony
+fi
+
 # Configuring the project
 
 echo 'Setting the rights'

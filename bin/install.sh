@@ -24,8 +24,8 @@ sudo npm install -g less
 # Configuring the project
 
 echo 'Setting the rights'
-setfacl -R -m u:www-data:rwx -m u:`whoami`:rwx app/cache app/logs
-setfacl -dR -m u:www-data:rwx -m u:`whoami`:rwx app/cache app/logs
+setfacl -R -m u:www-data:rwx -m u:`whoami`:rwx app/cache app/logs app/sessions
+setfacl -dR -m u:www-data:rwx -m u:`whoami`:rwx app/cache app/logs app/sessions
 
 echo 'Installing the dependencies'
 ./composer.phar install --dev
@@ -35,17 +35,23 @@ echo 'Installing the dependencies'
 echo 'Creating the vhost configuration'
 sudo cat<<EOT | sudo tee /etc/apache2/sites-available/bisouland.local
 <VirtualHost *:80>
-    DocumentRoot "<path>/web"
-    ServerAlias bisouland.local
+    ServerName bisouland.local
 
     ErrorLog "/var/log/apache2/bisouland/error.log"
     CustomLog "/var/log/apache2/bisouland/access.log" common
 
+    DocumentRoot "<path>/web"
     <Directory "<path>/web">
+        DirectoryIndex app.php
+
         Options -Indexes FollowSymLinks Includes ExecCGI
         AllowOverride All
         Order allow,deny
         Allow from All
+
+        <IfModule mod_rewrite.c>
+            RewriteEngine On
+        </IfModule>
     </Directory>
 </VirtualHost>
 EOT

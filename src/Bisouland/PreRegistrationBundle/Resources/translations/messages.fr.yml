@@ -1,0 +1,53 @@
+pre_registration:
+    warning: >
+        Bisouland est encore en cours de création, mais tu peux dès à présent
+        te pré-inscrire afin d'être tenu au courant de la date d'ouverture pour
+        faire parti des premiers à jouer !
+
+    main:
+        title: Bisouland v3
+        small_title: Embrassez les tous !
+        description: >
+            Vole les points d'amour de tes adversaires en les embrassant,
+            dans ce jeu gratuit par navigateur !
+
+    resource:
+        title: De l'amour
+        description: >
+            Chaque joueur produit naturellement des Points d'Amour,
+            qui sont la ressource de ce jeu.
+        attributes: >
+            Pour produire plus de Points d'Amour,
+            augmente ton niveau de coeur !
+
+    attack:
+        title: De la passion
+        description: >
+            Le but est de voler les Points d'Amour des autres joueurs,
+            en leur envoyant des bisous.
+        attributes: >
+            Augmente ton niveau de langue pour mieux embrasser,
+            et de dents pour mieux te protéger !
+
+    travel:
+        title: La tête dans les nuages
+        description: >
+            Saute de nuage en nuage pour te déplacer !
+        attributes: >
+            Augmente ton niveau de saut pour mieux te déplacer.
+
+    spying:
+        title: De la séduction
+        description: >
+            Dévisage ton adversaire pour connaître son niveau !
+        attributes: >
+            Augmente ton niveau d'oeil pour récupérer plus d'informations.
+
+    work_in_progress:
+        title: Ouverture proche !
+        description: >
+            Pré-inscrit toi pour connaître la date d'ouverture
+            et être le premier à jouer.
+        advantages: >
+            Un email sera envoyé une semaine avant l'ouverture du jeu, tu feras
+            donc parti des premiers joueurs, ce qui procure un gros avantage !

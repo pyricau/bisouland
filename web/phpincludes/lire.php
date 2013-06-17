@@ -5,7 +5,7 @@ if ($_SESSION['logged'] == true)
 
 	if (isset($_GET['idmsg']) && !empty($_GET['idmsg']))
 	{
-		$idmsg = htmlentities(addslashes($_GET['idmsg']));
+		$idmsg = htmlentities(addslashes($_GET['idmsg']), ENT_IGNORE);
 		$retour = mysql_query("SELECT posteur, destin, message, timestamp, statut, titre FROM messages WHERE id='".$idmsg."'");
 		$donnees = mysql_fetch_assoc($retour);
 		if ($donnees['destin']==$_SESSION['id'])

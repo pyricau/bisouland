@@ -1,0 +1,29 @@
+profile:
+    title: Tes informations
+    flash:
+        updated: Tes informations ont bien été mises à jour
+    removal:
+        title: Suppression du compte
+        description: >
+            Si tu en as ras le bol des bisous, tu peux supprimer ton compte !!
+        button: Supprimer
+
+registration:
+    title: Pré-inscription
+    flash:
+        user_created: Tu viens de te pré-inscrire !
+
+login:
+    title: Connexion
+
+form:
+    password: Mot de passe
+
+account:
+    removal_confirmation:
+        title: Confirmation de la suppression du compte
+        description: >
+            Malheureux, es tu bien sûr de vouloir supprimer ton compte ?
+            Cette action est irréversible !
+        button: Confirmer la suppression
+        flash: Ton compte a bien été supprimé

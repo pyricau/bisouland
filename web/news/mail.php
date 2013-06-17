@@ -10,12 +10,12 @@ if (isset($_POST['objet']) && isset($_POST['message']) )
 	bd_connect();
 
 	$retour = mysql_query("SELECT email FROM membres WHERE confirmation='1' ORDER BY id");
-	$destinataire='EMAIL_ADMIN@EMAIL_ADMIN.com';
+	$destinataire = EMAIL_ADMIN;
 	while ($donnees = mysql_fetch_array($retour))
 	{
 		$destinataire.=', '.$donnees['email'];
 	}
-	mail ($destinataire,$_POST['objet'],$_POST['message'],"From:bisouland@piwai.info");
+	mail ($destinataire,$_POST['objet'],$_POST['message'],"From:".EMAIL_EXPEDITOR);
 }
 
  

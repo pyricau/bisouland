@@ -96,7 +96,7 @@ if ($_SESSION['logged'] == true)
 
 	if (isset($_POST['supprimer']))
 	{
-		$idmsg = htmlentities(addslashes($_POST['supprimer']));
+		$idmsg = htmlentities(addslashes($_POST['supprimer']), ENT_IGNORE);
 		mysql_query("DELETE FROM messages WHERE id=".$idmsg." AND destin=".$id);
 	}
 	else
@@ -104,7 +104,7 @@ if ($_SESSION['logged'] == true)
 	if (isset($_POST['supboite'])) {
 		foreach($_POST['supboite'] AS $key=>$value)
 		{
-			$key=htmlentities(addslashes($key));
+			$key=htmlentities(addslashes($key), ENT_IGNORE);
 			mysql_query('DELETE FROM messages WHERE id='.$key." AND destin=".$id);
 		}
 		}
@@ -127,7 +127,7 @@ if ($_SESSION['logged'] == true)
 		<table>
 			<tr>
 				<th style="width:5%;"><input type="checkbox" name="supboite[0]" title="Selectionner tous les messages" alt="Selectionner tous les messages" onclick="checkall()"/></th>
-				<th style="width:5%;"><a class="bulle" style="cursor: default;" onclick="return false;" href=""><img src="images/newmess.png" alt="Messages non lus" title="" /><span>Messages non lus</span></a></th>
+				<th style="width:5%;"><a class="bulle" style="cursor: default;" onclick="return false;" href=""><img src="/images/newmess.png" alt="Messages non lus" title="" /><span>Messages non lus</span></a></th>
 				<th style="width:20%;">Exp&eacute;diteur</th>
 				<th style="width:35%;">Date</th>
 				<th style="width:35%;">Objet</th>
@@ -144,7 +144,7 @@ if ($_SESSION['logged'] == true)
 ?>
 			<tr>
 				<td><input type="checkbox" name="supboite[<?php echo $donnees['id']; ?>]" onclick="checkone()" /></td>
-				<td><?php if ($donnees['statut']==0){ echo '<a class="bulle" style="cursor: default;" onclick="return false;" href=""><img src="images/newmess.png" alt="Message non lu" title="" /><span>Message non lu</span></a>';}?></td>
+				<td><?php if ($donnees['statut']==0){ echo '<a class="bulle" style="cursor: default;" onclick="return false;" href=""><img src="/images/newmess.png" alt="Message non lu" title="" /><span>Message non lu</span></a>';}?></td>
 				<td> <?php echo  stripslashes($donnees2['pseudo']);?> </td>
 				<td>le <?php echo date('d/m/Y à H\hi', $donnees['timestamp']);?></td>
 				<td><a href="<?php echo $donnees['id'];?>.lire.html"><?php echo stripslashes($donnees['titre']);?></a></td>

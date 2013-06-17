@@ -11,15 +11,15 @@ if (isset($_POST['pseudo'], $_POST['mdp']) && !empty($_POST['pseudo']) && !empty
 {
    //Mesure de sécurité, notamment pour éviter les injections sql.
    //Le htmlentities évitera de le passer par la suite.
-   $pseudo = htmlentities(addslashes($_POST['pseudo']));
-   $mdp = htmlentities(addslashes($_POST['mdp']));
+   $pseudo = htmlentities(addslashes($_POST['pseudo']), ENT_IGNORE);
+   $mdp = htmlentities(addslashes($_POST['mdp']), ENT_IGNORE);
    //Hashage du mot de passe.
    $mdp = md5($mdp);
 
-   
+
    //La requête qui compte le nombre de pseudos
    $sql = mysql_query("SELECT COUNT(*) AS nb_pseudo FROM membres WHERE pseudo='".$pseudo."'");
-   
+
    //La on vérifie si le nombre est différent que zéro
    if (mysql_result($sql,0,'nb_pseudo') != 0)
    {
@@ -35,25 +35,22 @@ if (isset($_POST['pseudo'], $_POST['mdp']) && !empty($_POST['pseudo']) && !empty
          {
             //On modifie la variable qui nous indique que le membre est connecté.
             $_SESSION['logged'] = true;
-           
+
             //On créé les variables contenant des informations sur le membre.
             $_SESSION['id'] = $donnees_info['id'];
             $_SESSION['pseudo'] = $pseudo;
 			$_SESSION['nuage'] = $donnees_info['nuage'];
-			
+
 			if (isset($_POST['auto']))
 			{
 				$timestamp_expire = time() + 30*24*3600;
 				setcookie('pseudo', $pseudo, $timestamp_expire);
 				setcookie('mdp', $mdp, $timestamp_expire);
 			}
-			
-			//On supprime le membre non connecté du nombre de visiteurs :
-			mysql_query("DELETE FROM connectbisous WHERE ip='".$_SERVER['REMOTE_ADDR']."'");
-			
+
 			//On redirige le membre.
             header("location: cerveau.html");
-			
+
          }
          else
          {

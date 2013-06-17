@@ -1,0 +1,31 @@
+# Keep told directories
+!.gitkeep
+
+# Assets
+/web/css/*
+/web/js/*
+/web/bundles/
+
+# Continuous integration
+/build/
+
+# Dependencies
+!/bin/install.sh
+!/bin/test.sh
+/bin/*
+/vendor/*
+/composer.phar
+
+# Temporary directories
+/app/cache/*
+/app/logs/*
+/app/sessions/*
+
+# Build files
+/app/bootstrap.php.cache
+
+# Configuration files
+app/config/parameters.yml
+app/config/capifony/parameters.rb
+web/news/.htaccess
+web/news/.htpasswd

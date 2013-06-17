@@ -1,0 +1,22 @@
+services:
+    bisouland_menu.builder:
+        class: Bisouland\MenuBundle\Menu\Builder
+        arguments: ["@knp_menu.factory", "@security.context"]
+
+    bisouland_menu.login:
+        class: Knp\Menu\MenuItem
+        factory_service: bisouland_menu.builder
+        factory_method: createLoginMenu
+        arguments: ["@request"]
+        scope: request
+        tags:
+            - { name: knp_menu.menu, alias: login_menu }
+
+    bisouland_menu.user:
+        class: Knp\Menu\MenuItem
+        factory_service: bisouland_menu.builder
+        factory_method: createUserMenu
+        arguments: ["@request"]
+        scope: request
+        tags:
+            - { name: knp_menu.menu, alias: user_menu }

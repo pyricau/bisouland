@@ -59,7 +59,7 @@ if ($donnees_info = mysql_fetch_assoc($sql_info))
 Tu vas tenter d'embrasser <strong><?php echo $pseudoCible; ?></strong> sur le nuage <strong><?php echo $nuageCible; ?></strong>
  &agrave; la position <strong><?php echo $positionCible; ?></strong>.<br /><br />
 Tes bisous atteindront <strong><?php echo $pseudoCible; ?></strong> dans : 
-	<script src="includes/compteur.js" type="text/javascript"></script>
+	<script src="/includes/compteur.js" type="text/javascript"></script>
 	<span id="compteur"><?php echo strTemps($finAll-time()); ?></span>
 	<script language="JavaScript">
 		duree="<?php echo ($finAll-time());?>";
@@ -96,7 +96,7 @@ Ils seront de retour dans : <span id="compteur2"><?php echo strTemps($finRet-tim
 Tes bisous ont tent&eacute; d'embrasser <strong><?php echo $pseudoCible; ?></strong> sur le nuage <strong><?php echo $nuageCible; ?></strong>
  &agrave; la position <strong><?php echo $positionCible; ?></strong>.<br /><br />
 Ils seront de retour dans : 
-	<script src="includes/compteur.js" type="text/javascript"></script>
+	<script src="/includes/compteur.js" type="text/javascript"></script>
 	<span id="compteur"><?php echo strTemps($finRet-time()); ?></span>
 	<script language="JavaScript">
 		duree="<?php echo ($finRet-time());?>";

@@ -1,0 +1,29 @@
+# PreRegistrationBundle routes
+bisouland_pre_registration:
+    resource: "@BisoulandPreRegistrationBundle/Controller/"
+    type:     annotation
+    prefix:   /
+
+# UserBundle routes
+bisouland_user:
+    resource: "@BisoulandUserBundle/Controller/"
+    type:     annotation
+    prefix:   /account
+
+# FOSUserBundle routes
+fos_user_security:
+    resource: "@FOSUserBundle/Resources/config/routing/security.xml"
+
+fos_user_profile_show:
+    path: /account
+    defaults:
+        _controller: FOSUserBundle:Profile:edit
+
+fos_user_profile_edit:
+    path: /account
+    defaults:
+        _controller: FOSUserBundle:Profile:edit
+
+fos_user_register:
+    resource: "@FOSUserBundle/Resources/config/routing/registration.xml"
+    prefix: /register

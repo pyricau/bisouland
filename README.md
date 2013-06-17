@@ -1,22 +1,53 @@
-# Introduction
-Bisouland est un jeu par navigateur. Volez des points d'amour à vos adversaires en leur envoyant des bisous !
+# Bisouland
 
-# Le site a disparu ?
-Bisouland change de maison. Le code devient Open Source, et des joueurs motivés ont décidé d'en reprendre le développement. Dans l'intervalle, le site est désactivé pour éviter tout problème de désynchronisation. Soyez assurés qu'ils se démènent pour que le déménagement soit terminé le plus rapidement possible !
+Bisouland is a free online strategy-game. In order to play you only need a
+web browser.
 
-# License
-Le code source de Bisouland est open source, sous licence Apache 2.
+Take your opponents love points by sending them kisses!
 
-# Historique
-Pierre-Yves Ricau a créé le site http://bisouland.piwai.info en 2005, et ce fût pour lui l'occasion de découvrir la programmation PHP. Aujourd'hui (2011), le site devient open source et est repris par une équipe motivée. Soyez donc indulgent sur la qualité du code, qui, si elle ne saurait que s'améliorer, part vraiment de très loin.
+## Installation
 
-# Instructions
-TODO pour publier le site online :
+To install Bisouland, [check the requirements](doc/02-requirements.md) and then
+download and use its installation script:
 
-Remplacer le contenu de news/.htpasswd par un contenu valide (user ayant accès aux news)
+    curl -sS  https://raw.github.com/pyricau/bisouland/master/bin/install.sh | sh
 
-Remplacer les identifiants de connexion à la bd dans phpIncludes/bd.php
+### Administration access
 
-S'assurer que l'envoi de mails (inscription) fonctionne
+The administration area is protected using
+[`.htaccess` and `.htpasswd` files](http://weavervsworld.com/docs/other/passprotect.html).
 
-Remplacer dans news/mail.php l'email d'admin qui permet de checker les inscrits non validés (variable $destinataire)
+First of all, create them:
+
+    cp web/news/.htaccess.dist web/news/.htaccess
+    touch web/news/.htpasswd
+
+Then simply set the absolute path of the project in the `web/news/.htaccess`
+file, and put a
+[generated password](http://www.htaccesstools.com/htpasswd-generator/) in the
+`web/news/.htpasswd` file.
+
+### Emailing
+
+Now that everything is configured, check email sending for registration and
+newsletter.
+
+## Further documentation
+
+You can find more documentation at the following links:
+
+* Copyright and Apache 2 license: [LICENSE.md](LICENSE.md);
+* version and change logs: [VERSION.md](VERSION.md)
+  and [CHANGELOG.md](CHANGELOG.md);
+* versioning and branching models,
+  as well as public API: [VERSIONING.md](VERSIONING.md);
+* contribution instructions: [CONTRIBUTING.md](CONTRIBUTING.md);
+* more can be found in the [doc](doc) directory.
+
+## Project history
+
+* 2013: roll back to the version 1, which becomes the version 3;
+* 2012: release of the version 2;
+* 2011: Open-sourcing of the project, new team to take over the project with
+  Marc Epron, Thomas Gay and Loïc Chardonnet;
+* 2005: creation of the project by **Pierre-Yves Ricau**.

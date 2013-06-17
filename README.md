@@ -5,27 +5,12 @@ web browser.
 
 Take your opponents love points by sending them kisses!
 
-## Requirements
-
-Bisouland uses [npm](https://npmjs.org/), to install it, use the following commands:
-
-    # npm installation (through nodejs)
-    wget http://nodejs.org/dist/latest/node-v0.10.7.tar.gz
-    tar zxvf node-v0.10.7.tar.gz
-    cd node-v0.10.7
-    ./configure
-    make
-    sudo ake install
-    cd ..
-    rm -rf node-v0.10.7*
-
 ## Installation
 
-To install Bisouland, download and use its installation script:
+To install Bisouland, [check the requirements](doc/02-requirements.md) and then
+download and use its installation script:
 
     curl -sS  https://raw.github.com/pyricau/bisouland/master/bin/install.sh | sh
-
-Then follow these 2 small steps to configure it.
 
 ### Administration access
 
@@ -47,16 +32,6 @@ file, and put a
 Now that everything is configured, check email sending for registration and
 newsletter.
 
-## Structure
-
-Every request will go to the Symfony2 application. If the route is not found
-in it, the legacy application will be boostraped.
-
-**Warning**: the legacy application, which lies in the `web` directory,
-has been created in 2005 by a someone who was learning web development.
-Therefore it probably contains security holes, bugs, low quality code
-and bad design pattern.
-
 ## Further documentation
 
 You can find more documentation at the following links:
@@ -66,7 +41,8 @@ You can find more documentation at the following links:
   and [CHANGELOG.md](CHANGELOG.md);
 * versioning and branching models,
   as well as public API: [VERSIONING.md](VERSIONING.md);
-* contribution instructions: [CONTRIBUTING.md](CONTRIBUTING.md).
+* contribution instructions: [CONTRIBUTING.md](CONTRIBUTING.md);
+* more can be found in the [doc](doc) directory.
 
 ## Project history
 

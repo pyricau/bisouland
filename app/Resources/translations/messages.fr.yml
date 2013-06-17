@@ -1,20 +1,18 @@
 layout:
     brand: Bisouland v3
-    login: Connexion
-    logout: Déconnexion
-    register: Pré-Inscription
 
 error:
     not_found:
         title: Erreur, page introuvable
-        description: Cette page n'existe pas.
         meta_description: La page demandée n'existe pas.
+        description: >
+            Tu recherchais le grand amour et tu es arrivé ici ?
+            Désolé, cette page n'existe pas...
 
-error:
     internal:
         title: Erreur technique
+        meta_description: Une erreur technique s'est produite.
         description: >
             Vous venez de briser le coeur du site !
             Une erreur technique s'est produite,
             merci de ré-essayer plus tard.
-        meta_description: Une erreur technique s'est produite.

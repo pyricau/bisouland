@@ -10,20 +10,22 @@
 /build/
 
 # Dependencies
-/vendor/
 !/bin/install.sh
 !/bin/test.sh
 /bin/*
+/vendor/*
 /composer.phar
 
-# Temporary files
+# Temporary directories
 /app/cache/*
 /app/logs/*
+/app/sessions/*
 
 # Build files
 /app/bootstrap.php.cache
 
 # Configuration files
 app/config/parameters.yml
+app/config/capifony/parameters.rb
 web/news/.htaccess
 web/news/.htpasswd

@@ -55,11 +55,12 @@ class FeatureContext extends MinkContext implements KernelAwareInterface
     public function loggedInAsUser($user)
     {
         return array(
-            new Step\When('I am on "/login"'),
+            new Step\Given('I am on homepage'),
+            new Step\Given('I follow "menu.logged_out.login"'),
             new Step\When('I fill in "security.login.username" with "'.$user.'"'),
             new Step\When('I fill in "security.login.password" with "password"'),
             new Step\When('I press "security.login.submit"'),
-            new Step\When('I should see "layout.logout"'),
+            new Step\Then('I should see "menu.logged_in.logout"'),
         );
     }
 }

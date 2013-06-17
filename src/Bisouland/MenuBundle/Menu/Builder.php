@@ -44,8 +44,8 @@ class Builder
         $menu->setChildrenAttribute('class', 'menu');
         $menu->setCurrentUri($request->getRequestUri());
 
-        $menu->addChild('layout.login', array('route' => 'fos_user_security_login'));
-        $menu->addChild('layout.register', array('route' => 'fos_user_registration_register'));
+        $menu->addChild('menu.logged_out.login', array('route' => 'fos_user_security_login'));
+        $menu->addChild('menu.logged_out.register', array('route' => 'fos_user_registration_register'));
 
         return $menu;
     }
@@ -65,7 +65,7 @@ class Builder
             $this->securityContext->getToken()->getUser()->getUsername(),
             array('route' => 'fos_user_profile_show')
         );
-        $menu->addChild('layout.logout', array('route' => 'fos_user_security_logout'));
+        $menu->addChild('menu.logged_in.logout', array('route' => 'fos_user_security_logout'));
 
         return $menu;
     }

@@ -1,24 +1,26 @@
 Feature: Login
-    In order to have access to the application
+    In order to get access to the application
     As a registered person
-    I need to be able to login
+    I need to be able to authenticate
 
-    Scenario: Login with username and password
-        Given I am on "/login"
+    Scenario: Successfully authenticating with correct credentials
+        Given I am on homepage
+        And I follow "menu.logged_out.login"
 
         When I fill in the following:
             | security.login.username | to.login |
             | security.login.password | password |
         And I press "security.login.submit"
 
-        Then I should see "layout.logout"
+        Then I should see "menu.logged_in.logout"
 
-    Scenario: Fail login with wrong username and password
-        Given I am on "/login"
+    Scenario: Can not authenticate with bad credentials
+        Given I am on homepage
+        And I follow "menu.logged_out.login"
 
         When I fill in the following:
             | security.login.username | wrong.login |
-            | security.login.password | password |
+            | security.login.password | password    |
         And I press "security.login.submit"
 
         Then I should see "Bad credentials"

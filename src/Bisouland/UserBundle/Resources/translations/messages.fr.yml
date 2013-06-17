@@ -1,7 +1,7 @@
 profile:
     title: Tes informations
     flash:
-        updated: Tes informations ont bien été mis à jour
+        updated: Tes informations ont bien été mises à jour
     removal:
         title: Suppression du compte
         description: >
@@ -15,6 +15,9 @@ registration:
 
 login:
     title: Connexion
+
+form:
+    password: Mot de passe
 
 account:
     removal_confirmation:

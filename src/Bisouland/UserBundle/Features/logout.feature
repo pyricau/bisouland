@@ -3,9 +3,10 @@ Feature: Logout
     As a user
     I need to be able to logout
 
-    Scenario: Logout
+    Scenario: Successfully logout
         Given I am logged in as "to.logout"
+        And I am on homepage
 
-        When I follow "layout.logout"
+        When I follow "menu.logged_in.logout"
 
-        Then I should see "layout.login"
+        Then I should see "menu.logged_out.login"

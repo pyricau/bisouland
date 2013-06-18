@@ -24,7 +24,7 @@ class Builder
     private $securityContext;
 
     /**
-     * @param \Knp\Menu\FactoryInterface $menuFactory
+     * @param \Knp\Menu\FactoryInterface                       $menuFactory
      * @param \Symfony\Component\Security\Core\SecurityContext $securityContext
      */
     public function __construct(FactoryInterface $menuFactory, SecurityContext $securityContext)

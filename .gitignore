@@ -14,6 +14,7 @@
 !/bin/test.sh
 /bin/*
 /vendor/*
+/composer.lock
 /composer.phar
 
 # Temporary directories

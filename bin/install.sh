@@ -1,17 +1,22 @@
 #!/bin/sh
 
+DIR=$(dirname $0)
+cd $DIR/..
+
 VHOST=0
+COMPOSER_ARGUMENT=''
 
 usage()
 {
     cat <<EOT
 Usage:
-    install.sh [--vhost]
+    install.sh [-n | --no-interraction] [--vhost]
     install.sh -h | --help
 
 Options:
-    --vhost   Create a vhost and log files, restart Apache and add a host
-    -h --help Show this screen
+    --vhost             Create a vhost, restart Apache and add a line to /etc/hosts
+    -h --help           Show this screen
+    -n --no-interaction Do not ask any interractive question
 EOT
 }
 
@@ -29,6 +34,9 @@ case $1 in
     --vhost)
         VHOST=1
         ;;
+    -n | --no-interaction)
+        COMPOSER_ARGUMENT='--no-interaction'
+        ;;
     '')
         ;;
     *)
@@ -43,7 +51,6 @@ git clone git://github.com/pyricau/bisouland.git
 cd bisouland
 
 # Installing requierements
-
 if ! type composer; then
     echo 'Getting Composer, the PHP dependency manager'
     curl -sS https://getcomposer.org/installer | php
@@ -77,13 +84,12 @@ if ! type capifony; then
 fi
 
 # Configuring the project
-
 echo 'Setting the rights'
 setfacl -R -m u:www-data:rwx -m u:`whoami`:rwx app/cache app/logs app/sessions
 setfacl -dR -m u:www-data:rwx -m u:`whoami`:rwx app/cache app/logs app/sessions
 
-echo 'Installing the dependencies'
-composer install --dev
+echo 'Configuring the project'
+sh bin/configure.sh "$COMPOSER_ARGUMENT"
 
 # Configuring Apache
 if [ $VHOST -eq 1 ]; then
@@ -92,8 +98,8 @@ if [ $VHOST -eq 1 ]; then
 <VirtualHost *:80>
     ServerName bisouland.local
 
-    ErrorLog "/var/log/apache2/bisouland/error.log"
-    CustomLog "/var/log/apache2/bisouland/access.log" common
+    ErrorLog "<path>/app/logs/apache-errors.log"
+    CustomLog "<path>/app/logs/apache-accesses.log" common
 
     DocumentRoot "<path>/web"
     <Directory "<path>/web">
@@ -112,11 +118,6 @@ if [ $VHOST -eq 1 ]; then
 EOT
     sudo sed -i "s|<path>|${PWD}|" /etc/apache2/sites-available/bisouland.local
     sudo ln -s /etc/apache2/sites-available/bisouland.local /etc/apache2/sites-enabled/bisouland.local
-
-    echo 'Creating the log files'
-    sudo mkdir /var/log/apache2/bisouland
-    sudo touch /var/log/apache2/bisouland/error.log
-    sudo touch /var/log/apache2/bisouland/access.log
 
     echo 'Restarting the web server'
     sudo /etc/init.d/apache2 restart

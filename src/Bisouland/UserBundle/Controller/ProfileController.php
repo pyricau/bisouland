@@ -9,10 +9,15 @@ use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 
 /**
- * @author Loic Chardonnet <loic.chardonnet@gmail.com>
+ * Redefinition of the success message.
+ *
+ * @author Loïc Chardonnet <loic.chardonnet@gmail.com>
  */
 class ProfileController extends BaseController
 {
+    /**
+     * @return \Symfony\Component\HttpFoundation\Response
+     */
     public function editAction()
     {
         $user = $this->container->get('security.context')->getToken()->getUser();

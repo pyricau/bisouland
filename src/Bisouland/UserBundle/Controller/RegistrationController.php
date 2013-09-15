@@ -7,10 +7,15 @@ use FOS\UserBundle\Controller\RegistrationController as BaseController;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 
 /**
- * @author Loic Chardonnet <loic.chardonnet@gmail.com>
+ * Redefinition of the confirmation route and success message.
+ *
+ * @author Loïc Chardonnet <loic.chardonnet@gmail.com>
  */
 class RegistrationController extends BaseController
 {
+    /**
+     * @return \Symfony\Component\HttpFoundation\Response
+     */
     public function registerAction()
     {
         $form = $this->container->get('fos_user.registration.form');

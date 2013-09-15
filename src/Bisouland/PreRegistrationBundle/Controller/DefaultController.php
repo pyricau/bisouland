@@ -8,7 +8,9 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 
 /**
- * @author Loic Chardonnet <loic.chardonnet@gmail.com>
+ * The homepage.
+ *
+ * @author Loïc Chardonnet <loic.chardonnet@gmail.com>
  */
 class DefaultController extends Controller
 {

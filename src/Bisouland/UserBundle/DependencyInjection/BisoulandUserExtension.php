@@ -10,7 +10,9 @@ use Symfony\Component\DependencyInjection\Loader;
 use Symfony\Component\HttpKernel\DependencyInjection\Extension;
 
 /**
- * @author Loic Chardonnet <loic.chardonnet@gmail.com>
+ * Registers BisoulandUserBundle services into the application DIC.
+ *
+ * @author Loïc Chardonnet <loic.chardonnet@gmail.com>
  */
 class BisoulandUserExtension extends Extension
 {

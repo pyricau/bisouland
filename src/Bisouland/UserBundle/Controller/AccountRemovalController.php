@@ -11,8 +11,12 @@ use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 
 use Symfony\Component\HttpFoundation\Request;
 
+use LogicException;
+
 /**
- * @author Loic Chardonnet <loic.chardonnet@gmail.com>
+ * Confirmation page for account removal.
+ *
+ * @author Loïc Chardonnet <loic.chardonnet@gmail.com>
  */
 class AccountRemovalController extends Controller
 {
@@ -23,9 +27,9 @@ class AccountRemovalController extends Controller
      * )
      * @Template()
      *
-     * @param Symfony\Component\HttpFoundation\Request $request
+     * @param Request $request
      *
-     * @return array|
+     * @return \Symfony\Component\HttpFoundation\RedirectResponse|array
      */
     public function confirmationAction(Request $request)
     {
@@ -52,14 +56,14 @@ class AccountRemovalController extends Controller
     /**
      * Shortcut to return the Entity Manager service.
      *
-     * @return Doctrine\ORM\EntityManager
+     * @return \Doctrine\ORM\EntityManager
      *
-     * @throws \LogicException If DoctrineBundle is not available
+     * @throws LogicException If DoctrineBundle is not available
      */
     public function getEntityManager()
     {
         if (!$this->container->has('doctrine.orm.default_entity_manager')) {
-            throw new \LogicException('The DoctrineBundle is not registered in your application.');
+            throw new LogicException('The DoctrineBundle is not registered in your application.');
         }
 
         return $this->container->get('doctrine.orm.default_entity_manager');

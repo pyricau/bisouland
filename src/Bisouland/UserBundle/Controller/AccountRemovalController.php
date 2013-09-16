@@ -2,8 +2,6 @@
 
 namespace Bisouland\UserBundle\Controller;
 
-use Doctrine\ORM\EntityManager;
-
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 

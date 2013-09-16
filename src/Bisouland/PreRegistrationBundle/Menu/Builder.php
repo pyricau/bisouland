@@ -1,6 +1,6 @@
 <?php
 
-namespace Bisouland\MenuBundle\Menu;
+namespace Bisouland\PreRegistrationBundle\Menu;
 
 use Knp\Menu\FactoryInterface;
 

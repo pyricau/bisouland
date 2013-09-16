@@ -27,7 +27,6 @@ class AppKernel extends Kernel
             new Bisouland\UserBundle\BisoulandUserBundle(),
 
             new Knp\Bundle\MenuBundle\KnpMenuBundle(),
-            new Bisouland\MenuBundle\BisoulandMenuBundle(),
             new Bisouland\PreRegistrationBundle\BisoulandPreRegistrationBundle(),
         );
 

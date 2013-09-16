@@ -1,6 +1,6 @@
 <?php
 
-namespace Bisouland\MenuBundle\DependencyInjection;
+namespace Bisouland\PreRegistrationBundle\DependencyInjection;
 
 use Symfony\Component\Config\FileLocator;
 
@@ -10,11 +10,11 @@ use Symfony\Component\DependencyInjection\Loader;
 use Symfony\Component\HttpKernel\DependencyInjection\Extension;
 
 /**
- * Registers BisoulandMenuBundle services into the application DIC.
+ * Registers BisoulandPreRegistrationBundle services into the application's DIC.
  *
  * @author Loïc Chardonnet <loic.chardonnet@gmail.com>
  */
-class BisoulandMenuExtension extends Extension
+class BisoulandPreRegistrationExtension extends Extension
 {
     /**
      * {@inheritDoc}

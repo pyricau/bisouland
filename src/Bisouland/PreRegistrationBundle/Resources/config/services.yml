@@ -1,20 +1,20 @@
 services:
-    bisouland_menu.builder:
-        class: Bisouland\MenuBundle\Menu\Builder
+    bisouland_pre_registration.builder:
+        class: Bisouland\PreRegistrationBundle\Menu\Builder
         arguments: ["@knp_menu.factory", "@security.context"]
 
-    bisouland_menu.login:
+    bisouland_pre_registration.login:
         class: Knp\Menu\MenuItem
-        factory_service: bisouland_menu.builder
+        factory_service: bisouland_pre_registration.builder
         factory_method: createLoginMenu
         arguments: ["@request"]
         scope: request
         tags:
             - { name: knp_menu.menu, alias: login_menu }
 
-    bisouland_menu.user:
+    bisouland_pre_registration.user:
         class: Knp\Menu\MenuItem
-        factory_service: bisouland_menu.builder
+        factory_service: bisouland_pre_registration.builder
         factory_method: createUserMenu
         arguments: ["@request"]
         scope: request

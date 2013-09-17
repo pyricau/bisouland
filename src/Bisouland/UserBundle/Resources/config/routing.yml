@@ -1,0 +1,5 @@
+account_removal_confirmation:
+    pattern: /account/removal_confirmation
+    defaults:
+        _controller: "BisoulandUserBundle:AccountRemoval:confirmation"
+    methods: [GET, POST]

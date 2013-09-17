@@ -2,7 +2,6 @@
 
 namespace Bisouland\UserBundle\Controller;
 
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
@@ -19,10 +18,6 @@ use LogicException;
 class AccountRemovalController extends Controller
 {
     /**
-     * @Route(
-     *     pattern = "/removal_confirmation",
-     *     name = "account_removal_confirmation"
-     * )
      * @Template()
      *
      * @param Request $request

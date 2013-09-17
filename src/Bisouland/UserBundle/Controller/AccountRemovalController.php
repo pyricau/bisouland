@@ -49,7 +49,7 @@ class AccountRemovalController extends Controller
      *
      * @throws LogicException If DoctrineBundle is not available
      */
-    public function getEntityManager()
+    protected function getEntityManager()
     {
         if (!$this->container->has('doctrine.orm.default_entity_manager')) {
             throw new LogicException('The DoctrineBundle is not registered in your application.');

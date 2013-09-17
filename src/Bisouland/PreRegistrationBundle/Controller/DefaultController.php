@@ -2,8 +2,6 @@
 
 namespace Bisouland\PreRegistrationBundle\Controller;
 
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
-
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 
 /**
@@ -14,10 +12,10 @@ use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 class DefaultController extends Controller
 {
     /**
-     * @Template()
+     * @return \Symfony\Component\HttpFoundation\Response
      */
     public function indexAction()
     {
-        return array();
+        return $this->render('BisoulandPreRegistrationBundle:Default:index.html.twig');
     }
 }

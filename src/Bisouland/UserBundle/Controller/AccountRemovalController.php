@@ -2,8 +2,6 @@
 
 namespace Bisouland\UserBundle\Controller;
 
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
-
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 
 use Symfony\Component\HttpFoundation\Request;
@@ -18,11 +16,9 @@ use LogicException;
 class AccountRemovalController extends Controller
 {
     /**
-     * @Template()
-     *
      * @param Request $request
      *
-     * @return \Symfony\Component\HttpFoundation\RedirectResponse|array
+     * @return \Symfony\Component\HttpFoundation\Response
      */
     public function confirmationAction(Request $request)
     {
@@ -43,7 +39,7 @@ class AccountRemovalController extends Controller
             return $this->redirect($this->generateUrl('fos_user_security_logout'));
         }
 
-        return array();
+        return $this->render('BisoulandUserBundle:AccountRemoval:confirmation.html.twig');
     }
 
     /**

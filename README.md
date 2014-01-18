@@ -1,16 +1,16 @@
 # Bisouland
 
+Take your opponents love points by sending them kisses!
+
 Bisouland is a free online strategy-game. In order to play you only need a
 web browser.
-
-Take your opponents love points by sending them kisses!
 
 ## Installation
 
 To install Bisouland, [check the requirements](doc/02-requirements.md) and then
 download and use its installation script:
 
-    curl -sS  https://raw.github.com/pyricau/bisouland/master/bin/install.sh | sh
+    curl -sS https://raw.github.com/pyricau/bisouland/master/bin/install.sh | sh
 
 ### Administration access
 
@@ -36,7 +36,7 @@ newsletter.
 
 You can find more documentation at the following links:
 
-* Copyright and Apache 2 license: [LICENSE.md](LICENSE.md);
+* Copyright and Apache 2 license: [LICENSE](LICENSE);
 * version and change logs: [VERSION.md](VERSION.md)
   and [CHANGELOG.md](CHANGELOG.md);
 * versioning and branching models,

@@ -1,3 +1,11 @@
+menu:
+    logged_out:
+        login: Connexion
+        register: Inscription
+
+    logged_in:
+        logout: Déconnexion
+
 pre_registration:
     warning: >
         Bisouland est encore en cours de création, mais tu peux dès à présent

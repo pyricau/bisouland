@@ -2,66 +2,54 @@
 
 namespace Bisouland\UserBundle\Controller;
 
-use Doctrine\ORM\EntityManager;
-
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
-
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 
 use Symfony\Component\HttpFoundation\Request;
 
+use Symfony\Component\HttpFoundation\RedirectResponse;
+
 /**
- * @author Loic Chardonnet <loic.chardonnet@gmail.com>
+ * Confirmation page for account removal.
+ *
+ * @author Loïc Chardonnet <loic.chardonnet@gmail.com>
  */
 class AccountRemovalController extends Controller
 {
     /**
-     * @Route(
-     *     pattern = "/removal_confirmation",
-     *     name = "account_removal_confirmation"
-     * )
-     * @Template()
+     * @param Request $request
      *
-     * @param Symfony\Component\HttpFoundation\Request $request
-     *
-     * @return array|
+     * @return \Symfony\Component\HttpFoundation\Response
      */
     public function confirmationAction(Request $request)
     {
-        if ('POST' === $request->getMethod()) {
-            $em = $this->getEntityManager();
+        $view = 'BisoulandUserBundle:AccountRemoval:confirmation.html.twig';
+        if ('POST' !== $request->getMethod()) {
+            return $this->container->get('templating')->renderResponse($view);
+        }
+        $entityManager = $this->container->get('doctrine.orm.entity_manager');
 
-            $user = $this->getUser();
-            $entity = $em->getRepository('BisoulandUserBundle:User')->find($user->getId());
-
-            $em->remove($entity);
-            $em->flush();
-
-            $this->get('session')
-                ->getFlashBag()
-                ->add('success', 'account.removal_confirmation.flash')
-            ;
-
-            return $this->redirect($this->generateUrl('fos_user_security_logout'));
+        $token = $this->container->get('security.context')->getToken();
+        if (null === $token) {
+            return $this->container->get('templating')->renderResponse($view);
         }
 
-        return array();
-    }
-
-    /**
-     * Shortcut to return the Entity Manager service.
-     *
-     * @return Doctrine\ORM\EntityManager
-     *
-     * @throws \LogicException If DoctrineBundle is not available
-     */
-    public function getEntityManager()
-    {
-        if (!$this->container->has('doctrine.orm.default_entity_manager')) {
-            throw new \LogicException('The DoctrineBundle is not registered in your application.');
+        $user = $token->getUser();
+        if (!is_object($user)) {
+            return $this->container->get('templating')->renderResponse($view);
         }
 
-        return $this->container->get('doctrine.orm.default_entity_manager');
+        $entity = $entityManager->getRepository('BisoulandUserBundle:User')
+            ->find($user->getId())
+        ;
+
+        $entityManager->remove($entity);
+        $entityManager->flush();
+
+        $session = $this->container->get('session');
+        $session->getFlashBag()->add('success', 'account.removal_confirmation.flash');
+
+        return new RedirectResponse(
+            $this->container->get('router')->generate('fos_user_security_logout')
+        );
     }
 }

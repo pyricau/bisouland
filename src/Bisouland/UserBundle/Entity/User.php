@@ -10,7 +10,7 @@ use FOS\UserBundle\Entity\User as BaseUser;
  * @ORM\Entity
  * @ORM\Table(name = "user")
  *
- * @author Loic Chardonnet <loic.chardonnet@gmail.com>
+ * @author Loïc Chardonnet <loic.chardonnet@gmail.com>
  */
 class User extends BaseUser
 {

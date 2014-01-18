@@ -2,22 +2,20 @@
 
 namespace Bisouland\PreRegistrationBundle\Controller;
 
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
-
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 
 /**
- * @author Loic Chardonnet <loic.chardonnet@gmail.com>
+ * The homepage.
+ *
+ * @author Loïc Chardonnet <loic.chardonnet@gmail.com>
  */
 class DefaultController extends Controller
 {
     /**
-     * @Route(pattern = "/", name = "home")
-     * @Template()
+     * @return \Symfony\Component\HttpFoundation\Response
      */
     public function indexAction()
     {
-        return array();
+        return $this->render('BisoulandPreRegistrationBundle:Default:index.html.twig');
     }
 }

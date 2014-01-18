@@ -15,5 +15,5 @@ for feature_path in `find src/ -path '*Features'`
 do
     bundle=$(echo $feature_path | sed -e 's~.*src/\(.*\)/Features~\1~' | sed -e 's~/~~')
     echo "Testing $bundle"
-    $DIR/behat -c=app/config/behat.yml "@$bundle"
+    php vendor/bin/behat -c=app/config/behat.yml "@$bundle"
 done

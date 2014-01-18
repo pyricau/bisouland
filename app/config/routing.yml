@@ -1,16 +1,9 @@
-# PreRegistrationBundle routes
 bisouland_pre_registration:
-    resource: "@BisoulandPreRegistrationBundle/Controller/"
-    type:     annotation
-    prefix:   /
+    resource: "@BisoulandPreRegistrationBundle/Resources/config/routing.yml"
 
-# UserBundle routes
 bisouland_user:
-    resource: "@BisoulandUserBundle/Controller/"
-    type:     annotation
-    prefix:   /account
+    resource: "@BisoulandUserBundle/Resources/config/routing.yml"
 
-# FOSUserBundle routes
 fos_user_security:
     resource: "@FOSUserBundle/Resources/config/routing/security.xml"
 

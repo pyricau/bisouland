@@ -94,4 +94,4 @@ fos_user:
 # KnpMenuBundle Configuration
 knp_menu:
     twig:
-        template: BisoulandMenuBundle::menu.html.twig
+        template: BisoulandPreRegistrationBundle::menu.html.twig

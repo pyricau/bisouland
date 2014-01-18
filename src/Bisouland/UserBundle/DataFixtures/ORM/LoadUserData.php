@@ -10,7 +10,9 @@ use Doctrine\Common\DataFixtures\OrderedFixtureInterface;
 use Doctrine\Common\Persistence\ObjectManager;
 
 /**
- * @author Loic Chardonnet <loic.chardonnet@gmail.com>
+ * User fixtures, generated from a list of usernames.
+ *
+ * @author Loïc Chardonnet <loic.chardonnet@gmail.com>
  */
 class LoadUserData extends AbstractFixture implements OrderedFixtureInterface
 {

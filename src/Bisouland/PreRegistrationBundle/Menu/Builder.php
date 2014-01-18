@@ -1,6 +1,6 @@
 <?php
 
-namespace Bisouland\MenuBundle\Menu;
+namespace Bisouland\PreRegistrationBundle\Menu;
 
 use Knp\Menu\FactoryInterface;
 
@@ -9,23 +9,25 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Security\Core\SecurityContext;
 
 /**
- * @author Loic Chardonnet <loic.chardonnet@gmail.com>
+ * Builds the application menus.
+ *
+ * @author Loïc Chardonnet <loic.chardonnet@gmail.com>
  */
 class Builder
 {
     /**
-     * @var \Knp\Menu\FactoryInterface
+     * @var FactoryInterface
      */
     private $menuFactory;
 
     /**
-     * @var \Symfony\Component\Security\Core\SecurityContext
+     * @var SecurityContext
      */
     private $securityContext;
 
     /**
-     * @param \Knp\Menu\FactoryInterface                       $menuFactory
-     * @param \Symfony\Component\Security\Core\SecurityContext $securityContext
+     * @param FactoryInterface $menuFactory
+     * @param SecurityContext  $securityContext
      */
     public function __construct(FactoryInterface $menuFactory, SecurityContext $securityContext)
     {
@@ -34,7 +36,7 @@ class Builder
     }
 
     /**
-     * @param \Symfony\Component\HttpFoundation\Request $request
+     * @param Request $request
      *
      * @return \Knp\Menu\ItemInterface
      */
@@ -51,7 +53,7 @@ class Builder
     }
 
     /**
-     * @param \Symfony\Component\HttpFoundation\Request $request
+     * @param Request $request
      *
      * @return \Knp\Menu\ItemInterface
      */

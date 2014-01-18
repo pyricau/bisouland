@@ -1,0 +1,36 @@
+<?xml version="1.0" ?>
+
+<container xmlns="http://symfony.com/schema/dic/services"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://symfony.com/schema/dic/services http://symfony.com/schema/dic/services/services-1.0.xsd">
+    <services>
+
+        <service id="bisouland_pre_registration.builder" class="Bisouland\PreRegistrationBundle\Menu\Builder">
+            <argument type="service" id="knp_menu.factory" />
+            <argument type="service" id="security.context" />
+        </service>
+
+        <service
+            id="bisouland_pre_registration.login"
+            class="Knp\Menu\MenuItem"
+            factory-service="bisouland_pre_registration.builder"
+            factory-method="createLoginMenu"
+            scope="request"
+        >
+            <argument type="service" id="request" />
+            <tag name="knp_menu.menu" alias="login_menu" />
+        </service>
+
+        <service
+            id="bisouland_pre_registration.user"
+            class="Knp\Menu\MenuItem"
+            factory-service="bisouland_pre_registration.builder"
+            factory-method="createUserMenu"
+            scope="request"
+        >
+            <argument type="service" id="request" />
+            <tag name="knp_menu.menu" alias="user_menu" />
+        </service>
+
+    </services>
+</container>

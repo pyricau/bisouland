@@ -11,7 +11,7 @@ use Behat\Symfony2Extension\Context\KernelAwareInterface;
 use Symfony\Component\HttpKernel\KernelInterface;
 
 /**
- * @author Loic Chardonnet <loic.chardonnet@gmail.com>
+ * @author Loïc Chardonnet <loic.chardonnet@gmail.com>
  */
 class FeatureContext extends MinkContext implements KernelAwareInterface
 {

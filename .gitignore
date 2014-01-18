@@ -6,14 +6,9 @@
 /web/js/*
 /web/bundles/
 
-# Continuous integration
-/build/
-
 # Dependencies
-!/bin/install.sh
-!/bin/test.sh
-/bin/*
 /vendor/*
+/composer.lock
 /composer.phar
 
 # Temporary directories

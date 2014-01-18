@@ -5,12 +5,14 @@ namespace Bisouland\UserBundle;
 use Symfony\Component\HttpKernel\Bundle\Bundle;
 
 /**
- * @author Loic Chardonnet <loic.chardonnet@gmail.com>
+ * Integration of FOSUserBundle into the application.
+ *
+ * @author Loïc Chardonnet <loic.chardonnet@gmail.com>
  */
 class BisoulandUserBundle extends Bundle
 {
     /**
-     *@{inheritdoc}
+     * @{inheritdoc}
      */
     public function getParent()
     {

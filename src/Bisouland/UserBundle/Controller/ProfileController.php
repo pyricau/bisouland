@@ -9,10 +9,15 @@ use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 
 /**
- * @author Loic Chardonnet <loic.chardonnet@gmail.com>
+ * Redefinition of the success message.
+ *
+ * @author Loïc Chardonnet <loic.chardonnet@gmail.com>
  */
 class ProfileController extends BaseController
 {
+    /**
+     * @return \Symfony\Component\HttpFoundation\Response
+     */
     public function editAction()
     {
         $user = $this->container->get('security.context')->getToken()->getUser();
@@ -24,15 +29,18 @@ class ProfileController extends BaseController
         $formHandler = $this->container->get('fos_user.profile.form.handler');
 
         $process = $formHandler->process($user);
-        if ($process) {
-            $this->setFlash('success', 'profile.flash.updated');
-
-            return new RedirectResponse($this->getRedirectionUrl($user));
+        if (!$process) {
+            return $this->container->get('templating')->renderResponse(
+                'FOSUserBundle:Profile:edit.html.twig',
+                ['form' => $form->createView()]
+            );
         }
+        $session = $this->container->get('session');
+        $session->getFlashBag()->set('success', 'profile.flash.updated');
 
-        return $this->container->get('templating')->renderResponse(
-            'FOSUserBundle:Profile:edit.html.'.$this->container->getParameter('fos_user.template.engine'),
-            array('form' => $form->createView())
-        );
+        $router = $this->container->get('router');
+        $redirectUrl = $router->generate('fos_user_profile_show');
+
+        return new RedirectResponse($redirectUrl);
     }
 }

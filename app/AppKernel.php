@@ -3,8 +3,14 @@
 use Symfony\Component\HttpKernel\Kernel;
 use Symfony\Component\Config\Loader\LoaderInterface;
 
+/**
+ * Definition of the application configuration and bundles.
+ */
 class AppKernel extends Kernel
 {
+    /**
+     * {@inheritDoc}
+     */
     public function registerBundles()
     {
         $bundles = array(
@@ -21,7 +27,6 @@ class AppKernel extends Kernel
             new Bisouland\UserBundle\BisoulandUserBundle(),
 
             new Knp\Bundle\MenuBundle\KnpMenuBundle(),
-            new Bisouland\MenuBundle\BisoulandMenuBundle(),
             new Bisouland\PreRegistrationBundle\BisoulandPreRegistrationBundle(),
         );
 
@@ -36,6 +41,9 @@ class AppKernel extends Kernel
         return $bundles;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     public function registerContainerConfiguration(LoaderInterface $loader)
     {
         $loader->load(__DIR__.'/config/config_'.$this->getEnvironment().'.yml');

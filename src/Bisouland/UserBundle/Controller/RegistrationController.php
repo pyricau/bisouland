@@ -7,42 +7,37 @@ use FOS\UserBundle\Controller\RegistrationController as BaseController;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 
 /**
- * @author Loic Chardonnet <loic.chardonnet@gmail.com>
+ * Redefinition of the confirmation route and success message.
+ *
+ * @author Loïc Chardonnet <loic.chardonnet@gmail.com>
  */
 class RegistrationController extends BaseController
 {
+    /**
+     * @return \Symfony\Component\HttpFoundation\Response
+     */
     public function registerAction()
     {
         $form = $this->container->get('fos_user.registration.form');
         $formHandler = $this->container->get('fos_user.registration.form.handler');
-        $confirmationEnabled = $this->container->getParameter('fos_user.registration.confirmation.enabled');
 
-        $process = $formHandler->process($confirmationEnabled);
-        if ($process) {
-            $user = $form->getData();
-
-            $authUser = false;
-            if ($confirmationEnabled) {
-                $this->container->get('session')->set('fos_user_send_confirmation_email/email', $user->getEmail());
-                $route = 'fos_user_registration_check_email';
-            } else {
-                $authUser = true;
-                $route = 'home';
-            }
-
-            $this->setFlash('success', 'registration.flash.user_created');
-            $url = $this->container->get('router')->generate($route);
-            $response = new RedirectResponse($url);
-
-            if ($authUser) {
-                $this->authenticateUser($user, $response);
-            }
-
-            return $response;
+        $process = $formHandler->process();
+        if (!$process) {
+            return $this->container->get('templating')->renderResponse(
+                'FOSUserBundle:Registration:register.html.twig',
+                ['form' => $form->createView()]
+            );
         }
+        $user = $form->getData();
 
-        return $this->container->get('templating')->renderResponse('FOSUserBundle:Registration:register.html.'.$this->getEngine(), array(
-            'form' => $form->createView(),
-        ));
+        $session = $this->container->get('session');
+        $session->getFlashBag()->set('success', 'registration.flash.user_created');
+
+        $redirectUrl = $this->container->get('router')->generate('home');
+        $response = new RedirectResponse($redirectUrl);
+
+        $this->authenticateUser($user, $response);
+
+        return $response;
     }
 }

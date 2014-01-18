@@ -7,15 +7,15 @@ use FOS\UserBundle\Form\Type\RegistrationFormType as BaseType;
 use Symfony\Component\Form\FormBuilderInterface;
 
 /**
- * @author Loic Chardonnet <loic.chardonnet@gmail.com>
+ * Overriding FOSUserBundle's FormType to remove password confirmation.
+ *
+ * @author Loïc Chardonnet <loic.chardonnet@gmail.com>
  */
 class RegistrationFormType extends BaseType
 {
     private $class;
 
     /**
-     * Overriding FOSUserBundle's FormType to remove password confirmation.
-     *
      * @{inheritdoc}
      */
     public function buildForm(FormBuilderInterface $builder, array $options)

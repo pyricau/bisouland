@@ -1,27 +1,37 @@
 security:
     encoders:
-        FOS\UserBundle\Model\UserInterface: sha512
+        Symfony\Component\Security\Core\User\User: plaintext
 
     role_hierarchy:
         ROLE_ADMIN: ROLE_USER
-        ROLE_SUPER_ADMIN: [ROLE_ADMIN, ROLE_ALLOWED_TO_SWITCH]
+        ROLE_SUPER_ADMIN:
+            - ROLE_USER
+            - ROLE_ADMIN
+            - ROLE_ALLOWED_TO_SWITCH
 
     providers:
-        fos_userbundle:
-            id: fos_user.user_provider.username
+        in_memory:
+            memory:
+                users:
+                    user:
+                        password: userpass
+                        roles:
+                            - ROLE_USER
+                    admin:
+                        password: adminpass
+                        roles:
+                            - ROLE_ADMIN
 
     firewalls:
-        main:
-            pattern: ^/
-            form_login:
-                provider: fos_userbundle
-                csrf_provider: form.csrf_provider
+        dev:
+            pattern: ^/(_(profiler|wdt)|css|images|js)/
+            security: false
 
-                remember_me: true
-            logout: true
-            anonymous: true
-            remember_me:
-                key: %secret%
+        login:
+            security: false
+
+        secured_area:
+            anonymous: ~
 
     access_control:
-        - { path: ^/admin/, role: ROLE_ADMIN }
+        #- { path: ^/login, roles: IS_AUTHENTICATED_ANONYMOUSLY, requires_channel: https }

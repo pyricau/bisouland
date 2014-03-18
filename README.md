@@ -12,41 +12,24 @@ download and use its installation script:
 
     curl -sS https://raw.github.com/pyricau/bisouland/master/bin/install.sh | sh
 
-### Administration access
-
-The administration area is protected using
-[`.htaccess` and `.htpasswd` files](http://weavervsworld.com/docs/other/passprotect.html).
-
-First of all, create them:
-
-    cp web/news/.htaccess.dist web/news/.htaccess
-    touch web/news/.htpasswd
-
-Then simply set the absolute path of the project in the `web/news/.htaccess`
-file, and put a
-[generated password](http://www.htaccesstools.com/htpasswd-generator/) in the
-`web/news/.htpasswd` file.
-
-### Emailing
-
-Now that everything is configured, check email sending for registration and
-newsletter.
-
 ## Further documentation
+
+You can see the current and past versions using one of the following:
+
+* the `git tag` command
+* the [releases page on Github](https://github.com/pyricau/bisouland/releases)
+* the file listing the [changes between versions](CHANGELOG.md)
 
 You can find more documentation at the following links:
 
-* Copyright and Apache 2 license: [LICENSE](LICENSE);
-* version and change logs: [VERSION.md](VERSION.md)
-  and [CHANGELOG.md](CHANGELOG.md);
-* versioning and branching models,
-  as well as public API: [VERSIONING.md](VERSIONING.md);
-* contribution instructions: [CONTRIBUTING.md](CONTRIBUTING.md);
-* more can be found in the [doc](doc) directory.
+* [copyright and MIT license](LICENSE)
+* [versioning and branching models](VERSIONING.md)
+* [contribution instructions](CONTRIBUTING.md)
+* [documentation directory](doc)
 
 ## Project history
 
-* 2013: roll back to the version 1, which becomes the version 3;
+* 2014: roll back to the version 1, which becomes the version 3;
 * 2012: release of the version 2;
 * 2011: Open-sourcing of the project, new team to take over the project with
   Marc Epron, Thomas Gay and Loïc Chardonnet;

@@ -1,1 +1,0 @@
-<? echo realpath('chemin.php'); ?>

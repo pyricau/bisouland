@@ -9,8 +9,8 @@ usage()
 {
     cat <<EOT
 Usage:
-    install.sh [-n | --no-interraction]
-    install.sh -h | --help
+    configure.sh [-n | --no-interraction]
+    configure.sh -h | --help
 
 Options:
     -h --help           Show this screen
@@ -54,4 +54,4 @@ composer "$COMPOSER_ARGUMENT" install
 
 echo 'Securing the configuration'
 SECRET=`date +%s | sha256sum | base64 | head -c 32`
-sed -i "s|ThisTokenIsNotSoSecretChangeIt|${SECRET}|" app/config/parameters.yml
+sed -i "s|ChangeMe!4423|${SECRET}|" app/config/parameters.yml

@@ -29,11 +29,6 @@ couldn't register and had to share characters in order to play.
 
 This third version is a reboot which aims at bringing back the first version.
 
-## Emptiness and iterations
-
-For now, the game might look a bit empty: we've decided to release it small part
-by small part, which means update should be frequents.
-
 ## Good luck and have fun!
 
 I hope you'll like this game as much as me.

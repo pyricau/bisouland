@@ -5,6 +5,8 @@ Take your opponents love points by sending them kisses!
 Bisouland is a free online strategy-game. In order to play you only need a
 web browser.
 
+[![SensioLabsInsight](https://insight.sensiolabs.com/projects/2227c267-afb9-4373-b90b-d03a760b87bd/big.png)](https://insight.sensiolabs.com/projects/2227c267-afb9-4373-b90b-d03a760b87bd)
+
 ## Installation
 
 To install Bisouland, [check the requirements](doc/02-requirements.md) and then

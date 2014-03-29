@@ -18,6 +18,8 @@
 
 # Build files
 /app/bootstrap.php.cache
+/blog/en/web/*
+/blog/fr/web/*
 
 # Configuration files
 app/config/parameters.yml

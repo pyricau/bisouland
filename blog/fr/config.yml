@@ -1,0 +1,13 @@
+site:
+    title: Bisouland
+    description: >
+        Jeu en ligne de stratégie.
+        Empares toi des points d'amour de tes adversaires en les embrassant !
+    author_name:  Loïc Chardonnet
+    author_email: loic.chardonnet@gmail.com
+    author_url: gnugat.github.io
+    url_absolute: http://bisouland.piwai.info/fr
+
+engine:
+    themes:
+        - %dir%/vendor/carew/theme-bootstrap

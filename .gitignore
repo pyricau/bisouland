@@ -22,5 +22,3 @@
 # Configuration files
 app/config/parameters.yml
 app/config/capifony/parameters.rb
-web/news/.htaccess
-web/news/.htpasswd

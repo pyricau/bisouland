@@ -1,15 +1,16 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<!-- http://www.phpunit.de/manual/current/en/appendixes.configuration.html -->
+<!-- http://phpunit.de/manual/current/en/appendixes.configuration.html -->
 <phpunit
-    backupGlobals = "false"
-    colors = "true"
-    syntaxCheck = "false"
-    bootstrap = "bootstrap.php.cache" >
+    backupGlobals="false"
+    colors="true"
+    syntaxCheck="false"
+    bootstrap="bootstrap.php.cache">
 
     <testsuites>
-        <testsuite name = "Bisouland Test Suite">
-            <directory>../src/*/*/Tests</directory>
+        <testsuite name="Project Test Suite">
+            <directory>../src/*/*Bundle/Tests</directory>
+            <directory>../src/*/Bundle/*Bundle/Tests</directory>
         </testsuite>
     </testsuites>
 
@@ -17,13 +18,12 @@
         <whitelist>
             <directory>../src</directory>
             <exclude>
-                <directory>../src/*/*/Resources</directory>
-                <directory>../src/*/*/Tests</directory>
+                <directory>../src/*/*Bundle/Resources</directory>
+                <directory>../src/*/*Bundle/Tests</directory>
+                <directory>../src/*/Bundle/*Bundle/Resources</directory>
+                <directory>../src/*/Bundle/*Bundle/Tests</directory>
             </exclude>
         </whitelist>
     </filter>
 
-    <logging>
-          <!-- <log type = "coverage-html" target = "logs/report" /> -->
-    </logging>
 </phpunit>

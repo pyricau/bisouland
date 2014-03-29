@@ -4,6 +4,14 @@ This file logs the changes between versions.
 
 ## 3.0.0
 
+### build 2
+
+* removal of sources
+* reset of symfony configuration
+* reset of vendors
+* updated documentation
+* kept capifony
+
 ### build 1
 
 * Installed capifony for deployment;

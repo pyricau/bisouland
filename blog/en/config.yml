@@ -1,0 +1,13 @@
+site:
+    title: Bisouland
+    description: >
+        Free online strategy-game.
+        Take your opponents love points by sending them kisses!
+    author_name:  Loïc Chardonnet
+    author_email: loic.chardonnet@gmail.com
+    author_url: gnugat.github.io
+    url_absolute: http://bisouland.piwai.info/en
+
+engine:
+    themes:
+        - %dir%/vendor/carew/theme-bootstrap

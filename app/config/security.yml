@@ -14,7 +14,7 @@ security:
             memory:
                 users:
                     user:
-                        password: userpass
+                        password: %database_password%
                         roles:
                             - ROLE_USER
                     admin:

@@ -12,7 +12,7 @@ class UserController extends Controller
 {
     /**
      * @Method({"POST"})
-     * @Route("/user", name="create_user")
+     * @Route("/user", name="bisouland_api_create_user")
      */
     public function createUserAction(Request $request)
     {

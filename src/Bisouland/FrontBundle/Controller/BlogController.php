@@ -2,6 +2,7 @@
 
 namespace Bisouland\FrontBundle\Controller;
 
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
@@ -10,6 +11,7 @@ use Symfony\Component\HttpFoundation\Response;
 class BlogController extends Controller
 {
     /**
+     * @Method({"GET"})
      * @Route("/{file}", name="page")
      */
     public function pagesAction(Request $request, $file)
@@ -22,6 +24,7 @@ class BlogController extends Controller
     }
 
     /**
+     * @Method({"GET"})
      * @Route("/{year}/{month}/{day}/{file}")
      */
     public function postAction(Request $request, $year, $month, $day, $file)

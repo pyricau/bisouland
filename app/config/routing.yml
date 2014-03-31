@@ -1,3 +1,8 @@
 front:
     resource: "@BisoulandFrontBundle/Controller"
     type: annotation
+
+api:
+    resource: "@BisoulandApiBundle/Controller"
+    type: annotation
+    prefix: /api

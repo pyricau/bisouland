@@ -2,6 +2,7 @@
 
 namespace Bisouland\ApiBundle\Entity;
 
+use DateTime;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Security\Core\User\UserInterface;
 
@@ -47,6 +48,20 @@ class User implements UserInterface
     private $username;
 
     /**
+     * @ORM\Column(type = "integer", nullable = false)
+     *
+     * @var integer
+     */
+    private $lovePoints;
+
+    /**
+     * @ORM\Column(type = "datetime", nullable = false)
+     *
+     * @var DateTime
+     */
+    private $createdAt;
+
+    /**
      * @param string $username
      * @param string $password
      * @param string $salt
@@ -57,6 +72,8 @@ class User implements UserInterface
         $this->password = $password;
         $this->salt = $salt;
         $this->username = $username;
+        $this->createdAt = new DateTime();
+        $this->lovePoints = 300;
     }
 
     /** @return integer */
@@ -92,5 +109,16 @@ class User implements UserInterface
     /** {@inheritdoc} */
     public function eraseCredentials()
     {
+    }
+
+    /** @return integer */
+    public function getLovePoints()
+    {
+        $now = time();
+        $secondsDiff = $now - $this->createdAt->getTimestamp();
+
+        $producedLovePoints = floor((5500 * exp(-6) * $secondsDiff) / 3600);
+
+        return $this->lovePoints + $producedLovePoints;
     }
 }

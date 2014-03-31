@@ -11,7 +11,7 @@ class UserController extends Controller
 {
     /**
      * @Method({"GET"})
-     * @Route("/user/register.html", name="registration")
+     * @Route("/users/register.html")
      */
     public function registerAction(Request $request)
     {
@@ -19,6 +19,31 @@ class UserController extends Controller
         $viewName = $this->makeViewName($locale, 'register');
 
         return $this->render($viewName);
+    }
+
+    /**
+     * @Method({"GET"})
+     * @Route("/users/list.html")
+     */
+    public function listAction(Request $request)
+    {
+        $locale = $request->getSession()->get('locale', 'en');
+        $viewName = $this->makeViewName($locale, 'list');
+
+        $userRepository = $this->getDoctrine()->getRepository('BisoulandApiBundle:User');
+
+        $users = array();
+        $doctrineUsers = $userRepository->findAll();
+        foreach ($doctrineUsers as $doctrineUser) {
+            $users[] = array(
+                'username' => $doctrineUser->getUsername(),
+                'love_points' => $doctrineUser->getLovePoints(),
+            );
+        }
+
+        return $this->render($viewName, array(
+            'users' => json_encode($users),
+        ));
     }
 
     /**

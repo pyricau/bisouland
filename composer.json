@@ -4,7 +4,10 @@
     "type": "project",
     "description": "Free online strategy-game playable via web browser.",
     "autoload": {
-        "psr-0": { "": "src/" }
+        "psr-4": {
+            "": "src/",
+            "Bisouland\\Test\\Functional\\": "test/functional/"
+        }
     },
     "repositories": [
         {
@@ -14,7 +17,8 @@
     ],
     "require-dev": {
         "carew/carew": "~2.0@dev",
-        "carew/theme-bootstrap": "dev-bootstrap3 as 2.0.x-dev@dev"
+        "carew/theme-bootstrap": "dev-bootstrap3 as 2.0.x-dev@dev",
+        "phpunit/phpunit": "~3.7"
     },
     "require": {
         "php": ">=5.3.17",

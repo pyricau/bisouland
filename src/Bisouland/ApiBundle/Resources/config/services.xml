@@ -20,5 +20,13 @@
         >
             <argument type="service" id="doctrine.orm.default_entity_manager" />
         </service>
+
+        <service id="bisouland_api.json_post_parameters_listener"
+            class="Bisouland\ApiBundle\EventListener\JsonPostParametersListener"
+        >
+            <tag name="kernel.event_listener" event="kernel.request"
+                method="onKernelRequest"
+            />
+        </service>
     </services>
 </container>

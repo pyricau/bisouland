@@ -11,3 +11,8 @@ framework:
 web_profiler:
     toolbar: false
     intercept_redirects: false
+
+
+doctrine:
+    dbal:
+        dbname: %database_name%_test

@@ -15,10 +15,9 @@ class RequestCriteriaFactory
     public function makeCreateUser(Request $request)
     {
         $createUserCriteria = new CreateUserCriteria();
-        $formData = json_decode($request->getContent(), true);
 
-        $createUserCriteria->username = $formData['username'];
-        $createUserCriteria->plainPassword = $formData['plain_password'];
+        $createUserCriteria->username = $request->request->get('username');
+        $createUserCriteria->plainPassword = $request->request->get('plain_password');
 
         return $createUserCriteria;
     }

@@ -1,7 +1,6 @@
 #!/bin/sh
 
-DIR=$(dirname $0)
-cd $DIR/..
+dirname="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 
 COMPOSER_ARGUMENT=''
 

@@ -1,0 +1,2 @@
+ErrorDocument 300 /images/imgban.jpg
+ErrorDocument 404 /images/imgban.jpg

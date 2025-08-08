@@ -1,7 +1,0 @@
-# Git login and password
-set :scm_username, "username"
-set :scm_password, "password"
-
-# SSH login and password
-set :user, "username"
-set :password, "password"

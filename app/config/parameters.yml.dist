@@ -1,6 +1,0 @@
-parameters:
-    database_name: bisouland
-    database_user: root
-    database_password: ~
-
-    secret: ChangeMe!4423

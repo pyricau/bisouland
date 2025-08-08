@@ -1,26 +1,4 @@
-# Keep told directories
-!.gitkeep
-
-# Assets
-/web/css/*
-/web/js/*
-/web/bundles/
-
-# Dependencies
-/vendor/*
-/composer.lock
-/composer.phar
-
-# Temporary directories
-/app/cache/*
-/app/logs/*
-/app/sessions/*
-
-# Build files
-/app/bootstrap.php.cache
-/blog/en/web/*
-/blog/fr/web/*
-
 # Configuration files
-app/config/parameters.yml
-app/config/capifony/parameters.rb
+web/config/parameters.php
+web/news/.htaccess
+web/news/.htpasswd

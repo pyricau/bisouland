@@ -1,0 +1,4 @@
+AuthName "Page d'administration protégée"
+AuthType Basic
+AuthUserFile "/path/to/bisouland/web/news/.htpasswd"
+Require valid-user

@@ -2,9 +2,7 @@
 
 This file logs the changes between versions.
 
-## 3.0.0
+## 4.0.0: Revert to v1. Again.
 
-### build 1
-
-* Added english documentation;
-* roll back to version 1.
+* roll back to version 1
+* with english documentation

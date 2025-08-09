@@ -8,5 +8,7 @@
             "email": "faugeron.loic@gmail.com"
         }
     ],
-    "require-dev": {}
+    "require-dev": {
+        "friendsofphp/php-cs-fixer": "^3.85"
+    }
 }

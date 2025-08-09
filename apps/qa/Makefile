@@ -9,6 +9,7 @@ QA_SERVICE = app
 
 # Executables
 COMPOSER = docker compose exec $(QA_SERVICE) composer
+PHP_CS_FIXER = docker compose exec $(QA_SERVICE) php vendor/bin/php-cs-fixer
 
 # Misc
 .DEFAULT_GOAL = help
@@ -42,3 +43,12 @@ bash: ## Connect to the container via bash so up and down arrows go to previous 
 ## —— Project 🐘 ———————————————————————————————————————————————————————————————
 composer: ## Runs Composer (arg, eg `arg='install --optimize-autoloader'`)
 	@$(COMPOSER) $(arg)
+
+cs-check: ## Checks CS with PHP-CS-Fixer (arg, eg `arg='./src'`)
+	@$(PHP_CS_FIXER) check --verbose $(arg)
+
+qa: ## Equivalent to cs-check
+	@$(MAKE) cs-check
+
+cs-fix: ## Fixes CS with PHP-CS-Fixer (arg, eg `arg='./src'`)
+	@$(PHP_CS_FIXER) fix --verbose $(arg)

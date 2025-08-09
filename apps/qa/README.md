@@ -26,6 +26,15 @@ make bash
 ## Install dependencies
 make composer arg='install --optimize-autoloader'
 
+## Run php-cs-fixer (check)
+make qa
+
+## To just run php-cs-fixer check
+make cs-check
+
+# Run php-cs-fixer fix
+make cs-fix
+
 # Discover everything you can do
 make
 ```

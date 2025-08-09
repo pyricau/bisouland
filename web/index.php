@@ -352,32 +352,6 @@ header('Content-type: text/html; charset=UTF-8');
 			$NewMsgString = 'Pas de nouveau message';
 		}
 		
-		//Permet d'envoyer des messages au Mini Tchat :
-		if (isset($_POST['chat']) && !empty($_POST['chat']))
-		{
-		
-			$chatmess=$_POST['chat'];
-			
-			if(strlen($chatmess )> 100)
-			{
-				$chatmess = substr($chatmess,0,94).' [...]';
-			}
-
-			//Pas de addslashes, mais protégé.
-			
-			
-			if (!preg_match("![^ ]{14,}!", $chatmess))
-			{
-				$chatmess = addslashes(htmlentities ($chatmess));
-				$requete = mysql_query("SELECT message FROM chatbisous ORDER BY id DESC LIMIT 1");
-				$last = mysql_fetch_assoc($requete);
-				if ($last['message']!=$chatmess)
-				{
-					mysql_query("INSERT INTO chatbisous VALUES('', '$pseudo', '$chatmess', ".time().")");
-					mysql_query("DELETE FROM chatbisous ORDER BY id LIMIT 1");
-				}
-			}
-		}
 
 	}//Fin de partie pour gens connectés.
 	
@@ -579,36 +553,9 @@ header('Content-type: text/html; charset=UTF-8');
 				}
 				?>
 				<li><a href="livreor.html">Livre d'or</a></li>
-				<li><a href="tchat.html">Chat</a></li>
 				<li><a href="stats.html">Statistiques</a></li>
 				<li><a href="contact.html">Contact</a></li>
 			</ul>
-		</div>
-		<div class="sMenu">
-            <h3>Mini Chat</h3>
-			<?php
-			if ($_SESSION['logged'] == true)
-			{
-			?>
-			<form action="<?php echo $page;?>.html" method="post">
-				<p>
-					<label>Message :<input type="text" name="chat" size="12" maxlength="90"/></label><br /><br />
-					<input class="Rbutton" type="submit" value="Envoyer" />
-				</p>
-			</form>
-			<?php
-			}
-			?>
-			<a style="font-size:0.8em;" href="tchat.html">Plus de messages</a>
-			<?php
-				$reponse = mysql_query("SELECT pseudo, message, timestamp FROM chatbisous ORDER BY id DESC LIMIT 0,5");
-				
-				while ($donnees = mysql_fetch_assoc($reponse) )
-				{
-					$message=smileys($donnees['message']);
-					echo '<p><strong>',$donnees['pseudo'],'</strong>',date(' [H\hi] : ', $donnees['timestamp']),$message,'</p>';
-				}
-			?>
 		</div>
     </div>
 

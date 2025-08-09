@@ -98,7 +98,7 @@ if (isset($_GET['id']) && !empty($_GET['id']))
 		Il est probable que certaines choses te paraissent obscures pour le moment.
 		Pense à faire un tour sur la page Aide, puis sur la page Encyclopédie, pour découvrir comment fonctionne BisouLand.
 		En haut à droite se trouve le menu de jeu, c'est ici que tu pourras gérer ton compte BisouLand.
-		Si tu as des questions, n'hésite pas à employer le tchat, le forum ou envoyer un message privé à l'admin.
+		Si tu as des questions, n'hésite pas à envoyer un message privé à l'admin.
 		
 		Amicalement, et avec plein de Bisous
 		L'équipe BisouLand

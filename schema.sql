@@ -54,14 +54,6 @@ CREATE TABLE IF NOT EXISTS messages (
     titre VARCHAR(100) NOT NULL         -- Matches $titre/$objet from INSERT
 );
 
--- Chat table
--- Stores public chat messages, INSERT in index.php:376, SELECT in index.php:621
-CREATE TABLE IF NOT EXISTS chatbisous (
-    id INT PRIMARY KEY AUTO_INCREMENT,  -- Message ID, used for ordering and deletion
-    pseudo VARCHAR(50) NOT NULL,        -- Username of message sender
-    message VARCHAR(200) NOT NULL,      -- Chat message content, from $chatmess in index.php:376
-    timestamp INT NOT NULL              -- Message timestamp, set to time() in index.php:376
-);
 
 -- Online users tracking
 -- Tracks visitor IPs and connection times, managed in index.php:492-512

@@ -6,6 +6,6 @@ $reponse = mysql_query("SELECT pseudo, message, timestamp FROM chatbisous ORDER 
 while ($donnees = mysql_fetch_assoc($reponse) )
 {
 	$message=smileys($donnees['message']);
-	echo '<p><strong>',$donnees['pseudo'],'</strong>, le ',date('d/m/Y à H\hi', $donnees['timestamp']),' :<br />',$message,'</p>';
+	echo '<p><strong>',$donnees['pseudo'],'</strong>, le ',date('d/m/Y Ã  H\hi', $donnees['timestamp']),' :<br />',$message,'</p>';
 }
 ?>

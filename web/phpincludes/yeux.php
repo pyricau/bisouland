@@ -37,18 +37,18 @@
 						if ($max<0){$max=0;}
 						$lvlInfo=rand(0,$max);
 						
-						AdminMP($Did,"$pseudo t'a dévisagé",$pseudo." vient de te dévisager, et cherche peut-être à t'embrasser.");
+						AdminMP($Did,"$pseudo t'a dÃ©visagÃ©",$pseudo." vient de te dÃ©visager, et cherche peut-Ãªtre Ã  t'embrasser.");
 						
-						$resultat="Tu as dévisagé $pseudoCible";
+						$resultat="Tu as dÃ©visagÃ© $pseudoCible";
 
-            //Mise à jour des PA de l'espionné :
+            //Mise Ã  jour des PA de l'espionnÃ© :
 
 						//Note : 
 						//coeur, bouche, amour, jambes, smack, baiser, pelle, tech1, tech2, tech3, tech4, dent, langue, bloque, soupe, oeil
 						switch ($lvlInfo)
 						{
 						case 0:
-							$resDev='Degré d\'information : '.$lvlInfo.'/'.$max.'
+							$resDev='DegrÃ© d\'information : '.$lvlInfo.'/'.$max.'
 							
 							Malheureusement, tu n\'as pu obtenir aucune information sur '.$pseudoCible.'
 							';
@@ -62,7 +62,7 @@
 						{
               $DefAmour = calculterAmour($donnees['amour'],(time()-$donnees['timestamp']),$donnees['coeur'],$donnees['smack'],$donnees['baiser'],$donnees['pelle']);
 
-							$resDev='Degré d\'information : '.$lvlInfo.'/'.$max.'
+							$resDev='DegrÃ© d\'information : '.$lvlInfo.'/'.$max.'
 							
 							'.$pseudoCible.' dispose de : 
 							
@@ -95,10 +95,10 @@
 							';
 						}
 						
-						//Envoyer un MP si le user le désire.
+						//Envoyer un MP si le user le dÃ©sire.
 						if ($espionSource==1 && $lvlInfo!=0)
 						{
-							AdminMP($id,"Tu as dévisagé $pseudoCible",$resDev,1);
+							AdminMP($id,"Tu as dÃ©visagÃ© $pseudoCible",$resDev,1);
 						}
 					}
 					else
@@ -108,7 +108,7 @@
 				}
 				else
 				{
-					$resultat="Tu n'as pas le même niveau que ce joueur";
+					$resultat="Tu n'as pas le mÃªme niveau que ce joueur";
 				}
 		
 			}
@@ -119,10 +119,10 @@
 		}
 		else
 		{
-			$resultat="Il te faut des yeux niveau 1 pour dévisager un joueur";
+			$resultat="Il te faut des yeux niveau 1 pour dÃ©visager un joueur";
 		}
 ?>
-<h1>Dévisager</h1>
+<h1>DÃ©visager</h1>
 <br />
 <a href="<?php echo $Dnuage;?>.nuage.html">Retourner sur le nuage en cours</a><br />
 <br />
@@ -138,16 +138,16 @@
 		{
 			if ($espionSource==1)
 			{
-				echo "Un message t'a été envoyé pour enregistrer ces informations.<br />";
+				echo "Un message t'a Ã©tÃ© envoyÃ© pour enregistrer ces informations.<br />";
 			}
 			else
 			{
-				echo "Va dans Mon compte si tu désires sauvegarder ces informations dans des messages.<br />";
+				echo "Va dans Mon compte si tu dÃ©sires sauvegarder ces informations dans des messages.<br />";
 			}
 		}
 		if ($amour>=$cout)
 		{
-			echo '<a href="'.$Dnuage.'.'.$Dpos.'.yeux.html">Dévisager '.$pseudoCible.' de nouveau (nécessite '.$cout.' Points d\'Amour)</a>';
+			echo '<a href="'.$Dnuage.'.'.$Dpos.'.yeux.html">DÃ©visager '.$pseudoCible.' de nouveau (nÃ©cessite '.$cout.' Points d\'Amour)</a>';
 		}
 
 	}
@@ -159,5 +159,5 @@
 }
 else
 {
-	echo 'Tu n\'es pas connecté !!';
+	echo 'Tu n\'es pas connectÃ© !!';
 }

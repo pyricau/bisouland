@@ -81,7 +81,7 @@
 		{
 			if ($type==0)
 			{
-				//Apnée
+				//ApnÃ©e
 				if ($nbE[0][0]>=3 && $nbE[0][1]>=2)
 				{
 					return true;
@@ -125,11 +125,11 @@
 	
 if (isset($inMainPage) && $inMainPage==true)
 {	
-				//Nombre de type différents pour la classe concernée.
+				//Nombre de type diffÃ©rents pour la classe concernÃ©e.
 			$nbEvol=$nbType[$evolPage];
-			$evolution = -1; //Valeur par défaut ( = aucune construction en cours).
+			$evolution = -1; //Valeur par dÃ©faut ( = aucune construction en cours).
 			
-			//Annuler une construction ne permet pas de récupérer les points.
+			//Annuler une construction ne permet pas de rÃ©cupÃ©rer les points.
 			if (isset($_POST['cancel']) || isset($_GET['cancel']))
 			{
 				$classeCancel = $evolPage;
@@ -138,7 +138,7 @@ if (isset($inMainPage) && $inMainPage==true)
 				$amour += ($donnees_info['cout']/2);
 				mysql_query("DELETE FROM evolution WHERE auteur=".$id." AND classe=".$classeCancel);
 				
-				//On passe à une nouvelle construction si disponible.
+				//On passe Ã  une nouvelle construction si disponible.
 				$sql= mysql_query("SELECT id, duree, type, cout FROM liste WHERE auteur=$id AND classe=$classeCancel ORDER BY id LIMIT 0,1");
 				if($donnees_info = mysql_fetch_assoc($sql))
 				{
@@ -153,19 +153,19 @@ if (isset($inMainPage) && $inMainPage==true)
 				}				
 			}
 			
-			//On détermine s'il y a une construction en cours.
+			//On dÃ©termine s'il y a une construction en cours.
 			$sql = mysql_query("SELECT COUNT(*) AS nb_id FROM evolution WHERE auteur='".$id."' AND classe='".$evolPage."'");
 			if (mysql_result($sql,0,'nb_id') != 0)
 			{
-				//Si oui, on récupère les infos sur la construction.
+				//Si oui, on rÃ©cupÃ¨re les infos sur la construction.
 				$sql_info = mysql_query("SELECT timestamp, type FROM evolution WHERE auteur='".$id."' AND classe=".$evolPage."");
 				$donnees_info = mysql_fetch_assoc($sql_info);
-				//Date a laquelle la construction sera terminée.
+				//Date a laquelle la construction sera terminÃ©e.
 				$timeFin = $donnees_info['timestamp'];
 				//Type de la construction.
 				$evolution = $donnees_info['type'];
 				
-				//partie qui permet d'ajouter des constructions si il ya déjà des constructions en cours.
+				//partie qui permet d'ajouter des constructions si il ya dÃ©jÃ  des constructions en cours.
 				$i=0;
 				$stop=0;
 				if ($joueurBloque==1 && $evolPage==1) {$stop=1;}
@@ -173,7 +173,7 @@ if (isset($inMainPage) && $inMainPage==true)
 				{
 					if (isset($_POST[$Obj[$evolPage][$i]]))
 					{
-						//Pour l'instant, on gère ca que pour les bisous.
+						//Pour l'instant, on gÃ¨re ca que pour les bisous.
 						if ($evolPage==1)
 						{
 							if($amour>=$amourE[$evolPage][$i])
@@ -183,11 +183,11 @@ if (isset($inMainPage) && $inMainPage==true)
 									$sql = mysql_query("SELECT COUNT(*) AS nb_id FROM liste WHERE auteur=$id AND classe=1");
 									if (mysql_result($sql,0,'nb_id') < 9)
 									{
-										//Construction demandée, donc on arrete la boucle.
+										//Construction demandÃ©e, donc on arrete la boucle.
 										$stop=1;
 										$dureeConst=$tempsE[$evolPage][$i];
 										mysql_query("INSERT INTO liste (id, duree, classe, type, auteur, cout) VALUES ('', $dureeConst, $evolPage, $i, $id, ".$amourE[$evolPage][$i].")");
-										//On décrémente le nombre de points d'amour.
+										//On dÃ©crÃ©mente le nombre de points d'amour.
 										$amour -= $amourE[$evolPage][$i];
 									}
 								}
@@ -203,32 +203,32 @@ if (isset($inMainPage) && $inMainPage==true)
 				//Si rien n'est en construction, on peut construire.
 				$i=0;
 				$stop=0;
-				//On va vérifier pour chaque type d'objet si il ya une demande de construction.
-				//Une fois une demande trouvée, on arrete la boucle.
+				//On va vÃ©rifier pour chaque type d'objet si il ya une demande de construction.
+				//Une fois une demande trouvÃ©e, on arrete la boucle.
 				//Si on est sur la page de construction des Bisous et on attaque, pas de construction possible.
 				if ($joueurBloque==1 && $evolPage==1) {$stop=1;}
 				while($i!=$nbEvol && $stop==0)
 				{
-					//On regarde si on a demandé la construction, et si on a le nombre de points d'amour nécessaire.
-					//(La vérification du nombre de points d'amour permet d'éviter les tricheurs --> sécurité)
+					//On regarde si on a demandÃ© la construction, et si on a le nombre de points d'amour nÃ©cessaire.
+					//(La vÃ©rification du nombre de points d'amour permet d'Ã©viter les tricheurs --> sÃ©curitÃ©)
 					if (isset($_POST[$Obj[$evolPage][$i]]) && $amour>=$amourE[$evolPage][$i])
 					{
 						if (arbre($evolPage,$i,$nbE))
 						{
-							//Construction demandée, donc on arrete la boucle.
+							//Construction demandÃ©e, donc on arrete la boucle.
 							$stop=1;
 							//On calcule la date de fin du calcul (servira aussi pour l'affichage sur la page).
 							$timeFin = time() + $tempsE[$evolPage][$i];
-							//On met l'objet en construction. id non définie car auto incrémentée.
+							//On met l'objet en construction. id non dÃ©finie car auto incrÃ©mentÃ©e.
 							//Le champ id est peut etre a supprimer.
 							mysql_query("INSERT INTO evolution (id, timestamp, classe, type, auteur, cout) VALUES ('', '".$timeFin."', ".$evolPage.", ".$i.", ".$id.", ".$amourE[$evolPage][$i].")");
-							//On décrémente le nombre de points d'amour.
+							//On dÃ©crÃ©mente le nombre de points d'amour.
 							$amour -= $amourE[$evolPage][$i];
 							//On indique le type du batiment en construction, pour l'affichage sur la page.
 							$evolution = $i;
 						}
 					}
-					//Incrémentation de la boucle.
+					//IncrÃ©mentation de la boucle.
 					$i++;
 				}
 			}

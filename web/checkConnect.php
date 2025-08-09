@@ -8,7 +8,7 @@
 	$tempsUneSemaine=time()-604800;
 	$tempsUnMois=time()-2678400;
 	
-	//Si les joueurs se sont connectés depuis un mois, on enlève l'avertissement.
+	//Si les joueurs se sont connectes depuis un mois, on enleve l'avertissement.
 	$sql= mysql_query("SELECT id FROM membres WHERE averto>0 AND lastconnect>$tempsUnMois");
 	while($donnees = mysql_fetch_assoc($sql))
 	{
@@ -23,7 +23,7 @@
 
 		if ($donnees['id']!=1)
 		{
-		//Si compte non confirmé, on le supprime. (et que c'est po BisouLand)
+		//Si compte non confirme, on le supprime. (et que c'est po BisouLand)
 		if($donnees['confirmation']==0)
 		{
 			SupprimerCompte($donnees['id']);
@@ -37,7 +37,7 @@
 			}
 			else if($donnees['averto']<$tempsUneSemaine)
 			{
-				//On va pas embeter l'utilisateur, s'il n'a pas rï¿½pondu a l'avertissement, on supprime son compte.
+				//On va pas embeter l'utilisateur, s'il n'a pas repondu a l'avertissement, on supprime son compte.
 				SupprimerCompte($donnees['id']);
 				$i++;
 			}

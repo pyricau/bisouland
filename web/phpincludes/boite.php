@@ -11,10 +11,10 @@
 //////////////////////////////////////////////////////////////////////////////////////
 function checkall()
 {
-   // compte tous les éléments du formulaire en numérotant chronologiquement
+   // compte tous les Ã©lÃ©ments du formulaire en numÃ©rotant chronologiquement
   temp = document.main.elements.length;
   if (document.main.elements[0].checked)
-  { // si la case est cochée
+  { // si la case est cochÃ©e
     for (i=1; i < temp; i++)
      { // on coche toutes les autres
           document.main.elements[i].checked=1;
@@ -23,41 +23,41 @@ function checkall()
     else
     {
        for (i=1; i < temp; i++)
-      { // on décoche tout
+      { // on dÃ©coche tout
           document.main.elements[i].checked=0;
       }
     }
  }
  //////////////////////////////////////////////////////////////////////////////////////
  // function checkone()
- // cette fonction s'execute lorsqu'on coche ou décoche une checkbox qcq
- // elle fait le compte des checkbox cochée pour savoir s'il faut décocher
+ // cette fonction s'execute lorsqu'on coche ou dÃ©coche une checkbox qcq
+ // elle fait le compte des checkbox cochÃ©e pour savoir s'il faut dÃ©cocher
  // ou cocher la checkbox principale...
  //////////////////////////////////////////////////////////////////////////////////////
  function checkone()
  {
-    m=0; // initialisation du nombre de cases cochées
+    m=0; // initialisation du nombre de cases cochÃ©es
     temp = document.main.elements.length;
     for (i=1; i < temp; i++)
-    { // on commence à 1 pour ne pas prendre en compte la checkbox principale
+    { // on commence Ã  1 pour ne pas prendre en compte la checkbox principale
        if (document.main.elements[i].checked)
-      { // si la checkbox courante est cochée, on comptabilise
+      { // si la checkbox courante est cochÃ©e, on comptabilise
       m++;
       }
    }
     if (document.main.elements[0].checked)
-    { // si la checkbox principale est cochée, on la décoche
+    { // si la checkbox principale est cochÃ©e, on la dÃ©coche
        document.main.elements[0].checked=0;
     }
     else
-    { // dans le cas contraire, on vérifie que toutes les checkbox sont cochées
+    { // dans le cas contraire, on vÃ©rifie que toutes les checkbox sont cochÃ©es
         if (m == (temp-1)) document.main.elements[0].checked=1;
    }
  }
  //////////////////////////////////////////////////////////////////////////////////////
  // function verifselection()
  // cette fonction s'execute qd on clique sur le bouton supprimer
- // elle vérifie que l'on a bien selectionné un objet au moins...
+ // elle vÃ©rifie que l'on a bien selectionnÃ© un objet au moins...
  //////////////////////////////////////////////////////////////////////////////////////
  function verifselection()
  {
@@ -72,7 +72,7 @@ function checkall()
     }
     if (n != 0)
     {
-       if (confirm("Êtes-vous sûr de vouloir supprimer ce(s) messages(s)?"))
+       if (confirm("ÃŠtes-vous sÃ»r de vouloir supprimer ce(s) messages(s)?"))
        {
 			return true;
        }
@@ -83,7 +83,7 @@ function checkall()
     }
     else
    {
-       alert("Veuillez sélectionner au moins un message !");
+       alert("Veuillez sÃ©lectionner au moins un message !");
 	  return false;
     }
  }
@@ -146,7 +146,7 @@ if ($_SESSION['logged'] == true)
 				<td><input type="checkbox" name="supboite[<?php echo $donnees['id']; ?>]" onclick="checkone()" /></td>
 				<td><?php if ($donnees['statut']==0){ echo '<a class="bulle" style="cursor: default;" onclick="return false;" href=""><img src="images/newmess.png" alt="Message non lu" title="" /><span>Message non lu</span></a>';}?></td>
 				<td> <?php echo  stripslashes($donnees2['pseudo']);?> </td>
-				<td>le <?php echo date('d/m/Y à H\hi', $donnees['timestamp']);?></td>
+				<td>le <?php echo date('d/m/Y Ã  H\hi', $donnees['timestamp']);?></td>
 				<td><a href="<?php echo $donnees['id'];?>.lire.html"><?php echo stripslashes($donnees['titre']);?></a></td>
 			</tr>
 <?php

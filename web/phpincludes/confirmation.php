@@ -25,7 +25,7 @@ function GiveNewPosition($idJoueur)
 	
 		$sql_info = mysql_query("SELECT position FROM membres WHERE nuage=$NbNuages");
 		$i=0;
-		//On récupère les positions occupées.
+		//On rÃ©cupÃ¨re les positions occupÃ©es.
 		while ($donnees_info = mysql_fetch_assoc($sql_info))
 		{
 			$OccPos[$i]=$donnees_info['position'];
@@ -66,10 +66,10 @@ if ($_SESSION['logged'] == false)
 {
 if (isset($_GET['id']) && !empty($_GET['id']))
 {
-   //Mesure de sécurité, notamment pour éviter les injections sql.
+   //Mesure de sÃ©curitÃ©, notamment pour Ã©viter les injections sql.
    $id = htmlentities(addslashes($_GET['id']));
    
-   //La requête qui compte le nombre de pseudos
+   //La requÃªte qui compte le nombre de pseudos
    $sql = mysql_query("SELECT COUNT(*) AS nb_id FROM membres WHERE id='".$id."'");
    
    if (mysql_result($sql,0,'nb_id') != 0)
@@ -78,10 +78,10 @@ if (isset($_GET['id']) && !empty($_GET['id']))
       $sql_info = mysql_query("SELECT confirmation FROM membres WHERE id='".$id."'");
       $donnees_info = mysql_fetch_assoc($sql_info);
      
-      //Si la valeur est égal à 0.
+      //Si la valeur est Ã©gal Ã  0.
       if ($donnees_info['confirmation'] == 0)
       {
-         //Requête sql modifiant la valeur du champ confirmation.
+         //RequÃªte sql modifiant la valeur du champ confirmation.
          mysql_query("UPDATE membres SET confirmation='1' WHERE id='".$id."'");
 		 
 		 //Pour connaitre le pseudo
@@ -94,22 +94,22 @@ if (isset($_GET['id']) && !empty($_GET['id']))
 		 
 		GiveNewPosition($id);
 		
-		AdminMP($id,"Bienvenue sur BisouLand","Merci pour l'intérêt que tu portes à BisouLand.
+		AdminMP($id,"Bienvenue sur BisouLand","Merci pour l'intÃ©rÃªt que tu portes Ã  BisouLand.
 		Il est probable que certaines choses te paraissent obscures pour le moment.
-		Pense à faire un tour sur la page Aide, puis sur la page Encyclopédie, pour découvrir comment fonctionne BisouLand.
-		En haut à droite se trouve le menu de jeu, c'est ici que tu pourras gérer ton compte BisouLand.
-		Si tu as des questions, n'hésite pas à employer le tchat, le forum ou envoyer un message privé à l'admin.
+		Pense Ã  faire un tour sur la page Aide, puis sur la page EncyclopÃ©die, pour dÃ©couvrir comment fonctionne BisouLand.
+		En haut Ã  droite se trouve le menu de jeu, c'est ici que tu pourras gÃ©rer ton compte BisouLand.
+		Si tu as des questions, n'hÃ©site pas Ã  employer le tchat, le forum ou envoyer un message privÃ© Ã  l'admin.
 		
 		Amicalement, et avec plein de Bisous
-		L'équipe BisouLand
+		L'Ã©quipe BisouLand
 		");		
 		 
         //Le petit message.
-        echo '<p>Le compte ayant pour pseudo <strong>'.$pseudo.'</strong> a bien été validé !<br />Vous pouvez maintenant vous connecter</p>';
+        echo '<p>Le compte ayant pour pseudo <strong>'.$pseudo.'</strong> a bien Ã©tÃ© validÃ© !<br />Vous pouvez maintenant vous connecter</p>';
       }
       else
       {
-         echo 'Erreur : ce compte est déjà confirmé !';
+         echo 'Erreur : ce compte est dÃ©jÃ  confirmÃ© !';
       }
    }
    else
@@ -120,11 +120,11 @@ if (isset($_GET['id']) && !empty($_GET['id']))
 }
 else
 {
-  echo 'Erreur : aucun compte n\'est indiqué !';
+  echo 'Erreur : aucun compte n\'est indiquÃ© !';
 }
 }
 else
 {
-echo 'Erreur : Vous devez vous déconnecter avant de confirmer un compte. !';
+echo 'Erreur : Vous devez vous dÃ©connecter avant de confirmer un compte. !';
 }
 ?>

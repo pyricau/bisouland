@@ -18,7 +18,7 @@ Il faut une bouche au moins niveau 2 pour pouvoir commencer &agrave; cr&eacute;e
 <br />
 Plus la bouche a un niveau &eacute;lev&eacute;, plus les bisous sont cr&eacute;&eacute;s rapidement.<br />
 <br />
-Mais les bisous ont un coup d'entretien, n'en fait pas trop où ce sera la ruine assur&eacute;e.<br />
+Mais les bisous ont un coup d'entretien, n'en fait pas trop oÃ¹ ce sera la ruine assur&eacute;e.<br />
 <br />
 Il est possible d'annuler une cr&eacute;ation en cours.<br />
 <br />

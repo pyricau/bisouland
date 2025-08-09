@@ -1,5 +1,5 @@
 <?php
-//Ce qu'on affiche si on est connecté
+//Ce qu'on affiche si on est connectÃ©
 if ($_SESSION['logged'] == true)
 {
 
@@ -42,7 +42,7 @@ if (arbre($evolPage,$i,$nbE))
 	<script language="JavaScript">
 		duree="<?php echo ($timeFin-time());?>";
 		stop="";
-		fin="Terminé";
+		fin="TerminÃ©";
 		next="Continuer";
 		adresseStop="";
 		adresseFin="construction.html";

@@ -15,7 +15,7 @@ if ($_SESSION['logged'] == true && $pseudo=='admin')
 	Ce site est en perp&eacute;tuelle &eacute;volution, n'h&eacute;site donc pas &agrave; me signaler tout bug.<br />
 	<span class="info">[ Ce site est optimis&eacute; pour <a href="http://www.mozilla-europe.org/fr/products/firefox/">Mozilla Firefox</a> ]</span><br />
 	<br />
-	Piwaï (admin)
+	PiwaÃ¯ (admin)
 </p>
 <h1>.:Les News:.</h1>
 
@@ -71,10 +71,10 @@ while ($donnees = mysql_fetch_array($retour))
         <?php echo stripslashes($donnees['titre']);?>
 	</h3>
 	<em>
-        le <?php echo date('d/m/Y à H\hi', $donnees['timestamp']); ?></em>
+        le <?php echo date('d/m/Y Ã  H\hi', $donnees['timestamp']); ?></em>
 		<?php if ($donnees['timestamp_modification']!=0) { ?>
 		<br />
-		<em>modifi&eacute;e le <?php echo date('d/m/Y à H\hi', $donnees['timestamp_modification']); ?></em>
+		<em>modifi&eacute;e le <?php echo date('d/m/Y Ã  H\hi', $donnees['timestamp_modification']); ?></em>
 		<?php }?>
 
 		<p>

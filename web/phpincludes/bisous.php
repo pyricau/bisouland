@@ -1,15 +1,15 @@
 <?php
-//Ce qu'on affiche si on est connecté
+//Ce qu'on affiche si on est connectÃ©
 if ($_SESSION['logged'] == true)
 {
 ?>
 <h1>Bisous</h1>
 Les Bisous vous permettent d'obtenir de l'amour des autres joueurs<br />
-<span class="info">[ Les Bisous ont un coût d'entretien : 1 niveau de Coeur correspond à 3 Smacks, 2 Baisers, ou 1 Baiser langoureux ]</span><br />
+<span class="info">[ Les Bisous ont un coÃ»t d'entretien : 1 niveau de Coeur correspond Ã  3 Smacks, 2 Baisers, ou 1 Baiser langoureux ]</span><br />
 <?php
 if ($joueurBloque==1)
 {
-	echo '<br /><span class="info">[ Une action est en cours, tu ne peux pas créer de nouveaux Bisous ]</span><br />';
+	echo '<br /><span class="info">[ Une action est en cours, tu ne peux pas crÃ©er de nouveaux Bisous ]</span><br />';
 }
 
 if ($evolution!=-1)
@@ -118,7 +118,7 @@ if (arbre($evolPage,$i,$nbE))
 	<script language="JavaScript">
 		duree="<?php echo ($timeFin-time());?>";
 		stop="Annuler";
-		fin="Terminé";
+		fin="TerminÃ©";
 		next="Continuer";
 		adresseStop="stop.bisous.html";
 		adresseFin="bisous.html";
@@ -127,8 +127,8 @@ if (arbre($evolPage,$i,$nbE))
 	</script>
 	<?php
 	}
-	echo 'Nombre de points d\'amour requis pour en créer un : ',formaterNombre($amourE[1][$i]),'<br />';
-	echo 'Temps de création : ',strTemps($tempsE[1][$i]),'<br />';
+	echo 'Nombre de points d\'amour requis pour en crÃ©er un : ',formaterNombre($amourE[1][$i]),'<br />';
+	echo 'Temps de crÃ©ation : ',strTemps($tempsE[1][$i]),'<br />';
 	if ($joueurBloque==0)
 	{
 		if ($amour>=$amourE[1][$i])
@@ -138,7 +138,7 @@ if (arbre($evolPage,$i,$nbE))
 		}
 		else
 		{
-			echo '<span class="info">[ Il te manque '.formaterNombre(ceil($amourE[1][$i]-$amour)).' points d\'amour pour pouvoir créer ce bisou ]</span><br />';
+			echo '<span class="info">[ Il te manque '.formaterNombre(ceil($amourE[1][$i]-$amour)).' points d\'amour pour pouvoir crÃ©er ce bisou ]</span><br />';
 		}
 	}
 	

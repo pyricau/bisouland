@@ -5,7 +5,7 @@ if ($_SESSION['logged'] == true)
 ?>
 
 <h1>Changer de mot de passe</h1>
-Il est désormais possible de changer de mot de passe, si l'ancien ne vous convient plus.<br />
+Il est dÃ©sormais possible de changer de mot de passe, si l'ancien ne vous convient plus.<br />
 <br />
 <?php
 	if (isset ($_POST['changepswd']))
@@ -14,7 +14,7 @@ Il est désormais possible de changer de mot de passe, si l'ancien ne vous convie
 		{
 			$oldmdp = $_POST['oldpass'];
 			$oldmdp = md5($oldmdp);
-			//Sélection des informations.
+			//SÃ©lection des informations.
 			$sql_info = mysql_query("SELECT mdp FROM membres WHERE id='".$id."'");
 			$donnees_info = mysql_fetch_array($sql_info);
 			$oldmdp2=$donnees_info['mdp'];
@@ -32,8 +32,8 @@ Il est désormais possible de changer de mot de passe, si l'ancien ne vous convie
 						{
 							//On change le mot de passe.
 							ChangerMotPasse($id,$newpass);
-							$resultat='Le mot de passe a été changé.<br /><br />
-							Il vous sera demandé lors de votre prochaine visite sur BisouLand.';
+							$resultat='Le mot de passe a Ã©tÃ© changÃ©.<br /><br />
+							Il vous sera demandÃ© lors de votre prochaine visite sur BisouLand.';
 						}
 						else
 						{
@@ -47,12 +47,12 @@ Il est désormais possible de changer de mot de passe, si l'ancien ne vous convie
 				}
 				else
 				{
-					$resultat='Vous n\'avez pas rentré deux fois le même mot de passe.';
+					$resultat='Vous n\'avez pas rentrÃ© deux fois le mÃªme mot de passe.';
 				}		
 			}
 			else
 			{
-				$resultat='Le mot de passe est éronné.';
+				$resultat='Le mot de passe est Ã©ronnÃ©.';
 			}
 		}
 		else
@@ -72,10 +72,10 @@ Il est désormais possible de changer de mot de passe, si l'ancien ne vous convie
 	<input type="password" name="oldpass" tabindex="40" size="15" maxlength="15" value=""/>
 </label><br />
 <label>Nouveau mot de passe: <br />
-	<span class="petit">(Entre 5 et 15 caractères)</span><br />
+	<span class="petit">(Entre 5 et 15 caractÃ¨res)</span><br />
 	<input type="password" name="newpass" tabindex="50" size="15" maxlength="15" value=""/>
 </label><br />
-<label>Réécrivez le nouveau mot de passe: <br />
+<label>RÃ©Ã©crivez le nouveau mot de passe: <br />
 	<input type="password" name="newpass2" tabindex="60" size="15" maxlength="15" value=""/>
 </label><br />
 
@@ -87,7 +87,7 @@ Il est désormais possible de changer de mot de passe, si l'ancien ne vous convie
 }
 else
 {
-echo 'Tu n\'es pas connecté !!';
+echo 'Tu n\'es pas connectÃ© !!';
 }
 
 ?>

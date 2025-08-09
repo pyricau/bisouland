@@ -1,5 +1,5 @@
 <?php
-//Ce qu'on affiche si on est connectï¿½
+//Ce qu'on affiche si on est connecte
 if ($_SESSION['logged'] == true)
 {
 
@@ -35,11 +35,11 @@ if ($_SESSION['logged'] == true)
 	<input type="submit" name="infos" value="Envoyer" />
 </form>
 <br />
-<a href="changepass.html" title="Changer de mot de passe.">Je désire changer de mot de passe.</a><br />
+<a href="changepass.html" title="Changer de mot de passe.">Je desire changer de mot de passe.</a><br />
 <br />
 Si tu en as ras le bol des bisous, tu peux supprimer ton compte !!<br />
 <form method="post" action="accueil.html" id="supprime">
-	<input type="button" value="Supprimer" onclick="if (confirm('Malheureux, es tu bien sûr de vouloir supprimer ton compte ?')) { document.forms.supprime.submit(); } else  { exit; }" />
+	<input type="button" value="Supprimer" onclick="if (confirm('Malheureux, es tu bien sur de vouloir supprimer ton compte ?')) { document.forms.supprime.submit(); } else  { exit; }" />
 	<input type="hidden" name="suppr">
 </form>
 <?php

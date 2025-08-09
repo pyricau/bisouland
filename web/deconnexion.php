@@ -3,7 +3,7 @@ session_start();
 
 include 'phpincludes/bd.php';
 
-//Ensuite on vérifie que la variable $_SESSION['logged'] existe et vaut bien true.
+//Ensuite on vÃ©rifie que la variable $_SESSION['logged'] existe et vaut bien true.
 if (isset($_SESSION['logged']) && $_SESSION['logged'] == true)
 {
 
@@ -22,7 +22,7 @@ if (isset($_SESSION['logged']) && $_SESSION['logged'] == true)
 }
 else
 {
-	$_SESSION['errCon']= 'Erreur : vous devez être connecté pour vous déconnecter !';
+	$_SESSION['errCon']= 'Erreur : vous devez Ãªtre connectÃ© pour vous dÃ©connecter !';
 	$_SESSION['logged'] = false;
 	header("location: connexion.html");
 }

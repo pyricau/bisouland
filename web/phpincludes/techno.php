@@ -1,11 +1,11 @@
 <?php
-//Ce qu'on affiche si on est connecté
+//Ce qu'on affiche si on est connectÃ©
 if ($_SESSION['logged'] == true)
 {
 
 ?>
 <h1>Techniques</h1>
-Les techniques vous permettent de mieux vous préparer à faire preuve d'amour.<br />
+Les techniques vous permettent de mieux vous prÃ©parer Ã  faire preuve d'amour.<br />
 <?php
 
 for($i=0;$i!=$nbType[$evolPage];$i++)
@@ -42,7 +42,7 @@ if (arbre($evolPage,$i,$nbE))
 	<script language="JavaScript">
 		duree="<?php echo ($timeFin-time());?>";
 		stop="";
-		fin="Terminé";
+		fin="TerminÃ©";
 		next="Continuer";
 		adresseStop="";
 		adresseFin="techno.html";

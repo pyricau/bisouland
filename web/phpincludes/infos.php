@@ -7,7 +7,7 @@ R&eacute;capitulatif te permettant d'orienter ton d&eacute;veloppement.<br />
 Attention : ces informations ne sont pas mises &agrave; jour en direct.<br />
 Je les donne donc &agrave; titre indicatif, et je les modifierai au fur et &agrave; mesure.<br />
 <br />
-Tous les 1000 points dépensés dans une cr&eacute;ation (organe, technique, bisous), tu gagnes 1 point de score.<br />
+Tous les 1000 points dÃ©pensÃ©s dans une cr&eacute;ation (organe, technique, bisous), tu gagnes 1 point de score.<br />
 <br />
 Lorsque tu annules une cr&eacute;ation, tu ne r&eacute;cup&eacute;res que la  moiti&eacute; des Points d'Amour investi dans sa construction.<br />
 <br />
@@ -139,7 +139,7 @@ $requis[2]['nom'] = array(
 	'Manger de la soupe'
 );
 
-//Apnée
+//ApnÃ©e
 $requis[2][0]['Classe'] = array(
 	0, //Organes
 	0 //Organes
@@ -175,7 +175,7 @@ $requis[2][2]['Classe'] = array(
 );
 $requis[2][2]['Type'] = array(
 	2, //Langue
-	0, //Apnée
+	0, //ApnÃ©e
 	1 //Surprise
 );
 $requis[2][2]['Niveau'] = array(
@@ -266,7 +266,7 @@ echo '<table width="80%">
 echo '</table>
 <br />';
 }
-}//logué
+}//loguÃ©
 else
 {
 	echo 'Erreur... et vouaip !! :D';

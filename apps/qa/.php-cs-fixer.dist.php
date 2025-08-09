@@ -13,9 +13,7 @@ $finder = (new PhpCsFixer\Finder())
 
 return (new PhpCsFixer\Config())
     ->setRules([
-        // @PSR1
-        // 'encoding',
-        // 'full_opening_tag',
+        '@PSR1' => true,
     ])
     ->setRiskyAllowed(true)
     ->setParallelConfig(ParallelConfigFactory::detect())

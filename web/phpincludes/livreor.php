@@ -48,7 +48,7 @@ $nombreDePages  = ceil($totalDesMessages / $nombreDeMessagesParPage);
 <form method="post" action="livreor.html">
     <p>Le livre d'or a été désactivé, en vue du passage à la v2. Vous pourrez de nouveau poster des messages dans le livre d'or
 	dès que la version 2 de BisouLand sera lancée.<br /> <br />
-	En attendant, vous pouvez visiter le Livre d'Or de la version 2 ici : <a href="http://bisoutest.piwai.info/livre_or.html">Nouveau Livre d'Or</a></p>
+	En attendant, vous pouvez visiter le Livre d'Or de la version 2 ici : <a href="livre_or.html">Nouveau Livre d'Or</a></p>
    <?php 
    /*
     <p>

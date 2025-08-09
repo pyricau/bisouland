@@ -528,7 +528,7 @@ header('Content-type: text/html; charset=ISO-8859-1');
 		</title>
         <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" /> 
 		<link rel="stylesheet" media="screen" type="text/css" title="bisouStyle2" href="includes/bisouStyle2.css" /> 
-		<link rel="shorcut icon" href="http://bisouland.piwai.info/favicon.ico"/>
+		<link rel="shorcut icon" href="/favicon.ico"/>
 		<meta name="description" content="<?php echo $title;?>"/>
 		<meta http-equiv="Content-Language" content="fr" />
     </head>
@@ -536,7 +536,7 @@ header('Content-type: text/html; charset=ISO-8859-1');
     <body>
 <div id="superbig">
 	
-	<a href="http://bisouland.piwai.info" id="Ban"></a>
+	<a href="/" id="Ban"></a>
 	
 	<ul id="speedbarre">
 
@@ -564,22 +564,6 @@ header('Content-type: text/html; charset=ISO-8859-1');
 			
 	</ul>
 	<div id="pub">
-<script type="text/javascript"><!--
-google_ad_client = "pub-4188567995096212";
-google_ad_width = 728;
-google_ad_height = 90;
-google_ad_format = "728x90_as";
-google_ad_type = "text_image";
-google_ad_channel ="";
-google_color_border = "FFC2CC";
-google_color_bg = "FFC2CC";
-google_color_link = "BE0013";
-google_color_url = "FF253A";
-google_color_text = "FF253A";
-//--></script>
-<script type="text/javascript"
-  src="http://pagead2.googlesyndication.com/pagead/show_ads.js">
-</script>
 	</div>
 	
 	<div id="Menu">
@@ -595,9 +579,8 @@ google_color_text = "FF253A";
 				}
 				?>
 				<li><a href="livreor.html">Livre d'or</a></li>
-				<li><a href="http://bisouland.piwai.info/tinc?key=CfDfgUW6&channel=136968" onclick="window.open(this.href);return false;">Chat</a></li>
+				<li><a href="tchat.html">Chat</a></li>
 				<li><a href="stats.html">Statistiques</a></li>
-				<li><a href="liens.html">Liens</a></li>
 				<li><a href="contact.html">Contact</a></li>
 			</ul>
 		</div>
@@ -670,18 +653,6 @@ google_color_text = "FF253A";
 				<li><a href="membres.html">Joueurs</a></li>
 			</ul>
 		</div>
-		<div class="sMenu">
-            <h3>Partenaires</h3>
-			<ul>
-				<li><a href="http://2H4U.piwai.info" title="2H4U">2H4U</a></li>
-				<li><a href="http://www.geneeweb.com" title="GeneeWeb">GeneeWeb</a></li>
-				<li><a href="http://www.lord-of-war.c.la" title="Lord Of War">Lord Of War</a></li>
-				<li><a href="http://www.blog-insa.com" title="Blog INSA">Blog INSA</a></li>
-				<li><a href="http://www.poudlardnet.com">PoudlardNet</a></li>
-				
-			</ul>
-			<br />
-		</div>
     </div>
 
 	<div id="corps">
@@ -734,20 +705,12 @@ if ($_SESSION['logged'] == true)
 }
 ?>
 </p>
-		<p class="Tpetit">Tous droits r&eacute;serv&eacute;s &copy; <a href="mailto:bisouland (arobase) piwai.info">BisouLand</a> - Site respectant les r&egrave;gles de la CNIL</p>
+		<p class="Tpetit">Tous droits r&eacute;serv&eacute;s &copy; BisouLand - Site respectant les r&egrave;gles de la CNIL</p>
 
     </div>
     
 
 </div>
-<script type="text/javascript">
-var gaJsHost = (("https:" == document.location.protocol) ? "https://ssl." : "http://www.");
-document.write(unescape("%3Cscript src='" + gaJsHost + "google-analytics.com/ga.js' type='text/javascript'%3E%3C/script%3E"));
-</script>
-<script type="text/javascript">
-var pageTracker = _gat._getTracker("UA-5875795-3");
-pageTracker._trackPageview();
-</script>
     </body>
 
 </html>

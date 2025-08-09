@@ -29,7 +29,7 @@ Cette section apporte des réponses à de nombreuses questions récurrentes.<br />
 		"Il te suffit de te connecter, puis de lire les pages Aide et Encyclopédie,
 		n'hésite pas à poser des questions sur le tchat et le forum.",
 		"Merci de rapporter toute erreur, que ce soit un problème technique ou une faute d'orthographe.<br />
-		Vous pouvez pour cela envoyer un message a Admin, ou un mail à bisouland (arobase) piwai.info"
+		Vous pouvez pour cela creer un ticket sur https://github.com/pyricau/bisouland"
 	);
 		
 	$question[1] = array(

@@ -4,6 +4,7 @@ This file logs the changes between versions.
 
 ## 4.0: Second v1 Rollback
 
+* `4.0.6`: Moved OG app to apps/monolith
 * `4.0.5`: Trust and Safety - removed chat
 * `4.0.4`: fixed encoding issues (now using UTF-8)
 * `4.0.3`: removed email support

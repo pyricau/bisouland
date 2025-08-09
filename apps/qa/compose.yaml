@@ -1,0 +1,11 @@
+name: skyswoon-qa
+
+services:
+  app:
+    build: .
+    command: php -S 0.0.0.0:8000
+    volumes:
+      # Mount current directory into container for QA tools and configs
+      - .:/apps/qa
+      # Mount the monolith source code for analysis
+      - ../monolith:/apps/monolith

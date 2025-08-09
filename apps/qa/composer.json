@@ -1,0 +1,12 @@
+{
+    "name": "bl/qa",
+    "type": "project",
+    "license": "Apache-2.0",
+    "authors": [
+        {
+            "name": "Loïc Faugeron",
+            "email": "faugeron.loic@gmail.com"
+        }
+    ],
+    "require-dev": {}
+}

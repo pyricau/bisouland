@@ -1,4 +1,4 @@
-name: skyswoon
+name: skyswoon-monolith
 
 services:
   web:

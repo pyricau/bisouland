@@ -4,6 +4,7 @@ This file logs the changes between versions.
 
 ## 4.0: Second v1 Rollback
 
+* `4.0.5`: Trust and Safety - removed chat
 * `4.0.4`: fixed encoding issues (now using UTF-8)
 * `4.0.3`: removed email support
 * `4.0.2`: removed dead URLs and external Ad / Analytics

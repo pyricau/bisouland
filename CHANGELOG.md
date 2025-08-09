@@ -2,11 +2,8 @@
 
 This file logs the changes between versions.
 
-## 4.0.1: Dockerized
+## 4.0: Second v1 Rollback
 
-* application can now be run in a Docker container. For better or for worse
-
-## 4.0.0: Revert to v1. Again.
-
-* roll back to version 1
-* with english documentation
+* `4.0.2`: removed dead URLs and external Ad / Analytics
+* `4.0.1`: application dockerized
+* `4.0.0`: revert to v1, with added english documentation

@@ -12,6 +12,8 @@ A delightfully retro online strategy game from 2005, lovingly preserved in its
 original state. Experience a fascinating time capsule of early web development
 and quirky game design.
 
+![Screenshot](Screenshot.png)
+
 ## Installation
 
 Requirements, the ancient LAMP stack:

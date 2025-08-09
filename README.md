@@ -70,10 +70,6 @@ DATABASE_PASSWORD=skyswoon_pass
 DATABASE_NAME=skyswoon
 # MySQL root password (for Docker)
 MYSQL_ROOT_PASSWORD=root_password
-
-# Email
-EMAIL_ADMIN=admin@skyswoon.local
-EMAIL_EXPEDITOR=noreply@skyswoon.local
 ```
 
 ### Administration access
@@ -92,11 +88,6 @@ Then simply set the absolute path of the project in the `web/news/.htaccess`
 file, and put a
 [generated password](http://www.htaccesstools.com/htpasswd-generator/) in the
 `web/news/.htpasswd` file.
-
-### Emailing
-
-Now that everything is configured, check email sending for registration and
-newsletter.
 
 ## Structure
 

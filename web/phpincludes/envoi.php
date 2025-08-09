@@ -18,34 +18,6 @@ function Envoyer_Message($pseudoS,$pseudoC,$source, $cible, $titre, $message)
 	}
 	
 	mysql_query("INSERT INTO messages VALUES('', '" .$source. "', '" .$cible. "', '" . $message . "', '" .$timer. "', '0', '" .$titre."')");
-
-	$retour = mysql_query("SELECT alerte, email FROM membres WHERE id='".$cible."'");
-	$donnees = mysql_fetch_assoc($retour);
-	if ($donnees['alerte']==1)
-	{
-	
-	$retour2 = mysql_query("SELECT id FROM messages WHERE posteur='".$source."'ORDER BY timestamp DESC LIMIT 0, 1");
-	$donnees2 = mysql_fetch_assoc($retour2);
-	$idmsg = $donnees2['id'];
-	
-		$message ='Bonjour '.stripslashes($pseudoC).' !!
-
-	Tu as reçu un nouveau message privé de la part de '.$pseudoS.' sur BisouLand.
-	
-Tu peux lire ce message à l\'adresse suivante :
-http://bisouland.piwai.info/'.$idmsg.'.lire.html
-
-Tu peux te rendre sur BisouLand à l\'adresse suivante :
-
-http://bisouland.piwai.info
-
-A bientot sur BisouLand !!!
-
-La BisouTeam.';
-								
-mail($donnees['email'], 'Nouveau message privé sur BisouLand', $message, 'From:'.EMAIL_EXPEDITOR);
-
-	}
 }
 if ($_SESSION['logged'] == true)
 {

@@ -27,7 +27,7 @@ Cette section apporte des reponses a de nombreuses questions recurrentes.<br />
 		"Pour s'inscrire, il suffit d'aller sur la page Inscription et de remplir les champs appropries.<br />
 		Ton compte sera automatiquement confirme a l'inscription.",
 		"Il te suffit de te connecter, puis de lire les pages Aide et Encyclopedie,
-		n'hesite pas a poser des questions sur le tchat et le forum.",
+		n'hesite pas a poser des questions en envoyant un message privé à l'admin.",
 		"Merci de rapporter toute erreur, que ce soit un probleme technique ou une faute d'orthographe.<br />
 		Vous pouvez pour cela creer un ticket sur https://github.com/pyricau/bisouland"
 	);

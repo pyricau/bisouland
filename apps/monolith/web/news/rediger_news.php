@@ -21,11 +21,10 @@ header('Content-type: text/html; charset=UTF-8');
 
 <?php
 
-	include '../phpincludes/bd.php';
-	bd_connect();
+    include '../phpincludes/bd.php';
+bd_connect();
 
-if (isset($_GET['modifier_news'])) // Si on demande de modifier une news
-{
+if (isset($_GET['modifier_news'])) { // Si on demande de modifier une news
 
 
 
@@ -33,18 +32,16 @@ if (isset($_GET['modifier_news'])) // Si on demande de modifier une news
     $retour = mysql_query('SELECT * FROM newsbisous WHERE id=' . $_GET['modifier_news']);
     $donnees = mysql_fetch_array($retour);
     
-	
+    
     // On place le titre et le contenu dans des variables simples
     $titre = $donnees['titre'];
     $contenu = stripslashes($donnees['contenu']);
     $id_news = $donnees['id']; // Cette variable va servir pour se souvenir que c'est une modification
-}
-else // C'est qu'on rédige une nouvelle news
-{
+} else { // C'est qu'on rédige une nouvelle news
     // Les variables $titre et $contenu sont vides, puisque c'est une nouvelle news
     $titre = '';
     $contenu = '';
-    $id_news = -1; // La variable vaut -1, donc on se souviendra que ce n'est pas une modification 
+    $id_news = -1; // La variable vaut -1, donc on se souviendra que ce n'est pas une modification
 }
 // On a fini de travailler, on ferme la connexion :
 mysql_close(); // Déconnexion de MySQL

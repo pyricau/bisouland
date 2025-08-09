@@ -13,7 +13,12 @@ $finder = (new PhpCsFixer\Finder())
 
 return (new PhpCsFixer\Config())
     ->setRules([
-        '@PSR1' => true,
+        '@PSR2' => true,
+        'no_closing_tag' => true,
+        // Disabled as the fixes break the following files:
+        // 1) ../monolith/web/phpincludes/bisous.php
+        // 2) ../monolith/web/phpincludes/cerveau.php
+        'statement_indentation' => false,
     ])
     ->setRiskyAllowed(true)
     ->setParallelConfig(ParallelConfigFactory::detect())

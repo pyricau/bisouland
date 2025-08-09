@@ -30,7 +30,6 @@ header('Content-type: text/html; charset=ISO-8859-1');
 
 <h2><a href="rediger_news.php">Ajouter une news</a></h2>
 <p><a href="../index.php">Retourner sur bisouland.piwai.info</a></p>
-<p><a href="mail.php">Envoyer un mail à tous les membres</a></p>
 
 <?php
 	include '../phpincludes/bd.php';

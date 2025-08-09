@@ -32,7 +32,6 @@ if ($_SESSION['logged'] == true && $pseudo=='admin')
                 "[u]", "[/u]", 
                 "[i]", "[/i]",
                 '[url="', "[/url]",
-                "[mail=\"", "[/mail]",
                 );
 		$htmlcode = array("&lt;", "&gt;",
                 "<ul>", "<li>","</li>", "</ul>", 
@@ -41,7 +40,6 @@ if ($_SESSION['logged'] == true && $pseudo=='admin')
                 "<u>", "</u>", 
                 "<em>", "</em>",
                 '<a href="', "</a>",
-                "<a href=\"mailto:", "</a>",
                 );
 				
 		$text=htmlentities(stripslashes($text));
@@ -54,7 +52,6 @@ if ($_SESSION['logged'] == true && $pseudo=='admin')
 
 		
 		$text = preg_replace('![^\"]http://[a-z0-9._/?&=-]+!i', '<a href="$0">$0</a>', $text);
-		$text = preg_replace('![^\"][a-z0-9._-]+@[a-z0-9._-]{2,}\.[a-z]{2,4}!','<a href="mailto:$0">$0</a>',$text);
 		
 		$text=smileys($text);
 		

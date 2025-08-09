@@ -46,7 +46,7 @@ if (isset($_POST['recherche']))
 				}
 				else
 				{
-					$resultat="Ce compte existe mais le joueur n'a pas confirmé par mail";
+					$resultat="Ce compte existe mais le joueur n'a pas confirmï¿½ son inscription";
 				}
 			}
 		}

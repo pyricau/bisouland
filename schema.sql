@@ -10,7 +10,6 @@ CREATE TABLE IF NOT EXISTS membres (
     id INT PRIMARY KEY AUTO_INCREMENT,     -- User ID, referenced in all other tables
     pseudo VARCHAR(50) NOT NULL UNIQUE,    -- Username, used in login (redirect.php:21, index.php:60)
     mdp VARCHAR(255) NOT NULL,             -- Password hash, checked in redirect.php:27
-    email VARCHAR(100) NOT NULL,           -- Email address, used in inscription.php and mail notifications
     confirmation TINYINT(1) DEFAULT 0,     -- Account confirmed flag, checked in redirect.php:27
     timestamp INT NOT NULL,                -- Account creation time, updated in confirmation.php:92
     lastconnect INT DEFAULT 0,             -- Last connection time, updated in index.php:698, deconnexion.php:13
@@ -39,7 +38,6 @@ CREATE TABLE IF NOT EXISTS membres (
     -- Notification and admin fields
     averto INT DEFAULT 0,                  -- Warning timestamp, used in checkConnect.php:28, 55
     lastmsg INT DEFAULT 0,                 -- Last message timestamp (referenced in PHP)
-    alerte TINYINT(1) DEFAULT 0,           -- Email alert preference, checked in envoi.php:22
     espion TINYINT(1) DEFAULT 0,           -- Spy mode flag (referenced in PHP)
     newpass VARCHAR(255) DEFAULT NULL     -- New password reset token, set in perdu.php:20
 );
@@ -165,6 +163,6 @@ CREATE TABLE IF NOT EXISTS ban (
 INSERT INTO nuage (id, nombre) VALUES (1, 100) ON DUPLICATE KEY UPDATE nombre=nombre;
 
 -- Insert a default admin user (password: admin, hashed with md5)
-INSERT INTO membres (pseudo, mdp, email, confirmation, timestamp, lastconnect) 
-VALUES ('admin', '21232f297a57a5a743894a0e4a801fc3', 'admin@skyswoon.local', 1, UNIX_TIMESTAMP(), UNIX_TIMESTAMP())
+INSERT INTO membres (pseudo, mdp, confirmation, timestamp, lastconnect) 
+VALUES ('admin', '21232f297a57a5a743894a0e4a801fc3', 1, UNIX_TIMESTAMP(), UNIX_TIMESTAMP())
 ON DUPLICATE KEY UPDATE pseudo=pseudo;

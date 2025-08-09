@@ -24,8 +24,7 @@ Cette section apporte des réponses à de nombreuses questions récurrentes.<br />
 		"BisouLand est un jeu de stratégie multijoueurs. De nombreux joueurs se rencontrent en même temps en ligne. Pour jouer, il suffit de disposer d'un simple navigateur.",
 		"Le créateur de BisouLand est Pierre-Yves Ricau, connu sous le pseudo Piwaï alias admin sur BisouLand.",
 		"BisouLand est totalement gratuit.",
-		"Pour s'inscrire, il suffit d'aller sur la page Inscription et de remplir les champs appropriés.<br />
-		N'oublie pas de donner une adresse email valide, car tu recevras une confirmation de ton compte par mail.",
+		"Pour s'inscrire, il suffit d'aller sur la page Inscription et de remplir les champs appropriés.",
 		"Il te suffit de te connecter, puis de lire les pages Aide et Encyclopédie,
 		n'hésite pas à poser des questions sur le tchat et le forum.",
 		"Merci de rapporter toute erreur, que ce soit un problème technique ou une faute d'orthographe.<br />

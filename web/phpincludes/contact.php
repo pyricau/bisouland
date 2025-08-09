@@ -1,23 +1,7 @@
 <h1>.:Contact:.</h1>
 <br />
-L'auteur et administrateur de ce site est Pierre-Yves Ricau (<a href="http://www.piwai.info">http://www.piwai.info</a>).<br />
+Bisouland est un jeu Open Source originellement cr&eacute;&eacute; par Pierre-Yves Ricau.<br />
 <br />
-Contactez-moi pour plus d'informations sur BisouLand.<br />
+Il est actuellement maintenu par Lo&iuml;c Faugeron.<br />
 <br />
-Adresse email pour me joindre :  <a href="mailto:bisouland (arobase) piwai.info" title="mail">bisouland (arobase) piwai.info</a><br />
-<br />
-Pour toute question concernant le jeu, vous pouvez aussi me contacter via les messages privés,
-en envoyant un message à
-<?php 
-if ($_SESSION['logged'] == true)
-{
-	echo 'admin. <a href="admin.envoi.html" title="Envoyer un message à l\'administrateur">Cliquez ici pour m\'envoyer un message.</a><br />';
-}
-else
-{
-	echo 'admin. (vous devez disposer d\'un compte et être connecté).<br />';
-}
-?>
-
-
-
+Pour toute question, merci de cr&eacute;er une issue sur Github: <a href="https://github.com/pyricau/bisouland">pyricau/bisouland</a>.

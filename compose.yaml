@@ -14,8 +14,6 @@ services:
       DATABASE_USER: ${DATABASE_USER}
       DATABASE_PASSWORD: ${DATABASE_PASSWORD}
       DATABASE_NAME: ${DATABASE_NAME}
-      EMAIL_ADMIN: ${EMAIL_ADMIN}
-      EMAIL_EXPEDITOR: ${EMAIL_EXPEDITOR}
     restart: unless-stopped
 
   db:

@@ -18,7 +18,7 @@
 		$diff=$LvlCoeur - (0.3*$nb1 + 0.7*$nb2 + $nb3);
 		if ($diff>0)
 		{
-			//2 équations :  lvl 50 : 100 000 par heure et lvl 20  : 20000 par heure.
+			//2 equations :  lvl 50 : 100 000 par heure et lvl 20  : 20000 par heure.
 			$CalAmour += ((ExpoSeuil(5500, 6, $diff))*$timeDiff)/3600;
 		}
 		elseif($diff<0)
@@ -90,7 +90,7 @@
 	
 	}
 	
-	//Val doit être différent de 0.
+	//Val doit etre different de 0.
 	function InvExpo($a, $b, $val, $int=0)
 	{
 	//Patch to avoid division by 0...
@@ -110,7 +110,7 @@
 	}
 	
 	//Plus a augmente, plus on augmente la valeur de seuil
-	//Plus b augmente, plus on éloigne le moment ou on atteint le seuil .
+	//Plus b augmente, plus on eloigne le moment ou on atteint le seuil .
 	function ExpoSeuil($a, $b, $val, $int=0)
 	{
 	
@@ -153,14 +153,14 @@
 		mysql_query("DELETE FROM ban WHERE auteur=$idCompteSuppr");
 		mysql_query("DELETE FROM liste WHERE auteur=$idCompteSuppr");
 		mysql_query("DELETE FROM logatt WHERE auteur=$idCompteSuppr");
-		//Attaques à gerer.
+		//Attaques a gerer.
 		$sql_info = mysql_query("SELECT auteur FROM attaque WHERE cible=".$idCompteSuppr);
 		while ($donnees_info = mysql_fetch_assoc($sql_info))
 		{
 			mysql_query("UPDATE membres SET bloque=0 WHERE id=".$donnees_info['auteur']);
 			mysql_query("DELETE FROM attaque WHERE auteur=".$donnees_info['auteur']);
 			AdminMP($donnees_info['auteur'],"Pas de chance","Ta cible vient de supprimer son compte.
-			Une prochaine fois, peut-être...");
+			Une prochaine fois, peut-etre...");
 		}
 		$sql_info = mysql_query("SELECT cible FROM attaque WHERE auteur=".$idCompteSuppr);
 		if ($donnees_info = mysql_fetch_assoc($sql_info))
@@ -172,14 +172,14 @@
 
 	}
 	
-	//Présuppose que toutes les vérifications ont été faites.
+	//Presuppose que toutes les verifications ont ete faites.
 	function ChangerMotPasse($idChange,$newMdp)
 	{
 		$newMdp = md5($newMdp);
 		mysql_query("UPDATE membres SET mdp='".$newMdp."' WHERE id='".$idChange."'");
 	}
 	
-	//Présuppose que toutes les vérifications ont été faites.
+	//Presuppose que toutes les verifications ont ete faites.
 	function AjouterScore($idScore,$valeur)
 	{
 		$sql_info = mysql_query("SELECT score FROM membres WHERE id=".$idScore);
@@ -187,13 +187,13 @@
 		mysql_query("UPDATE membres SET score=".($donnees_info['score']+$valeur)." WHERE id=".$idScore);
 	}
 	
-	//Présuppose que toutes les vérifications ont été faites.
+	//Presuppose que toutes les verifications ont ete faites.
 	function ForcerAttaque($auteur,$cible,$duree,$pseudoAuteur,$nuageSource,$positionSource)
 	{
 		mysql_query("UPDATE membres SET bloque=1 WHERE id='".$auteur."'");
 		mysql_query("INSERT INTO attaque VALUES (".$auteur.", ".$cible.", ".(time()+$duree).", ".(time()+2*$duree).", 0)");
 					AdminMP($cible,"Alerte",$pseudo." vient d'envoyer ses bisous dans ta direction, et va tenter de t'embrasser.
-					".$pseudo." est situ&eacute; sur le nuage ".$nuageSource.", à la position ".$positionSource.".
+					".$pseudo." est situ&eacute; sur le nuage ".$nuageSource.", a la position ".$positionSource.".
 					Ses Bisous arrivent dans ".strTemps($duree).".");
 					AdminMP($Auteur,"GoGoGo","T'as pas honte d'attaquer les gens comme ca ??");
 	}
@@ -203,7 +203,7 @@
     return number_format($nombre, 0, ',', ' ');
   }
 	
-	//Fonction modifiable à souhait, destinée à l'administrateur.
+	//Fonction modifiable a souhait, destinee a l'administrateur.
 	function actionAdmin()
 	{
 		//AdminMP(12,"Test","Youuhouuu");
@@ -219,7 +219,7 @@
 		return $coeur + 8*$jambes;
 	}
 	
-	//Fonction qui retourne 0 si joueurAutre est même niveau, 1 s'il est intouchable parce que trop faible, 2 s'il est intouchable parce que trop fort.
+	//Fonction qui retourne 0 si joueurAutre est meme niveau, 1 s'il est intouchable parce que trop faible, 2 s'il est intouchable parce que trop fort.
 	function voirNiveau($scoreJoueur,$scoreAutre)
 	{
 		if ($scoreJoueur<50)

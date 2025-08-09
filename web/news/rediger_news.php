@@ -1,12 +1,12 @@
 <?php
 
-header('Content-type: text/html; charset=ISO-8859-1');
+header('Content-type: text/html; charset=UTF-8');
 ?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="fr" >
    <head>
-       <title>Rédiger une news</title>
-        <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
+       <title>RÃ©diger une news</title>
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
         <style type="text/css">
         h3, form
         {
@@ -17,7 +17,7 @@ header('Content-type: text/html; charset=ISO-8859-1');
     
     <body>
 
-<h3><a href="liste_news.php">Retour à la liste des news</a></h3>
+<h3><a href="liste_news.php">Retour Ã  la liste des news</a></h3>
 
 <?php
 
@@ -29,7 +29,7 @@ if (isset($_GET['modifier_news'])) // Si on demande de modifier une news
 
 
 
-    // On récupère les infos de la correspondante
+    // On rÃ©cupÃ¨re les infos de la correspondante
     $retour = mysql_query('SELECT * FROM newsbisous WHERE id=' . $_GET['modifier_news']);
     $donnees = mysql_fetch_array($retour);
     
@@ -39,7 +39,7 @@ if (isset($_GET['modifier_news'])) // Si on demande de modifier une news
     $contenu = stripslashes($donnees['contenu']);
     $id_news = $donnees['id']; // Cette variable va servir pour se souvenir que c'est une modification
 }
-else // C'est qu'on rédige une nouvelle news
+else // C'est qu'on rÃ©dige une nouvelle news
 {
     // Les variables $titre et $contenu sont vides, puisque c'est une nouvelle news
     $titre = '';
@@ -47,7 +47,7 @@ else // C'est qu'on rédige une nouvelle news
     $id_news = -1; // La variable vaut -1, donc on se souviendra que ce n'est pas une modification 
 }
 // On a fini de travailler, on ferme la connexion :
-mysql_close(); // Déconnexion de MySQL
+mysql_close(); // DÃ©connexion de MySQL
 
 ?>
 

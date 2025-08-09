@@ -2,7 +2,7 @@
 function Envoyer_Message($pseudoS,$pseudoC,$source, $cible, $titre, $message)
 {
 	//Pour tester AdminMP
-	//AdminMP(12,"Message Admin","Un MP à été envoyé à ".$pseudoS." par ".$pseudoC.".");
+	//AdminMP(12,"Message Admin","Un MP a ete envoye a ".$pseudoS." par ".$pseudoC.".");
 	$timer=time();
 	mysql_query("UPDATE membres SET lastmsg='".$timer."' WHERE id='".$source."'");
 	
@@ -57,7 +57,7 @@ if ($_SESSION['logged'] == true)
 							$donnees = mysql_fetch_assoc($retour);
 							$message = addslashes($message);
 							Envoyer_Message($pseudo, $destinataire, $id, $donnees['id'], $titre, $message);
-							$msgSend = 'Message bien envoy&eacute; à '.stripslashes($destinataire);
+							$msgSend = 'Message bien envoy&eacute; a '.stripslashes($destinataire);
 							$message = 'Entrez ici votre message';
 							$titre = 'Objet';
 						}
@@ -91,7 +91,7 @@ if ($_SESSION['logged'] == true)
 	}
 
 ?>
-<script language="javascript" type="text/javascript" src="includes/prev.js"></script><!-- on appelle le fichier prev.js pour faire fonctionne la prévisualisation -->
+<script language="javascript" type="text/javascript" src="includes/prev.js"></script><!-- on appelle le fichier prev.js pour faire fonctionne la previsualisation -->
 <script language="Javascript">
 
 </script>
@@ -101,7 +101,7 @@ if ($_SESSION['logged'] == true)
 <div class="formul">
 <?php echo $msgSend.'<br />';?>
 <form method="post" action="envoi.html" name="formulaire">
-    <p>N'oubliez pas que vous êtes sur BisouLand.<br />N'employez donc que du vocabulaire amoureux !!</p>
+    <p>N'oubliez pas que vous etes sur BisouLand.<br />N'employez donc que du vocabulaire amoureux !!</p>
     
     <p>
 		<label>Destinataire<br />
@@ -120,7 +120,7 @@ if ($_SESSION['logged'] == true)
 <img src="smileys/mechant.png" title=":colere:" alt="" onClick="javascript:smilies(':colere:');return(false)" />
 <img src="smileys/noel.png" title=":noel:" alt="" onClick="javascript:smilies(':noel:');return(false)" />
 <img src="smileys/rire.gif" title=":lol:" alt="" onClick="javascript:smilies(':lol:');return(false)" />
-<img src="smileys/siffle.png" title=":-°" alt="" onClick="javascript:smilies(':-°');return(false)" />
+<img src="smileys/siffle.png" title=":-o" alt="" onClick="javascript:smilies(':-o');return(false)" />
 <img src="smileys/smile.png" title=":)" alt="" onClick="javascript:smilies(':)');return(false)" />
 <img src="smileys/triste.png" title=":(" alt="" onClick="javascript:smilies(':(');return(false)" />
 <img src="smileys/unsure.gif" title=":euh:" alt="" onClick="javascript:smilies(':euh:');return(false)" />
@@ -130,7 +130,7 @@ if ($_SESSION['logged'] == true)
         <label>Message :<br />
         <textarea id="textarea" name="message" tabindex="20" rows="8" cols="35"><?php echo stripslashes($message); ?></textarea> <br /></label>
 
-<input type="button" value="Pr&eacute;visualiser" onClick="previsualisation();return(false)" /><!-- ce bouton va permettre aux utilisateurs de d'avoir un aperçu quand ils le veulent, pas en direct -->
+<input type="button" value="Pr&eacute;visualiser" onClick="previsualisation();return(false)" /><!-- ce bouton va permettre aux utilisateurs de d'avoir un apercu quand ils le veulent, pas en direct -->
 <input type="submit" tabindex="30" value="Envoyer" />
 <div class="message" id="prev"></div>
 		

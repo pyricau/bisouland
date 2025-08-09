@@ -47,7 +47,7 @@
 		"lire" => "Lire un message",
 		"boite" => "Messages priv&eacute;s",
 		"techno" => "Techniques diverses et vari&eacute;es",
-		"nuage" => "La tête dans les nuages...",
+		"nuage" => "La tÃªte dans les nuages...",
 		"infos" => "Encyclop&eacute;die",
 		"contact" => "Contact",
 		"action" => "Action",

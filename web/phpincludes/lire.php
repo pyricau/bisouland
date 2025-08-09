@@ -23,10 +23,10 @@ if ($_SESSION['logged'] == true)
 			$dateEnvoie = $donnees['timestamp'];
 ?>
 
-<a href="boite.html" title="Messages">Retour à la liste des messages</a>
+<a href="boite.html" title="Messages">Retour Ã  la liste des messages</a>
 <br />
 <p>Auteur : <?php echo  stripslashes($from);?></p>
-<p>Envoyé le <?php echo date('d/m/Y à H\hi', $dateEnvoie);?></p>
+<p>EnvoyÃ© le <?php echo date('d/m/Y Ã  H\hi', $dateEnvoie);?></p>
 <p>Objet : <?php echo stripslashes($objet);?></p>
 Message :<br />
 <div class="message"><?php echo bbLow($message);?></div>
@@ -35,7 +35,7 @@ Message :<br />
 	{
 ?>
 <form method="post" action="envoi.html">
-	<input type="submit" tabindex="30" value="Répondre" />
+	<input type="submit" tabindex="30" value="RÃ©pondre" />
 	<input type="hidden" name="titre" value="<?php echo 'RE:'.stripslashes($objet);?>" />
 	<input type="hidden" name="destinataire" value="<?php echo stripslashes($from);?>" />
 </form>
@@ -56,11 +56,11 @@ Message :<br />
 	}
 	else
 	{
-		echo 'Pas d\'id message spécifiée !!';
+		echo 'Pas d\'id message spÃ©cifiÃ©e !!';
 	}
 }
 else
 {
-echo 'Tu n\'es pas connecté !!';
+echo 'Tu n\'es pas connectÃ© !!';
 }
 ?>

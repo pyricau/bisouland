@@ -17,7 +17,7 @@ $totalJoueur=mysql_result($sql,0,'nb_joueur');
 ?>
 Score : <strong><?php echo formaterNombre($score); ?></strong> Point<?php echo pluriel($score);?><br />
 <br />
-Classement : <strong><?php echo $position; if($position==1){echo 'er';}else{echo 'ème';}?> / <?php echo $totalJoueur;?></strong><br />
+Classement : <strong><?php echo $position; if($position==1){echo 'er';}else{echo 'Ã¨me';}?> / <?php echo $totalJoueur;?></strong><br />
 <br />
 R&eacute;serves : <strong><?php echo formaterNombre(floor($amour)); ?></strong> Point<?php echo pluriel(floor($amour));?> d'Amour<br />
 <br />
@@ -25,7 +25,7 @@ Production : <strong><?php echo formaterNombre(floor($production)); ?></strong> 
 <br />
 <?php
 
-//On récupère les infos sur le joueur que l'on attaque.
+//On rÃ©cupÃ¨re les infos sur le joueur que l'on attaque.
 $sql_info = mysql_query("SELECT cible, finaller, finretour, butin FROM attaque WHERE auteur=".$id);
 
 if ($donnees_info = mysql_fetch_assoc($sql_info))
@@ -47,7 +47,7 @@ if ($donnees_info = mysql_fetch_assoc($sql_info))
 			$finRet=(2*time() + $finRet - 2*$finAll);
 			$finAll=0;
 			mysql_query("UPDATE attaque SET finaller=0, finretour=$finRet WHERE auteur=".$id);
-			AdminMP($donnees_info['cible'],"Attaque annulée","$pseudo a annulé son attaque.
+			AdminMP($donnees_info['cible'],"Attaque annulÃ©e","$pseudo a annulÃ© son attaque.
 			Tu n'es plus en danger.");
 		}
 	}
@@ -137,6 +137,6 @@ dans <strong><?php echo strTemps($finAll-time()); ?></strong>.<br />
 }//Fin du login true
 else
 {
-	echo 'Tu n\'es pas connecté !!';
+	echo 'Tu n\'es pas connectÃ© !!';
 }
 ?>

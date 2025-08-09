@@ -3,7 +3,7 @@
 	include 'phpincludes/bd.php';
 	bd_connect();
 
-	//On récupère le nombre de joueurs
+	//On rÃ©cupÃ¨re le nombre de joueurs
 	$sql = mysql_query("SELECT COUNT(*) AS nb_joueur FROM membres WHERE confirmation='1'");
 	$totalJoueur=mysql_result($sql,0,'nb_joueur');
 	
@@ -33,7 +33,7 @@ ON ban.auteur = membres.id
 		//On calcule le score du joueur.
 		$score = floor($donnees['score']/1000.);
 		
-		//Création de l'image :
+		//CrÃ©ation de l'image :
 		$image = imagecreatefromjpeg("images/imgban.jpg");
 			
 		$police=imageloadfont ( 'polices/small.gdf' );

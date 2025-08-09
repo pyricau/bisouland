@@ -54,7 +54,7 @@ img{border:none;}
 	width:768px;
 	
 }
-* html #speedbarre {top:195px;}     /* Css Hack   Seul IE lit les lignes précédées par " * html " */
+* html #speedbarre {top:195px;}     /* Css Hack   Seul IE lit les lignes prÃ©cÃ©dÃ©es par " * html " */
 
 #speedbarre li
 {
@@ -371,13 +371,13 @@ a.bulle span
 
 a.bulle:hover {
    background: none; /* correction d'un bug IE */
-   z-index: 500; /* on dýfinit une valeur pour l'ordre d'affichage */
+   z-index: 500; /* on dÃ½finit une valeur pour l'ordre d'affichage */
 }
 
 a.bulle:hover span {
    display: inline; /* on affiche l'infobulle */
    position: absolute;
-   white-space: nowrap; /* on change la valeur de la propriýtý whiteýspace pour qu'il n'y ait pas de retour ý la ligne nonýdýsirý */
+   white-space: nowrap; /* on change la valeur de la propriÃ½tÃ½ whiteÃ½space pour qu'il n'y ait pas de retour Ã½ la ligne nonÃ½dÃ½sirÃ½ */
 
    top: 20px; /* on positionne notre infobulle */
    left: 20px;

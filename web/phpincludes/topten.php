@@ -25,7 +25,7 @@ else
 ?>
    </tr>
 <?php
-//Si on est loggué (et qu'on peut attaquer, on calcule notre position
+//Si on est logguÃ© (et qu'on peut attaquer, on calcule notre position
 if ($_SESSION['logged'] == true && ($nbE[1][0]+$nbE[1][1]+$nbE[1][2])>0)
 {
 	$nuageSource=$_SESSION['nuage'];
@@ -66,7 +66,7 @@ if ($_SESSION['logged'] == true && ($nbE[1][0]+$nbE[1][1]+$nbE[1][2])>0)
 			{
 				//Envoyer un message.
 				echo '<a class="bulle" href="',$donnees_info['pseudo'],'.envoi.html">
-				<img src="images/mess.png" title="" alt="" /><span>Envoyer un message à '.$donnees_info['pseudo'].'</span></a> ';
+				<img src="images/mess.png" title="" alt="" /><span>Envoyer un message Ã  '.$donnees_info['pseudo'].'</span></a> ';
 			}
 			echo '<a class="bulle" href="',$donnees_info['nuage'],'.nuage.html" >
 			<img src="images/nuage.png" title="" alt="" /><span>Nuage : ',$donnees_info['nuage'],'</span></a></td>';

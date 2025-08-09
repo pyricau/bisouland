@@ -27,23 +27,23 @@ if (isset($_POST['action']))
 			
 			if ($cible==$id)
 			{
-				$resultat='Il est impossible s\'attaquer soi même';
+				$resultat='Il est impossible s\'attaquer soi mÃªme';
 			}
 			else
 			{
 			$sql_info = mysql_query("SELECT COUNT(*) AS nb_id FROM evolution WHERE auteur=$id AND classe=1");
 			if(mysql_result($sql_info,0,'nb_id') != 0)
 			{
-				$resultat='Action impossible car tu es en train de créer des Bisous';
+				$resultat='Action impossible car tu es en train de crÃ©er des Bisous';
 			}
 			else
 			{
 			
-				//On détermine s'il y a une construction en cours.
+				//On dÃ©termine s'il y a une construction en cours.
 				$sql_info = mysql_query("SELECT COUNT(*) AS nb_id FROM liste WHERE auteur=$id AND classe=1");
 				if (mysql_result($sql_info,0,'nb_id') != 0)
 				{
-					$resultat='Action impossible car tu es en train de créer des Bisous';
+					$resultat='Action impossible car tu es en train de crÃ©er des Bisous';
 				}
 				{
 			$nuageSource=$_SESSION['nuage'];
@@ -80,13 +80,13 @@ if (isset($_POST['action']))
 						mysql_query("UPDATE membres SET bloque=1 WHERE id='".$id."'");
 						mysql_query("INSERT INTO attaque VALUES (".$id.", ".$cible.", ".(time()+$duree).", ".(time()+2*$duree).", 0)");
 						AdminMP($cible,$pseudo." veut t'embrasser",$pseudo." vient d'envoyer ses bisous dans ta direction, et va tenter de t'embrasser.
-						".$pseudo." est situé sur le nuage ".$nuageSource.", à la position ".$positionSource.".
+						".$pseudo." est situÃ© sur le nuage ".$nuageSource.", Ã  la position ".$positionSource.".
 						Ses Bisous arrivent dans ".strTemps($duree).".");
-						$resultat='Tes Bisous sont en route vers la position '.$positionSource.' du nuage '.$nuageSource.', ils arriveront à destination dans '.strTemps($duree).'.';
+						$resultat='Tes Bisous sont en route vers la position '.$positionSource.' du nuage '.$nuageSource.', ils arriveront Ã  destination dans '.strTemps($duree).'.';
 					}
 					else
 					{
-						$resultat="Il est impossible d'embrasser le même joueur plus de 3 fois toutes les 12 heures";
+						$resultat="Il est impossible d'embrasser le mÃªme joueur plus de 3 fois toutes les 12 heures";
 					}
 				}
 				else
@@ -96,7 +96,7 @@ if (isset($_POST['action']))
 			}
 			else
 			{
-				$resultat='Cette position est hors de portée';
+				$resultat='Cette position est hors de portÃ©e';
 			}
 			}
 			else
@@ -109,7 +109,7 @@ if (isset($_POST['action']))
 		}
 		else
 		{
-			$resultat='Il n\'y a personne à la position indiquée';
+			$resultat='Il n\'y a personne Ã  la position indiquÃ©e';
 		}
 	}
 	}//Pas de bisous
@@ -117,10 +117,10 @@ if (isset($_POST['action']))
 	{
 		$resultat='Tu ne disposes d\'aucun Bisou';
 	}
-	}//joueur bloqué
+	}//joueur bloquÃ©
 	else
 	{
-		$resultat='Tu as déjà une cible';
+		$resultat='Tu as dÃ©jÃ  une cible';
 	}
 }
 elseif(isset($_GET['nuage']) && isset($_GET['position']))
@@ -177,7 +177,7 @@ else
 		</tr>
 		<tr>
 			<td colspan="2">
-				Cette opération nécessite <?php echo $cout;?> points d'amour.
+				Cette opÃ©ration nÃ©cessite <?php echo $cout;?> points d'amour.
 			</td>
 		</tr>
 		<tr>
@@ -200,6 +200,6 @@ else
 }
 else
 {
-echo 'Tu n\'es pas connecté !!';
+echo 'Tu n\'es pas connectÃ© !!';
 }
 ?>

@@ -46,11 +46,11 @@ if ($_SESSION['logged'] == true)
 							$distMax=distanceMax($nbE[0][4], $nbE[2][3]);
 							if ($distance<=$distMax)
 							{
-								//Vérifions si il ya quelqu'un :
+								//VÃ©rifions si il ya quelqu'un :
 								$sql_info = mysql_query("SELECT id FROM membres WHERE nuage=$nuageL AND position=$positionCible");
 								if($donnees_info = mysql_fetch_assoc($sql_info))
 								{
-									$resultat='La position est déjà occupée';
+									$resultat='La position est dÃ©jÃ  occupÃ©e';
 								}
 								else
 								{
@@ -64,7 +64,7 @@ if ($_SESSION['logged'] == true)
 										else
 										{
 											$ajout=$nbE[0][0] + 0.3*$nbE[1][0] + 0.6*$nbE[1][1] + $nbE[1][2];
-											//A modifier si on modifie calcul amour, car il est basé dessu.
+											//A modifier si on modifie calcul amour, car il est basÃ© dessu.
 											$cout = expo(20, 0.1, $ajout)*(1 + 0.1*$distance);
 											if ($amour>=$cout)
 											{
@@ -73,7 +73,7 @@ if ($_SESSION['logged'] == true)
 												$_SESSION['nuage']=$nuageL;
 												$nuageSource=$nuageL;
 												$positionSource=$positionCible;
-												$resultat='Saut effectué, tu as utilisé '.ceil($cout)." Points d'Amour";
+												$resultat='Saut effectuÃ©, tu as utilisÃ© '.ceil($cout)." Points d'Amour";
 											}
 											else
 											{
@@ -104,19 +104,19 @@ if ($_SESSION['logged'] == true)
 				}
 				else
 				{
-					$resultat='Position non définie';
+					$resultat='Position non dÃ©finie';
 				}
 			}
 			else
 			{
 				$nuageL=$NbNuages;
-				$resultat='Il n\'existe pas de nuage supérieur à '.$NbNuages;
+				$resultat='Il n\'existe pas de nuage supÃ©rieur Ã  '.$NbNuages;
 			}
 		}
 		else
 		{
 			$nuageL=1;
-			$resultat='Il n\'existe pas de nuage inférieur à 1';
+			$resultat='Il n\'existe pas de nuage infÃ©rieur Ã  1';
 		}
 	}
 	else
@@ -245,12 +245,12 @@ if ($nbE[2][3]==0)
 			}
 			else
 			{
-				echo '<a class="bulle" style="cursor: default;color:red;" onclick="return false;" href=""><strong>',$pseudo,'</strong><span style="color:red;">Tu es sur le nuage <b>'.$nuageL.'</b>, à la position <b>'.$i.'</b></span>';
+				echo '<a class="bulle" style="cursor: default;color:red;" onclick="return false;" href=""><strong>',$pseudo,'</strong><span style="color:red;">Tu es sur le nuage <b>'.$nuageL.'</b>, Ã  la position <b>'.$i.'</b></span>';
 			}
 			echo '</a></td>';
 			
 			
-			//Si c'est le joueur lui même : rien.
+			//Si c'est le joueur lui mÃªme : rien.
 			if ($donnees_info['id']==$id)
 			{
 				echo '<td>';
@@ -259,7 +259,7 @@ if ($nbE[2][3]==0)
 			{
 				echo '<td>
 				<a class="bulle" href="',$donnees_info['pseudo'],'.envoi.html">
-				<img src="images/mess.png" title="" alt="" /><span>Envoyer un message à '.$donnees_info['pseudo'].'</span></a> ';
+				<img src="images/mess.png" title="" alt="" /><span>Envoyer un message Ã  '.$donnees_info['pseudo'].'</span></a> ';
 				$distance = abs(16*($nuageL-$nuageSource) + $i - $positionSource);		
 				//Si on a des bisous a disposition
 				if (($nbE[1][0]+$nbE[1][1]+$nbE[1][2])>0 && $Niveau==0)
@@ -274,18 +274,18 @@ if ($nbE[2][3]==0)
 						{
 							echo '<a class="bulle" href="',$nuageL,'.',$i,'.action.html" >
 							<img src="images/puce.png" title="" alt="" /><span>Embrasser : ',$donnees_info['pseudo'],'<br />
-							Nécessite '.formaterNombre(ceil($cout)).' Points d\'Amour<br />
+							NÃ©cessite '.formaterNombre(ceil($cout)).' Points d\'Amour<br />
 							Distance : '.$distance.'<br />
-							Durée : '.strTemps($duree).'</span></a> ';
+							DurÃ©e : '.strTemps($duree).'</span></a> ';
 						}
 						else
 						{
 							echo '<a class="bulle" onclick="return false;" style="cursor: default;" href="" >
 							<img src="images/puce.png" title="" alt="" /><span>Embrasser : ',$donnees_info['pseudo'],'<br />
-							Nécessite '.formaterNombre(ceil($cout)).' Points d\'Amour<br />
+							NÃ©cessite '.formaterNombre(ceil($cout)).' Points d\'Amour<br />
 							Distance : '.$distance.'<br />
-							Durée : '.strTemps($duree).'<br />
-							Impossible car une action est déjà en cours</span></a> ';
+							DurÃ©e : '.strTemps($duree).'<br />
+							Impossible car une action est dÃ©jÃ  en cours</span></a> ';
 						}
 					}
 					else
@@ -293,8 +293,8 @@ if ($nbE[2][3]==0)
 							echo '<a class="bulle" onclick="return false;" style="cursor: default;" href="" >
 							<img src="images/puceOff.png" title="" alt="" /><span>Embrasser : ',$donnees_info['pseudo'],'<br />
 							Distance : '.$distance.'<br />
-							Durée : '.strTemps($duree).'<br />
-							Impossible car ce joueur est hors de portée</span></a> ';					
+							DurÃ©e : '.strTemps($duree).'<br />
+							Impossible car ce joueur est hors de portÃ©e</span></a> ';					
 					}
 				}
 				if ($nbE[0][5]>0 && $Niveau==0)
@@ -302,8 +302,8 @@ if ($nbE[2][3]==0)
 					$cout=1000*$distance;
 				
 					echo '<a class="bulle" href="'.$nuageL.'.'.$i.'.yeux.html" >
-					<img src="images/oeil.png" title="" alt="" /><span>Dévisager : ',$donnees_info['pseudo'],'<br />
-					Nécessite '.formaterNombre(ceil($cout)).' Points d\'Amour<br />
+					<img src="images/oeil.png" title="" alt="" /><span>DÃ©visager : ',$donnees_info['pseudo'],'<br />
+					NÃ©cessite '.formaterNombre(ceil($cout)).' Points d\'Amour<br />
 					Distance : '.$distance.'<br />
 					</span></a> ';			
 				}
@@ -329,14 +329,14 @@ if ($nbE[2][3]==0)
 			if ($sautPossible==1)
 			{
 				$ajout=$nbE[0][0] + 0.3*$nbE[1][0] + 0.6*$nbE[1][1] + $nbE[1][2];
-				//A modifier si on modifie calcul amour, car il est basé dessu.
+				//A modifier si on modifie calcul amour, car il est basÃ© dessu.
 				$cout = expo(20, 0.1, $ajout)*(1 + 0.1*$distance);
 				if ($joueurBloque==0)
 				{
 				echo '<td>
 						<a class="bulle" href="',$nuageL,'.',$i,'.nuage.html" >
 						<img src="images/saut.png" title="" alt="" /><span>Sauter :<br />
-						Nécessite '.formaterNombre(ceil($cout)).' Points d\'Amour<br />
+						NÃ©cessite '.formaterNombre(ceil($cout)).' Points d\'Amour<br />
 						Distance : '.$distance.'</span></a>
 					</td></tr>';
 				}
@@ -345,9 +345,9 @@ if ($nbE[2][3]==0)
 				echo '<td>
 						<a class="bulle" style="cursor: default;" onclick="return false;" href="" >
 						<img src="images/saut.png" title="" alt="" /><span>Sauter :<br />
-						Nécessite '.formaterNombre(ceil($cout)).' Points d\'Amour<br />
+						NÃ©cessite '.formaterNombre(ceil($cout)).' Points d\'Amour<br />
 						Distance : '.$distance.'<br />
-						Impossible car une action est déjà en cours</span></a>
+						Impossible car une action est dÃ©jÃ  en cours</span></a>
 					</td></tr>';
 				}
 			}
@@ -363,6 +363,6 @@ if ($nbE[2][3]==0)
 }
 else
 {
-echo 'T\'es pas connecté !!';
+echo 'T\'es pas connectÃ© !!';
 }
 ?>

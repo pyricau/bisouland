@@ -26,7 +26,7 @@ if (isset($_POST['recherche']))
 					if ($donnees['id']!=$id)
 					{
 						$resultat.='<a class="bulle" href="'.$pseudoCherche.'.envoi.html" >
-						<img src="images/mess.png" title="" alt="" /><span>Envoyer un message à '.$pseudoCherche.'</span></a> ';
+						<img src="images/mess.png" title="" alt="" /><span>Envoyer un message a '.$pseudoCherche.'</span></a> ';
 					}
 					$resultat.='<a class="bulle" href="'.$donnees['nuage'].'.nuage.html" >
 					<img src="images/nuage.png" title="" alt="" /><span>Nuage : '.$donnees['nuage'].'</span></a> ';
@@ -34,7 +34,7 @@ if (isset($_POST['recherche']))
 				$resultat.='<strong> '.$pseudoCherche.'</strong>';
 				if ($_SESSION['logged'] == false)
 				{
-					$resultat.='<br /><br />Toi aussi, n\'hésite pas à rejoindre la communauté BisouLand.<br />
+					$resultat.='<br /><br />Toi aussi, n\'hesite pas a rejoindre la communaute BisouLand.<br />
 					Tu peux t\'inscrire en cliquant <a href="inscription.html" title="S\'inscrire sur BisouLand">ici</a>.';
 				}
 			}
@@ -42,11 +42,11 @@ if (isset($_POST['recherche']))
 			{
 				if (strtolower($pseudoCherche)=="bisouland")
 				{
-					$resultat="BisouLand est notre maître à tous";
+					$resultat="BisouLand est notre maitre a tous";
 				}
 				else
 				{
-					$resultat="Ce compte existe mais le joueur n'a pas confirmï¿½ son inscription";
+					$resultat="Ce compte existe mais le joueur n'a pas confirme son inscription";
 				}
 			}
 		}

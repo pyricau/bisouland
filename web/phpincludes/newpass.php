@@ -54,8 +54,8 @@ elseif (isset ($_POST['newpswd']))
 							//On change le mot de passe.
 							ChangerMotPasse($Cid,$newpass);
 							mysql_query("UPDATE membres SET newpass=0 WHERE id=$Cid");
-							$resultat='Le mot de passe a été changé.<br /><br />
-							Il te sera demandé lors de ta prochaine visite sur BisouLand.';
+							$resultat='Le mot de passe a Ã©tÃ© changÃ©.<br /><br />
+							Il te sera demandÃ© lors de ta prochaine visite sur BisouLand.';
 							$affich=false;
 						}
 						else
@@ -70,7 +70,7 @@ elseif (isset ($_POST['newpswd']))
 				}
 				else
 				{
-					$resultat='Tu n\'as pas rentré deux fois le même mot de passe.';
+					$resultat='Tu n\'as pas rentrÃ© deux fois le mÃªme mot de passe.';
 				}		
 			}
 			else
@@ -98,10 +98,10 @@ if ($affich==true)
 <br />
 <form method="post" class="formul" action="newpass.html">
 <label>Nouveau mot de passe: <br />
-	<span class="petit">(Entre 5 et 15 caractères)</span><br />
+	<span class="petit">(Entre 5 et 15 caractÃ¨res)</span><br />
 	<input type="password" name="newpass" tabindex="50" size="15" maxlength="15" value=""/>
 </label><br />
-<label>Réécris le nouveau mot de passe: <br />
+<label>RÃ©Ã©cris le nouveau mot de passe: <br />
 	<input type="password" name="newpass2" tabindex="60" size="15" maxlength="15" value=""/>
 	<input type="hidden" name="Cid" value="<?php echo $Cid;?>"/>
 	<input type="hidden" name="Ccle" value="<?php echo $Ccle;?>"/>

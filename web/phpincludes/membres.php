@@ -8,7 +8,7 @@ echo 'Nombre de membres : '.$total.'<br /><br />';
 
 $nombreParPage = 15;
 
-// On calcule le nombre de pages à créer
+// On calcule le nombre de pages Ã  crÃ©er
 $nombreDePages  = ceil($total / $nombreParPage);
 
 if (isset($_GET['num']))
@@ -17,12 +17,12 @@ if (isset($_GET['num']))
 	if ($num>$nombreDePages) {$num=$nombreDePages;}
 	elseif ($num<1) {$num=1;}
 	}
-else // La variable n'existe pas, c'est la première fois qu'on charge la page
+else // La variable n'existe pas, c'est la premiÃ¨re fois qu'on charge la page
 {
-    $num = 1; // On se met sur la page 1 (par défaut)
+    $num = 1; // On se met sur la page 1 (par dÃ©faut)
 }
 
-// On calcule le numéro du premier message qu'on prend pour le LIMIT de MySQL
+// On calcule le numÃ©ro du premier message qu'on prend pour le LIMIT de MySQL
 $premier = ($num - 1) * $nombreParPage;
 
 
@@ -60,7 +60,7 @@ if ($_SESSION['logged'] == true)
 		if ($donnees['id']!=$id)
 		{
 			echo '<a class="bulle" href="',$donnees['pseudo'],'.envoi.html" >
-			<img src="images/mess.png" title="" alt="" /><span>Envoyer un message à '.$donnees['pseudo'].'</span></a> ';
+			<img src="images/mess.png" title="" alt="" /><span>Envoyer un message Ã  '.$donnees['pseudo'].'</span></a> ';
 		}
 		echo '<a class="bulle" href="',$donnees['nuage'],'.nuage.html" >
 		<img src="images/nuage.png" title="" alt="" /><span>Nuage : ',$donnees['nuage'],'</span></a>

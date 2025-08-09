@@ -20,26 +20,26 @@
 	$connectAn=mysql_result($retour,0,'nb');
 ?>
 <h1>Statistiques</h1>
-<span class="info">[ Statistiques à compter du 26 avril 2006 ]</span><br />
+<span class="info">[ Statistiques Ã  compter du 26 avril 2006 ]</span><br />
 <br />
 <br />
 Nombre total de points d'amours disponibles dans le jeu : <?php echo formaterNombre($pointsAmourTotal)?><br />
 <br />
 Nombre de points d'amours moyen par personne : <?php echo formaterNombre($pointsAmourTotal/$connectAn)?><br />
 <br />
-Nombre de membres connectés dans les dernières 5 minutes : <?php  echo $connectCinq;?><br />
+Nombre de membres connectÃ©s dans les derniÃ¨res 5 minutes : <?php  echo $connectCinq;?><br />
 <br />
-Nombre de membres connectés dans les dernières 60 minutes : <?php  echo $connectHeure;?><br />
+Nombre de membres connectÃ©s dans les derniÃ¨res 60 minutes : <?php  echo $connectHeure;?><br />
 <br />
-Nombre de membres connectés dans les dernières 12 heures : <?php  echo $connectMid;?><br />
+Nombre de membres connectÃ©s dans les derniÃ¨res 12 heures : <?php  echo $connectMid;?><br />
 <br />
-Nombre de membres connectés dans les dernières 24 heures : <?php  echo $connectJour;?><br />
+Nombre de membres connectÃ©s dans les derniÃ¨res 24 heures : <?php  echo $connectJour;?><br />
 <br />
-Nombre de membres connectés dans les dernières 48 heures : <?php  echo $connect2Jour;?><br />
+Nombre de membres connectÃ©s dans les derniÃ¨res 48 heures : <?php  echo $connect2Jour;?><br />
 <br />
-Nombre de membres connectés dans les derniers 7 jours : <?php  echo $connectSemaine;?><br />
+Nombre de membres connectÃ©s dans les derniers 7 jours : <?php  echo $connectSemaine;?><br />
 <br />
-Nombre de membres connectés dans les derniers 30 jours : <?php  echo $connectMois;?><br />
+Nombre de membres connectÃ©s dans les derniers 30 jours : <?php  echo $connectMois;?><br />
 <br />
-Nombre de membres connectés depuis un an : <?php  echo $connectAn;?><br />
+Nombre de membres connectÃ©s depuis un an : <?php  echo $connectAn;?><br />
 <br />

@@ -1,18 +1,18 @@
 <?php
 
-header('Content-type: text/html; charset=ISO-8859-1'); 
+header('Content-type: text/html; charset=UTF-8'); 
 
 //Next step :
-//dents acérées --> arracher langue.
+//dents acÃ©rÃ©es --> arracher langue.
 //Remplacer bouton annuler par lien annuler au niveau du compteur.
 //attaques
 //Scores
-//Permettre de se déplacer, moyennant des points.
+//Permettre de se dÃ©placer, moyennant des points.
 
-//Attaque : mettre en place la possibilité d'attaquer, avec choix etc..
-//Créer système de MP automatique pour avertir.
+//Attaque : mettre en place la possibilitÃ© d'attaquer, avec choix etc..
+//CrÃ©er systÃ¨me de MP automatique pour avertir.
 
-	//Démarrage de la session
+	//DÃ©marrage de la session
 	session_start();
 	ob_start();
 	
@@ -23,14 +23,14 @@ header('Content-type: text/html; charset=ISO-8859-1');
 
 	$inMainPage=true;
 	
-	//Mesures de temps pour évaluer le temps que met la page a se créer.
+	//Mesures de temps pour Ã©valuer le temps que met la page a se crÃ©er.
 	$temps_debut = microtime_float();
 
 	
-	//Si la variable $_SESSION['logged'] n'existe pas, on la créée, et on l'initialise a false
+	//Si la variable $_SESSION['logged'] n'existe pas, on la crÃ©Ã©e, et on l'initialise a false
 	if (!isset($_SESSION['logged'])) $_SESSION['logged'] = false;
 			
-	//Gestion de la page courante : Permet de désigner la page a inclure. Si la variable est vide, alors ca sera 'accueil'.
+	//Gestion de la page courante : Permet de dÃ©signer la page a inclure. Si la variable est vide, alors ca sera 'accueil'.
 	$page = (!empty($_GET['page'])) ? htmlentities($_GET['page']) : 'accueil';
 	
 	//Test en cas de suppression de compte
@@ -47,34 +47,34 @@ header('Content-type: text/html; charset=ISO-8859-1');
 		}
 	}
 	
-	//Si on est pas connecté.
+	//Si on est pas connectÃ©.
 	if ($_SESSION['logged'] == false)
 	{
 		$id=0;
-		//On récupère les cookies enregistrés chez l'utilisateurs, s'ils sont la.
+		//On rÃ©cupÃ¨re les cookies enregistrÃ©s chez l'utilisateurs, s'ils sont la.
 		if (isset($_COOKIE['pseudo']) && isset($_COOKIE['mdp']))
 		{
 			$pseudo = htmlentities(addslashes($_COOKIE['pseudo']));
 			$mdp = htmlentities(addslashes($_COOKIE['mdp']));
-			//La requête qui compte le nombre de pseudos
+			//La requÃªte qui compte le nombre de pseudos
 			$sql = mysql_query("SELECT COUNT(*) AS nb_pseudo FROM membres WHERE pseudo='".$pseudo."'");
    
 			if (mysql_result($sql,0,'nb_pseudo') != 0)
 			{
-				//Sélection des informations.
+				//SÃ©lection des informations.
 				$sql_info = mysql_query("SELECT id, confirmation, mdp, nuage FROM membres WHERE pseudo='".$pseudo."'");
 				$donnees_info = mysql_fetch_assoc($sql_info);
 
-				//Si le mot de passe est le même (le mot de passe est déjà crypté).
+				//Si le mot de passe est le mÃªme (le mot de passe est dÃ©jÃ  cryptÃ©).
 				if ($donnees_info['mdp'] == $mdp)
 				{
-					//Si le compte est confirmé.
+					//Si le compte est confirmÃ©.
 					if ($donnees_info['confirmation'] == 1)
 					{
-						//On modifie la variable qui nous indique que le membre est connecté.
+						//On modifie la variable qui nous indique que le membre est connectÃ©.
 						$_SESSION['logged'] = true;
            
-						//On créé les variables contenant des informations sur le membre.
+						//On crÃ©Ã© les variables contenant des informations sur le membre.
 						$_SESSION['id'] = $donnees_info['id'];
 						$_SESSION['pseudo'] = $pseudo;
 						$_SESSION['nuage'] = $donnees_info['nuage'];
@@ -89,7 +89,7 @@ header('Content-type: text/html; charset=ISO-8859-1');
 	
 	$temps11 = microtime_float();
 	
-	//Informations nécessaires au fonctionnement du jeu.
+	//Informations nÃ©cessaires au fonctionnement du jeu.
 	
 	$nbType = array(
 		6,
@@ -122,14 +122,14 @@ header('Content-type: text/html; charset=ISO-8859-1');
 	
 
 //***************************************************************************
-	//Si on est connecté
+	//Si on est connectÃ©
 	if ($_SESSION['logged'] == true)
 	{
 	
 		//l'id du membre.
 		$id=$_SESSION['id'];
 		
-		//Fonction destinée à l'administration
+		//Fonction destinÃ©e Ã  l'administration
 		if (isset($_POST['UnAct']) && $id==12)
 		{
 			actionAdmin();
@@ -139,15 +139,15 @@ header('Content-type: text/html; charset=ISO-8859-1');
 		$donnees_info = mysql_fetch_assoc($sql_info);
 		//Date du dernier calcul du nombre de points d'amour.
 		$lastTime = $donnees_info['timestamp'];
-		//Temps écoulé depuis le dernier calcul.
+		//Temps Ã©coulÃ© depuis le dernier calcul.
 		$timeDiff = time() - $lastTime;
 	
-		//On récupère le nombre de points d'amour.
+		//On rÃ©cupÃ¨re le nombre de points d'amour.
 		$amour = $donnees_info['amour'];
 		
 		$joueurBloque=$donnees_info['bloque'];
 		
-		//Nombre d'objets d'un type donné.
+		//Nombre d'objets d'un type donnÃ©.
 		//Batiments
 		
 		$nbE = array();
@@ -215,14 +215,14 @@ header('Content-type: text/html; charset=ISO-8859-1');
 		);
 		
 		$amour=calculterAmour($amour,$timeDiff,$nbE[0][0],$nbE[1][0],$nbE[1][1],$nbE[1][2]);
-		//Mise a jour du nombre de points d'amour, par rapport au temps écoulé.
+		//Mise a jour du nombre de points d'amour, par rapport au temps Ã©coulÃ©.
 
-		//Gestion des pages d'évolution (constructions).
-		$evolPage=-1; //Valeur par défaut.
+		//Gestion des pages d'Ã©volution (constructions).
+		$evolPage=-1; //Valeur par dÃ©faut.
 		if ($page=='construction')
 		{
 			$evolPage=0;
-			//Nom de chaque objet d'un type différent.
+			//Nom de chaque objet d'un type diffÃ©rent.
 			$evolNom = array(
 				'Coeur',
 				'Bouche',
@@ -239,7 +239,7 @@ header('Content-type: text/html; charset=ISO-8859-1');
 				[ Augmente le nombre de Points d\'amour d&eacute;pens&eacute;s lors d\'un saut ]</span><br />',
 				
 				'La bouche permet de donner des baisers, de plus en plus fougueux.<br />
-				<span class="info">[ Acc&eacute;lère la cr&eacute;ation des Bisous ]<br />
+				<span class="info">[ Acc&eacute;lÃ¨re la cr&eacute;ation des Bisous ]<br />
 				[ Augmente la force des Bisous ]</span><br />',
 				
 				'La langue permet de cr&eacute;er de nouveaux bisous, plus efficaces.<br />
@@ -266,7 +266,7 @@ header('Content-type: text/html; charset=ISO-8859-1');
 		elseif ($page=='bisous')
 		{
 			$evolPage=1;
-			//Nom de chaque objet d'un type différent.
+			//Nom de chaque objet d'un type diffÃ©rent.
 			$evolNom = array(
 				'Smacks',
 				'Baisers',
@@ -274,14 +274,14 @@ header('Content-type: text/html; charset=ISO-8859-1');
 			);
 			//Description qui accompagne l'objet.
 			$evolDesc = array(
-				'Pour tenter une première approche.<br />
+				'Pour tenter une premiÃ¨re approche.<br />
 				<span class="info">[ Le Smack est un Bisou &eacute;conomique, mais qui a peu d\'effets ]</span><br />',
 				'A utiliser sans mod&eacute;ration !!<br />
 				<span class="info">[ Le Baiser a un bon rapport qualit&eacute;/prix ]<br />
 				[ Le Baiser peut prendre 10 fois plus de points d\'amour que le Smack ]</span><br />',
-				'Pour ceux qui n\'ont pas peur d\'y aller à fond !!<br />
-				<span class="info">[ Beaucoup plus efficace, mais très faible face aux Dents ]<br />
-				[ Protège-le contre les Dents en montant le niveau de Langue ]<br />
+				'Pour ceux qui n\'ont pas peur d\'y aller Ã  fond !!<br />
+				<span class="info">[ Beaucoup plus efficace, mais trÃ¨s faible face aux Dents ]<br />
+				[ ProtÃ¨ge-le contre les Dents en montant le niveau de Langue ]<br />
 				[ Le Baiser langoureux peut prendre 10 fois plus de points d\'amour que le Baiser ]</span><br />'
 			);
 			if (isset($_POST['suppr_bisous']) && $joueurBloque==0)
@@ -309,7 +309,7 @@ header('Content-type: text/html; charset=ISO-8859-1');
 		elseif ($page=='techno')
 		{
 			$evolPage=2;
-			//Nom de chaque objet d'un type différent.
+			//Nom de chaque objet d'un type diffÃ©rent.
 			$evolNom = array(
 				'Apn&eacute;e',
 				'Surprise',
@@ -323,7 +323,7 @@ header('Content-type: text/html; charset=ISO-8859-1');
 				<span class="info">[ Augmente le nombre de Points d\'Amour vol&eacute;s ]</span><br />',
 				'Permet d\'augmenter vos chances de r&eacute;ussite.<br />
 				<span class="info">[ Augmente la force de tes Bisous lorsque tu tentes d\'embrasser quelqu\'un ]</span><br />',
-				'C\'est une technique de d&eacute;fense très efficace.<br />
+				'C\'est une technique de d&eacute;fense trÃ¨s efficace.<br />
 				<span class="info">[ Diminue le nombre de Points d\'Amour que l\'on peut te prendre ]</span><br />',
 				'Saute de nuages en nuages !!<br />
 				<span class="info">[ Permet de changer de Position et de Nuage ]<br />
@@ -334,13 +334,13 @@ header('Content-type: text/html; charset=ISO-8859-1');
 			);
 		}
 		
-		//Si on veut acceder a une des pages d'évolution -> prétraitement.
+		//Si on veut acceder a une des pages d'Ã©volution -> prÃ©traitement.
 		if ($evolPage != -1)
 		{
 			include('phpincludes/evo.php');
 		}
 	
-		//Récupération du nombre de messages non lus.
+		//RÃ©cupÃ©ration du nombre de messages non lus.
 		$retour = mysql_query("SELECT COUNT(*) AS nbMsg FROM messages WHERE destin=".$id." AND statut = 0");
 		$nbNewMsg = mysql_result($retour,0,'nbMsg');
 		if ($nbNewMsg>0)
@@ -363,7 +363,7 @@ header('Content-type: text/html; charset=ISO-8859-1');
 				$chatmess = substr($chatmess,0,94).' [...]';
 			}
 
-			//Pas de addslashes, mais protégé.
+			//Pas de addslashes, mais protÃ©gÃ©.
 			
 			
 			if (!preg_match("![^ ]{14,}!", $chatmess))
@@ -379,31 +379,31 @@ header('Content-type: text/html; charset=ISO-8859-1');
 			}
 		}
 
-	}//Fin de partie pour gens connectés.
+	}//Fin de partie pour gens connectÃ©s.
 	
 	$temps12 = microtime_float();	
 	//***************************************************************************
-	/*Tache de vérification des évolutions. 
-		Ce code est effectué que l'on soit connecté ou non.
-		Chaque fois que l'on demande une page au serveur, ce code est appellé.
-		Il permet de créer une sorte de boucle de calcul virtuelle, pour peu qu'il y ait suffisament de gens qui se connectent.
+	/*Tache de vÃ©rification des Ã©volutions. 
+		Ce code est effectuÃ© que l'on soit connectÃ© ou non.
+		Chaque fois que l'on demande une page au serveur, ce code est appellÃ©.
+		Il permet de crÃ©er une sorte de boucle de calcul virtuelle, pour peu qu'il y ait suffisament de gens qui se connectent.
 	*/
-	//On récupère les évolutions dont la date de création est atteinte ou dépassée.
+	//On rÃ©cupÃ¨re les Ã©volutions dont la date de crÃ©ation est atteinte ou dÃ©passÃ©e.
 	$sql_info = mysql_query("SELECT auteur, id, type, classe, cout FROM evolution WHERE timestamp<='".time()."'");
 	//Boucle qui permet de traiter construction par construction.
 	while ($donnees_info = mysql_fetch_assoc($sql_info))
 	{
 		//Id de l'auteur de la construction
 		$id2 = $donnees_info['auteur'];
-		//Id de la tache en question dans la base de donnée. (permet de la supprimer plus rapidement de la bdd)
+		//Id de la tache en question dans la base de donnÃ©e. (permet de la supprimer plus rapidement de la bdd)
 		$idtache = $donnees_info['id'];
 		//Classe de l'objet (exemple : batiment, bisou...)
 		$classe = $donnees_info['classe'];
 		//Type de l'objet
 		$type = $donnees_info['type'];
-		//Cout : pour déterminer le score.
+		//Cout : pour dÃ©terminer le score.
 		$coutObjet = $donnees_info['cout'];
-		//On ajoute le nombre de points d'amour dépensés au score :
+		//On ajoute le nombre de points d'amour dÃ©pensÃ©s au score :
 		AjouterScore($id2,$coutObjet);
 		//On supprime la construction de la liste des taches.
 		mysql_query("DELETE FROM evolution WHERE id='".$idtache."'");
@@ -411,13 +411,13 @@ header('Content-type: text/html; charset=ISO-8859-1');
 		$sql_info2 = mysql_query("SELECT ".$Obj[$classe][$type].", amour FROM membres WHERE id='".$id2."'");
 		$donnees_info = mysql_fetch_assoc($sql_info2);
 		$amourConstructeur=$donnees_info['amour'];
-		//On récupère l'ancienne valeur.
+		//On rÃ©cupÃ¨re l'ancienne valeur.
 		$nbObjEvol = $donnees_info[$Obj[$classe][$type]];
 		//On augmente d'un.
 		$nbObjEvol++;
 		//On met a jour la table.
 		mysql_query("UPDATE membres SET ".$Obj[$classe][$type]."='".$nbObjEvol."' WHERE id='".$id2."'");
-		//Si le visiteur est connecté et membre, et si la construction est la sienne, on met a jour les infos sur la page.
+		//Si le visiteur est connectÃ© et membre, et si la construction est la sienne, on met a jour les infos sur la page.
 		
 		//S'il ya des constructions sur la liste de construction, on relance une construction.
 		$sql_info2 = mysql_query("SELECT id, duree, type, cout FROM liste WHERE auteur=$id2 AND classe=$classe ORDER BY id LIMIT 0,1");
@@ -465,16 +465,16 @@ header('Content-type: text/html; charset=ISO-8859-1');
 		}
 	}
 	
-	//Gestion automatisée des attaques.
+	//Gestion automatisÃ©e des attaques.
 	include('phpincludes/attaque.php');
 	
 	//***************************************************************************
 	$temps13 = microtime_float();
 
-	//Gestion des différentes pages dispo.
+	//Gestion des diffÃ©rentes pages dispo.
 	include('phpincludes/pages.php');
 	
-	//Si on décide que la page existe.
+	//Si on dÃ©cide que la page existe.
 	if (isset($array_pages[$page]))
 	{
 		$title=$array_titres[$page].' - Bienvenue sur Bisouland';
@@ -495,18 +495,18 @@ header('Content-type: text/html; charset=ISO-8859-1');
 		{
 			mysql_query("INSERT INTO connectbisous VALUES('" . $_SERVER['REMOTE_ADDR'] . "', " . time() . ", 2) ");
 		}
-		else // L'ip se trouve déjà dans la table, on met juste à jour le timestamp
+		else // L'ip se trouve dÃ©jÃ  dans la table, on met juste Ã  jour le timestamp
 		{
 			mysql_query('UPDATE connectbisous SET timestamp=' . time() . " WHERE ip='" . $_SERVER['REMOTE_ADDR'] . "'");
 		}
 	}
 	$temps32 = microtime_float();		
 	
-	// ETAPE 2 : on supprime toutes les entrées dont le timestamp est plus vieux que 5 minutes
+	// ETAPE 2 : on supprime toutes les entrÃ©es dont le timestamp est plus vieux que 5 minutes
 	$timestamp_5min = time() - 300;
 	mysql_query('DELETE FROM connectbisous WHERE timestamp < ' . $timestamp_5min);
 	
-	//Etape 3 : on demande maintenant le nombre de gens connectés.
+	//Etape 3 : on demande maintenant le nombre de gens connectÃ©s.
 	//Nombre de visiteurs
 	$retour = mysql_query("SELECT COUNT(*) AS nbre_visit FROM connectbisous");
 	$donnees = mysql_fetch_assoc($retour); 
@@ -526,7 +526,7 @@ header('Content-type: text/html; charset=ISO-8859-1');
 				echo $title;
 			?>
 		</title>
-        <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" /> 
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" /> 
 		<link rel="stylesheet" media="screen" type="text/css" title="bisouStyle2" href="includes/bisouStyle2.css" /> 
 		<link rel="shorcut icon" href="/favicon.ico"/>
 		<meta name="description" content="<?php echo $title;?>"/>

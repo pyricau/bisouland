@@ -1,4 +1,5 @@
 <?php
+
 //Gestion des pages
 $array_pages = array(
     "accueil" => "accueil.php",

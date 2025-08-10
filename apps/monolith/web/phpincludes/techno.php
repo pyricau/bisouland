@@ -7,7 +7,7 @@ if ($_SESSION['logged'] == true) {
 Les techniques vous permettent de mieux vous préparer à faire preuve d'amour.<br />
 <?php
 
-    for ($i=0;$i!=$nbType[$evolPage];$i++) {
+    for ($i = 0;$i != $nbType[$evolPage];$i++) {
 
         if (arbre($evolPage, $i, $nbE)) {
 
@@ -19,18 +19,18 @@ Les techniques vous permettent de mieux vous préparer à faire preuve d'amour.<
                 echo 'Temps de construction : ',strTemps($tempsE[$evolPage][$i]),'<br />';
             }
             if ($evolution == -1) {
-                if ($amour>=$amourE[$evolPage][$i]) {
+                if ($amour >= $amourE[$evolPage][$i]) {
                     echo '<form method="post" action="techno.html"><input type="submit"
 		name="'.$Obj[$evolPage][$i].'" value="Passer au niveau suivant" /></form>';
                 } else {
-                    echo '<span class="info">[ Il te manque '.formaterNombre(ceil($amourE[$evolPage][$i]-$amour)).' points d\'amour pour pouvoir passer au niveau suivant ]</span><br />';
+                    echo '<span class="info">[ Il te manque '.formaterNombre(ceil($amourE[$evolPage][$i] - $amour)).' points d\'amour pour pouvoir passer au niveau suivant ]</span><br />';
                 }
             } elseif ($evolution == $i) {
                 ?>
 	<script src="includes/compteur.js" type="text/javascript"></script>
-	<div id="compteur"><?php echo strTemps($timeFin-time()); ?></div>
+	<div id="compteur"><?php echo strTemps($timeFin - time()); ?></div>
 	<script language="JavaScript">
-		duree="<?php echo($timeFin-time());?>";
+		duree="<?php echo($timeFin - time());?>";
 		stop="";
 		fin="Terminé";
 		next="Continuer";

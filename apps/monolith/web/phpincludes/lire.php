@@ -6,14 +6,14 @@ if ($_SESSION['logged'] == true) {
         $idmsg = htmlentities(addslashes($_GET['idmsg']));
         $retour = mysql_query("SELECT posteur, destin, message, timestamp, statut, titre FROM messages WHERE id='".$idmsg."'");
         $donnees = mysql_fetch_assoc($retour);
-        if ($donnees['destin']==$_SESSION['id']) {
-            if ($donnees['statut']==0) {
+        if ($donnees['destin'] == $_SESSION['id']) {
+            if ($donnees['statut'] == 0) {
                 mysql_query("UPDATE messages SET statut='1' WHERE id='".$idmsg."'");
             }
             $retour = mysql_query("SELECT pseudo FROM membres WHERE id='".$donnees['posteur']."'");
             $donnees2 = mysql_fetch_assoc($retour);
-            $from =$donnees2['pseudo'];
-            
+            $from = $donnees2['pseudo'];
+
             $objet = $donnees['titre'];
             $message = $donnees['message'];
             $dateEnvoie = $donnees['timestamp'];
@@ -27,7 +27,7 @@ if ($_SESSION['logged'] == true) {
 Message :<br />
 <div class="message"><?php echo bbLow($message);?></div>
 <?php
-                if ($from!="BisouLand") {
+                if ($from != "BisouLand") {
                     ?>
 <form method="post" action="envoi.html">
 	<input type="submit" tabindex="30" value="Répondre" />

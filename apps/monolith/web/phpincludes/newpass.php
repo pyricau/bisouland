@@ -2,66 +2,66 @@
 
 if ($_SESSION['logged'] == false) {
 
-    $affich=false;
+    $affich = false;
 
     if (isset($_GET['Cid'], $_GET['Ccle']) && !empty($_GET['Cid']) && !empty($_GET['Ccle'])) {
-        $resultat='Tu n\'as rien a faire ici :D';
-        $Cid=htmlentities(addslashes($_GET['Cid']));
-        $Ccle=htmlentities(addslashes($_GET['Ccle']));
-        $cle=$Ccle-$Cid;
+        $resultat = 'Tu n\'as rien a faire ici :D';
+        $Cid = htmlentities(addslashes($_GET['Cid']));
+        $Ccle = htmlentities(addslashes($_GET['Ccle']));
+        $cle = $Ccle - $Cid;
         $sql = mysql_query("SELECT newpass FROM membres WHERE id=$Cid");
         if ($donnees = mysql_fetch_assoc($sql)) {
-            if ($donnees['newpass']==$cle && $donnees['newpass']!=0) {
-                $affich=true;
-                $resultat='';
+            if ($donnees['newpass'] == $cle && $donnees['newpass'] != 0) {
+                $affich = true;
+                $resultat = '';
             }
         }
 
     } elseif (isset($_POST['newpswd'])) {
-        $resultat='Tu n\'as rien a faire ici :D';
+        $resultat = 'Tu n\'as rien a faire ici :D';
         if (isset($_POST['Cid'],$_POST['Ccle']) && !empty($_POST['Cid']) && !empty($_POST['Ccle'])) {
-    
-            $Cid=htmlentities(addslashes($_POST['Cid']));
-            $Ccle=htmlentities(addslashes($_POST['Ccle']));
-            $cle=$Ccle-$Cid;
+
+            $Cid = htmlentities(addslashes($_POST['Cid']));
+            $Ccle = htmlentities(addslashes($_POST['Ccle']));
+            $cle = $Ccle - $Cid;
             $sql = mysql_query("SELECT newpass FROM membres WHERE id=$Cid");
             if ($donnees = mysql_fetch_assoc($sql)) {
-                if ($donnees['newpass']==$cle && $donnees['newpass']!=0) {
-        
-                    $affich=true;
-            
+                if ($donnees['newpass'] == $cle && $donnees['newpass'] != 0) {
+
+                    $affich = true;
+
                     if (isset($_POST['newpass'],$_POST['newpass2']) && !empty($_POST['newpass']) && !empty($_POST['newpass2'])) {
-                        $newpass=$_POST['newpass'];
-                        $newpass2=$_POST['newpass2'];
-                        if ($newpass==$newpass2) {
+                        $newpass = $_POST['newpass'];
+                        $newpass2 = $_POST['newpass2'];
+                        if ($newpass == $newpass2) {
                             if (preg_match("!^\w+$!", $newpass)) {
-                                $newpass=htmlentities(addslashes($_POST['newpass']));//Normalement inutile.
+                                $newpass = htmlentities(addslashes($_POST['newpass']));//Normalement inutile.
                                 $taille = strlen(trim($newpass));
                                 if ($taille >= 5 && $taille <= 15) {
                                     //On change le mot de passe.
                                     ChangerMotPasse($Cid, $newpass);
                                     mysql_query("UPDATE membres SET newpass=0 WHERE id=$Cid");
-                                    $resultat='Le mot de passe a été changé.<br /><br />
+                                    $resultat = 'Le mot de passe a été changé.<br /><br />
 							Il te sera demandé lors de ta prochaine visite sur BisouLand.';
-                                    $affich=false;
+                                    $affich = false;
                                 } else {
-                                    $resultat='Le nouveau mot de passe n\'a pas la bonne longueur';
+                                    $resultat = 'Le nouveau mot de passe n\'a pas la bonne longueur';
                                 }
                             } else {
-                                $resultat='Le nouveau mot de passe n\'est pas valide.';
+                                $resultat = 'Le nouveau mot de passe n\'est pas valide.';
                             }
                         } else {
-                            $resultat='Tu n\'as pas rentré deux fois le même mot de passe.';
+                            $resultat = 'Tu n\'as pas rentré deux fois le même mot de passe.';
                         }
                     } else {
-                        $resultat='Certains champs sont incomplets.';
+                        $resultat = 'Certains champs sont incomplets.';
                     }
                 }
             }
         }
     }
 
-    if ($affich==true) {
+    if ($affich == true) {
         ?>
 <h1>Changer de mot de passe</h1>
 

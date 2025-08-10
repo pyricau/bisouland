@@ -1,4 +1,5 @@
 <?php
+
 //Fonction pour calculer un temps en millisecondes.
 function microtime_float()
 {
@@ -7,23 +8,23 @@ function microtime_float()
 
 function calculterAmour($CalAmour, $timeDiff, $LvlCoeur, $nb1, $nb2, $nb3)
 {
-    $CalAmour=calculerGenAmour($CalAmour, $timeDiff, $LvlCoeur, $nb1, $nb2, $nb3);
+    $CalAmour = calculerGenAmour($CalAmour, $timeDiff, $LvlCoeur, $nb1, $nb2, $nb3);
     //Cette fonction ajoute un frein sur le minima.
-    if ($CalAmour<0) {
-        $CalAmour=0;
+    if ($CalAmour < 0) {
+        $CalAmour = 0;
     }
-        
+
     return $CalAmour;
 }
 
 function calculerGenAmour($CalAmour, $timeDiff, $LvlCoeur, $nb1, $nb2, $nb3)
 {
-    $diff=$LvlCoeur - (0.3*$nb1 + 0.7*$nb2 + $nb3);
-    if ($diff>0) {
+    $diff = $LvlCoeur - (0.3 * $nb1 + 0.7 * $nb2 + $nb3);
+    if ($diff > 0) {
         //2 equations :  lvl 50 : 100 000 par heure et lvl 20  : 20000 par heure.
-        $CalAmour += ((ExpoSeuil(5500, 6, $diff))*$timeDiff)/3600;
-    } elseif ($diff<0) {
-        $CalAmour -= ((ExpoSeuil(5500, 6, -1*$diff))*$timeDiff)/3600;
+        $CalAmour += ((ExpoSeuil(5500, 6, $diff)) * $timeDiff) / 3600;
+    } elseif ($diff < 0) {
+        $CalAmour -= ((ExpoSeuil(5500, 6, -1 * $diff)) * $timeDiff) / 3600;
     }
     return $CalAmour;
 }
@@ -31,30 +32,30 @@ function calculerGenAmour($CalAmour, $timeDiff, $LvlCoeur, $nb1, $nb2, $nb3)
 //Permet de convertir un timestamp en chaine sous la forme heure:minutes:secondes.
 function strTemps($s)
 {
-    $m=0;
-    $h=0;
-    if ($s<0) {
+    $m = 0;
+    $h = 0;
+    if ($s < 0) {
         return '0:00:00';
     } else {
-        if ($s>59) {
-            $m=floor($s/60);
-            $s=$s-$m*60;
+        if ($s > 59) {
+            $m = floor($s / 60);
+            $s = $s - $m * 60;
         }
-        if ($m>59) {
-            $h=floor($m/60);
-            $m=$m-$h*60;
+        if ($m > 59) {
+            $h = floor($m / 60);
+            $m = $m - $h * 60;
         }
-        $ts=$s;
-        $tm=$m;
-        if ($s<10) {
-            $ts='0'.$s;
+        $ts = $s;
+        $tm = $m;
+        if ($s < 10) {
+            $ts = '0'.$s;
         }
-        if ($m<10) {
-            $tm='0'.$m;
+        if ($m < 10) {
+            $tm = '0'.$m;
         }
-        if ($h>24) {
-            $d = floor($h/24);
-            $h = $h-$d*24;
+        if ($h > 24) {
+            $d = floor($h / 24);
+            $h = $h - $d * 24;
             $h = $d.' jours '.$h;
         }
         return	$h.' h '.$tm.' min '.$ts.' sec';
@@ -62,17 +63,17 @@ function strTemps($s)
 }
 
 //Renvoi un s (ou^$lettre) si le nombre est plus grand que 1, renvoi '' (ou $alt) sinon.
-function pluriel($nombre, $lettre = 's', $alt='')
+function pluriel($nombre, $lettre = 's', $alt = '')
 {
     return ($nombre > 1) ? $lettre : $alt;
 }
 
-function expo($a, $b, $val, $int=0)
+function expo($a, $b, $val, $int = 0)
 {
-    
-    $ret=$a*exp($b*$val);
-    
-    if ($int==1) {
+
+    $ret = $a * exp($b * $val);
+
+    if ($int == 1) {
         return ceil($ret);
     } else {
         return $ret;
@@ -81,16 +82,16 @@ function expo($a, $b, $val, $int=0)
 }
 
 //Val doit etre different de 0.
-function InvExpo($a, $b, $val, $int=0)
+function InvExpo($a, $b, $val, $int = 0)
 {
     //Patch to avoid division by 0...
-    if ($val==0) {
-        $val=1;
+    if ($val == 0) {
+        $val = 1;
     }
 
-    $ret=$a*exp($b/$val);
-    
-    if ($int==1) {
+    $ret = $a * exp($b / $val);
+
+    if ($int == 1) {
         return ceil($ret);
     } else {
         return $ret;
@@ -100,15 +101,15 @@ function InvExpo($a, $b, $val, $int=0)
 
 //Plus a augmente, plus on augmente la valeur de seuil
 //Plus b augmente, plus on eloigne le moment ou on atteint le seuil .
-function ExpoSeuil($a, $b, $val, $int=0)
+function ExpoSeuil($a, $b, $val, $int = 0)
 {
-    
-    if ($val<=0) {
-        $val=1;
+
+    if ($val <= 0) {
+        $val = 1;
     }
-    $ret=$a*exp((-1*$b)/$val);
-    
-    if ($int==1) {
+    $ret = $a * exp((-1 * $b) / $val);
+
+    if ($int == 1) {
         return ceil($ret);
     } else {
         return $ret;
@@ -116,18 +117,18 @@ function ExpoSeuil($a, $b, $val, $int=0)
 
 }
 
-function AdminMP($cible, $objet, $message, $lu=0)
+function AdminMP($cible, $objet, $message, $lu = 0)
 {
     $message = nl2br(addslashes($message));
-    $objet=addslashes($objet);
-        
+    $objet = addslashes($objet);
+
     $sql = mysql_query("SELECT COUNT(*) AS nbmsg FROM messages WHERE destin=".$cible);
-    if (mysql_result($sql, 0, 'nbmsg')>=20) {
-        $Asuppr=mysql_result($sql, 0, 'nbmsg')-19;
-        $date48=time()-172800;
+    if (mysql_result($sql, 0, 'nbmsg') >= 20) {
+        $Asuppr = mysql_result($sql, 0, 'nbmsg') - 19;
+        $date48 = time() - 172800;
         mysql_query("DELETE FROM messages WHERE destin=".$cible." AND timestamp<=$date48 ORDER BY id LIMIT $Asuppr");
     }
-        
+
     mysql_query("INSERT INTO messages VALUES('', 1, '" .$cible. "', '" . $message . "', '" .time(). "', $lu, '" .$objet."')");
 }
 
@@ -169,14 +170,14 @@ function AjouterScore($idScore, $valeur)
 {
     $sql_info = mysql_query("SELECT score FROM membres WHERE id=".$idScore);
     $donnees_info = mysql_fetch_assoc($sql_info);
-    mysql_query("UPDATE membres SET score=".($donnees_info['score']+$valeur)." WHERE id=".$idScore);
+    mysql_query("UPDATE membres SET score=".($donnees_info['score'] + $valeur)." WHERE id=".$idScore);
 }
 
 //Presuppose que toutes les verifications ont ete faites.
 function ForcerAttaque($auteur, $cible, $duree, $pseudoAuteur, $nuageSource, $positionSource)
 {
     mysql_query("UPDATE membres SET bloque=1 WHERE id='".$auteur."'");
-    mysql_query("INSERT INTO attaque VALUES (".$auteur.", ".$cible.", ".(time()+$duree).", ".(time()+2*$duree).", 0)");
+    mysql_query("INSERT INTO attaque VALUES (".$auteur.", ".$cible.", ".(time() + $duree).", ".(time() + 2 * $duree).", 0)");
     AdminMP($cible, "Alerte", $pseudo." vient d'envoyer ses bisous dans ta direction, et va tenter de t'embrasser.
 					".$pseudo." est situ&eacute; sur le nuage ".$nuageSource.", a la position ".$positionSource.".
 					Ses Bisous arrivent dans ".strTemps($duree).".");
@@ -201,25 +202,25 @@ function actionAdmin()
 
 function distanceMax($coeur, $jambes)
 {
-    return $coeur + 8*$jambes;
+    return $coeur + 8 * $jambes;
 }
 
 //Fonction qui retourne 0 si joueurAutre est meme niveau, 1 s'il est intouchable parce que trop faible, 2 s'il est intouchable parce que trop fort.
 function voirNiveau($scoreJoueur, $scoreAutre)
 {
-    if ($scoreJoueur<50) {
+    if ($scoreJoueur < 50) {
         return 2;
     }
-    if ($scoreAutre<50) {
+    if ($scoreAutre < 50) {
         return 1;
     }
-    if ($scoreJoueur>2000 && $scoreAutre>2000) {
+    if ($scoreJoueur > 2000 && $scoreAutre > 2000) {
         return 0;
     }
-    if (abs($scoreAutre-$scoreJoueur)<=200) {
+    if (abs($scoreAutre - $scoreJoueur) <= 200) {
         return 0;
     }
-    if ($scoreJoueur-$scoreAutre>200) {
+    if ($scoreJoueur - $scoreAutre > 200) {
         return 1;
     } else {
         return 2;
@@ -229,7 +230,7 @@ function voirNiveau($scoreJoueur, $scoreAutre)
 //transformation de bbcode smiley en images.
 function smileys($texte)
 {
-    $in=array(
+    $in = array(
         "o_O",
         ";)",
         ":D",
@@ -246,7 +247,7 @@ function smileys($texte)
         ":coeur:"
     );
 
-    $out=array(
+    $out = array(
         '<img src="smileys/blink.gif" alt="un smiley" title="o_O"/>',
         '<img src="smileys/clin.png" alt="un smiley" title=";)"/>',
         '<img src="smileys/heureux.png" alt="un smiley" title=":D"/>',
@@ -278,31 +279,31 @@ function bbLow($text)
             "<u>", "</u>",
             "<em>", "</em>",
             );
-                
-    $text=stripslashes($text);
-        
+
+    $text = stripslashes($text);
+
 
     $text = str_replace($bbcode, $htmlcode, $text);
-        
+
     $text = preg_replace('!\[color=(red|green|blue|yellow|purple|olive|white|black)\](.+)\[/color\]!isU', '<span style="color:$1">$2</span>', $text);
     $text = preg_replace('!\[size=(xx-small|x-small|small|medium|large|x-large|xx-large)\](.+)\[/size\]!isU', '<span style="font-size:$1">$2</span>', $text);
 
-    $text=smileys($text);
-    
-        
+    $text = smileys($text);
+
+
     return $text;
 }
 
 function tempsAttaque($distance, $jambes)
 {
-    return floor(($distance*1000)/(1 + 0.3*$jambes));
+    return floor(($distance * 1000) / (1 + 0.3 * $jambes));
 }
 
 function coutAttaque($distance, $jambes)
 {
-    $exp=$distance-$jambes;
-    if ($exp<0) {
-        $exp==0;
+    $exp = $distance - $jambes;
+    if ($exp < 0) {
+        $exp == 0;
     }
     return expo(100, 0.4, $exp, 1);
 }

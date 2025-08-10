@@ -98,19 +98,19 @@ if ($_SESSION['logged'] == true) {
         mysql_query("DELETE FROM messages WHERE id=".$idmsg." AND destin=".$id);
     } else {
         if (isset($_POST['supboite'])) {
-            foreach ($_POST['supboite'] as $key=>$value) {
-                $key=htmlentities(addslashes($key));
+            foreach ($_POST['supboite'] as $key => $value) {
+                $key = htmlentities(addslashes($key));
                 mysql_query('DELETE FROM messages WHERE id='.$key." AND destin=".$id);
             }
         }
     }
-    
+
     $sql = mysql_query("SELECT COUNT(*) AS nbmsg FROM messages WHERE destin=".$id);
-    $nbmsg=mysql_result($sql, 0, 'nbmsg');
-    if ($nbmsg>20) {
-        $nbmsg=20;
+    $nbmsg = mysql_result($sql, 0, 'nbmsg');
+    if ($nbmsg > 20) {
+        $nbmsg = 20;
     }
-    
+
     $retour = mysql_query("SELECT id, posteur, timestamp, statut, titre FROM messages WHERE destin='".$id."' ORDER BY timestamp DESC LIMIT 20");
 
     ?>
@@ -130,18 +130,18 @@ if ($_SESSION['logged'] == true) {
 				<th style="width:35%;">Objet</th>
 			</tr>
 <?php
-        $i=0;
-    while (($donnees = mysql_fetch_assoc($retour)) && $i<20) {
+        $i = 0;
+    while (($donnees = mysql_fetch_assoc($retour)) && $i < 20) {
         $i++;
         //Suppression : bouton supprimer en bas, et checkbox //Ajouter bouton lu/non lu  //Max messages
         $retour2 = mysql_query("SELECT pseudo FROM membres WHERE id='".$donnees['posteur']."'");
         if (!$donnees2 = mysql_fetch_assoc($retour2)) {
-            $donnees2['pseudo']="Supprim&eacute;";
+            $donnees2['pseudo'] = "Supprim&eacute;";
         }
         ?>
 			<tr>
 				<td><input type="checkbox" name="supboite[<?php echo $donnees['id']; ?>]" onclick="checkone()" /></td>
-				<td><?php if ($donnees['statut']==0) {
+				<td><?php if ($donnees['statut'] == 0) {
                     echo '<a class="bulle" style="cursor: default;" onclick="return false;" href=""><img src="images/newmess.png" alt="Message non lu" title="" /><span>Message non lu</span></a>';
                 }?></td>
 				<td> <?php echo  stripslashes($donnees2['pseudo']);?> </td>

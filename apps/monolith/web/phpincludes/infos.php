@@ -13,7 +13,7 @@ Lorsque tu annules une cr&eacute;ation, tu ne r&eacute;cup&eacute;res que la  mo
 <?php
     //*********************************************
     //Nom !!
-    $requis[0]['nomClasse']='Organes';
+    $requis[0]['nomClasse'] = 'Organes';
     $requis[0]['nom'] = array(
         'Coeur',
         'Bouche',
@@ -84,7 +84,7 @@ Lorsque tu annules une cr&eacute;ation, tu ne r&eacute;cup&eacute;res que la  mo
 
     //*********************************************
     //Nom !!
-    $requis[1]['nomClasse']='Bisous';
+    $requis[1]['nomClasse'] = 'Bisous';
     $requis[1]['nom'] = array(
         'Smack',
         'Baiser',
@@ -129,7 +129,7 @@ Lorsque tu annules une cr&eacute;ation, tu ne r&eacute;cup&eacute;res que la  mo
 
     //*********************************************
     //Nom !!
-    $requis[2]['nomClasse']='Techniques';
+    $requis[2]['nomClasse'] = 'Techniques';
     $requis[2]['nom'] = array(
         'Apn&eacute;e',
         'Surprise',
@@ -211,20 +211,20 @@ Lorsque tu annules une cr&eacute;ation, tu ne r&eacute;cup&eacute;res que la  mo
         4
     );
 
-    for ($c=0;$c<3;$c++) {
+    for ($c = 0;$c < 3;$c++) {
         echo '<table width="80%">
 	<tr>
 		<th width="50%">'.$requis[$c]['nomClasse'].'</th>
 		<th >Requis</th>
 	</tr>';
-        foreach ($requis[$c]['nom'] as $i=>$Nom) {
+        foreach ($requis[$c]['nom'] as $i => $Nom) {
             $nbCond = count($requis[$c][$i]['Niveau']);
-            if ($nbCond==0) {
+            if ($nbCond == 0) {
                 echo '<tr>
 					<td>'.$Nom.'</td>
 					<td><strong>Pas de conditions</strong></td>';
             } else {
-                if ($nbCond==1) {
+                if ($nbCond == 1) {
                     echo '<tr>
 						<td>'.$Nom.'</td>';
                 } else {
@@ -232,16 +232,16 @@ Lorsque tu annules une cr&eacute;ation, tu ne r&eacute;cup&eacute;res que la  mo
 				<td rowspan="'.$nbCond.'" >'.$Nom.'</td>';
                 }
                 //Affichage des conditions
-                foreach ($requis[$c][$i]['Classe'] as $cond=>$classe) {
-                    if ($cond>1) {
+                foreach ($requis[$c][$i]['Classe'] as $cond => $classe) {
+                    if ($cond > 1) {
                         echo '<tr>';
                     }
-                    if ($nbE[$classe][$requis[$c][$i]['Type'][$cond]]<$requis[$c][$i]['Niveau'][$cond]) {
-                        $color='black';
-                        $reqTexte="Tu n'as pas le niveau requis";
+                    if ($nbE[$classe][$requis[$c][$i]['Type'][$cond]] < $requis[$c][$i]['Niveau'][$cond]) {
+                        $color = 'black';
+                        $reqTexte = "Tu n'as pas le niveau requis";
                     } else {
-                        $color='red';
-                        $reqTexte='Tu as un niveau suffisant';
+                        $color = 'red';
+                        $reqTexte = 'Tu as un niveau suffisant';
                     }
                     echo '<td>
 					<a class="bulle" style="cursor: default;color:'.$color.';" onclick="return false;" href=""><strong>

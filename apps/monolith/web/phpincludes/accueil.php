@@ -1,5 +1,5 @@
 <?php
-if ($_SESSION['logged'] == true && $pseudo=='admin') {
+if ($_SESSION['logged'] == true && $pseudo == 'admin') {
     echo '<div class="cache" ><a href="news/liste_news.php">Admin</a></div>';
 }
 ?>
@@ -21,7 +21,7 @@ if ($_SESSION['logged'] == true && $pseudo=='admin') {
 <?php
 
 
-            
+
     function bb2html($text)
     {
         $bbcode = array("<", ">",
@@ -40,22 +40,22 @@ if ($_SESSION['logged'] == true && $pseudo=='admin') {
                 "<em>", "</em>",
                 '<a href="', "</a>",
                 );
-                
-        $text=htmlentities(stripslashes($text));
-        
+
+        $text = htmlentities(stripslashes($text));
+
 
         $text = str_replace($bbcode, $htmlcode, $text);
-        
+
         $text = preg_replace('!\[color=(red|green|blue|yellow|purple|olive|white|black)\](.+)\[/color\]!isU', '<span style="color:$1">$2</span>', $text);
         $text = preg_replace('!\[size=(xx-small|x-small|small|medium|large|x-large|xx-large)\](.+)\[/size\]!isU', '<span style="font-size:$1">$2</span>', $text);
 
-        
+
         $text = preg_replace('![^\"]http://[a-z0-9._/?&=-]+!i', '<a href="$0">$0</a>', $text);
-        
-        $text=smileys($text);
-        
-        $text=nl2br($text);
-        
+
+        $text = smileys($text);
+
+        $text = nl2br($text);
+
         return $text;
     }
 
@@ -70,7 +70,7 @@ while ($donnees = mysql_fetch_array($retour)) {
 	</h3>
 	<em>
         le <?php echo date('d/m/Y à H\hi', $donnees['timestamp']); ?></em>
-		<?php if ($donnees['timestamp_modification']!=0) { ?>
+		<?php if ($donnees['timestamp_modification'] != 0) { ?>
 		<br />
 		<em>modifi&eacute;e le <?php echo date('d/m/Y à H\hi', $donnees['timestamp_modification']); ?></em>
 		<?php }?>
@@ -78,9 +78,9 @@ while ($donnees = mysql_fetch_array($retour)) {
 		<p>
 		<?php
 
-                $contenu=bb2html($donnees['contenu']);
+                $contenu = bb2html($donnees['contenu']);
     echo $contenu;
-            
+
     ?>
 		</p>
 </div>

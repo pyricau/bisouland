@@ -7,15 +7,15 @@
 if (isset($_POST['message'])) {
     if ($_SESSION['logged'] == true) {
         $psd = htmlentities($_SESSION['pseudo']);
-        
+
         $message = htmlentities(addslashes($_POST['message']), ENT_QUOTES); // De même pour le message
         $message = nl2br($message); // Pour le message, comme on utilise un textarea, il faut remplacer les Entrées par des <br />
-    
+
         // On peut enfin enregistrer :o)
         //mysql_query("INSERT INTO orbisous VALUES('', '" . $psd . "', '" . $message . "', '" .time()."')");
     }
 } else {
-    $psd="Votre pseudo";
+    $psd = "Votre pseudo";
 }
 
 // --------------- Etape 2 -----------------
@@ -69,10 +69,10 @@ $nombreDePages  = ceil($totalDesMessages / $nombreDeMessagesParPage);
 
 if (isset($_GET['or'])) {
     $or = intval($_GET['or']); // On récupère le numéro de la page indiqué dans l'adresse (livreor.php?page=4)
-    if ($or>$nombreDePages) {
-        $or=$nombreDePages;
-    } elseif ($or<1) {
-        $or=1;
+    if ($or > $nombreDePages) {
+        $or = $nombreDePages;
+    } elseif ($or < 1) {
+        $or = 1;
     }
 } else { // La variable n'existe pas, c'est la première fois qu'on charge la page
     $or = 1; // On se met sur la page 1 (par défaut)
@@ -83,10 +83,10 @@ $premierMessageAafficher = ($or - 1) * $nombreDeMessagesParPage;
 
 $reponse = mysql_query('SELECT * FROM orbisous ORDER BY id DESC LIMIT ' . $premierMessageAafficher . ', ' . $nombreDeMessagesParPage);
 
-if ($nombreDePages>1) {
+if ($nombreDePages > 1) {
     echo "<center>Page :";
     for ($i = 1 ; $i <= $nombreDePages ; $i++) {
-        if ($i!=$or) {
+        if ($i != $or) {
             echo '<a href="livreor.' . $i . '.html">' . $i . '</a> ';
         } else {
             echo ' '.$i.' ';

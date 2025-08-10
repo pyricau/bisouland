@@ -13,9 +13,9 @@ $finder = (new PhpCsFixer\Finder())
 
 return (new PhpCsFixer\Config())
     ->setRules([
-        '@PSR2' => true,
-        'no_closing_tag' => true,
-        // Disabled as the fixes break the following files:
+        '@PSR12' => true,
+
+        // [PSR-2] Disabled as the fixes break the following files:
         // 1) ../monolith/web/phpincludes/bisous.php
         // 2) ../monolith/web/phpincludes/cerveau.php
         'statement_indentation' => false,

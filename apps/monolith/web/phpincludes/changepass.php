@@ -14,36 +14,36 @@ Il est désormais possible de changer de mot de passe, si l'ancien ne vous convi
                 //Sélection des informations.
                 $sql_info = mysql_query("SELECT mdp FROM membres WHERE id='".$id."'");
                 $donnees_info = mysql_fetch_array($sql_info);
-                $oldmdp2=$donnees_info['mdp'];
-                if ($oldmdp2==$oldmdp) {
+                $oldmdp2 = $donnees_info['mdp'];
+                if ($oldmdp2 == $oldmdp) {
                     $newpass = $_POST['newpass'];
                     $newpass2 = $_POST['newpass2'];
-                    if ($newpass==$newpass2) {
+                    if ($newpass == $newpass2) {
                         if (preg_match("!^\w+$!", $newpass)) {
-                            $newpass=htmlentities(addslashes($_POST['newpass']));//Normalement inutile.
+                            $newpass = htmlentities(addslashes($_POST['newpass']));//Normalement inutile.
                             $taille = strlen(trim($newpass));
                             if ($taille >= 5 && $taille <= 15) {
                                 //On change le mot de passe.
                                 ChangerMotPasse($id, $newpass);
-                                $resultat='Le mot de passe a été changé.<br /><br />
+                                $resultat = 'Le mot de passe a été changé.<br /><br />
 							Il vous sera demandé lors de votre prochaine visite sur BisouLand.';
                             } else {
-                                $resultat='Le nouveau mot de passe n\'a pas la bonne longueur';
+                                $resultat = 'Le nouveau mot de passe n\'a pas la bonne longueur';
                             }
                         } else {
-                            $resultat='Le nouveau mot de passe n\'est pas valide.';
+                            $resultat = 'Le nouveau mot de passe n\'est pas valide.';
                         }
                     } else {
-                        $resultat='Vous n\'avez pas rentré deux fois le même mot de passe.';
+                        $resultat = 'Vous n\'avez pas rentré deux fois le même mot de passe.';
                     }
                 } else {
-                    $resultat='Le mot de passe est éronné.';
+                    $resultat = 'Le mot de passe est éronné.';
                 }
             } else {
-                $resultat='Veuillez remplir tous les champs.';
+                $resultat = 'Veuillez remplir tous les champs.';
             }
         }
-    
+
     if (isset($resultat)) {
         echo $resultat.'<br />';
     }

@@ -4,16 +4,16 @@ if ($_SESSION['logged'] == true) {
 
     $sql_info = mysql_query("SELECT espion FROM membres WHERE id='".$id."'");
     $donnees_info = mysql_fetch_assoc($sql_info);
-    $espion=$donnees_info['espion'];
-    
+    $espion = $donnees_info['espion'];
+
     if (isset($_POST['infos'])) {
         if (isset($_POST['espion'])) {
-            $esp=1;
+            $esp = 1;
         } else {
-            $esp=0;
+            $esp = 0;
         }
-        if ($espion!=$esp) {
-            $espion=$esp;
+        if ($espion != $esp) {
+            $espion = $esp;
             mysql_query('UPDATE membres SET espion=' . $espion . " WHERE id=".$id."");
         }
     }
@@ -23,7 +23,7 @@ if ($_SESSION['logged'] == true) {
 <form method="post" action="connected.html">
 
 	<label>
-		<input type="checkbox" <?php if ($espion==1) {
+		<input type="checkbox" <?php if ($espion == 1) {
             echo 'checked="checked"';
         } ?> name="espion" />
 		Je souhaite enregistrer dans des messages les informations que j'obtiens sur des joueurs.

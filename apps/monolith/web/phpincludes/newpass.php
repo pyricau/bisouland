@@ -69,7 +69,7 @@ if ($_SESSION['logged'] == false) {
 
 <?php
             if (isset($resultat)) {
-                echo $resultat.'<br />';
+                echo $resultat . '<br />';
             }
         ?>
 <br />
@@ -89,7 +89,7 @@ if ($_SESSION['logged'] == false) {
 
 <?php
     } else {
-        echo $resultat.'<br />';
+        echo $resultat . '<br />';
     }
 
 } else {

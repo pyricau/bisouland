@@ -11,7 +11,7 @@
                 $scoreCible = $donnees['score'];
                 $pseudoCible = $donnees['pseudo'];
 
-                $sql = mysql_query("SELECT score, position, nuage, espion, oeil FROM membres WHERE id=".$id);
+                $sql = mysql_query("SELECT score, position, nuage, espion, oeil FROM membres WHERE id=" . $id);
                 $donnees = mysql_fetch_assoc($sql);
                 $scoreSource = $donnees['score'];
                 $positionSource = $donnees['position'];
@@ -33,7 +33,7 @@
                         }
                         $lvlInfo = rand(0, $max);
 
-                        AdminMP($Did, "$pseudo t'a dévisagé", $pseudo." vient de te dévisager, et cherche peut-être à t'embrasser.");
+                        AdminMP($Did, "$pseudo t'a dévisagé", $pseudo . " vient de te dévisager, et cherche peut-être à t'embrasser.");
 
                         $resultat = "Tu as dévisagé $pseudoCible";
 
@@ -43,9 +43,9 @@
                         //coeur, bouche, amour, jambes, smack, baiser, pelle, tech1, tech2, tech3, tech4, dent, langue, bloque, soupe, oeil
                         switch ($lvlInfo) {
                             case 0:
-                                $resDev = 'Degré d\'information : '.$lvlInfo.'/'.$max.'
-							
-							Malheureusement, tu n\'as pu obtenir aucune information sur '.$pseudoCible.'
+                                $resDev = 'Degré d\'information : ' . $lvlInfo . '/' . $max . '
+
+							Malheureusement, tu n\'as pu obtenir aucune information sur ' . $pseudoCible . '
 							';
                                 break;
                             default:
@@ -56,32 +56,32 @@
                         if ($lvlInfo >= 1) {
                             $DefAmour = calculterAmour($donnees['amour'], (time() - $donnees['timestamp']), $donnees['coeur'], $donnees['smack'], $donnees['baiser'], $donnees['pelle']);
 
-                            $resDev = 'Degré d\'information : '.$lvlInfo.'/'.$max.'
-							
-							'.$pseudoCible.' dispose de : 
-							
-							'.formaterNombre(floor($DefAmour)).' Points d\'Amour
-							
+                            $resDev = 'Degré d\'information : ' . $lvlInfo . '/' . $max . '
+
+							' . $pseudoCible . ' dispose de :
+
+							' . formaterNombre(floor($DefAmour)) . ' Points d\'Amour
+
 							';
                         }
                         if ($lvlInfo >= 2) {
-                            $resDev .= 'Un oeil niveau '.$donnees['oeil'].'
-							
+                            $resDev .= 'Un oeil niveau ' . $donnees['oeil'] . '
+
 							';
                         }
                         if ($lvlInfo >= 3) {
-                            $resDev .= $donnees['smack'].' Smack'.pluriel($donnees['smack']).'
-							
+                            $resDev .= $donnees['smack'] . ' Smack' . pluriel($donnees['smack']) . '
+
 							';
                         }
                         if ($lvlInfo >= 4) {
-                            $resDev .= $donnees['baiser'].' Baiser'.pluriel($donnees['baiser']).'
-							
+                            $resDev .= $donnees['baiser'] . ' Baiser' . pluriel($donnees['baiser']) . '
+
 							';
                         }
                         if ($lvlInfo >= 5) {
-                            $resDev .= $donnees['pelle'].' Baiser'.pluriel($donnees['pelle']).' langoureux
-							
+                            $resDev .= $donnees['pelle'] . ' Baiser' . pluriel($donnees['pelle']) . ' langoureux
+
 							';
                         }
 
@@ -109,7 +109,7 @@
 <br />
 <?php
             if (isset($resultat)) {
-                echo '<span class="info">[ '.$resultat.' ]</span><br /><br />';
+                echo '<span class="info">[ ' . $resultat . ' ]</span><br /><br />';
             }
         if (isset($resDev)) {
             echo nl2br(htmlentities($resDev));
@@ -121,7 +121,7 @@
                 }
             }
             if ($amour >= $cout) {
-                echo '<a href="'.$Dnuage.'.'.$Dpos.'.yeux.html">Dévisager '.$pseudoCible.' de nouveau (nécessite '.$cout.' Points d\'Amour)</a>';
+                echo '<a href="' . $Dnuage . '.' . $Dpos . '.yeux.html">Dévisager ' . $pseudoCible . ' de nouveau (nécessite ' . $cout . ' Points d\'Amour)</a>';
             }
 
         }

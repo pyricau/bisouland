@@ -1,7 +1,7 @@
 <?php
 
 //Gestion des pages
-$array_pages = array(
+$array_pages = [
     "accueil" => "accueil.php",
     "inscription" => "inscription.php",
     "confirmation" => "confirmation.php",
@@ -29,10 +29,10 @@ $array_pages = array(
     "perdu" => "perdu.php",
     "newpass" => "newpass.php",
     "yeux" => "yeux.php",
-    "faq" => "faq.php"
-);
+    "faq" => "faq.php",
+];
 
-$array_titres = array(
+$array_titres = [
     "accueil" => "Accueil",
     "inscription" => "Inscription",
     "confirmation" => "Confirmation",
@@ -60,5 +60,5 @@ $array_titres = array(
     "perdu" => "Mot de passe perdu",
     "newpass" => "Nouveau mot de passe",
     "yeux" => "D&eacute;visager un joueur",
-    "faq" => "FAQ"
-);
+    "faq" => "FAQ",
+];

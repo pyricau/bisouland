@@ -48,17 +48,17 @@ function strTemps($s)
         $ts = $s;
         $tm = $m;
         if ($s < 10) {
-            $ts = '0'.$s;
+            $ts = '0' . $s;
         }
         if ($m < 10) {
-            $tm = '0'.$m;
+            $tm = '0' . $m;
         }
         if ($h > 24) {
             $d = floor($h / 24);
             $h = $h - $d * 24;
-            $h = $d.' jours '.$h;
+            $h = $d . ' jours ' . $h;
         }
-        return	$h.' h '.$tm.' min '.$ts.' sec';
+        return	$h . ' h ' . $tm . ' min ' . $ts . ' sec';
     }
 }
 
@@ -122,14 +122,14 @@ function AdminMP($cible, $objet, $message, $lu = 0)
     $message = nl2br(addslashes($message));
     $objet = addslashes($objet);
 
-    $sql = mysql_query("SELECT COUNT(*) AS nbmsg FROM messages WHERE destin=".$cible);
+    $sql = mysql_query("SELECT COUNT(*) AS nbmsg FROM messages WHERE destin=" . $cible);
     if (mysql_result($sql, 0, 'nbmsg') >= 20) {
         $Asuppr = mysql_result($sql, 0, 'nbmsg') - 19;
         $date48 = time() - 172800;
-        mysql_query("DELETE FROM messages WHERE destin=".$cible." AND timestamp<=$date48 ORDER BY id LIMIT $Asuppr");
+        mysql_query("DELETE FROM messages WHERE destin=" . $cible . " AND timestamp<=$date48 ORDER BY id LIMIT $Asuppr");
     }
 
-    mysql_query("INSERT INTO messages VALUES('', 1, '" .$cible. "', '" . $message . "', '" .time(). "', $lu, '" .$objet."')");
+    mysql_query("INSERT INTO messages VALUES('', 1, '" . $cible . "', '" . $message . "', '" . time() . "', $lu, '" . $objet . "')");
 }
 
 function SupprimerCompte($idCompteSuppr)
@@ -142,16 +142,16 @@ function SupprimerCompte($idCompteSuppr)
     mysql_query("DELETE FROM liste WHERE auteur=$idCompteSuppr");
     mysql_query("DELETE FROM logatt WHERE auteur=$idCompteSuppr");
     //Attaques a gerer.
-    $sql_info = mysql_query("SELECT auteur FROM attaque WHERE cible=".$idCompteSuppr);
+    $sql_info = mysql_query("SELECT auteur FROM attaque WHERE cible=" . $idCompteSuppr);
     while ($donnees_info = mysql_fetch_assoc($sql_info)) {
-        mysql_query("UPDATE membres SET bloque=0 WHERE id=".$donnees_info['auteur']);
-        mysql_query("DELETE FROM attaque WHERE auteur=".$donnees_info['auteur']);
+        mysql_query("UPDATE membres SET bloque=0 WHERE id=" . $donnees_info['auteur']);
+        mysql_query("DELETE FROM attaque WHERE auteur=" . $donnees_info['auteur']);
         AdminMP($donnees_info['auteur'], "Pas de chance", "Ta cible vient de supprimer son compte.
 			Une prochaine fois, peut-etre...");
     }
-    $sql_info = mysql_query("SELECT cible FROM attaque WHERE auteur=".$idCompteSuppr);
+    $sql_info = mysql_query("SELECT cible FROM attaque WHERE auteur=" . $idCompteSuppr);
     if ($donnees_info = mysql_fetch_assoc($sql_info)) {
-        mysql_query("DELETE FROM attaque WHERE auteur=".$idCompteSuppr);
+        mysql_query("DELETE FROM attaque WHERE auteur=" . $idCompteSuppr);
         AdminMP($donnees_info['cible'], "Veinard !!", "Tu as vraiment de la chance !!
 			Ton agresseur vient de supprimer son compte, tu peux donc dormir tranquille.");
     }
@@ -162,25 +162,25 @@ function SupprimerCompte($idCompteSuppr)
 function ChangerMotPasse($idChange, $newMdp)
 {
     $newMdp = md5($newMdp);
-    mysql_query("UPDATE membres SET mdp='".$newMdp."' WHERE id='".$idChange."'");
+    mysql_query("UPDATE membres SET mdp='" . $newMdp . "' WHERE id='" . $idChange . "'");
 }
 
 //Presuppose que toutes les verifications ont ete faites.
 function AjouterScore($idScore, $valeur)
 {
-    $sql_info = mysql_query("SELECT score FROM membres WHERE id=".$idScore);
+    $sql_info = mysql_query("SELECT score FROM membres WHERE id=" . $idScore);
     $donnees_info = mysql_fetch_assoc($sql_info);
-    mysql_query("UPDATE membres SET score=".($donnees_info['score'] + $valeur)." WHERE id=".$idScore);
+    mysql_query("UPDATE membres SET score=" . ($donnees_info['score'] + $valeur) . " WHERE id=" . $idScore);
 }
 
 //Presuppose que toutes les verifications ont ete faites.
 function ForcerAttaque($auteur, $cible, $duree, $pseudoAuteur, $nuageSource, $positionSource)
 {
-    mysql_query("UPDATE membres SET bloque=1 WHERE id='".$auteur."'");
-    mysql_query("INSERT INTO attaque VALUES (".$auteur.", ".$cible.", ".(time() + $duree).", ".(time() + 2 * $duree).", 0)");
-    AdminMP($cible, "Alerte", $pseudo." vient d'envoyer ses bisous dans ta direction, et va tenter de t'embrasser.
-					".$pseudo." est situ&eacute; sur le nuage ".$nuageSource.", a la position ".$positionSource.".
-					Ses Bisous arrivent dans ".strTemps($duree).".");
+    mysql_query("UPDATE membres SET bloque=1 WHERE id='" . $auteur . "'");
+    mysql_query("INSERT INTO attaque VALUES (" . $auteur . ", " . $cible . ", " . (time() + $duree) . ", " . (time() + 2 * $duree) . ", 0)");
+    AdminMP($cible, "Alerte", $pseudo . " vient d'envoyer ses bisous dans ta direction, et va tenter de t'embrasser.
+					" . $pseudo . " est situ&eacute; sur le nuage " . $nuageSource . ", a la position " . $positionSource . ".
+					Ses Bisous arrivent dans " . strTemps($duree) . ".");
     AdminMP($Auteur, "GoGoGo", "T'as pas honte d'attaquer les gens comme ca ??");
 }
 
@@ -230,7 +230,7 @@ function voirNiveau($scoreJoueur, $scoreAutre)
 //transformation de bbcode smiley en images.
 function smileys($texte)
 {
-    $in = array(
+    $in = [
         "o_O",
         ";)",
         ":D",
@@ -244,10 +244,10 @@ function smileys($texte)
         ":-&deg;",
         ":(",
         ":euh:",
-        ":coeur:"
-    );
+        ":coeur:",
+    ];
 
-    $out = array(
+    $out = [
         '<img src="smileys/blink.gif" alt="un smiley" title="o_O"/>',
         '<img src="smileys/clin.png" alt="un smiley" title=";)"/>',
         '<img src="smileys/heureux.png" alt="un smiley" title=":D"/>',
@@ -261,24 +261,24 @@ function smileys($texte)
         '<img src="smileys/siffle.png" alt="un smiley" title=":-&deg;"/>',
         '<img src="smileys/triste.png" alt="un smiley" title=":("/>',
         '<img src="smileys/unsure.gif" alt="un smiley" title=":euh:"/>',
-        '<img src="images/puce.png" alt="un smiley" title=":coeur:"/>'
-    );
+        '<img src="images/puce.png" alt="un smiley" title=":coeur:"/>',
+    ];
 
     return str_replace($in, $out, $texte);
 }
 
 function bbLow($text)
 {
-    $bbcode = array(
-            "[b]", "[/b]",
-            "[u]", "[/u]",
-            "[i]", "[/i]",
-            );
-    $htmlcode = array(
-            "<strong>", "</strong>",
-            "<u>", "</u>",
-            "<em>", "</em>",
-            );
+    $bbcode = [
+        "[b]", "[/b]",
+        "[u]", "[/u]",
+        "[i]", "[/i]",
+    ];
+    $htmlcode = [
+        "<strong>", "</strong>",
+        "<u>", "</u>",
+        "<em>", "</em>",
+    ];
 
     $text = stripslashes($text);
 

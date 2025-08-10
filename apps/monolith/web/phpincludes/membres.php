@@ -4,7 +4,7 @@ $sql = mysql_query("SELECT COUNT(*) AS nb_pseudo FROM membres WHERE confirmation
 
 $total = mysql_result($sql, 0, 'nb_pseudo');
 
-echo 'Nombre de membres : '.$total.'<br /><br />';
+echo 'Nombre de membres : ' . $total . '<br /><br />';
 
 $nombreParPage = 15;
 
@@ -34,7 +34,7 @@ if ($nombreDePages > 1) {
         if ($i != $num) {
             echo '<a href="membres.' . $i . '.html">' . $i . '</a> ';
         } else {
-            echo ' '.$i.' ';
+            echo ' ' . $i . ' ';
         }
     }
     echo '</center><br />';
@@ -50,7 +50,7 @@ if ($_SESSION['logged'] == true) {
         }
         if ($donnees['id'] != $id) {
             echo '<a class="bulle" href="',$donnees['pseudo'],'.envoi.html" >
-			<img src="images/mess.png" title="" alt="" /><span>Envoyer un message à '.$donnees['pseudo'].'</span></a> ';
+			<img src="images/mess.png" title="" alt="" /><span>Envoyer un message à ' . $donnees['pseudo'] . '</span></a> ';
         }
         echo '<a class="bulle" href="',$donnees['nuage'],'.nuage.html" >
 		<img src="images/nuage.png" title="" alt="" /><span>Nuage : ',$donnees['nuage'],'</span></a>
@@ -65,7 +65,7 @@ if ($_SESSION['logged'] == true) {
         } else {
             echo '<a class="bulle" style="cursor: default;" onclick="return false;" href=""><img src="images/off.png" alt="Non connect&eacute;" title="" /><span>',$donnees['pseudo'],' n\'est pas connect&eacute;</span></a> ';
         }
-        echo '<strong>'.$donnees['pseudo'].'</strong><br />';
+        echo '<strong>' . $donnees['pseudo'] . '</strong><br />';
     }
 }
 ?>

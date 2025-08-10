@@ -5,22 +5,22 @@ Cette section apporte des reponses a de nombreuses questions recurrentes.<br />
 <?php
 
 
-    $parties = array(
+    $parties = [
         "Questions d'ordre general",
-        "Questions sur le jeu"
-    );
+        "Questions sur le jeu",
+    ];
 
 
-$question[0] = array(
+$question[0] = [
     "Qu'est-ce que BisouLand ?",
     "Qui a cree BisouLand ?",
     "Combien cela coute t'il ?",
     "Comment s'inscrire a BisouLand ?",
     "Comment commencer a jouer ?",
-    "Que faire si j'ai decouvert une erreur ?"
-);
+    "Que faire si j'ai decouvert une erreur ?",
+];
 
-$rep[0] = array(
+$rep[0] = [
     "BisouLand est un jeu de strategie multijoueurs. De nombreux joueurs se rencontrent en meme temps en ligne. Pour jouer, il suffit de disposer d'un simple navigateur.",
     "Le createur de BisouLand est Pierre-Yves Ricau, connu sous le pseudo Piwai alias admin sur BisouLand.",
     "BisouLand est totalement gratuit.",
@@ -29,19 +29,19 @@ $rep[0] = array(
     "Il te suffit de te connecter, puis de lire les pages Aide et Encyclopedie,
 		n'hesite pas a poser des questions en envoyant un message privé à l'admin.",
     "Merci de rapporter toute erreur, que ce soit un probleme technique ou une faute d'orthographe.<br />
-		Vous pouvez pour cela creer un ticket sur https://github.com/pyricau/bisouland"
-);
+		Vous pouvez pour cela creer un ticket sur https://github.com/pyricau/bisouland",
+];
 
-$question[1] = array(
+$question[1] = [
     "Comment fait t'on pour embrasser ?",
     "Qui puis-je embrasser ?",
     "Ou est le classement general ?",
     "Comment eviter d'etre embrasse ?",
     "Un adversaire n'arrete pas de m'embrasser.",
-    "Puis-je donner mes Points d'Amour ?"
-);
+    "Puis-je donner mes Points d'Amour ?",
+];
 
-$rep[1] = array(
+$rep[1] = [
     "Tout d'abord, il te faut plus de 50 points de score.<br />
 		Ensuite, il faut que tu disposes de Bisous.<br />
 		Une fois ces conditions reunies, va dans nuages, tu verras apparaitre en Rouge les joueurs que tu peux embrasser.<br />
@@ -63,28 +63,28 @@ $rep[1] = array(
     "Ne t'inquiete pas : il est impossible d'attaquer la meme personne plus de 3 fois toutes les 12 heures.<br />
 		Ces 12 heures ne correspondent pas a des plages horaires. C'est 12 heures a compter de la premiere des 3 dernieres attaques.",
 
-    "Il est impossible de donner des Points d'Amour a un autre joueur."
-);
+    "Il est impossible de donner des Points d'Amour a un autre joueur.",
+];
 
 
 //Les questions
 foreach ($parties as $cleP => $Ftitre) {
-    echo '<h1>'.$Ftitre.'</h1>
+    echo '<h1>' . $Ftitre . '</h1>
 		<br />';
     foreach ($question[$cleP] as $cle => $qt) {
-        echo '<a href="#r'.$cleP.$cle.'">'.$qt.'</a><br /><br />
+        echo '<a href="#r' . $cleP . $cle . '">' . $qt . '</a><br /><br />
 			';
     }
 }
 
 //Les reponses
 foreach ($parties as $cleP => $Ftitre) {
-    echo '<h1>'.$Ftitre.'</h1>
+    echo '<h1>' . $Ftitre . '</h1>
 		<br />';
     foreach ($rep[$cleP] as $cle => $rt) {
-        echo '<h2 id="r'.$cleP.$cle.'">'.$question[$cleP][$cle].'</h2>
+        echo '<h2 id="r' . $cleP . $cle . '">' . $question[$cleP][$cle] . '</h2>
 			<br />
-			'.$rt.'<br />
+			' . $rt . '<br />
 			<br />
 			<a href="#retour">Retour en haut</a><br />
 			';

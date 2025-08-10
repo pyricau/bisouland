@@ -95,30 +95,30 @@ if ($_SESSION['logged'] == true) {
 
     if (isset($_POST['supprimer'])) {
         $idmsg = htmlentities(addslashes($_POST['supprimer']));
-        mysql_query("DELETE FROM messages WHERE id=".$idmsg." AND destin=".$id);
+        mysql_query("DELETE FROM messages WHERE id=" . $idmsg . " AND destin=" . $id);
     } else {
         if (isset($_POST['supboite'])) {
             foreach ($_POST['supboite'] as $key => $value) {
                 $key = htmlentities(addslashes($key));
-                mysql_query('DELETE FROM messages WHERE id='.$key." AND destin=".$id);
+                mysql_query('DELETE FROM messages WHERE id=' . $key . " AND destin=" . $id);
             }
         }
     }
 
-    $sql = mysql_query("SELECT COUNT(*) AS nbmsg FROM messages WHERE destin=".$id);
+    $sql = mysql_query("SELECT COUNT(*) AS nbmsg FROM messages WHERE destin=" . $id);
     $nbmsg = mysql_result($sql, 0, 'nbmsg');
     if ($nbmsg > 20) {
         $nbmsg = 20;
     }
 
-    $retour = mysql_query("SELECT id, posteur, timestamp, statut, titre FROM messages WHERE destin='".$id."' ORDER BY timestamp DESC LIMIT 20");
+    $retour = mysql_query("SELECT id, posteur, timestamp, statut, titre FROM messages WHERE destin='" . $id . "' ORDER BY timestamp DESC LIMIT 20");
 
     ?>
 <h1>Messages</h1>
 <form name="main" method="post" action="boite.html" onSubmit="return verifselection()">
 	<center>
 		<h2>Vous avez <?php echo $nbmsg,'/20 message',pluriel($nbmsg);?></h2>
-		
+
 		<a href="envoi.html">Nouveau Message</a><br />
 		<br />
 		<table>
@@ -134,7 +134,7 @@ if ($_SESSION['logged'] == true) {
     while (($donnees = mysql_fetch_assoc($retour)) && $i < 20) {
         $i++;
         //Suppression : bouton supprimer en bas, et checkbox //Ajouter bouton lu/non lu  //Max messages
-        $retour2 = mysql_query("SELECT pseudo FROM membres WHERE id='".$donnees['posteur']."'");
+        $retour2 = mysql_query("SELECT pseudo FROM membres WHERE id='" . $donnees['posteur'] . "'");
         if (!$donnees2 = mysql_fetch_assoc($retour2)) {
             $donnees2['pseudo'] = "Supprim&eacute;";
         }

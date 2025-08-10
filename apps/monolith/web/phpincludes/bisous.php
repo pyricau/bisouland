@@ -24,13 +24,13 @@ Liste des Bisous en cr&eacute;ation :<br />
     $nomPrec = '';
     $typePrec = 0;
     $nbIdent = 1;
-    $nom = array(
+    $nom = [
         'Smack',
         'Baiser',
-        'Baiser langoureux'
-    );
+        'Baiser langoureux',
+    ];
     $nomActuel = $nom[$evolution];
-    echo '<option>1) '.$nomActuel.' (en cours)</option>';
+    echo '<option>1) ' . $nomActuel . ' (en cours)</option>';
     $sql = mysql_query("SELECT type,duree FROM liste WHERE auteur=$id AND classe=$evolPage ORDER BY id");
 
     while ($donnees_info = mysql_fetch_assoc($sql)) {
@@ -43,14 +43,14 @@ Liste des Bisous en cr&eacute;ation :<br />
             $i++;
             if ($nbIdent != 0) {
                 if ($typePrec != 2) {
-                    echo '<option>'.$i.') '.$nbIdent.' '.($nomPrec.pluriel($nbIdent)).'</option>';
+                    echo '<option>' . $i . ') ' . $nbIdent . ' ' . ($nomPrec . pluriel($nbIdent)) . '</option>';
                 } else {
-                    echo '<option>'.$i.') '.$nbIdent.' '.$nomPrec.'</option>';
+                    echo '<option>' . $i . ') ' . $nbIdent . ' ' . $nomPrec . '</option>';
                 }
                 $nbIdent = 1;
 
             } else {
-                echo '<option>'.$i.') '.$nomPrec.'</option>';
+                echo '<option>' . $i . ') ' . $nomPrec . '</option>';
             }
             }
         }
@@ -62,12 +62,12 @@ Liste des Bisous en cr&eacute;ation :<br />
     $i++;
     if ($nbIdent != 0) {
         if ($typePrec != 2) {
-            echo '<option>'.$i.') '.$nbIdent.' '.($nomPrec.pluriel($nbIdent)).'</option>';
+            echo '<option>' . $i . ') ' . $nbIdent . ' ' . ($nomPrec . pluriel($nbIdent)) . '</option>';
         } else {
-            echo '<option>'.$i.') '.$nbIdent.' '.$nomPrec.'</option>';
+            echo '<option>' . $i . ') ' . $nbIdent . ' ' . $nomPrec . '</option>';
         }
     } else {
-        echo '<option>'.$i.') '.$nomPrec.'</option>';
+        echo '<option>' . $i . ') ' . $nomPrec . '</option>';
     }
     }
 
@@ -75,7 +75,7 @@ Liste des Bisous en cr&eacute;ation :<br />
 </select>
 </form>
 <?php
-echo 'Temps total restant : '.strTemps($tempsRestant).'<br />';
+echo 'Temps total restant : ' . strTemps($tempsRestant) . '<br />';
 }
 
 for ($i = 0;$i != $nbType[1];$i++) {
@@ -108,9 +108,9 @@ if (arbre($evolPage, $i, $nbE)) {
     if ($joueurBloque == 0) {
         if ($amour >= $amourE[1][$i]) {
             echo '<form method="post" action="bisous.html"><input type="submit"
-			name="'.$Obj[1][$i].'" value="Cr&eacute;er" /></form>';
+			name="' . $Obj[1][$i] . '" value="Cr&eacute;er" /></form>';
         } else {
-            echo '<span class="info">[ Il te manque '.formaterNombre(ceil($amourE[1][$i] - $amour)).' points d\'amour pour pouvoir créer ce bisou ]</span><br />';
+            echo '<span class="info">[ Il te manque ' . formaterNombre(ceil($amourE[1][$i] - $amour)) . ' points d\'amour pour pouvoir créer ce bisou ]</span><br />';
         }
     }
 

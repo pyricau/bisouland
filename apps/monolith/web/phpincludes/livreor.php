@@ -58,8 +58,8 @@ $nombreDePages  = ceil($totalDesMessages / $nombreDeMessagesParPage);
 <?php
     }
 ?>
-	
-	
+
+
 <p>
 
 <center>Il y a actuellement <strong><?php echo $totalDesMessages ?></strong> messages dans le livre d'or.</center>
@@ -89,7 +89,7 @@ if ($nombreDePages > 1) {
         if ($i != $or) {
             echo '<a href="livreor.' . $i . '.html">' . $i . '</a> ';
         } else {
-            echo ' '.$i.' ';
+            echo ' ' . $i . ' ';
         }
     }
     echo '</center><br />';
@@ -104,7 +104,7 @@ while ($donnees = mysql_fetch_array($reponse)) {
     ?>
 <div class=livreor>
 <?php
-        echo '<p><strong>' . stripslashes($donnees['pseudo']). '</strong> a &eacute;crit le '.date('d/m/Y à H\hi', $donnees['timestamp']).' :<br /><br />' . stripslashes($donnees['message']) . '</p>';
+        echo '<p><strong>' . stripslashes($donnees['pseudo']) . '</strong> a &eacute;crit le ' . date('d/m/Y à H\hi', $donnees['timestamp']) . ' :<br /><br />' . stripslashes($donnees['message']) . '</p>';
     ?>
 </div>
 <?php

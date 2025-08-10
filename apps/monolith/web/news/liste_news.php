@@ -24,7 +24,7 @@ header('Content-type: text/html; charset=UTF-8');
         }
         </style>
     </head>
-    
+
     <body>
 
 
@@ -45,7 +45,7 @@ if (isset($_POST['titre']) and isset($_POST['contenu'])) {
     // On verifie si c'est une modification de news ou pas
     if ($_POST['id_news'] == -1) {
         // Ce n'est pas une modification, on cree une nouvelle entree dans la table
-        mysql_query("INSERT INTO newsbisous VALUES('', '" . $titre . "', '" . $contenu . "', '" . time() ."','0')");
+        mysql_query("INSERT INTO newsbisous VALUES('', '" . $titre . "', '" . $contenu . "', '" . time() . "','0')");
     } else {
         // C'est une modification, on met juste a jour le titre et le contenu
         mysql_query("UPDATE newsbisous SET titre='" . $titre . "', contenu='" . $contenu . "', timestamp_modification='" . time() . "' WHERE id=" . $_POST['id_news']);

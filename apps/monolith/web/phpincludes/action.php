@@ -12,7 +12,7 @@ if ($_SESSION['logged'] == true) {
                 if ($nuageCible == 0 || $positionCible == 0) {
                     $resultat = 'Evite les valeurs nulles pour les deux champs';
                 } else {
-                    $sql_info = mysql_query("SELECT id, score FROM membres WHERE nuage=".$nuageCible." AND position=".$positionCible);
+                    $sql_info = mysql_query("SELECT id, score FROM membres WHERE nuage=" . $nuageCible . " AND position=" . $positionCible);
                     if ($donnees_info = mysql_fetch_assoc($sql_info)) {
                         $cible = $donnees_info['id'];
                         $score = $donnees_info['score'];
@@ -33,7 +33,7 @@ if ($_SESSION['logged'] == true) {
                                 {
                                     $nuageSource = $_SESSION['nuage'];
 
-                                    $sql_info = mysql_query("SELECT position, score FROM membres WHERE id='".$id."'");
+                                    $sql_info = mysql_query("SELECT position, score FROM membres WHERE id='" . $id . "'");
                                     $donnees_info = mysql_fetch_assoc($sql_info);
 
                                     $positionSource = $donnees_info['position'];
@@ -53,17 +53,17 @@ if ($_SESSION['logged'] == true) {
                                             $cout = coutAttaque($distance, $nbE[0][4]);
                                             if ($amour >= $cout) {
 
-                                                $sql = mysql_query("SELECT COUNT(*) AS nb_att FROM logatt WHERE auteur=$id AND cible=$cible AND timestamp>=".(time() - 43200));
+                                                $sql = mysql_query("SELECT COUNT(*) AS nb_att FROM logatt WHERE auteur=$id AND cible=$cible AND timestamp>=" . (time() - 43200));
                                                 if (mysql_result($sql, 0, 'nb_att') < 3) {
                                                     $amour -= $cout;
                                                     $joueurBloque = 1;
                                                     $duree = tempsAttaque($distance, $nbE[0][4]);
-                                                    mysql_query("UPDATE membres SET bloque=1 WHERE id='".$id."'");
-                                                    mysql_query("INSERT INTO attaque VALUES (".$id.", ".$cible.", ".(time() + $duree).", ".(time() + 2 * $duree).", 0)");
-                                                    AdminMP($cible, $pseudo." veut t'embrasser", $pseudo." vient d'envoyer ses bisous dans ta direction, et va tenter de t'embrasser.
-						".$pseudo." est situé sur le nuage ".$nuageSource.", à la position ".$positionSource.".
-						Ses Bisous arrivent dans ".strTemps($duree).".");
-                                                    $resultat = 'Tes Bisous sont en route vers la position '.$positionSource.' du nuage '.$nuageSource.', ils arriveront à destination dans '.strTemps($duree).'.';
+                                                    mysql_query("UPDATE membres SET bloque=1 WHERE id='" . $id . "'");
+                                                    mysql_query("INSERT INTO attaque VALUES (" . $id . ", " . $cible . ", " . (time() + $duree) . ", " . (time() + 2 * $duree) . ", 0)");
+                                                    AdminMP($cible, $pseudo . " veut t'embrasser", $pseudo . " vient d'envoyer ses bisous dans ta direction, et va tenter de t'embrasser.
+						" . $pseudo . " est situé sur le nuage " . $nuageSource . ", à la position " . $positionSource . ".
+						Ses Bisous arrivent dans " . strTemps($duree) . ".");
+                                                    $resultat = 'Tes Bisous sont en route vers la position ' . $positionSource . ' du nuage ' . $nuageSource . ', ils arriveront à destination dans ' . strTemps($duree) . '.';
                                                 } else {
                                                     $resultat = "Il est impossible d'embrasser le même joueur plus de 3 fois toutes les 12 heures";
                                                 }
@@ -97,7 +97,7 @@ if ($_SESSION['logged'] == true) {
 
         $nuageSource = $_SESSION['nuage'];
 
-        $sql_info = mysql_query("SELECT position FROM membres WHERE id='".$id."'");
+        $sql_info = mysql_query("SELECT position FROM membres WHERE id='" . $id . "'");
         $donnees_info = mysql_fetch_assoc($sql_info);
         $positionSource = $donnees_info['position'];
 
@@ -111,7 +111,7 @@ if ($_SESSION['logged'] == true) {
         $cout = 0;
     }
     if (isset($resultat)) {
-        echo '<span class="info">[ '.$resultat.' ]</span><br /><br />';
+        echo '<span class="info">[ ' . $resultat . ' ]</span><br /><br />';
     }
     if ($joueurBloque == 0) {
         ?>

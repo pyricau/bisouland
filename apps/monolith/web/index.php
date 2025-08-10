@@ -55,11 +55,11 @@ if ($_SESSION['logged'] == false) {
         $pseudo = htmlentities(addslashes($_COOKIE['pseudo']));
         $mdp = htmlentities(addslashes($_COOKIE['mdp']));
         //La requête qui compte le nombre de pseudos
-        $sql = mysql_query("SELECT COUNT(*) AS nb_pseudo FROM membres WHERE pseudo='".$pseudo."'");
+        $sql = mysql_query("SELECT COUNT(*) AS nb_pseudo FROM membres WHERE pseudo='" . $pseudo . "'");
 
         if (mysql_result($sql, 0, 'nb_pseudo') != 0) {
             //Sélection des informations.
-            $sql_info = mysql_query("SELECT id, confirmation, mdp, nuage FROM membres WHERE pseudo='".$pseudo."'");
+            $sql_info = mysql_query("SELECT id, confirmation, mdp, nuage FROM membres WHERE pseudo='" . $pseudo . "'");
             $donnees_info = mysql_fetch_assoc($sql_info);
 
             //Si le mot de passe est le même (le mot de passe est déjà crypté).
@@ -86,34 +86,34 @@ $temps11 = microtime_float();
 
 //Informations nécessaires au fonctionnement du jeu.
 
-$nbType = array(
+$nbType = [
     6,
     3,
-    5
-);
+    5,
+];
 
-$Obj[0] = array(
+$Obj[0] = [
     'coeur',
     'bouche',
     'langue',
     'dent',
     'jambes',
-    'oeil'
-);
+    'oeil',
+];
 
-$Obj[1] = array(
+$Obj[1] = [
     'smack',
     'baiser',
     'pelle',
-);
+];
 
-$Obj[2] = array(
+$Obj[2] = [
     'tech1',
     'tech2',
     'tech3',
     'tech4',
-    'soupe'
-);
+    'soupe',
+];
 
 
 //***************************************************************************
@@ -128,7 +128,7 @@ if ($_SESSION['logged'] == true) {
         actionAdmin();
     }
 
-    $sql_info = mysql_query("SELECT timestamp, coeur, bouche, amour, jambes, smack, baiser, pelle, tech1, tech2, tech3, tech4, dent, langue, bloque, soupe, oeil FROM membres WHERE id='".$id."'");
+    $sql_info = mysql_query("SELECT timestamp, coeur, bouche, amour, jambes, smack, baiser, pelle, tech1, tech2, tech3, tech4, dent, langue, bloque, soupe, oeil FROM membres WHERE id='" . $id . "'");
     $donnees_info = mysql_fetch_assoc($sql_info);
     //Date du dernier calcul du nombre de points d'amour.
     $lastTime = $donnees_info['timestamp'];
@@ -143,7 +143,7 @@ if ($_SESSION['logged'] == true) {
     //Nombre d'objets d'un type donné.
     //Batiments
 
-    $nbE = array();
+    $nbE = [];
 
     for ($i = 0; $i < 3; $i++) {
         for ($j = 0; $j < $nbType[$i]; $j++) {
@@ -153,57 +153,57 @@ if ($_SESSION['logged'] == true) {
 
     //Cout en point d'amour pour la construction d'un objet
     //Organes
-    $amourE[0] = array(
+    $amourE[0] = [
         expo(100, 0.4, $nbE[0][0], 1),
         expo(200, 0.4, $nbE[0][1], 1),
         expo(250, 0.4, $nbE[0][2], 1),
         expo(500, 0.4, $nbE[0][3], 1),
         expo(1000, 0.6, $nbE[0][4], 1),
-        expo(1000, 0.4, $nbE[0][5], 1)
-    );
+        expo(1000, 0.4, $nbE[0][5], 1),
+    ];
 
     //Bisous
-    $amourE[1] = array(
+    $amourE[1] = [
         800,
         3500,
-        10000
-    );
+        10000,
+    ];
 
     //Technos
-    $amourE[2] = array(
+    $amourE[2] = [
         expo(1000, 0.4, $nbE[2][0], 1),
         expo(2000, 0.4, $nbE[2][1], 1),
         expo(3000, 0.4, $nbE[2][2], 1),
         expo(10000, 0.6, $nbE[2][3], 1),
-        expo(5000, 0.4, $nbE[2][4], 1)
-    );
+        expo(5000, 0.4, $nbE[2][4], 1),
+    ];
 
     //Temps pour la construction de l'objet.
     //Organes
-    $tempsE[0] = array(
+    $tempsE[0] = [
         ExpoSeuil(235000, 20, $nbE[0][0] - $nbE[2][4], 1),
         ExpoSeuil(200000, 25, $nbE[0][1] - $nbE[2][4], 1),
         ExpoSeuil(220000, 22, $nbE[0][2] - $nbE[2][4], 1),
         ExpoSeuil(210000, 17, $nbE[0][3] - $nbE[2][4], 1),
         ExpoSeuil(1000000, 5, $nbE[0][4] - $nbE[2][4], 1),
-        ExpoSeuil(500000, 5, $nbE[0][5] - $nbE[2][4], 1)
-    );
+        ExpoSeuil(500000, 5, $nbE[0][5] - $nbE[2][4], 1),
+    ];
 
     //Bisous
-    $tempsE[1] = array(
+    $tempsE[1] = [
         InvExpo(100, 1.5, $nbE[0][1], 1),
         InvExpo(250, 1.7, $nbE[0][1], 1),
-        InvExpo(500, 2, $nbE[0][1], 1)
-    );
+        InvExpo(500, 2, $nbE[0][1], 1),
+    ];
 
     //Tech
-    $tempsE[2] = array(
+    $tempsE[2] = [
         expo(50, 0.4, $nbE[2][0] - $nbE[2][4], 1),
         expo(1000, 0.4, $nbE[2][1] - $nbE[2][4], 1),
         expo(3000, 0.4, $nbE[2][2] - $nbE[2][4], 1),
         expo(15000, 0.6, $nbE[2][3] - $nbE[2][4], 1),
-        expo(5000, 0.3, $nbE[2][4], 1)
-    );
+        expo(5000, 0.3, $nbE[2][4], 1),
+    ];
 
     $amour = calculterAmour($amour, $timeDiff, $nbE[0][0], $nbE[1][0], $nbE[1][1], $nbE[1][2]);
     //Mise a jour du nombre de points d'amour, par rapport au temps écoulé.
@@ -213,16 +213,16 @@ if ($_SESSION['logged'] == true) {
     if ($page == 'construction') {
         $evolPage = 0;
         //Nom de chaque objet d'un type différent.
-        $evolNom = array(
+        $evolNom = [
             'Coeur',
             'Bouche',
             'Langue',
             'Dents',
             'Jambes',
-            'Yeux'
-        );
+            'Yeux',
+        ];
         //Description qui accompagne l'objet.
-        $evolDesc = array(
+        $evolDesc = [
             'Le coeur permet de produire encore et toujours plein d\'amour.<br />
 				<span class="info">[ Plus le niveau de Coeur est &eacute;lev&eacute;, plus les Points d\'Amours augmentent rapidement ]<br />
 				[ Augmente un peu la distance maximale d\'attaque ]<br />
@@ -250,18 +250,18 @@ if ($_SESSION['logged'] == true) {
             'Elle a les yeux r&eacute;volver...<br />
 				<span class="info">[ Permet d\'obtenir des informations sur un joueur ]
 				[ Chaque niveau augmente les chances d\'obtenir plus d\'information sur un joueur ]<br />
-				[ Chaque niveau diminue les chances d\'obtenir plus d\'information sur vous ]</span><br />'
-        );
+				[ Chaque niveau diminue les chances d\'obtenir plus d\'information sur vous ]</span><br />',
+        ];
     } elseif ($page == 'bisous') {
         $evolPage = 1;
         //Nom de chaque objet d'un type différent.
-        $evolNom = array(
+        $evolNom = [
             'Smacks',
             'Baisers',
-            'Baisers langoureux'
-        );
+            'Baisers langoureux',
+        ];
         //Description qui accompagne l'objet.
-        $evolDesc = array(
+        $evolDesc = [
             'Pour tenter une première approche.<br />
 				<span class="info">[ Le Smack est un Bisou &eacute;conomique, mais qui a peu d\'effets ]</span><br />',
             'A utiliser sans mod&eacute;ration !!<br />
@@ -270,14 +270,14 @@ if ($_SESSION['logged'] == true) {
             'Pour ceux qui n\'ont pas peur d\'y aller à fond !!<br />
 				<span class="info">[ Beaucoup plus efficace, mais très faible face aux Dents ]<br />
 				[ Protège-le contre les Dents en montant le niveau de Langue ]<br />
-				[ Le Baiser langoureux peut prendre 10 fois plus de points d\'amour que le Baiser ]</span><br />'
-        );
+				[ Le Baiser langoureux peut prendre 10 fois plus de points d\'amour que le Baiser ]</span><br />',
+        ];
         if (isset($_POST['suppr_bisous']) && $joueurBloque == 0) {
             $modif = false;
             for ($i = 0;$i != $nbType[1];$i++) {
-                if (isset($_POST['sp'.$Obj[1][$i]]) && $nbE[1][$i] > 0) {
+                if (isset($_POST['sp' . $Obj[1][$i]]) && $nbE[1][$i] > 0) {
 
-                    $nbSupp = $_POST['sp'.$Obj[1][$i]];
+                    $nbSupp = $_POST['sp' . $Obj[1][$i]];
                     if ($nbSupp > 0 && $nbSupp <= $nbE[1][$i]) {
                         $nbE[1][$i] -= $nbSupp;
                         $modif = true;
@@ -285,21 +285,21 @@ if ($_SESSION['logged'] == true) {
                 }
             }
             if ($modif == true) {
-                mysql_query("UPDATE membres SET ".$Obj[1][0]."='".$nbE[1][0]."', ".$Obj[1][1]."='".$nbE[1][1]."', ".$Obj[1][2]."='".$nbE[1][2]."' WHERE id='".$id."'");
+                mysql_query("UPDATE membres SET " . $Obj[1][0] . "='" . $nbE[1][0] . "', " . $Obj[1][1] . "='" . $nbE[1][1] . "', " . $Obj[1][2] . "='" . $nbE[1][2] . "' WHERE id='" . $id . "'");
             }
         }
     } elseif ($page == 'techno') {
         $evolPage = 2;
         //Nom de chaque objet d'un type différent.
-        $evolNom = array(
+        $evolNom = [
             'Apn&eacute;e',
             'Surprise',
             'Crachat',
             'Saut',
-            'Manger de la soupe'
-        );
+            'Manger de la soupe',
+        ];
         //Description qui accompagne l'objet.
-        $evolDesc = array(
+        $evolDesc = [
             'Cette technique permet d\'embrasser plus longtemps.<br />
 				<span class="info">[ Augmente le nombre de Points d\'Amour vol&eacute;s ]</span><br />',
             'Permet d\'augmenter vos chances de r&eacute;ussite.<br />
@@ -311,8 +311,8 @@ if ($_SESSION['logged'] == true) {
 				[ Augmente beaucoup la distance maximale de saut ]</span><br />',
             'Pour grandir, il faut manger de la soupe !!<br />
 				<span class="info">[ Permet de diminuer le temps de cr&eacute;ation des organes ]<br />
-				[ Permet de diminuer le temps de cr&eacute;ation des techniques ]</span><br />'
-        );
+				[ Permet de diminuer le temps de cr&eacute;ation des techniques ]</span><br />',
+        ];
     }
 
     //Si on veut acceder a une des pages d'évolution -> prétraitement.
@@ -321,10 +321,10 @@ if ($_SESSION['logged'] == true) {
     }
 
     //Récupération du nombre de messages non lus.
-    $retour = mysql_query("SELECT COUNT(*) AS nbMsg FROM messages WHERE destin=".$id." AND statut = 0");
+    $retour = mysql_query("SELECT COUNT(*) AS nbMsg FROM messages WHERE destin=" . $id . " AND statut = 0");
     $nbNewMsg = mysql_result($retour, 0, 'nbMsg');
     if ($nbNewMsg > 0) {
-        $NewMsgString = $nbNewMsg.' nouveau'.pluriel($nbNewMsg, 'x').' message'.pluriel($nbNewMsg);
+        $NewMsgString = $nbNewMsg . ' nouveau' . pluriel($nbNewMsg, 'x') . ' message' . pluriel($nbNewMsg);
     } else {
         $NewMsgString = 'Pas de nouveau message';
     }
@@ -340,7 +340,7 @@ $temps12 = microtime_float();
     Il permet de créer une sorte de boucle de calcul virtuelle, pour peu qu'il y ait suffisament de gens qui se connectent.
 */
 //On récupère les évolutions dont la date de création est atteinte ou dépassée.
-$sql_info = mysql_query("SELECT auteur, id, type, classe, cout FROM evolution WHERE timestamp<='".time()."'");
+$sql_info = mysql_query("SELECT auteur, id, type, classe, cout FROM evolution WHERE timestamp<='" . time() . "'");
 //Boucle qui permet de traiter construction par construction.
 while ($donnees_info = mysql_fetch_assoc($sql_info)) {
     //Id de l'auteur de la construction
@@ -356,9 +356,9 @@ while ($donnees_info = mysql_fetch_assoc($sql_info)) {
     //On ajoute le nombre de points d'amour dépensés au score :
     AjouterScore($id2, $coutObjet);
     //On supprime la construction de la liste des taches.
-    mysql_query("DELETE FROM evolution WHERE id='".$idtache."'");
+    mysql_query("DELETE FROM evolution WHERE id='" . $idtache . "'");
     //On effectue la tache dans la table membre.
-    $sql_info2 = mysql_query("SELECT ".$Obj[$classe][$type].", amour FROM membres WHERE id='".$id2."'");
+    $sql_info2 = mysql_query("SELECT " . $Obj[$classe][$type] . ", amour FROM membres WHERE id='" . $id2 . "'");
     $donnees_info = mysql_fetch_assoc($sql_info2);
     $amourConstructeur = $donnees_info['amour'];
     //On récupère l'ancienne valeur.
@@ -366,15 +366,15 @@ while ($donnees_info = mysql_fetch_assoc($sql_info)) {
     //On augmente d'un.
     $nbObjEvol++;
     //On met a jour la table.
-    mysql_query("UPDATE membres SET ".$Obj[$classe][$type]."='".$nbObjEvol."' WHERE id='".$id2."'");
+    mysql_query("UPDATE membres SET " . $Obj[$classe][$type] . "='" . $nbObjEvol . "' WHERE id='" . $id2 . "'");
     //Si le visiteur est connecté et membre, et si la construction est la sienne, on met a jour les infos sur la page.
 
     //S'il ya des constructions sur la liste de construction, on relance une construction.
     $sql_info2 = mysql_query("SELECT id, duree, type, cout FROM liste WHERE auteur=$id2 AND classe=$classe ORDER BY id LIMIT 0,1");
     if ($donnees_info = mysql_fetch_assoc($sql_info2)) {
         $timeFin2 = time() + $donnees_info['duree'];
-        mysql_query("INSERT INTO evolution (id, timestamp, classe, type, auteur, cout) VALUES ('', '".$timeFin2."', $classe, ".$donnees_info['type'].", $id2, ".$donnees_info['cout'].")");
-        mysql_query("DELETE FROM liste WHERE id=".$donnees_info['id']);
+        mysql_query("INSERT INTO evolution (id, timestamp, classe, type, auteur, cout) VALUES ('', '" . $timeFin2 . "', $classe, " . $donnees_info['type'] . ", $id2, " . $donnees_info['cout'] . ")");
+        mysql_query("DELETE FROM liste WHERE id=" . $donnees_info['id']);
         if ($id == $id2) {
             $nbE[$classe][$type] = $nbObjEvol;
             if ($classe == 1) {
@@ -415,8 +415,8 @@ include('phpincludes/pages.php');
 
 //Si on décide que la page existe.
 if (isset($array_pages[$page])) {
-    $title = $array_titres[$page].' - Bienvenue sur Bisouland';
-    $include = 'phpincludes/'.$array_pages[$page];
+    $title = $array_titres[$page] . ' - Bienvenue sur Bisouland';
+    $include = 'phpincludes/' . $array_pages[$page];
 } else {
     $title = 'Erreur 404 - Bienvenue sur Bisouland';
     $include = 'phpincludes/erreur404.php';
@@ -443,7 +443,7 @@ mysql_query('DELETE FROM connectbisous WHERE timestamp < ' . $timestamp_5min);
 $retour = mysql_query("SELECT COUNT(*) AS nbre_visit FROM connectbisous");
 $donnees = mysql_fetch_assoc($retour);
 $NbVisit = $donnees['nbre_visit'];
-$retour = mysql_query("SELECT COUNT(*) AS nb_membres FROM membres WHERE lastconnect>=".$timestamp_5min);
+$retour = mysql_query("SELECT COUNT(*) AS nb_membres FROM membres WHERE lastconnect>=" . $timestamp_5min);
 $NbMemb = mysql_result($retour, 0, 'nb_membres');
 
 $temps14 = microtime_float();
@@ -458,18 +458,18 @@ $temps14 = microtime_float();
                 echo $title;
 ?>
 		</title>
-        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" /> 
-		<link rel="stylesheet" media="screen" type="text/css" title="bisouStyle2" href="includes/bisouStyle2.css" /> 
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+		<link rel="stylesheet" media="screen" type="text/css" title="bisouStyle2" href="includes/bisouStyle2.css" />
 		<link rel="shorcut icon" href="/favicon.ico"/>
 		<meta name="description" content="<?php echo $title;?>"/>
 		<meta http-equiv="Content-Language" content="fr" />
     </head>
-	
+
     <body>
 <div id="superbig">
-	
+
 	<a href="/" id="Ban"></a>
-	
+
 	<ul id="speedbarre">
 
 			<?php if ($_SESSION['logged'] == true) {?>
@@ -490,11 +490,11 @@ $temps14 = microtime_float();
 			<li class="speedgauche"><a href="connexion.html">Connexion</a></li>
 			<li class="speeddroite">Adoptez la strat&eacute;gie BisouLand !! : <a href="inscription.html">Inscription</a></li>
 			<?php } ?>
-			
+
 	</ul>
 	<div id="pub">
 	</div>
-	
+
 	<div id="Menu">
 		<div class="sMenu">
             <h3>G&eacute;n&eacute;ral</h3>
@@ -562,18 +562,18 @@ $temps16 = microtime_float();
 
 <?php
     if ($_SESSION['logged'] == true) {
-        mysql_query("UPDATE membres SET lastconnect=".time().", timestamp='".time()."' , amour='".$amour."' WHERE id='".$id."'");
+        mysql_query("UPDATE membres SET lastconnect=" . time() . ", timestamp='" . time() . "' , amour='" . $amour . "' WHERE id='" . $id . "'");
     }
 ?>
-	
+
 	<div id="Bas">
 		<p>Il y a actuellement<strong>
 <?php
-echo $NbVisit.'</strong> visiteur';
+echo $NbVisit . '</strong> visiteur';
 if ($NbVisit > 1) {
     echo 's';
 }
-echo ' et <strong>'.$NbMemb.'</strong> membre';
+echo ' et <strong>' . $NbMemb . '</strong> membre';
 if ($NbMemb > 1) {
     echo 's';
 }
@@ -585,7 +585,7 @@ if ($NbMemb + $NbVisit > 1) {
 <p><?php
 $temps17 = microtime_float();
 $temps_fin = microtime_float();
-echo '<p class="Tpetit" >Page g&eacute;n&eacute;r&eacute;e en '.round($temps_fin - $temps_debut, 4).' secondes</p>';
+echo '<p class="Tpetit" >Page g&eacute;n&eacute;r&eacute;e en ' . round($temps_fin - $temps_debut, 4) . ' secondes</p>';
 if ($_SESSION['logged'] == true) {
     /*
         echo 'Bench temporaire, ne pas tenir compte :<br />';
@@ -608,7 +608,7 @@ if ($_SESSION['logged'] == true) {
 		<p class="Tpetit">Tous droits r&eacute;serv&eacute;s &copy; BisouLand - Site respectant les r&egrave;gles de la CNIL</p>
 
     </div>
-    
+
 
 </div>
     </body>

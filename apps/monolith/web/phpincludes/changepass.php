@@ -12,7 +12,7 @@ Il est désormais possible de changer de mot de passe, si l'ancien ne vous convi
                 $oldmdp = $_POST['oldpass'];
                 $oldmdp = md5($oldmdp);
                 //Sélection des informations.
-                $sql_info = mysql_query("SELECT mdp FROM membres WHERE id='".$id."'");
+                $sql_info = mysql_query("SELECT mdp FROM membres WHERE id='" . $id . "'");
                 $donnees_info = mysql_fetch_array($sql_info);
                 $oldmdp2 = $donnees_info['mdp'];
                 if ($oldmdp2 == $oldmdp) {
@@ -45,7 +45,7 @@ Il est désormais possible de changer de mot de passe, si l'ancien ne vous convi
         }
 
     if (isset($resultat)) {
-        echo $resultat.'<br />';
+        echo $resultat . '<br />';
     }
     ?>
 <br />

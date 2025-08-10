@@ -11,7 +11,7 @@ $tempsUnMois = time() - 2678400;
 //Si les joueurs se sont connectes depuis un mois, on enleve l'avertissement.
 $sql = mysql_query("SELECT id FROM membres WHERE averto>0 AND lastconnect>$tempsUnMois");
 while ($donnees = mysql_fetch_assoc($sql)) {
-    mysql_query("UPDATE membres SET averto=0 WHERE id=".$donnees['id']);
+    mysql_query("UPDATE membres SET averto=0 WHERE id=" . $donnees['id']);
 }
 
 $sql = mysql_query("SELECT id,averto,confirmation FROM membres WHERE lastconnect<$tempsUnMois");
@@ -26,7 +26,7 @@ while ($donnees = mysql_fetch_assoc($sql)) {
         } else {
             //Si pas encore eu d'avertissement :
             if ($donnees['averto'] == 0) {
-                mysql_query("UPDATE membres SET averto=".time()." WHERE id=".$donnees['id']);
+                mysql_query("UPDATE membres SET averto=" . time() . " WHERE id=" . $donnees['id']);
             } elseif ($donnees['averto'] < $tempsUneSemaine) {
                 //On va pas embeter l'utilisateur, s'il n'a pas repondu a l'avertissement, on supprime son compte.
                 SupprimerCompte($donnees['id']);

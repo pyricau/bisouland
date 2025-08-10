@@ -25,7 +25,7 @@ if ($_SESSION['logged'] == true) {
 //Si on est loggué (et qu'on peut attaquer, on calcule notre position
 if ($_SESSION['logged'] == true && ($nbE[1][0] + $nbE[1][1] + $nbE[1][2]) > 0) {
     $nuageSource = $_SESSION['nuage'];
-    $sql_info2 = mysql_query("SELECT position FROM membres WHERE id='".$id."'");
+    $sql_info2 = mysql_query("SELECT position FROM membres WHERE id='" . $id . "'");
     $donnees_info2 = mysql_fetch_assoc($sql_info2);
     $positionSource = $donnees_info2['position'];
 }
@@ -35,7 +35,7 @@ $donnees_info = mysql_fetch_assoc($sql_info);
 for ($i = 1;$i <= $nbTop;$i++) {
 
     echo '<tr>
-				<td>'.$i.'</td>
+				<td>' . $i . '</td>
 				<td>';
 
     if ($donnees_info['lastconnect'] > time() - 300) {
@@ -47,8 +47,8 @@ for ($i = 1;$i <= $nbTop;$i++) {
     echo   '</td>
 				<td>';
 
-    echo 	$donnees_info['pseudo'].'</td>
-				<td>'.(formaterNombre(floor($donnees_info['score'] / 1000.))).'</td>
+    echo 	$donnees_info['pseudo'] . '</td>
+				<td>' . (formaterNombre(floor($donnees_info['score'] / 1000.))) . '</td>
 				';
 
     if ($_SESSION['logged'] == true) {
@@ -56,7 +56,7 @@ for ($i = 1;$i <= $nbTop;$i++) {
         if ($donnees_info['id'] != $id) {
             //Envoyer un message.
             echo '<a class="bulle" href="',$donnees_info['pseudo'],'.envoi.html">
-				<img src="images/mess.png" title="" alt="" /><span>Envoyer un message à '.$donnees_info['pseudo'].'</span></a> ';
+				<img src="images/mess.png" title="" alt="" /><span>Envoyer un message à ' . $donnees_info['pseudo'] . '</span></a> ';
         }
         echo '<a class="bulle" href="',$donnees_info['nuage'],'.nuage.html" >
 			<img src="images/nuage.png" title="" alt="" /><span>Nuage : ',$donnees_info['nuage'],'</span></a></td>';
@@ -65,6 +65,6 @@ for ($i = 1;$i <= $nbTop;$i++) {
     echo '</tr>';
     $donnees_info = mysql_fetch_assoc($sql_info);
 }
-?> 
-   
+?>
+
 </table></center>

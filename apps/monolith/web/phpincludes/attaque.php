@@ -4,12 +4,12 @@ if (isset($inMainPage) && $inMainPage == true) {
     //***************************************************************************
     //Gestion des attaques.
     //Phase d'aller :
-    $sql_info = mysql_query("SELECT finaller, auteur, cible FROM attaque WHERE finaller<='".time()."' AND finaller!=0");
+    $sql_info = mysql_query("SELECT finaller, auteur, cible FROM attaque WHERE finaller<='" . time() . "' AND finaller!=0");
     while ($donnees_info = mysql_fetch_assoc($sql_info)) {
         $idAuteur = $donnees_info['auteur'];
         $idCible = $donnees_info['cible'];
         $finaller = $donnees_info['finaller'];
-        mysql_query("UPDATE attaque SET finaller='0' WHERE auteur='".$idAuteur."'");
+        mysql_query("UPDATE attaque SET finaller='0' WHERE auteur='" . $idAuteur . "'");
 
         //On indique que l'attaque a eu lieu.
         mysql_query("INSERT INTO logatt VALUES($idAuteur, $idCible, $finaller)");
@@ -31,7 +31,7 @@ if (isset($inMainPage) && $inMainPage == true) {
             Langue : baisers langoureux sont plus forts
         */
         //Infos attaquant :
-        $sql_info3 = mysql_query("SELECT bouche, smack, baiser, pelle, tech1, tech2, langue, score FROM membres WHERE id=".$idAuteur);
+        $sql_info3 = mysql_query("SELECT bouche, smack, baiser, pelle, tech1, tech2, langue, score FROM membres WHERE id=" . $idAuteur);
         $donnees_info3 = mysql_fetch_assoc($sql_info3);
         $AttSmack = $donnees_info3['smack'];
         $AttBaiser = $donnees_info3['baiser'];
@@ -42,7 +42,7 @@ if (isset($inMainPage) && $inMainPage == true) {
         $AttLangue = $donnees_info3['langue'];
         $AttScore = $donnees_info3['score'];
 
-        $sql_info4 = mysql_query("SELECT coeur, timestamp, bouche, amour, smack, baiser, pelle, tech3, dent, langue, bloque, score FROM membres WHERE id='".$idCible."'");
+        $sql_info4 = mysql_query("SELECT coeur, timestamp, bouche, amour, smack, baiser, pelle, tech3, dent, langue, bloque, score FROM membres WHERE id='" . $idCible . "'");
         $donnees_info4 = mysql_fetch_assoc($sql_info4);
         $DefSmack = $donnees_info4['smack'];
         $DefBaiser = $donnees_info4['baiser'];
@@ -81,11 +81,11 @@ if (isset($inMainPage) && $inMainPage == true) {
             }
 
             //Attaque terminée, plus rien à voir.
-            mysql_query("DELETE FROM attaque WHERE auteur='".$idAuteur."'");
+            mysql_query("DELETE FROM attaque WHERE auteur='" . $idAuteur . "'");
             //Envoyer un MP pour signifier les résultats.
             //On supprime les unités.
-            mysql_query("UPDATE membres SET smack=".$AttSmack.", baiser=".$AttBaiser.", pelle=".$AttPelle.", bloque=0 WHERE id='".$idAuteur."'");
-            mysql_query("UPDATE membres SET smack=".$DefSmack.", baiser=".$DefBaiser.", pelle=".$DefPelle." WHERE id='".$idCible."'");
+            mysql_query("UPDATE membres SET smack=" . $AttSmack . ", baiser=" . $AttBaiser . ", pelle=" . $AttPelle . ", bloque=0 WHERE id='" . $idAuteur . "'");
+            mysql_query("UPDATE membres SET smack=" . $DefSmack . ", baiser=" . $DefBaiser . ", pelle=" . $DefPelle . " WHERE id='" . $idCible . "'");
 
             AdminMP($idAuteur, "Quel rateau !!", "Bouuhh, t'as perdu tout tes bisous !!
 			Tu n'as pas réussi à embrasser ton adversaire !!
@@ -96,9 +96,9 @@ if (isset($inMainPage) && $inMainPage == true) {
 			");
             AdminMP($idCible, "Bien esquivé !", "Bravo, tu ne t'es pas laissé faire !
 			Il te reste :
-			- ".$DefSmack." smacks
-			- ".$DefBaiser." baisers
-			- ".$DefPelle." baisers langoureux
+			- " . $DefSmack . " smacks
+			- " . $DefBaiser . " baisers
+			- " . $DefPelle . " baisers langoureux
 			");
 
             //Bien se défendre fait gagner des points.
@@ -123,21 +123,21 @@ if (isset($inMainPage) && $inMainPage == true) {
             }
 
             //Ca retourne, pas de blocage
-            mysql_query("UPDATE membres SET smack=".$AttSmack.", baiser=".$AttBaiser.", pelle=".$AttPelle.", WHERE id='".$idAuteur."'");
-            mysql_query("UPDATE membres SET smack=".$DefSmack.", baiser=".$DefBaiser.", pelle=".$DefPelle." WHERE id='".$idCible."'");
+            mysql_query("UPDATE membres SET smack=" . $AttSmack . ", baiser=" . $AttBaiser . ", pelle=" . $AttPelle . ", WHERE id='" . $idAuteur . "'");
+            mysql_query("UPDATE membres SET smack=" . $DefSmack . ", baiser=" . $DefBaiser . ", pelle=" . $DefPelle . " WHERE id='" . $idCible . "'");
 
             AdminMP($idAuteur, "Ex Aequo", "Egalité parfaite lors de ta dernière tentative.
 			Tu ne ramène pas de points d'amour !!
 			Il te reste :
-			- ".$AttSmack." smacks
-			- ".$AttBaiser." baisers
-			- ".$AttPelle." baisers langoureux
+			- " . $AttSmack . " smacks
+			- " . $AttBaiser . " baisers
+			- " . $AttPelle . " baisers langoureux
 			");
             AdminMP($idCible, "Ex Aequo", "Egalité parfaite contre le joueur qui voulait t'embrasser.
 			Il te reste :
-			- ".$DefSmack." smacks
-			- ".$DefBaiser." baisers
-			- ".$DefPelle." baisers langoureux
+			- " . $DefSmack . " smacks
+			- " . $DefBaiser . " baisers
+			- " . $DefPelle . " baisers langoureux
 			");
 
         } elseif ($bilan > 0) {
@@ -187,25 +187,25 @@ if (isset($inMainPage) && $inMainPage == true) {
             }
 
             //Ca retourne, pas de blocage
-            mysql_query("UPDATE membres SET smack=".$AttSmack.", baiser=".$AttBaiser.", pelle=".$AttPelle." WHERE id=".$idAuteur);
-            mysql_query("UPDATE membres SET amour=".$DefAmour." ,smack=".$DefSmack.", baiser=".$DefBaiser.", pelle=".$DefPelle." WHERE id=".$idCible);
+            mysql_query("UPDATE membres SET smack=" . $AttSmack . ", baiser=" . $AttBaiser . ", pelle=" . $AttPelle . " WHERE id=" . $idAuteur);
+            mysql_query("UPDATE membres SET amour=" . $DefAmour . " ,smack=" . $DefSmack . ", baiser=" . $DefBaiser . ", pelle=" . $DefPelle . " WHERE id=" . $idCible);
 
-            mysql_query("UPDATE attaque SET butin=".$butin." WHERE auteur=".$idAuteur);
+            mysql_query("UPDATE attaque SET butin=" . $butin . " WHERE auteur=" . $idAuteur);
 
             AdminMP($idAuteur, "Tu l'as embrassé !!", "Bravo, tu as réussi à embrasser ton adversaire.
 			Tes bisous seront bientôt revenus près de toi.
-			Tu as réussi à prendre ".$butin." Points d'Amour !!
+			Tu as réussi à prendre " . $butin . " Points d'Amour !!
 			Il te reste :
-			- ".$AttSmack." smacks
-			- ".$AttBaiser." baisers
+			- " . $AttSmack . " smacks
+			- " . $AttBaiser . " baisers
 			- $AttPelle baisers langoureux
 			");
             AdminMP($idCible, "Tu t'es fait embrasser", "Tu n'as pas su résister à ses Bisous !!
-			Tu t'es fait prendre ".$butin." Points d'Amour !!
+			Tu t'es fait prendre " . $butin . " Points d'Amour !!
 			Il te reste :
-			- ".$DefSmack." smacks
-			- ".$DefBaiser." baisers
-			- ".$DefPelle." baisers langoureux
+			- " . $DefSmack . " smacks
+			- " . $DefBaiser . " baisers
+			- " . $DefPelle . " baisers langoureux
 			");
 
             //Bien attaquer fait gagner des points.
@@ -217,16 +217,16 @@ if (isset($inMainPage) && $inMainPage == true) {
     }
 
     //Phase retour
-    $sql_info = mysql_query("SELECT auteur, butin FROM attaque WHERE finretour<='".time()."'");
+    $sql_info = mysql_query("SELECT auteur, butin FROM attaque WHERE finretour<='" . time() . "'");
     while ($donnees_info = mysql_fetch_assoc($sql_info)) {
         $idAuteur = $donnees_info['auteur'];
         $butinAuteur = $donnees_info['butin'];
-        mysql_query("DELETE FROM attaque WHERE auteur='".$idAuteur."'");
+        mysql_query("DELETE FROM attaque WHERE auteur='" . $idAuteur . "'");
 
         if ($idAuteur == $id && $_SESSION['logged'] == true) {
             $AttAmour = $amour;
         } else {
-            $sql_info3 = mysql_query("SELECT amour FROM membres WHERE id='".$idAuteur."'");
+            $sql_info3 = mysql_query("SELECT amour FROM membres WHERE id='" . $idAuteur . "'");
             $donnees_info3 = mysql_fetch_assoc($sql_info3);
             $AttAmour = $donnees_info3['amour'];
         }
@@ -239,7 +239,7 @@ if (isset($inMainPage) && $inMainPage == true) {
             $joueurBloque = 0;
         }
         //Libérer l'auteur et ajouter butin
-        mysql_query("UPDATE membres SET bloque=0, amour=".$AttAmour." WHERE id='".$idAuteur."'");
+        mysql_query("UPDATE membres SET bloque=0, amour=" . $AttAmour . " WHERE id='" . $idAuteur . "'");
 
     }
 }

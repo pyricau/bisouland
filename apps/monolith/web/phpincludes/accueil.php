@@ -24,22 +24,22 @@ if ($_SESSION['logged'] == true && $pseudo == 'admin') {
 
     function bb2html($text)
     {
-        $bbcode = array("<", ">",
-                "[list]", "[*]","[/*]", "[/list]",
-                "[img]", "[/img]",
-                "[b]", "[/b]",
-                "[u]", "[/u]",
-                "[i]", "[/i]",
-                '[url="', "[/url]",
-                );
-        $htmlcode = array("&lt;", "&gt;",
-                "<ul>", "<li>","</li>", "</ul>",
-                "<img src=\"", "\">",
-                "<strong>", "</strong>",
-                "<u>", "</u>",
-                "<em>", "</em>",
-                '<a href="', "</a>",
-                );
+        $bbcode = ["<", ">",
+            "[list]", "[*]","[/*]", "[/list]",
+            "[img]", "[/img]",
+            "[b]", "[/b]",
+            "[u]", "[/u]",
+            "[i]", "[/i]",
+            '[url="', "[/url]",
+        ];
+        $htmlcode = ["&lt;", "&gt;",
+            "<ul>", "<li>","</li>", "</ul>",
+            "<img src=\"", "\">",
+            "<strong>", "</strong>",
+            "<u>", "</u>",
+            "<em>", "</em>",
+            '<a href="', "</a>",
+        ];
 
         $text = htmlentities(stripslashes($text));
 

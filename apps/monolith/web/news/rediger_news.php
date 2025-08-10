@@ -14,7 +14,7 @@ header('Content-type: text/html; charset=UTF-8');
         }
         </style>
     </head>
-    
+
     <body>
 
 <h3><a href="liste_news.php">Retour à la liste des news</a></h3>
@@ -54,7 +54,7 @@ mysql_close(); // Déconnexion de MySQL
 <p>
     Contenu :<br />
     <textarea name="contenu" cols="50" rows="10"><?php echo $contenu; ?></textarea><br />
-    
+
     <input type="hidden" name="id_news" value="<?php echo $id_news; ?>" />
     <input type="submit" value="Envoyer" />
 </p>

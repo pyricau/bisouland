@@ -21,9 +21,9 @@ Les techniques vous permettent de mieux vous préparer à faire preuve d'amour.<
             if ($evolution == -1) {
                 if ($amour >= $amourE[$evolPage][$i]) {
                     echo '<form method="post" action="techno.html"><input type="submit"
-		name="'.$Obj[$evolPage][$i].'" value="Passer au niveau suivant" /></form>';
+		name="' . $Obj[$evolPage][$i] . '" value="Passer au niveau suivant" /></form>';
                 } else {
-                    echo '<span class="info">[ Il te manque '.formaterNombre(ceil($amourE[$evolPage][$i] - $amour)).' points d\'amour pour pouvoir passer au niveau suivant ]</span><br />';
+                    echo '<span class="info">[ Il te manque ' . formaterNombre(ceil($amourE[$evolPage][$i] - $amour)) . ' points d\'amour pour pouvoir passer au niveau suivant ]</span><br />';
                 }
             } elseif ($evolution == $i) {
                 ?>
@@ -42,7 +42,7 @@ Les techniques vous permettent de mieux vous préparer à faire preuve d'amour.<
 	<form method="post" action="techno.html">
 		<input type="submit" name="cancel" value="Annuler" />
 		<input type="hidden" name="classe" value="2" />
-	</form>	
+	</form>
 	<?php
             }
             ?>

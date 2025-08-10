@@ -21,13 +21,13 @@ $sql = mysql_query($requete);
 while ($donnees = mysql_fetch_assoc($sql)) {
     $i++;
     $pseudo = $donnees['pseudo'];
-    echo $pseudo."<br />";//Pour les tests.
+    echo $pseudo . "<br />";//Pour les tests.
 
     //On calcule le rang du joueur.
-    $sql2 = mysql_query("SELECT COUNT(*) AS position FROM membres WHERE score>".$donnees['score']);
+    $sql2 = mysql_query("SELECT COUNT(*) AS position FROM membres WHERE score>" . $donnees['score']);
     $position = mysql_result($sql2, 0, 'position') + 1;
 
-    $txtpos = $position.'/'.$totalJoueur;
+    $txtpos = $position . '/' . $totalJoueur;
 
     //On calcule le score du joueur.
     $score = floor($donnees['score'] / 1000.);
@@ -46,6 +46,6 @@ while ($donnees = mysql_fetch_assoc($sql)) {
     imagestring($image, $police, 344, 41, $score, $C);
     imagestring($image, $police, 366, 65, $txtpos, $C);
 
-    imagepng($image, 'ban/'.$donnees['id'].'.png');
+    imagepng($image, 'ban/' . $donnees['id'] . '.png');
 }
-echo $i." images.<br />";
+echo $i . " images.<br />";

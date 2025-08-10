@@ -2,21 +2,21 @@
 
 $retour = mysql_query("SELECT SUM( amour ) AS nb FROM membres WHERE confirmation = 1");
 $pointsAmourTotal = mysql_result($retour, 0, 'nb');
-$retour = mysql_query("SELECT COUNT(*) AS nb FROM membres WHERE confirmation=1 AND lastconnect>=".(time() - 300));
+$retour = mysql_query("SELECT COUNT(*) AS nb FROM membres WHERE confirmation=1 AND lastconnect>=" . (time() - 300));
 $connectCinq = mysql_result($retour, 0, 'nb');
-$retour = mysql_query("SELECT COUNT(*) AS nb FROM membres WHERE confirmation=1 AND lastconnect>=".(time() - 3600));
+$retour = mysql_query("SELECT COUNT(*) AS nb FROM membres WHERE confirmation=1 AND lastconnect>=" . (time() - 3600));
 $connectHeure = mysql_result($retour, 0, 'nb');
-$retour = mysql_query("SELECT COUNT(*) AS nb FROM membres WHERE confirmation=1 AND lastconnect>=".(time() - 43200));
+$retour = mysql_query("SELECT COUNT(*) AS nb FROM membres WHERE confirmation=1 AND lastconnect>=" . (time() - 43200));
 $connectMid = mysql_result($retour, 0, 'nb');
-$retour = mysql_query("SELECT COUNT(*) AS nb FROM membres WHERE confirmation=1 AND lastconnect>=".(time() - 86400));
+$retour = mysql_query("SELECT COUNT(*) AS nb FROM membres WHERE confirmation=1 AND lastconnect>=" . (time() - 86400));
 $connectJour = mysql_result($retour, 0, 'nb');
-$retour = mysql_query("SELECT COUNT(*) AS nb FROM membres WHERE confirmation=1 AND lastconnect>=".(time() - 172800));
+$retour = mysql_query("SELECT COUNT(*) AS nb FROM membres WHERE confirmation=1 AND lastconnect>=" . (time() - 172800));
 $connect2Jour = mysql_result($retour, 0, 'nb');
-$retour = mysql_query("SELECT COUNT(*) AS nb FROM membres WHERE confirmation=1 AND lastconnect>=".(time() - 604800));
+$retour = mysql_query("SELECT COUNT(*) AS nb FROM membres WHERE confirmation=1 AND lastconnect>=" . (time() - 604800));
 $connectSemaine = mysql_result($retour, 0, 'nb');
-$retour = mysql_query("SELECT COUNT(*) AS nb FROM membres WHERE confirmation=1 AND lastconnect>=".(time() - 2635200));
+$retour = mysql_query("SELECT COUNT(*) AS nb FROM membres WHERE confirmation=1 AND lastconnect>=" . (time() - 2635200));
 $connectMois = mysql_result($retour, 0, 'nb');
-$retour = mysql_query("SELECT COUNT(*) AS nb FROM membres WHERE confirmation=1 AND lastconnect>=".(time() - 31536000));
+$retour = mysql_query("SELECT COUNT(*) AS nb FROM membres WHERE confirmation=1 AND lastconnect>=" . (time() - 31536000));
 $connectAn = mysql_result($retour, 0, 'nb');
 ?>
 <h1>Statistiques</h1>

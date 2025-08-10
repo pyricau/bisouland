@@ -10,7 +10,7 @@ if (isset($_SESSION['logged']) && $_SESSION['logged'] == true) {
     bd_connect();
 
     $timeDeco = time() - 600;
-    mysql_query("UPDATE membres SET lastconnect=".$timeDeco." WHERE id=".$_SESSION['id']);
+    mysql_query("UPDATE membres SET lastconnect=" . $timeDeco . " WHERE id=" . $_SESSION['id']);
     //On modifie la valeur de $_SESSION['logged'], qui devient false.
     $_SESSION['logged'] = false;
     $timestamp_expire = time() - 1000;

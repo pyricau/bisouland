@@ -21,7 +21,7 @@ if ($_SESSION['logged'] == false) {
                     $mdp = htmlentities(addslashes($_POST['mdp']));*/
 
                     //La requete qui compte le nombre de pseudos
-                    $sql = mysql_query("SELECT COUNT(*) AS nb_pseudo FROM membres WHERE pseudo='".$pseudo."'");
+                    $sql = mysql_query("SELECT COUNT(*) AS nb_pseudo FROM membres WHERE pseudo='" . $pseudo . "'");
 
                     //Verifie si le pseudo n'est pas deje pris.
                     if (mysql_result($sql, 0, 'nb_pseudo') == 0 && $pseudo != "BisouLand") {
@@ -38,7 +38,7 @@ if ($_SESSION['logged'] == false) {
                                     //Hashage du mot de passe avec md5().
                                     $hmdp = md5($mdp);
 
-                                    mysql_query("INSERT INTO membres (id, pseudo, mdp, confirmation, lastconnect) VALUES ('', '".$pseudo."', '".$hmdp."', '1', ".time().")");
+                                    mysql_query("INSERT INTO membres (id, pseudo, mdp, confirmation, lastconnect) VALUES ('', '" . $pseudo . "', '" . $hmdp . "', '1', " . time() . ")");
 
                                     echo 'Ton inscription est confirmée ! Tu peux maintenant te connecter.<br />';
                                     $send = 1;

@@ -21,9 +21,9 @@ Les organes vous permettent de vivre votre amour<br />
             if ($evolution == -1) {
                 if ($amour >= $amourE[0][$i]) {
                     echo '<form method="post" action="construction.html"><input type="submit"
-		name="'.$Obj[0][$i].'" value="Passer au niveau suivant" /></form>';
+		name="' . $Obj[0][$i] . '" value="Passer au niveau suivant" /></form>';
                 } else {
-                    echo '<span class="info">[ Il te manque '.formaterNombre(ceil($amourE[0][$i] - $amour)).' points d\'amour pour pouvoir passer au niveau suivant ]</span><br />';
+                    echo '<span class="info">[ Il te manque ' . formaterNombre(ceil($amourE[0][$i] - $amour)) . ' points d\'amour pour pouvoir passer au niveau suivant ]</span><br />';
                 }
             } elseif ($evolution == $i) {
                 ?>

@@ -17,12 +17,12 @@ if (isset($_POST['connexion'])) {
 
 
         //La requête qui compte le nombre de pseudos
-        $sql = mysql_query("SELECT COUNT(*) AS nb_pseudo FROM membres WHERE pseudo='".$pseudo."'");
+        $sql = mysql_query("SELECT COUNT(*) AS nb_pseudo FROM membres WHERE pseudo='" . $pseudo . "'");
 
         //La on vérifie si le nombre est différent que zéro
         if (mysql_result($sql, 0, 'nb_pseudo') != 0) {
             //Sélection des informations.
-            $sql_info = mysql_query("SELECT id, confirmation, mdp, nuage FROM membres WHERE pseudo='".$pseudo."'");
+            $sql_info = mysql_query("SELECT id, confirmation, mdp, nuage FROM membres WHERE pseudo='" . $pseudo . "'");
             $donnees_info = mysql_fetch_array($sql_info);
 
             //Si le mot de passe est le même.
@@ -44,7 +44,7 @@ if (isset($_POST['connexion'])) {
                     }
 
                     //On supprime le membre non connecté du nombre de visiteurs :
-                    mysql_query("DELETE FROM connectbisous WHERE ip='".$_SERVER['REMOTE_ADDR']."'");
+                    mysql_query("DELETE FROM connectbisous WHERE ip='" . $_SERVER['REMOTE_ADDR'] . "'");
 
                     //On redirige le membre.
                     header("location: cerveau.html");

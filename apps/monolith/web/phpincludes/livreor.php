@@ -5,17 +5,17 @@
 // -----------------------------------------
 
 if (isset($_POST['message'])) {
-    if ($_SESSION['logged'] == true) {
+    if (true == $_SESSION['logged']) {
         $psd = htmlentities($_SESSION['pseudo']);
 
-        $message = htmlentities(addslashes($_POST['message']), ENT_QUOTES); // De même pour le message
+        $message = htmlentities(addslashes($_POST['message']), \ENT_QUOTES); // De même pour le message
         $message = nl2br($message); // Pour le message, comme on utilise un textarea, il faut remplacer les Entrées par des <br />
 
         // On peut enfin enregistrer :o)
-        //mysql_query("INSERT INTO orbisous VALUES('', '" . $psd . "', '" . $message . "', '" .time()."')");
+        // mysql_query("INSERT INTO orbisous VALUES('', '" . $psd . "', '" . $message . "', '" .time()."')");
     }
 } else {
-    $psd = "Votre pseudo";
+    $psd = 'Votre pseudo';
 }
 
 // --------------- Etape 2 -----------------
@@ -31,13 +31,13 @@ $donnees = mysql_fetch_array($retour);
 $totalDesMessages = $donnees['nb_messages'];
 
 // On calcule le nombre de pages à créer
-$nombreDePages  = ceil($totalDesMessages / $nombreDeMessagesParPage);
+$nombreDePages = ceil($totalDesMessages / $nombreDeMessagesParPage);
 ?>
 
 <h1>Livre d'or</h1>
 
 <?php
-    if ($_SESSION['logged'] == true) {
+    if (true == $_SESSION['logged']) {
         ?>
 <div class=formul>
 <form method="post" action="livreor.html">
@@ -62,13 +62,12 @@ $nombreDePages  = ceil($totalDesMessages / $nombreDeMessagesParPage);
 
 <p>
 
-<center>Il y a actuellement <strong><?php echo $totalDesMessages ?></strong> messages dans le livre d'or.</center>
+<center>Il y a actuellement <strong><?php echo $totalDesMessages; ?></strong> messages dans le livre d'or.</center>
 <br />
 <?php
 
-
 if (isset($_GET['or'])) {
-    $or = intval($_GET['or']); // On récupère le numéro de la page indiqué dans l'adresse (livreor.php?page=4)
+    $or = (int) $_GET['or']; // On récupère le numéro de la page indiqué dans l'adresse (livreor.php?page=4)
     if ($or > $nombreDePages) {
         $or = $nombreDePages;
     } elseif ($or < 1) {
@@ -81,15 +80,15 @@ if (isset($_GET['or'])) {
 // On calcule le numéro du premier message qu'on prend pour le LIMIT de MySQL
 $premierMessageAafficher = ($or - 1) * $nombreDeMessagesParPage;
 
-$reponse = mysql_query('SELECT * FROM orbisous ORDER BY id DESC LIMIT ' . $premierMessageAafficher . ', ' . $nombreDeMessagesParPage);
+$reponse = mysql_query('SELECT * FROM orbisous ORDER BY id DESC LIMIT '.$premierMessageAafficher.', '.$nombreDeMessagesParPage);
 
 if ($nombreDePages > 1) {
-    echo "<center>Page :";
-    for ($i = 1 ; $i <= $nombreDePages ; $i++) {
+    echo '<center>Page :';
+    for ($i = 1; $i <= $nombreDePages; ++$i) {
         if ($i != $or) {
-            echo '<a href="livreor.' . $i . '.html">' . $i . '</a> ';
+            echo '<a href="livreor.'.$i.'.html">'.$i.'</a> ';
         } else {
-            echo ' ' . $i . ' ';
+            echo ' '.$i.' ';
         }
     }
     echo '</center><br />';
@@ -104,7 +103,7 @@ while ($donnees = mysql_fetch_array($reponse)) {
     ?>
 <div class=livreor>
 <?php
-        echo '<p><strong>' . stripslashes($donnees['pseudo']) . '</strong> a &eacute;crit le ' . date('d/m/Y à H\hi', $donnees['timestamp']) . ' :<br /><br />' . stripslashes($donnees['message']) . '</p>';
+        echo '<p><strong>'.stripslashes($donnees['pseudo']).'</strong> a &eacute;crit le '.date('d/m/Y à H\hi', $donnees['timestamp']).' :<br /><br />'.stripslashes($donnees['message']).'</p>';
     ?>
 </div>
 <?php

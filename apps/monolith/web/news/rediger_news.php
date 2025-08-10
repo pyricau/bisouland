@@ -25,13 +25,9 @@ header('Content-type: text/html; charset=UTF-8');
 bd_connect();
 
 if (isset($_GET['modifier_news'])) { // Si on demande de modifier une news
-
-
-
     // On récupère les infos de la correspondante
-    $retour = mysql_query('SELECT * FROM newsbisous WHERE id=' . $_GET['modifier_news']);
+    $retour = mysql_query('SELECT * FROM newsbisous WHERE id='.$_GET['modifier_news']);
     $donnees = mysql_fetch_array($retour);
-
 
     // On place le titre et le contenu dans des variables simples
     $titre = $donnees['titre'];

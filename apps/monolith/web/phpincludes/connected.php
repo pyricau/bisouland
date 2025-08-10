@@ -1,8 +1,7 @@
 <?php
-//Ce qu'on affiche si on est connecte
-if ($_SESSION['logged'] == true) {
-
-    $sql_info = mysql_query("SELECT espion FROM membres WHERE id='" . $id . "'");
+// Ce qu'on affiche si on est connecte
+if (true == $_SESSION['logged']) {
+    $sql_info = mysql_query("SELECT espion FROM membres WHERE id='".$id."'");
     $donnees_info = mysql_fetch_assoc($sql_info);
     $espion = $donnees_info['espion'];
 
@@ -14,7 +13,7 @@ if ($_SESSION['logged'] == true) {
         }
         if ($espion != $esp) {
             $espion = $esp;
-            mysql_query('UPDATE membres SET espion=' . $espion . " WHERE id=" . $id . "");
+            mysql_query('UPDATE membres SET espion='.$espion.' WHERE id='.$id.'');
         }
     }
 
@@ -23,7 +22,7 @@ if ($_SESSION['logged'] == true) {
 <form method="post" action="connected.html">
 
 	<label>
-		<input type="checkbox" <?php if ($espion == 1) {
+		<input type="checkbox" <?php if (1 == $espion) {
             echo 'checked="checked"';
         } ?> name="espion" />
 		Je souhaite enregistrer dans des messages les informations que j'obtiens sur des joueurs.
@@ -43,6 +42,5 @@ Si tu en as ras le bol des bisous, tu peux supprimer ton compte !!<br />
     echo 'Erreur : Vous vous croyez ou la ??';
     echo '<br />Veuillez vous connecter.';
 }
-
 
 ?>

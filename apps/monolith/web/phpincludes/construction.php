@@ -1,16 +1,13 @@
 <?php
-//Ce qu'on affiche si on est connecté
-if ($_SESSION['logged'] == true) {
-
+// Ce qu'on affiche si on est connecté
+if (true == $_SESSION['logged']) {
     ?>
 <h1>Organes</h1>
 Les organes vous permettent de vivre votre amour<br />
 <?php
 
-    for ($i = 0;$i != $nbType[0];$i++) {
-
+    for ($i = 0; $i != $nbType[0]; ++$i) {
         if (arbre($evolPage, $i, $nbE)) {
-
             echo '<div class="batiment"><h2>',$evolNom[$i],'<br /></h2>';
             echo $evolDesc[$i],'<br />Niveau actuel : ';
             echo $nbE[0][$i],'<br />';
@@ -18,19 +15,19 @@ Les organes vous permettent de vivre votre amour<br />
                 echo 'Niveau suivant : coute ',formaterNombre($amourE[0][$i]), ' points d\'amour<br />';
                 echo 'Temps de construction : ',strTemps($tempsE[0][$i]),'<br />';
             }
-            if ($evolution == -1) {
+            if (-1 == $evolution) {
                 if ($amour >= $amourE[0][$i]) {
                     echo '<form method="post" action="construction.html"><input type="submit"
-		name="' . $Obj[0][$i] . '" value="Passer au niveau suivant" /></form>';
+		name="'.$Obj[0][$i].'" value="Passer au niveau suivant" /></form>';
                 } else {
-                    echo '<span class="info">[ Il te manque ' . formaterNombre(ceil($amourE[0][$i] - $amour)) . ' points d\'amour pour pouvoir passer au niveau suivant ]</span><br />';
+                    echo '<span class="info">[ Il te manque '.formaterNombre(ceil($amourE[0][$i] - $amour)).' points d\'amour pour pouvoir passer au niveau suivant ]</span><br />';
                 }
             } elseif ($evolution == $i) {
                 ?>
 	<script src="includes/compteur.js" type="text/javascript"></script>
 	<div id="compteur"><?php echo strTemps($timeFin - time()); ?></div>
 	<script language="JavaScript">
-		duree="<?php echo($timeFin - time());?>";
+		duree="<?php echo $timeFin - time(); ?>";
 		stop="";
 		fin="Terminé";
 		next="Continuer";

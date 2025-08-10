@@ -1,5 +1,5 @@
 <?php
-if ($_SESSION['logged'] == true) {
+if (true == $_SESSION['logged']) {
     ?>
 <h1>Encyclop&eacute;die</h1>
 R&eacute;capitulatif te permettant d'orienter ton d&eacute;veloppement.<br />
@@ -11,8 +11,8 @@ Tous les 1000 points dépensés dans une cr&eacute;ation (organe, technique, bis
 Lorsque tu annules une cr&eacute;ation, tu ne r&eacute;cup&eacute;res que la  moiti&eacute; des Points d'Amour investi dans sa construction.<br />
 <br />
 <?php
-    //*********************************************
-    //Nom !!
+    // *********************************************
+    // Nom !!
     $requis[0]['nomClasse'] = 'Organes';
     $requis[0]['nom'] = [
         'Coeur',
@@ -23,67 +23,67 @@ Lorsque tu annules une cr&eacute;ation, tu ne r&eacute;cup&eacute;res que la  mo
         'Oeil',
     ];
 
-    //Pas de 0 !! (car NbCond=0)
-    //Bouche
+    // Pas de 0 !! (car NbCond=0)
+    // Bouche
     $requis[0][1]['Classe'] = [
-        0, //Organes
+        0, // Organes
     ];
     $requis[0][1]['Type'] = [
-        0, //Coeur
+        0, // Coeur
     ];
     $requis[0][1]['Niveau'] = [
         2,
     ];
 
-    //Langue
+    // Langue
     $requis[0][2]['Classe'] = [
-        0, //Organes
+        0, // Organes
         0,
     ];
     $requis[0][2]['Type'] = [
-        0, //coeur
-        1, //bouche
+        0, // coeur
+        1, // bouche
     ];
     $requis[0][2]['Niveau'] = [
         5,
         2,
     ];
 
-    //Dents
+    // Dents
     $requis[0][3]['Classe'] = [
-        0, //Organes
+        0, // Organes
     ];
     $requis[0][3]['Type'] = [
-        1, //bouche
+        1, // bouche
     ];
     $requis[0][3]['Niveau'] = [
         2,
     ];
 
-    //Jambes
+    // Jambes
     $requis[0][4]['Classe'] = [
-        0, //Organes
+        0, // Organes
     ];
     $requis[0][4]['Type'] = [
-        0, //coeur
+        0, // coeur
     ];
     $requis[0][4]['Niveau'] = [
         15,
     ];
 
-    //Oeil
+    // Oeil
     $requis[0][5]['Classe'] = [
-        0, //Organes
+        0, // Organes
     ];
     $requis[0][5]['Type'] = [
-        0, //Coeur
+        0, // Coeur
     ];
     $requis[0][5]['Niveau'] = [
         10,
     ];
 
-    //*********************************************
-    //Nom !!
+    // *********************************************
+    // Nom !!
     $requis[1]['nomClasse'] = 'Bisous';
     $requis[1]['nom'] = [
         'Smack',
@@ -91,44 +91,44 @@ Lorsque tu annules une cr&eacute;ation, tu ne r&eacute;cup&eacute;res que la  mo
         'Baiser langoureux',
     ];
 
-    //Smack
+    // Smack
     $requis[1][0]['Classe'] = [
-        0, //Organes
+        0, // Organes
     ];
     $requis[1][0]['Type'] = [
-        1, //bouche
+        1, // bouche
     ];
     $requis[1][0]['Niveau'] = [
         2,
     ];
 
-    //Baiser
+    // Baiser
     $requis[1][1]['Classe'] = [
-        0, //Organes
+        0, // Organes
     ];
     $requis[1][1]['Type'] = [
-        1, //bouche
+        1, // bouche
     ];
     $requis[1][1]['Niveau'] = [
         6,
     ];
 
-    //Baiser langoureux
+    // Baiser langoureux
     $requis[1][2]['Classe'] = [
-        0, //Organes
-        0, //Organes
+        0, // Organes
+        0, // Organes
     ];
     $requis[1][2]['Type'] = [
-        1, //bouche
-        2, //Langue
+        1, // bouche
+        2, // Langue
     ];
     $requis[1][2]['Niveau'] = [
         10,
         5,
     ];
 
-    //*********************************************
-    //Nom !!
+    // *********************************************
+    // Nom !!
     $requis[2]['nomClasse'] = 'Techniques';
     $requis[2]['nom'] = [
         'Apn&eacute;e',
@@ -138,44 +138,44 @@ Lorsque tu annules une cr&eacute;ation, tu ne r&eacute;cup&eacute;res que la  mo
         'Manger de la soupe',
     ];
 
-    //Apnée
+    // Apnée
     $requis[2][0]['Classe'] = [
-        0, //Organes
-        0, //Organes
+        0, // Organes
+        0, // Organes
     ];
     $requis[2][0]['Type'] = [
-        0, //Coeur
-        1, //Bouche
+        0, // Coeur
+        1, // Bouche
     ];
     $requis[2][0]['Niveau'] = [
         3,
         2,
     ];
 
-    //Surprise
+    // Surprise
     $requis[2][1]['Classe'] = [
-        0, //Organes
-        0, //Organes
+        0, // Organes
+        0, // Organes
     ];
     $requis[2][1]['Type'] = [
-        0, //Coeur
-        1, //Bouche
+        0, // Coeur
+        1, // Bouche
     ];
     $requis[2][1]['Niveau'] = [
         5,
         4,
     ];
 
-    //Crachat
+    // Crachat
     $requis[2][2]['Classe'] = [
-        0, //Organes
-        2, //Technique
-        2, //Technique
+        0, // Organes
+        2, // Technique
+        2, // Technique
     ];
     $requis[2][2]['Type'] = [
-        2, //Langue
-        0, //Apnée
-        1, //Surprise
+        2, // Langue
+        0, // Apnée
+        1, // Surprise
     ];
     $requis[2][2]['Niveau'] = [
         3,
@@ -183,27 +183,27 @@ Lorsque tu annules une cr&eacute;ation, tu ne r&eacute;cup&eacute;res que la  mo
         3,
     ];
 
-    //Saut
+    // Saut
     $requis[2][3]['Classe'] = [
-        0, //Organes
+        0, // Organes
     ];
     $requis[2][3]['Type'] = [
-        4, //Jambes
+        4, // Jambes
     ];
     $requis[2][3]['Niveau'] = [
         2,
     ];
 
-    //Soupe
+    // Soupe
     $requis[2][4]['Classe'] = [
-        0, //Organes
-        0, //Organes
-        0, //Organes
+        0, // Organes
+        0, // Organes
+        0, // Organes
     ];
     $requis[2][4]['Type'] = [
-        0, //Coeur
-        1, //Bouche
-        2, //Langue
+        0, // Coeur
+        1, // Bouche
+        2, // Langue
     ];
     $requis[2][4]['Niveau'] = [
         15,
@@ -211,27 +211,27 @@ Lorsque tu annules une cr&eacute;ation, tu ne r&eacute;cup&eacute;res que la  mo
         4,
     ];
 
-    for ($c = 0;$c < 3;$c++) {
+    for ($c = 0; $c < 3; ++$c) {
         echo '<table width="80%">
 	<tr>
-		<th width="50%">' . $requis[$c]['nomClasse'] . '</th>
+		<th width="50%">'.$requis[$c]['nomClasse'].'</th>
 		<th >Requis</th>
 	</tr>';
         foreach ($requis[$c]['nom'] as $i => $Nom) {
             $nbCond = count($requis[$c][$i]['Niveau']);
-            if ($nbCond == 0) {
+            if (0 == $nbCond) {
                 echo '<tr>
-					<td>' . $Nom . '</td>
+					<td>'.$Nom.'</td>
 					<td><strong>Pas de conditions</strong></td>';
             } else {
-                if ($nbCond == 1) {
+                if (1 == $nbCond) {
                     echo '<tr>
-						<td>' . $Nom . '</td>';
+						<td>'.$Nom.'</td>';
                 } else {
                     echo '<tr>
-				<td rowspan="' . $nbCond . '" >' . $Nom . '</td>';
+				<td rowspan="'.$nbCond.'" >'.$Nom.'</td>';
                 }
-                //Affichage des conditions
+                // Affichage des conditions
                 foreach ($requis[$c][$i]['Classe'] as $cond => $classe) {
                     if ($cond > 1) {
                         echo '<tr>';
@@ -244,9 +244,9 @@ Lorsque tu annules une cr&eacute;ation, tu ne r&eacute;cup&eacute;res que la  mo
                         $reqTexte = 'Tu as un niveau suffisant';
                     }
                     echo '<td>
-					<a class="bulle" style="cursor: default;color:' . $color . ';" onclick="return false;" href=""><strong>
-						' . $requis[$classe]['nom'][$requis[$c][$i]['Type'][$cond]] . ' niveau ' . $requis[$c][$i]['Niveau'][$cond] . '
-						</strong><span style="color:' . $color . ';">' . $reqTexte . '</span></a>
+					<a class="bulle" style="cursor: default;color:'.$color.';" onclick="return false;" href=""><strong>
+						'.$requis[$classe]['nom'][$requis[$c][$i]['Type'][$cond]].' niveau '.$requis[$c][$i]['Niveau'][$cond].'
+						</strong><span style="color:'.$color.';">'.$reqTexte.'</span></a>
 					</td>
 				</tr>';
                 }
@@ -255,7 +255,7 @@ Lorsque tu annules une cr&eacute;ation, tu ne r&eacute;cup&eacute;res que la  mo
         echo '</table>
 <br />';
     }
-}//logué
+}// logué
 else {
     echo 'Erreur... et vouaip !! :D';
 }

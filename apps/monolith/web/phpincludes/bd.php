@@ -1,6 +1,6 @@
 <?php
 
-include __DIR__ . '/../config/parameters.php';
+include __DIR__.'/../config/parameters.php';
 
 function bd_connect()
 {

@@ -1,6 +1,6 @@
 <?php
 
-if ($_SESSION['logged'] == true) {
+if (true == $_SESSION['logged']) {
     ?>
 
 <h1>Changer de mot de passe</h1>
@@ -11,8 +11,8 @@ Il est désormais possible de changer de mot de passe, si l'ancien ne vous convi
             if (isset($_POST['oldpass']) && isset($_POST['newpass']) && isset($_POST['newpass2']) && !empty($_POST['oldpass']) && !empty($_POST['newpass']) && !empty($_POST['newpass2'])) {
                 $oldmdp = $_POST['oldpass'];
                 $oldmdp = md5($oldmdp);
-                //Sélection des informations.
-                $sql_info = mysql_query("SELECT mdp FROM membres WHERE id='" . $id . "'");
+                // Sélection des informations.
+                $sql_info = mysql_query("SELECT mdp FROM membres WHERE id='".$id."'");
                 $donnees_info = mysql_fetch_array($sql_info);
                 $oldmdp2 = $donnees_info['mdp'];
                 if ($oldmdp2 == $oldmdp) {
@@ -20,10 +20,10 @@ Il est désormais possible de changer de mot de passe, si l'ancien ne vous convi
                     $newpass2 = $_POST['newpass2'];
                     if ($newpass == $newpass2) {
                         if (preg_match("!^\w+$!", $newpass)) {
-                            $newpass = htmlentities(addslashes($_POST['newpass']));//Normalement inutile.
+                            $newpass = htmlentities(addslashes($_POST['newpass'])); // Normalement inutile.
                             $taille = strlen(trim($newpass));
                             if ($taille >= 5 && $taille <= 15) {
-                                //On change le mot de passe.
+                                // On change le mot de passe.
                                 ChangerMotPasse($id, $newpass);
                                 $resultat = 'Le mot de passe a été changé.<br /><br />
 							Il vous sera demandé lors de votre prochaine visite sur BisouLand.';
@@ -45,7 +45,7 @@ Il est désormais possible de changer de mot de passe, si l'ancien ne vous convi
         }
 
     if (isset($resultat)) {
-        echo $resultat . '<br />';
+        echo $resultat.'<br />';
     }
     ?>
 <br />

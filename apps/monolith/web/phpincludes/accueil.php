@@ -1,5 +1,5 @@
 <?php
-if ($_SESSION['logged'] == true && $pseudo == 'admin') {
+if (true == $_SESSION['logged'] && 'admin' == $pseudo) {
     echo '<div class="cache" ><a href="news/liste_news.php">Admin</a></div>';
 }
 ?>
@@ -20,35 +20,31 @@ if ($_SESSION['logged'] == true && $pseudo == 'admin') {
 
 <?php
 
-
-
     function bb2html($text)
     {
-        $bbcode = ["<", ">",
-            "[list]", "[*]","[/*]", "[/list]",
-            "[img]", "[/img]",
-            "[b]", "[/b]",
-            "[u]", "[/u]",
-            "[i]", "[/i]",
-            '[url="', "[/url]",
+        $bbcode = ['<', '>',
+            '[list]', '[*]', '[/*]', '[/list]',
+            '[img]', '[/img]',
+            '[b]', '[/b]',
+            '[u]', '[/u]',
+            '[i]', '[/i]',
+            '[url="', '[/url]',
         ];
-        $htmlcode = ["&lt;", "&gt;",
-            "<ul>", "<li>","</li>", "</ul>",
-            "<img src=\"", "\">",
-            "<strong>", "</strong>",
-            "<u>", "</u>",
-            "<em>", "</em>",
-            '<a href="', "</a>",
+        $htmlcode = ['&lt;', '&gt;',
+            '<ul>', '<li>', '</li>', '</ul>',
+            '<img src="', '">',
+            '<strong>', '</strong>',
+            '<u>', '</u>',
+            '<em>', '</em>',
+            '<a href="', '</a>',
         ];
 
         $text = htmlentities(stripslashes($text));
-
 
         $text = str_replace($bbcode, $htmlcode, $text);
 
         $text = preg_replace('!\[color=(red|green|blue|yellow|purple|olive|white|black)\](.+)\[/color\]!isU', '<span style="color:$1">$2</span>', $text);
         $text = preg_replace('!\[size=(xx-small|x-small|small|medium|large|x-large|xx-large)\](.+)\[/size\]!isU', '<span style="font-size:$1">$2</span>', $text);
-
 
         $text = preg_replace('![^\"]http://[a-z0-9._/?&=-]+!i', '<a href="$0">$0</a>', $text);
 
@@ -66,11 +62,11 @@ while ($donnees = mysql_fetch_array($retour)) {
 
 <div class="news">
     <h3>
-        <?php echo stripslashes($donnees['titre']);?>
+        <?php echo stripslashes($donnees['titre']); ?>
 	</h3>
 	<em>
         le <?php echo date('d/m/Y à H\hi', $donnees['timestamp']); ?></em>
-		<?php if ($donnees['timestamp_modification'] != 0) { ?>
+		<?php if (0 != $donnees['timestamp_modification']) { ?>
 		<br />
 		<em>modifi&eacute;e le <?php echo date('d/m/Y à H\hi', $donnees['timestamp_modification']); ?></em>
 		<?php }?>

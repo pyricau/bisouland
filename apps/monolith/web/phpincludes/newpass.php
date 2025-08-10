@@ -1,7 +1,6 @@
 <?php
 
-if ($_SESSION['logged'] == false) {
-
+if (false == $_SESSION['logged']) {
     $affich = false;
 
     if (isset($_GET['Cid'], $_GET['Ccle']) && !empty($_GET['Cid']) && !empty($_GET['Ccle'])) {
@@ -11,23 +10,20 @@ if ($_SESSION['logged'] == false) {
         $cle = $Ccle - $Cid;
         $sql = mysql_query("SELECT newpass FROM membres WHERE id=$Cid");
         if ($donnees = mysql_fetch_assoc($sql)) {
-            if ($donnees['newpass'] == $cle && $donnees['newpass'] != 0) {
+            if ($donnees['newpass'] == $cle && 0 != $donnees['newpass']) {
                 $affich = true;
                 $resultat = '';
             }
         }
-
     } elseif (isset($_POST['newpswd'])) {
         $resultat = 'Tu n\'as rien a faire ici :D';
         if (isset($_POST['Cid'],$_POST['Ccle']) && !empty($_POST['Cid']) && !empty($_POST['Ccle'])) {
-
             $Cid = htmlentities(addslashes($_POST['Cid']));
             $Ccle = htmlentities(addslashes($_POST['Ccle']));
             $cle = $Ccle - $Cid;
             $sql = mysql_query("SELECT newpass FROM membres WHERE id=$Cid");
             if ($donnees = mysql_fetch_assoc($sql)) {
-                if ($donnees['newpass'] == $cle && $donnees['newpass'] != 0) {
-
+                if ($donnees['newpass'] == $cle && 0 != $donnees['newpass']) {
                     $affich = true;
 
                     if (isset($_POST['newpass'],$_POST['newpass2']) && !empty($_POST['newpass']) && !empty($_POST['newpass2'])) {
@@ -35,10 +31,10 @@ if ($_SESSION['logged'] == false) {
                         $newpass2 = $_POST['newpass2'];
                         if ($newpass == $newpass2) {
                             if (preg_match("!^\w+$!", $newpass)) {
-                                $newpass = htmlentities(addslashes($_POST['newpass']));//Normalement inutile.
+                                $newpass = htmlentities(addslashes($_POST['newpass'])); // Normalement inutile.
                                 $taille = strlen(trim($newpass));
                                 if ($taille >= 5 && $taille <= 15) {
-                                    //On change le mot de passe.
+                                    // On change le mot de passe.
                                     ChangerMotPasse($Cid, $newpass);
                                     mysql_query("UPDATE membres SET newpass=0 WHERE id=$Cid");
                                     $resultat = 'Le mot de passe a été changé.<br /><br />
@@ -61,7 +57,7 @@ if ($_SESSION['logged'] == false) {
         }
     }
 
-    if ($affich == true) {
+    if (true == $affich) {
         ?>
 <h1>Changer de mot de passe</h1>
 
@@ -69,7 +65,7 @@ if ($_SESSION['logged'] == false) {
 
 <?php
             if (isset($resultat)) {
-                echo $resultat . '<br />';
+                echo $resultat.'<br />';
             }
         ?>
 <br />
@@ -80,8 +76,8 @@ if ($_SESSION['logged'] == false) {
 </label><br />
 <label>Réécris le nouveau mot de passe: <br />
 	<input type="password" name="newpass2" tabindex="60" size="15" maxlength="15" value=""/>
-	<input type="hidden" name="Cid" value="<?php echo $Cid;?>"/>
-	<input type="hidden" name="Ccle" value="<?php echo $Ccle;?>"/>
+	<input type="hidden" name="Cid" value="<?php echo $Cid; ?>"/>
+	<input type="hidden" name="Ccle" value="<?php echo $Ccle; ?>"/>
 </label><br />
 
 <input type="submit" name="newpswd" value="Changer le mot de passe" />
@@ -89,9 +85,8 @@ if ($_SESSION['logged'] == false) {
 
 <?php
     } else {
-        echo $resultat . '<br />';
+        echo $resultat.'<br />';
     }
-
 } else {
     echo 'T\'es dja connect&eacute; !!';
 }

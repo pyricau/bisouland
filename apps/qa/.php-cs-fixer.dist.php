@@ -13,25 +13,37 @@ $finder = (new PhpCsFixer\Finder())
 
 return (new PhpCsFixer\Config())
     ->setRules([
-        '@PER-CS2.0' => true,
+        // —— CS Rule Sets —————————————————————————————————————————————————————
+        '@Symfony' => true,
+        '@Symfony:risky' => true,
         '@PER-CS2.0:risky' => true,
+
+        // —— Overriden rules ——————————————————————————————————————————————————
+
+        // [Symfony] `snake_case` (phpspec style) instead of `camelCase`
+        'php_unit_method_casing' => ['case' => 'snake_case'],
 
         // [PSR-2] Disabled as the fixes break the following files:
         // 1) ../monolith/web/phpincludes/bisous.php
         // 2) ../monolith/web/phpincludes/cerveau.php
         'statement_indentation' => false,
 
-        // [PER-CS2.0]
+        // [PER-CS2.0] Partially disabled due to PHP version constraints.
         'trailing_comma_in_multiline' => [
             'after_heredoc' => true,
             'elements' => [
-                // 'arguments', disabled as this is only supported from PHP 7.3+
-                // 'array_destructuring', disabled as this is only supported from PHP 7.1+
+                // 'arguments', For PHP 7.3+
+                // 'array_destructuring', For PHP 7.1+
                 'arrays',
-                // 'match', disabled as this is only supported from PHP 8.0+
-                // 'parameters', disabled as this is only supported from PHP 8.0+
+                // 'match', For PHP 8.0+
+                // 'parameters', For PHP 8.0+
             ],
         ],
+
+        // [Symfony] Disabled as the fixes break the following files:
+        // 1) ../monolith/web/phpincludes/cerveau.php
+        // 2) ../monolith/web/phpincludes/bisous.php
+        'statement_indentation' => false,
     ])
     ->setRiskyAllowed(true)
     ->setParallelConfig(ParallelConfigFactory::detect())

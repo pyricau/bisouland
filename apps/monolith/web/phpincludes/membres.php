@@ -4,15 +4,15 @@ $sql = mysql_query("SELECT COUNT(*) AS nb_pseudo FROM membres WHERE confirmation
 
 $total = mysql_result($sql, 0, 'nb_pseudo');
 
-echo 'Nombre de membres : ' . $total . '<br /><br />';
+echo 'Nombre de membres : '.$total.'<br /><br />';
 
 $nombreParPage = 15;
 
 // On calcule le nombre de pages à créer
-$nombreDePages  = ceil($total / $nombreParPage);
+$nombreDePages = ceil($total / $nombreParPage);
 
 if (isset($_GET['num'])) {
-    $num = intval($_GET['num']);
+    $num = (int) $_GET['num'];
     if ($num > $nombreDePages) {
         $num = $nombreDePages;
     } elseif ($num < 1) {
@@ -25,22 +25,21 @@ if (isset($_GET['num'])) {
 // On calcule le numéro du premier message qu'on prend pour le LIMIT de MySQL
 $premier = ($num - 1) * $nombreParPage;
 
-
-$retour = mysql_query('SELECT id, pseudo, nuage, lastconnect FROM membres WHERE confirmation=1 ORDER BY id DESC LIMIT ' . $premier . ', ' . $nombreParPage);
+$retour = mysql_query('SELECT id, pseudo, nuage, lastconnect FROM membres WHERE confirmation=1 ORDER BY id DESC LIMIT '.$premier.', '.$nombreParPage);
 
 if ($nombreDePages > 1) {
-    echo "<center>Page :";
-    for ($i = 1 ; $i <= $nombreDePages ; $i++) {
+    echo '<center>Page :';
+    for ($i = 1; $i <= $nombreDePages; ++$i) {
         if ($i != $num) {
-            echo '<a href="membres.' . $i . '.html">' . $i . '</a> ';
+            echo '<a href="membres.'.$i.'.html">'.$i.'</a> ';
         } else {
-            echo ' ' . $i . ' ';
+            echo ' '.$i.' ';
         }
     }
     echo '</center><br />';
 }
 
-if ($_SESSION['logged'] == true) {
+if (true == $_SESSION['logged']) {
     while ($donnees = mysql_fetch_assoc($retour)) {
         $donnees['pseudo'] = stripslashes($donnees['pseudo']);
         if ($donnees['lastconnect'] > time() - 300) {
@@ -50,7 +49,7 @@ if ($_SESSION['logged'] == true) {
         }
         if ($donnees['id'] != $id) {
             echo '<a class="bulle" href="',$donnees['pseudo'],'.envoi.html" >
-			<img src="images/mess.png" title="" alt="" /><span>Envoyer un message à ' . $donnees['pseudo'] . '</span></a> ';
+			<img src="images/mess.png" title="" alt="" /><span>Envoyer un message à '.$donnees['pseudo'].'</span></a> ';
         }
         echo '<a class="bulle" href="',$donnees['nuage'],'.nuage.html" >
 		<img src="images/nuage.png" title="" alt="" /><span>Nuage : ',$donnees['nuage'],'</span></a>
@@ -65,7 +64,7 @@ if ($_SESSION['logged'] == true) {
         } else {
             echo '<a class="bulle" style="cursor: default;" onclick="return false;" href=""><img src="images/off.png" alt="Non connect&eacute;" title="" /><span>',$donnees['pseudo'],' n\'est pas connect&eacute;</span></a> ';
         }
-        echo '<strong>' . $donnees['pseudo'] . '</strong><br />';
+        echo '<strong>'.$donnees['pseudo'].'</strong><br />';
     }
 }
 ?>

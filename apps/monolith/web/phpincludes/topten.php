@@ -1,11 +1,11 @@
-<?php $nbTop = 20;?>
-<h1>Top <?php echo $nbTop;?></h1>
-<h2>Liste des <?php echo $nbTop;?> meilleurs joueurs de BisouLand</h2>
+<?php $nbTop = 20; ?>
+<h1>Top <?php echo $nbTop; ?></h1>
+<h2>Liste des <?php echo $nbTop; ?> meilleurs joueurs de BisouLand</h2>
 <center><table width="80%">
    <tr>
 		<th width="10%">Position</th>
 <?php
-if ($_SESSION['logged'] == true) {
+if (true == $_SESSION['logged']) {
     echo '
 		<th width="5%"><a class="bulle" style="cursor: default;" onclick="return false;" href=""><img src="images/onoff.png" alt="Statut" title="" /><span>Statut de connexion du joueur</span></a></th>
 		<th width="45%">Nom</th>
@@ -22,20 +22,19 @@ if ($_SESSION['logged'] == true) {
 ?>
    </tr>
 <?php
-//Si on est loggué (et qu'on peut attaquer, on calcule notre position
-if ($_SESSION['logged'] == true && ($nbE[1][0] + $nbE[1][1] + $nbE[1][2]) > 0) {
+// Si on est loggué (et qu'on peut attaquer, on calcule notre position
+if (true == $_SESSION['logged'] && ($nbE[1][0] + $nbE[1][1] + $nbE[1][2]) > 0) {
     $nuageSource = $_SESSION['nuage'];
-    $sql_info2 = mysql_query("SELECT position FROM membres WHERE id='" . $id . "'");
+    $sql_info2 = mysql_query("SELECT position FROM membres WHERE id='".$id."'");
     $donnees_info2 = mysql_fetch_assoc($sql_info2);
     $positionSource = $donnees_info2['position'];
 }
 
 $sql_info = mysql_query("SELECT id, pseudo, nuage, position, score, lastconnect FROM membres ORDER BY score DESC LIMIT 0,$nbTop");
 $donnees_info = mysql_fetch_assoc($sql_info);
-for ($i = 1;$i <= $nbTop;$i++) {
-
+for ($i = 1; $i <= $nbTop; ++$i) {
     echo '<tr>
-				<td>' . $i . '</td>
+				<td>'.$i.'</td>
 				<td>';
 
     if ($donnees_info['lastconnect'] > time() - 300) {
@@ -44,19 +43,19 @@ for ($i = 1;$i <= $nbTop;$i++) {
         echo ' <a class="bulle" style="cursor: default;" onclick="return false;" href=""><img src="images/off.png" alt="Non connect&eacute;" title="" /><span>',$donnees_info['pseudo'],' n\'est pas connect&eacute;</span></a>';
     }
 
-    echo   '</td>
+    echo '</td>
 				<td>';
 
-    echo 	$donnees_info['pseudo'] . '</td>
-				<td>' . (formaterNombre(floor($donnees_info['score'] / 1000.))) . '</td>
+    echo $donnees_info['pseudo'].'</td>
+				<td>'.formaterNombre(floor($donnees_info['score'] / 1000.)).'</td>
 				';
 
-    if ($_SESSION['logged'] == true) {
+    if (true == $_SESSION['logged']) {
         echo '<td>';
         if ($donnees_info['id'] != $id) {
-            //Envoyer un message.
+            // Envoyer un message.
             echo '<a class="bulle" href="',$donnees_info['pseudo'],'.envoi.html">
-				<img src="images/mess.png" title="" alt="" /><span>Envoyer un message à ' . $donnees_info['pseudo'] . '</span></a> ';
+				<img src="images/mess.png" title="" alt="" /><span>Envoyer un message à '.$donnees_info['pseudo'].'</span></a> ';
         }
         echo '<a class="bulle" href="',$donnees_info['nuage'],'.nuage.html" >
 			<img src="images/nuage.png" title="" alt="" /><span>Nuage : ',$donnees_info['nuage'],'</span></a></td>';

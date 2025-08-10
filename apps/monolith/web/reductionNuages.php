@@ -1,8 +1,8 @@
 <?php
 
-//Script de réduction du nombre de nuages.
+// Script de réduction du nombre de nuages.
 
-//Décommenter la ligne ci dessous pour désactiver le script
+// Décommenter la ligne ci dessous pour désactiver le script
 /*
 
 include 'phpincludes/fctIndex.php';

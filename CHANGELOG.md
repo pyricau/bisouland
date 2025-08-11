@@ -4,7 +4,8 @@ This file logs the changes between versions.
 
 ## 4.0: Second v1 Rollback
 
-* `4.0.8`: created monoith Smoke Tests (for public pages)
+* `4.0.9`: created qa Static Analysis (monolith planed for future scope)
+* `4.0.8`: created monolith Smoke Tests (for public pages)
 * `4.0.7`: created apps/qa, set PHP CS Fixer rules
 * `4.0.6`: moved OG app to apps/monolith
 * `4.0.5`: Trust and Safety - removed chat

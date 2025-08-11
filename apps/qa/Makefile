@@ -10,6 +10,7 @@ QA_SERVICE = app
 # Executables
 COMPOSER = docker compose exec $(QA_SERVICE) composer
 PHP_CS_FIXER = docker compose exec $(QA_SERVICE) php vendor/bin/php-cs-fixer
+PHPSTAN = docker compose exec $(QA_SERVICE) php vendor/bin/phpstan
 PHPUNIT = docker compose exec $(QA_SERVICE) php vendor/bin/phpunit
 
 # Misc
@@ -45,15 +46,19 @@ bash: ## Connect to the container via bash so up and down arrows go to previous 
 composer: ## Runs Composer (arg, eg `arg='install --optimize-autoloader'`)
 	@$(COMPOSER) $(arg)
 
-cs-check: ## Checks CS with PHP-CS-Fixer (arg, eg `arg='./src'`)
+cs-check: ## Checks CS with PHP-CS-Fixer (arg, eg `arg='../monolith/web'`)
 	@$(PHP_CS_FIXER) check --verbose $(arg)
+
+static-analysis: ## Static Analysis with phpstan (arg, eg `arg='../monolith/web'`)
+	@$(PHPSTAN) analyze $(arg)
 
 test: ## Runs the tests with PHPUnit (arg, eg `arg='./tests/Smoke'`)
 	@$(PHPUNIT) $(arg)
 
 qa: ## Equivalent to cs-check
 	@$(MAKE) cs-check
+	@$(MAKE) static-analysis
 	@$(MAKE) test
 
-cs-fix: ## Fixes CS with PHP-CS-Fixer (arg, eg `arg='./src'`)
+cs-fix: ## Fixes CS with PHP-CS-Fixer (arg, eg `arg='../monolith/web'`)
 	@$(PHP_CS_FIXER) fix --verbose $(arg)

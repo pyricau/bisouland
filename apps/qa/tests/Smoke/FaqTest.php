@@ -12,14 +12,14 @@ use PHPUnit\Framework\TestCase;
 
 #[CoversNothing]
 #[Large]
-final class HomepageTest extends TestCase
+final class FaqTest extends TestCase
 {
-    #[TestDox('it loads homepage page (`/`)')]
-    public function test_it_loads_homepage(): void
+    #[TestDox('it loads faq page (`/faq.html`)')]
+    public function test_it_loads_faq_page(): void
     {
         $httpClient = TestKernelSingleton::get()->httpClient();
 
-        $response = $httpClient->request('GET', '/');
+        $response = $httpClient->request('GET', '/faq.html');
 
         $this->assertSame(200, $response->getStatusCode(), (string) $response->getContent());
     }

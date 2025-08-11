@@ -13,7 +13,8 @@
     },
     "require-dev": {
         "friendsofphp/php-cs-fixer": "^3.85.1",
-        "phpunit/phpunit": "^12.3.3"
+        "phpunit/phpunit": "^12.3.3",
+        "symfony/http-client": "^7.3"
     },
     "config": {
         "bump-after-update": true,

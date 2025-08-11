@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Bl\Qa\Tests\Smoke\Infrastructure;
+namespace Bl\Qa\Tests\Infrastructure;
 
 use Symfony\Component\HttpClient\HttpClient;
 use Symfony\Contracts\HttpClient\HttpClientInterface;

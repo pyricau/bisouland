@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Bl\Qa\Tests\Smoke;
 
-use Bl\Qa\Tests\Smoke\Infrastructure\TestKernelSingleton;
+use Bl\Qa\Tests\Infrastructure\TestKernelSingleton;
 use PHPUnit\Framework\Attributes\CoversNothing;
 use PHPUnit\Framework\Attributes\Large;
 use PHPUnit\Framework\Attributes\TestDox;

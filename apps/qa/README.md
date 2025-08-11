@@ -26,11 +26,14 @@ make bash
 ## Install dependencies
 make composer arg='install --optimize-autoloader'
 
-## Run php-cs-fixer (check)
+## Run php-cs-fixer (check), phpstan and phpunit
 make qa
 
 ## To just run php-cs-fixer check
 make cs-check
+
+## To just run phpstan
+make static-analysis
 
 ## To just run phpunit
 make test

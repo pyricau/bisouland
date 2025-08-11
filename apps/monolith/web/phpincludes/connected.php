@@ -1,37 +1,32 @@
 <?php
-//Ce qu'on affiche si on est connecte
-if ($_SESSION['logged'] == true)
-{
+// Ce qu'on affiche si on est connecte
+if (true == $_SESSION['logged']) {
+    $sql_info = mysql_query("SELECT espion FROM membres WHERE id='".$id."'");
+    $donnees_info = mysql_fetch_assoc($sql_info);
+    $espion = $donnees_info['espion'];
 
-	$sql_info = mysql_query("SELECT espion FROM membres WHERE id='".$id."'");
-	$donnees_info = mysql_fetch_assoc($sql_info);
-	$espion=$donnees_info['espion'];
-	
-	if (isset($_POST['infos']))
-	{
-		if (isset($_POST['espion']))
-		{
-			$esp=1;
-		}
-		else
-		{
-			$esp=0;
-		}
-		if ($espion!=$esp)
-		{
-			$espion=$esp;
-			mysql_query('UPDATE membres SET espion=' . $espion . " WHERE id=".$id."");
-		}
-	}
+    if (isset($_POST['infos'])) {
+        if (isset($_POST['espion'])) {
+            $esp = 1;
+        } else {
+            $esp = 0;
+        }
+        if ($espion != $esp) {
+            $espion = $esp;
+            mysql_query('UPDATE membres SET espion='.$espion.' WHERE id='.$id.'');
+        }
+    }
 
-?>
+    ?>
 <br />
 <form method="post" action="connected.html">
 
 	<label>
-		<input type="checkbox" <?php if ($espion==1){echo 'checked="checked"';} ?> name="espion" />
+		<input type="checkbox" <?php if (1 == $espion) {
+            echo 'checked="checked"';
+        } ?> name="espion" />
 		Je souhaite enregistrer dans des messages les informations que j'obtiens sur des joueurs.
-	</label><br />		
+	</label><br />
 	<input type="submit" name="infos" value="Envoyer" />
 </form>
 <br />
@@ -43,12 +38,9 @@ Si tu en as ras le bol des bisous, tu peux supprimer ton compte !!<br />
 	<input type="hidden" name="suppr">
 </form>
 <?php
+} else {
+    echo 'Erreur : Vous vous croyez ou la ??';
+    echo '<br />Veuillez vous connecter.';
 }
-else
-{
-	echo 'Erreur : Vous vous croyez ou la ??';
-	echo '<br />Veuillez vous connecter.';
-}
-
 
 ?>

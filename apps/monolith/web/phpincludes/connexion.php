@@ -1,15 +1,12 @@
 <h1>Connexion</h1>
 <?php
-if ($_SESSION['logged'] == false)
-{
+if (false == $_SESSION['logged']) {
+    if (isset($_SESSION['errCon'])) {
+        echo '<br />',$_SESSION['errCon'],'<br /><br />';
+        unset($_SESSION['errCon']);
+    }
 
-if (isset($_SESSION['errCon']))
-{
-	echo '<br />',$_SESSION['errCon'],'<br /><br />';
-	unset($_SESSION['errCon']);
-}
-
-?>
+    ?>
 
 <form method="post" class="formul" action="redirect.php">
 	<label>Pseudo :<br /><span class="petit">(Entre 4 et 15 caractères)</span><br /><input type="text" name="pseudo" tabindex="10" size="15" maxlength="15" value=""/></label><br />
@@ -20,9 +17,7 @@ if (isset($_SESSION['errCon']))
 </form>
 
 <?php
-}
-else
-{
-	echo 'T\'es dja connected !!';
+} else {
+    echo 'T\'es dja connected !!';
 }
 ?>

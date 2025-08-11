@@ -27,6 +27,8 @@ The `apps` folder contains the different applications:
 
 * [Monolith](./apps/monolith/README.md):
   the main (original) SkySwoon / Bisouland application
+* [QA](./apps/qa/README.md):
+  tools to keep SkySwoon on its toes
 
 ## Further documentation
 

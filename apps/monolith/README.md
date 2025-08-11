@@ -31,6 +31,9 @@ make bash
 # 🐘 Project related rules
 ## Drops, Create and Imports database & schema
 make db-rest
+
+# Discover everything you can do
+make
 ```
 
 The website will then be available at: http://localhost:8080

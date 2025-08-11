@@ -2,21 +2,7 @@
 /web/news/.htaccess
 /web/news/.htpasswd
 
-# composer
-/vendor
-
 # environment variables
 /.env.local
 /.env.local.php
 /.env.*.local
-
-# friendsofphp/php-cs-fixer
-/.php-cs-fixer.php
-/.php-cs-fixer.cache
-
-# phpunit
-/phpunit.xml
-/.phpunit.cache/
-
-# phpstan
-phpstan.neon

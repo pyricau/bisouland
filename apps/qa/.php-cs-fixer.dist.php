@@ -3,6 +3,7 @@
 use PhpCsFixer\Runner\Parallel\ParallelConfigFactory;
 
 $finder = (new PhpCsFixer\Finder())
+    ->in(__DIR__.'/tests')
     ->in(__DIR__.'/../monolith/web')
     ->exclude('ban')
     ->exclude('images')

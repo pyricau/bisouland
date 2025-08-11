@@ -32,6 +32,15 @@ make qa
 ## To just run php-cs-fixer check
 make cs-check
 
+## To just run phpunit
+make test
+
+### To display technical specifications:
+make test arg='--testdox'
+
+### To just run Smoke tests:
+make test arg='./tests/Smoke'
+
 # Run php-cs-fixer fix
 make cs-fix
 

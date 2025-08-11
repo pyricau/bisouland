@@ -10,6 +10,7 @@ QA_SERVICE = app
 # Executables
 COMPOSER = docker compose exec $(QA_SERVICE) composer
 PHP_CS_FIXER = docker compose exec $(QA_SERVICE) php vendor/bin/php-cs-fixer
+PHPUNIT = docker compose exec $(QA_SERVICE) php vendor/bin/phpunit
 
 # Misc
 .DEFAULT_GOAL = help
@@ -47,8 +48,12 @@ composer: ## Runs Composer (arg, eg `arg='install --optimize-autoloader'`)
 cs-check: ## Checks CS with PHP-CS-Fixer (arg, eg `arg='./src'`)
 	@$(PHP_CS_FIXER) check --verbose $(arg)
 
+test: ## Runs the tests with PHPUnit (arg, eg `arg='./tests/Smoke'`)
+	@$(PHPUNIT) $(arg)
+
 qa: ## Equivalent to cs-check
 	@$(MAKE) cs-check
+	@$(MAKE) test
 
 cs-fix: ## Fixes CS with PHP-CS-Fixer (arg, eg `arg='./src'`)
 	@$(PHP_CS_FIXER) fix --verbose $(arg)

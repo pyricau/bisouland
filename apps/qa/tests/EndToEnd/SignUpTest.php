@@ -19,12 +19,13 @@ final class SignUpTest extends TestCase
         $pdo = TestKernelSingleton::get()->pdo();
 
         $username = 'test_sign_up';
+        $password = 'password';
 
         $httpClient->request('POST', '/inscription.html', [
             'body' => [
                 'Ipseudo' => $username,
-                'Imdp' => 'password',
-                'Imdp2' => 'password',
+                'Imdp' => $password,
+                'Imdp2' => $password,
                 'inscription' => "S'inscrire",
             ],
         ]);

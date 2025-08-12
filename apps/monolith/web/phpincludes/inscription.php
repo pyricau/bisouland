@@ -35,7 +35,13 @@ if (false == $_SESSION['logged']) {
                                     // Hashage du mot de passe avec md5().
                                     $hmdp = md5($mdp);
 
-                                    mysql_query("INSERT INTO membres (id, pseudo, mdp, confirmation, lastconnect) VALUES ('', '".$pseudo."', '".$hmdp."', '1', ".time().')');
+                                    $result = mysql_query(
+                                        'INSERT INTO membres (pseudo, mdp, confirmation, timestamp, lastconnect)'
+                                        ."VALUES ('{$pseudo}', '{$hmdp}', '1', ".time().', '.time().')'
+                                    );
+                                    if (false === $result) {
+                                        echo 'Error: '.mysql_error();
+                                    }
 
                                     echo 'Ton inscription est confirmée ! Tu peux maintenant te connecter.<br />';
                                     $send = 1;

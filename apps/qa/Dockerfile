@@ -28,6 +28,8 @@ RUN apk add --update --no-cache \
         zip \
     && docker-php-ext-install \
         bcmath \
+        pdo \
+        pdo_mysql \
         zip
 
 # Copy Composer binary from composer image

@@ -15,7 +15,8 @@
         "friendsofphp/php-cs-fixer": "^3.85.1",
         "larastan/larastan": "^3.6",
         "phpunit/phpunit": "^12.3.3",
-        "symfony/http-client": "^7.3"
+        "symfony/dotenv": "^7.3.2",
+        "symfony/http-client": "^7.3.2"
     },
     "config": {
         "bump-after-update": true,

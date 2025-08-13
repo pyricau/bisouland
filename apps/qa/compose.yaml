@@ -9,3 +9,10 @@ services:
       - .:/apps/qa
       # Mount the monolith source code for analysis
       - ../monolith:/apps/monolith
+    networks:
+      - default
+      - skyswoon-monolith_default
+
+networks:
+  skyswoon-monolith_default:
+    external: true

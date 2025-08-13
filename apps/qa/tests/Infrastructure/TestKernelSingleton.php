@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Bl\Qa\Tests\Smoke\Infrastructure;
+namespace Bl\Qa\Tests\Infrastructure;
 
 final class TestKernelSingleton
 {

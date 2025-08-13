@@ -25,17 +25,6 @@ if (true == $_SESSION['logged']) {
 <p>Objet : <?php echo stripslashes($objet); ?></p>
 Message :<br />
 <div class="message"><?php echo bbLow($message); ?></div>
-<?php
-                if ('BisouLand' != $from) {
-                    ?>
-<form method="post" action="envoi.html">
-	<input type="submit" tabindex="30" value="Répondre" />
-	<input type="hidden" name="titre" value="<?php echo 'RE:'.stripslashes($objet); ?>" />
-	<input type="hidden" name="destinataire" value="<?php echo stripslashes($from); ?>" />
-</form>
-<?php
-                }
-            ?>
 <form method="post" action="boite.html">
 	<input type="submit" tabindex="30" value="Supprimer" />
 	<input type="hidden" name="supprimer" value="<?php echo $idmsg; ?>" />

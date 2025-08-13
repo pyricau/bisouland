@@ -118,8 +118,6 @@ if (true == $_SESSION['logged']) {
 	<center>
 		<h2>Vous avez <?php echo $nbmsg,'/20 message',pluriel($nbmsg); ?></h2>
 
-		<a href="envoi.html">Nouveau Message</a><br />
-		<br />
 		<table>
 			<tr>
 				<th style="width:5%;"><input type="checkbox" name="supboite[0]" title="Selectionner tous les messages" alt="Selectionner tous les messages" onclick="checkall()"/></th>

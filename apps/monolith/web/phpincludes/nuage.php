@@ -199,9 +199,7 @@ if ($scoreSource < 50) {
             if ($donnees_info['id'] == $id) {
                 echo '<td>';
             } else {
-                echo '<td>
-				<a class="bulle" href="',$donnees_info['pseudo'],'.envoi.html">
-				<img src="images/mess.png" title="" alt="" /><span>Envoyer un message à '.$donnees_info['pseudo'].'</span></a> ';
+                echo '<td>';
                 $distance = abs(16 * ($nuageL - $nuageSource) + $i - $positionSource);
                 // Si on a des bisous a disposition
                 if (($nbE[1][0] + $nbE[1][1] + $nbE[1][2]) > 0 && 0 == $Niveau) {

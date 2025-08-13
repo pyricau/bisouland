@@ -15,10 +15,6 @@ if (isset($_POST['recherche'])) {
                     $resultat .= '<a class="bulle" style="cursor: default;" onclick="return false;" href=""><img src="images/off.png" alt="Non connect&eacute;" title="" /><span>'.$pseudoCherche.' n\'est pas connect&eacute;</span></a> ';
                 }
                 if (true == $_SESSION['logged']) {
-                    if ($donnees['id'] != $id) {
-                        $resultat .= '<a class="bulle" href="'.$pseudoCherche.'.envoi.html" >
-						<img src="images/mess.png" title="" alt="" /><span>Envoyer un message a '.$pseudoCherche.'</span></a> ';
-                    }
                     $resultat .= '<a class="bulle" href="'.$donnees['nuage'].'.nuage.html" >
 					<img src="images/nuage.png" title="" alt="" /><span>Nuage : '.$donnees['nuage'].'</span></a> ';
                 }

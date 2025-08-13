@@ -47,10 +47,6 @@ if (true == $_SESSION['logged']) {
         } else {
             echo '<a class="bulle" style="cursor: default;" onclick="return false;" href=""><img src="images/off.png" alt="Non connect&eacute;" title="" /><span>',$donnees['pseudo'],' n\'est pas connect&eacute;</span></a> ';
         }
-        if ($donnees['id'] != $id) {
-            echo '<a class="bulle" href="',$donnees['pseudo'],'.envoi.html" >
-			<img src="images/mess.png" title="" alt="" /><span>Envoyer un message à '.$donnees['pseudo'].'</span></a> ';
-        }
         echo '<a class="bulle" href="',$donnees['nuage'],'.nuage.html" >
 		<img src="images/nuage.png" title="" alt="" /><span>Nuage : ',$donnees['nuage'],'</span></a>
 		<strong> ',$donnees['pseudo'],'</strong>

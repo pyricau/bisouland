@@ -52,11 +52,6 @@ for ($i = 1; $i <= $nbTop; ++$i) {
 
     if (true == $_SESSION['logged']) {
         echo '<td>';
-        if ($donnees_info['id'] != $id) {
-            // Envoyer un message.
-            echo '<a class="bulle" href="',$donnees_info['pseudo'],'.envoi.html">
-				<img src="images/mess.png" title="" alt="" /><span>Envoyer un message à '.$donnees_info['pseudo'].'</span></a> ';
-        }
         echo '<a class="bulle" href="',$donnees_info['nuage'],'.nuage.html" >
 			<img src="images/nuage.png" title="" alt="" /><span>Nuage : ',$donnees_info['nuage'],'</span></a></td>';
     }

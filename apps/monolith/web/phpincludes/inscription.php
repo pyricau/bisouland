@@ -23,7 +23,11 @@ if (false == $_SESSION['logged']) {
                     $sql = mysql_query("SELECT COUNT(*) AS nb_pseudo FROM membres WHERE pseudo='".$pseudo."'");
 
                     // Verifie si le pseudo n'est pas deje pris.
-                    if (0 == mysql_result($sql, 0, 'nb_pseudo') && 'BisouLand' != $pseudo) {
+                    if (
+                        0 == mysql_result($sql, 0, 'nb_pseudo')
+                        && 'BisouLand' != $pseudo
+                        && 0 !== strpos($pseudo, 'BisouTest')
+                    ) {
                         // Verifie que le pseudo est correct.
                         if (preg_match("!^\w+$!", $pseudo)) {
                             if (preg_match("!^\w+$!", $mdp)) {

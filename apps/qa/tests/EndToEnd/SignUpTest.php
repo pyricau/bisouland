@@ -93,6 +93,7 @@ final class SignUpTest extends TestCase
     {
         return [
             ['BisouLand', 'system account, for notifications'],
+            ['BisouTest_4423c', 'test accounts, anything starting with BisouTest'],
         ];
     }
 

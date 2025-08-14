@@ -9,23 +9,37 @@ use Symfony\Contracts\HttpClient\ResponseInterface;
 
 final readonly class Assert
 {
-    private const string NOT_LOGGED_IN = 'pas connecté !!';
+    private const array NOT_LOGGED_IN_MESSAGES = [
+        // Warning: side bar contains `Tu n'es pas connect&eacute;.`
+        'standard' => 'es pas connecté !!',
+        'variant 1 (inbox)' => 'es pas connect&eacute; !!',
+        'variant 2 (kisses, organs, techniques, account)' => 'Veuillez vous connecter.',
+        'variant 3 (reference)' => 'Erreur... et vouaip !! :D',
+    ];
 
     public static function blocksPageForLoggedOutVisitors(ResponseInterface $response): void
     {
         $content = (string) $response->getContent();
-        if (false === str_contains($content, self::NOT_LOGGED_IN)) {
-            PHPUnitAssert::fail('Failed asserting that Page is blocked for logged out visitors');
+
+        foreach (self::NOT_LOGGED_IN_MESSAGES as $message) {
+            if (str_contains($content, $message)) {
+                PHPUnitAssert::assertSame(200, $response->getStatusCode(), $content);
+
+                return;
+            }
         }
 
-        PHPUnitAssert::assertSame(200, $response->getStatusCode(), $content);
+        PHPUnitAssert::fail('Failed asserting that Page is blocked for logged out visitors');
     }
 
     public static function loadsPageForLoggedInPlayers(ResponseInterface $response): void
     {
         $content = (string) $response->getContent();
-        if (true === str_contains($content, self::NOT_LOGGED_IN)) {
-            PHPUnitAssert::fail('Failed asserting that Page loads for logged in players');
+
+        foreach (self::NOT_LOGGED_IN_MESSAGES as $message) {
+            if (str_contains($content, $message)) {
+                PHPUnitAssert::fail('Failed asserting that Page loads for logged in players');
+            }
         }
 
         PHPUnitAssert::assertSame(200, $response->getStatusCode(), $content);

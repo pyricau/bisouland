@@ -29,6 +29,10 @@
         </testsuite>
     </testsuites>
 
+    <extensions>
+        <bootstrap class="Bl\Qa\Tests\Infrastructure\Subscriber\TestCleanupExtension"/>
+    </extensions>
+
     <source ignoreIndirectDeprecations="true" restrictNotices="true" restrictWarnings="true">
         <include>
             <directory>../monolith/web</directory>

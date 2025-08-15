@@ -13,7 +13,6 @@ if (false == $_SESSION['logged']) {
 	<label>Mot de passe : <br /><span class="petit">(Entre 5 et 15 caractères)</span><br /><input type="password" name="mdp" tabindex="20" size="15" maxlength="15" value=""/></label><br />
     <label><input type="checkbox" checked="checked" name="auto" />Connexion automatique</label><br />
 	<input type="submit" name="connexion" value="Se connecter" /><br /><br />
-	<a href="perdu.html">J'ai perdu mon mot de passe</a>
 </form>
 
 <?php

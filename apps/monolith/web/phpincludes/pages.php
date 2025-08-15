@@ -1,13 +1,38 @@
 <?php
 
+/**
+ * # Other files
+ * ## config
+ * parameters.php // Config
+ * 
+ * ## news
+ * chemin.php // @todo check
+ * liste_news.php // @todo check
+ * rediger_news.php // @todo check
+ *
+ * ## phpincludes
+ * attaque.php // game logic @todo check
+ * bd.php // logic for database connection
+ * connexion.php // logic for login
+ * erreur404.php // not found error page
+ * evo.php // game logic @todo check
+ * fctIndex.php // functions @todo check
+ * pages.php // Router (this file)
+ *
+ * ## web
+ * deconnexion.php // logic for logout @todo check
+ * index.php // Front Controller / layout
+ * redirect.php // logic for connexion.php form submission
+ * reductionNuages.php // script for Clouds Removal @todo use on account removal
+ */
+
 // Gestion des pages
 $array_pages = [
     'accueil' => 'accueil.php', // Homepage
     'inscription' => 'inscription.php', // SignUp
-    'confirmation' => 'confirmation.php', // @todo remove
+    'confirmation' => 'confirmation.php', // @todo use
     'connected' => 'connected.php', // LoggedIn/Account
     'membres' => 'membres.php', // Players
-    'erreurConnexion' => 'erreurConnexion.php', // @todo remove
     'construction' => 'construction.php', // LoggedIn/Organs
     'bisous' => 'bisous.php', // LoggedIn/Kiss
     'livreor' => 'livreor.php', // Guestbook
@@ -25,8 +50,6 @@ $array_pages = [
     'stats' => 'stats.php', // Statistics
     'recherche' => 'recherche.php', // Search
     'connexion' => 'connexion.php', // LogIn
-    'perdu' => 'perdu.php', // @todo remove
-    'newpass' => 'newpass.php', // @todo remove
     'yeux' => 'yeux.php', // LoggedIn/Eyes
     'faq' => 'faq.php', // Faq
 ];
@@ -37,7 +60,6 @@ $array_titres = [
     'confirmation' => 'Confirmation',
     'connected' => 'Mon compte',
     'membres' => 'Membres',
-    'erreurConnexion' => 'Erreur de connexion',
     'construction' => 'Organes',
     'bisous' => 'Cr&eacute;er des bisous',
     'livreor' => "Livre d'or",
@@ -55,8 +77,6 @@ $array_titres = [
     'stats' => 'Statistiques',
     'recherche' => 'Recherche',
     'connexion' => 'Connexion',
-    'perdu' => 'Mot de passe perdu',
-    'newpass' => 'Nouveau mot de passe',
     'yeux' => 'D&eacute;visager un joueur',
     'faq' => 'FAQ',
 ];

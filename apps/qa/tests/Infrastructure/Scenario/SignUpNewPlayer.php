@@ -8,27 +8,28 @@ use Bl\Qa\Tests\Infrastructure\TestKernelSingleton;
 
 final readonly class SignUpNewPlayer
 {
-    public static function run(): Player
-    {
-        $pdo = TestKernelSingleton::get()->pdo();
+    public static function run(
+        string $username = 'BisouTest',
+        string $password = 'password',
+        string $passwordConfirmation = 'password',
+    ): Player {
+        $httpClient = TestKernelSingleton::get()->httpClient();
 
-        $username = substr('BisouTest_'.uniqid(), 0, 15);
-        $password = 'password';
-        $passwordHash = md5($password);
-        $timestamp = time();
-
-        try {
-            $stmt = $pdo->prepare(<<<'SQL'
-                INSERT INTO membres (pseudo, mdp, confirmation, timestamp, lastconnect, amour)
-                VALUES (?, ?, 1, ?, ?, '300')
-            SQL);
-            $stmt->execute([$username, $passwordHash, $timestamp, $timestamp]);
-        } catch (\PDOException $e) {
-            // Ignore duplicate entry errors - user already exists, which is fine
-            if ('23000' !== $e->getCode()) {
-                throw $e;
-            }
+        if ('BisouTest' === $username) {
+            $username = substr('BisouTest_'.uniqid(), 0, 15);
         }
+
+        $httpClient->request('POST', '/inscription.html', [
+            'body' => [
+                'Ipseudo' => $username,
+                'Imdp' => $password,
+                'Imdp2' => $passwordConfirmation,
+                'inscription' => "S'inscrire",
+            ],
+            'headers' => [
+                'Content-Type' => 'application/x-www-form-urlencoded',
+            ],
+        ]);
 
         return new Player($username, $password);
     }

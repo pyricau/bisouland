@@ -27,7 +27,6 @@ if (false == $_SESSION['logged']) {
                     if (
                         0 == mysql_result($sql, 0, 'nb_pseudo')
                         && 'BisouLand' != $pseudo
-                        && 0 !== strpos($pseudo, 'BisouTest')
                     ) {
                         // Verifie que le pseudo est correct.
                         if (preg_match("!^\w+$!", $pseudo)) {

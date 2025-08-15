@@ -36,7 +36,6 @@ CREATE TABLE IF NOT EXISTS membres (
     soupe INT DEFAULT 0,                   -- Soup count, used in index.php:138
     score BIGINT DEFAULT 0,                -- Player score for rankings, used in topten.php:37, makeBan.php
     -- Notification and admin fields
-    averto INT DEFAULT 0,                  -- Warning timestamp, used in checkConnect.php:28, 55
     lastmsg INT DEFAULT 0,                 -- Last message timestamp (referenced in PHP)
     espion TINYINT(1) DEFAULT 0,           -- Spy mode flag (referenced in PHP)
     newpass VARCHAR(255) DEFAULT NULL     -- New password reset token, set in perdu.php:20
@@ -142,13 +141,6 @@ CREATE TABLE IF NOT EXISTS attaque (
 CREATE TABLE IF NOT EXISTS nuage (
     id INT PRIMARY KEY AUTO_INCREMENT,  -- Config entry ID (always 1)
     nombre INT NOT NULL DEFAULT 0       -- Maximum number of clouds, updated in confirmation.php:17
-);
-
--- Ban table (for banned members)
--- Stores banned user IDs, managed in fctIndex.php:332-339, displayed in makeBan.php
-CREATE TABLE IF NOT EXISTS ban (
-    id INT PRIMARY KEY AUTO_INCREMENT,  -- Ban entry ID
-    auteur INT NOT NULL                 -- Banned user ID, INSERT in fctIndex.php:332
 );
 
 -- Insert default nuage configuration

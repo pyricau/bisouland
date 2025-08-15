@@ -1,62 +1,130 @@
 <?php
 
-// Gestion des pages
-$array_pages = [
-    'accueil' => 'accueil.php',
-    'inscription' => 'inscription.php',
-    'confirmation' => 'confirmation.php',
-    'connected' => 'connected.php',
-    'membres' => 'membres.php',
-    'erreurConnexion' => 'erreurConnexion.php',
-    'construction' => 'construction.php',
-    'bisous' => 'bisous.php',
-    'livreor' => 'livreor.php',
-    'aide' => 'aide.php',
-    'lire' => 'lire.php',
-    'boite' => 'boite.php',
-    'techno' => 'techno.php',
-    'nuage' => 'nuage.php',
-    'infos' => 'infos.php',
-    'contact' => 'contact.php',
-    'action' => 'action.php',
-    'changepass' => 'changepass.php',
-    'cerveau' => 'cerveau.php',
-    'topten' => 'topten.php',
-    'stats' => 'stats.php',
-    'recherche' => 'recherche.php',
-    'connexion' => 'connexion.php',
-    'perdu' => 'perdu.php',
-    'newpass' => 'newpass.php',
-    'yeux' => 'yeux.php',
-    'faq' => 'faq.php',
-];
+/**
+ * # Other files
+ * ## config
+ * parameters.php // Config.
+ *
+ * ## news
+ * chemin.php // @todo check
+ * liste_news.php // @todo check
+ * rediger_news.php // @todo check
+ *
+ * ## phpincludes
+ * attaque.php // game logic @todo check
+ * bd.php // logic for database connection
+ * connexion.php // logic for login
+ * erreur404.php // not found error page
+ * evo.php // game logic @todo check
+ * fctIndex.php // functions @todo check
+ * pages.php // Router (this file)
+ *
+ * ## web
+ * deconnexion.php // logic for logout @todo check
+ * index.php // Front Controller / layout
+ * redirect.php // logic for connexion.php form submission
+ * reductionNuages.php // script for Clouds Removal @todo use on account removal
+ */
 
-$array_titres = [
-    'accueil' => 'Accueil',
-    'inscription' => 'Inscription',
-    'confirmation' => 'Confirmation',
-    'connected' => 'Mon compte',
-    'membres' => 'Membres',
-    'erreurConnexion' => 'Erreur de connexion',
-    'construction' => 'Organes',
-    'bisous' => 'Cr&eacute;er des bisous',
-    'livreor' => "Livre d'or",
-    'aide' => 'Aide',
-    'lire' => 'Lire un message',
-    'boite' => 'Messages priv&eacute;s',
-    'techno' => 'Techniques diverses et vari&eacute;es',
-    'nuage' => 'La tête dans les nuages...',
-    'infos' => 'Encyclop&eacute;die',
-    'contact' => 'Contact',
-    'action' => 'Action',
-    'changepass' => 'Changer votre mot de passe',
-    'cerveau' => 'Cerveau',
-    'topten' => 'Meilleurs Joueurs',
-    'stats' => 'Statistiques',
-    'recherche' => 'Recherche',
-    'connexion' => 'Connexion',
-    'perdu' => 'Mot de passe perdu',
-    'newpass' => 'Nouveau mot de passe',
-    'yeux' => 'D&eacute;visager un joueur',
-    'faq' => 'FAQ',
+// Gestion des pages
+$pages = [
+    // Public Pages
+    'accueil' => [ // Homepage
+        'file' => 'accueil.php',
+        'title' => 'Accueil',
+    ],
+    'aide' => [ // Help
+        'file' => 'aide.php',
+        'title' => 'Aide',
+    ],
+    'confirmation' => [ // @todo use
+        'file' => 'confirmation.php',
+        'title' => 'Confirmation',
+    ],
+    'connexion' => [ // LogIn
+        'file' => 'connexion.php',
+        'title' => 'Connexion',
+    ],
+    'contact' => [ // Contact
+        'file' => 'contact.php',
+        'title' => 'Contact',
+    ],
+    'faq' => [ // Faq
+        'file' => 'faq.php',
+        'title' => 'FAQ',
+    ],
+    'inscription' => [ // SignUp
+        'file' => 'inscription.php',
+        'title' => 'Inscription',
+    ],
+    'livreor' => [ // Guestbook
+        'file' => 'livreor.php',
+        'title' => "Livre d'or",
+    ],
+    'membres' => [ // Players
+        'file' => 'membres.php',
+        'title' => 'Membres',
+    ],
+    'recherche' => [ // Search
+        'file' => 'recherche.php',
+        'title' => 'Recherche',
+    ],
+    'stats' => [ // Statistics
+        'file' => 'stats.php',
+        'title' => 'Statistiques',
+    ],
+    'topten' => [ // Ranking
+        'file' => 'topten.php',
+        'title' => 'Meilleurs Joueurs',
+    ],
+
+    // Logged in Player Pages
+    'action' => [ // BlowKisses
+        'file' => 'action.php',
+        'title' => 'Action',
+    ],
+    'bisous' => [ // Kiss
+        'file' => 'bisous.php',
+        'title' => 'Cr&eacute;er des bisous',
+    ],
+    'cerveau' => [ // Brain
+        'file' => 'cerveau.php',
+        'title' => 'Cerveau',
+    ],
+    'changepass' => [ // ChangePassword
+        'file' => 'changepass.php',
+        'title' => 'Changer votre mot de passe',
+    ],
+    'connected' => [ // Account
+        'file' => 'connected.php',
+        'title' => 'Mon compte',
+    ],
+    'nuage' => [ // Clouds
+        'file' => 'nuage.php',
+        'title' => 'La tête dans les nuages...',
+    ],
+    'construction' => [ // Organs
+        'file' => 'construction.php',
+        'title' => 'Organes',
+    ],
+    'boite' => [ // Inbox
+        'file' => 'boite.php',
+        'title' => 'Messages priv&eacute;s',
+    ],
+    'infos' => [ // Reference
+        'file' => 'infos.php',
+        'title' => 'Encyclop&eacute;die',
+    ],
+    'techno' => [ // Techniques
+        'file' => 'techno.php',
+        'title' => 'Techniques diverses et vari&eacute;es',
+    ],
+    'lire' => [ // ViewMessage
+        'file' => 'lire.php',
+        'title' => 'Lire un message',
+    ],
+    'yeux' => [ // Eyes
+        'file' => 'yeux.php',
+        'title' => 'D&eacute;visager un joueur',
+    ],
 ];

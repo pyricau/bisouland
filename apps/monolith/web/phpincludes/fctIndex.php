@@ -135,7 +135,6 @@ function SupprimerCompte($idCompteSuppr)
     mysql_query("DELETE FROM messages WHERE destin=$idCompteSuppr");
     mysql_query("DELETE FROM messages WHERE auteur=$idCompteSuppr");
     mysql_query("DELETE FROM evolution WHERE auteur=$idCompteSuppr");
-    mysql_query("DELETE FROM ban WHERE auteur=$idCompteSuppr");
     mysql_query("DELETE FROM liste WHERE auteur=$idCompteSuppr");
     mysql_query("DELETE FROM logatt WHERE auteur=$idCompteSuppr");
     // Attaques a gerer.
@@ -169,31 +168,9 @@ function AjouterScore($idScore, $valeur)
     mysql_query('UPDATE membres SET score='.($donnees_info['score'] + $valeur).' WHERE id='.$idScore);
 }
 
-// Presuppose que toutes les verifications ont ete faites.
-function ForcerAttaque($auteur, $cible, $duree, $pseudoAuteur, $nuageSource, $positionSource)
-{
-    mysql_query("UPDATE membres SET bloque=1 WHERE id='".$auteur."'");
-    mysql_query('INSERT INTO attaque VALUES ('.$auteur.', '.$cible.', '.(time() + $duree).', '.(time() + 2 * $duree).', 0)');
-    AdminMP($cible, 'Alerte', $pseudo." vient d'envoyer ses bisous dans ta direction, et va tenter de t'embrasser.
-					".$pseudo.' est situ&eacute; sur le nuage '.$nuageSource.', a la position '.$positionSource.'.
-					Ses Bisous arrivent dans '.strTemps($duree).'.');
-    AdminMP($Auteur, 'GoGoGo', "T'as pas honte d'attaquer les gens comme ca ??");
-}
-
 function formaterNombre($nombre)
 {
     return number_format($nombre, 0, ',', ' ');
-}
-
-// Fonction modifiable a souhait, destinee a l'administrateur.
-function actionAdmin()
-{
-    // AdminMP(12,"Test","Youuhouuu");
-    // ChangerMotPasse(14,"elimaroyalispau");
-    // ChangerMotPasse(47,"michael");
-    // SupprimerCompte(71);
-    // ForcerAttaque(47,13,10000,'kaelkael',4,7);
-    // autoriserImage(12);
 }
 
 function distanceMax($coeur, $jambes)
@@ -301,17 +278,4 @@ function coutAttaque($distance, $jambes)
     }
 
     return expo(100, 0.4, $exp, 1);
-}
-
-function autoriserImage($idAuteur)
-{
-    mysql_query("INSERT INTO ban VALUES('', $idAuteur)");
-    $sql = mysql_query("SELECT id FROM ban WHERE auteur=$idAuteur");
-    $donnees = mysql_fetch_assoc($sql);
-
-    return $donnees['id'];
-}
-function interdireImage($idAuteur)
-{
-    mysql_query("DELETE FROM ban WHERE auteur=$idAuteur");
 }

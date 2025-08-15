@@ -279,3 +279,55 @@ function coutAttaque($distance, $jambes)
 
     return expo(100, 0.4, $exp, 1);
 }
+
+function GiveNewPosition($idJoueur)
+{
+    $sql_info = mysql_query('SELECT nombre FROM nuage WHERE id=1');
+    $donnees_info = mysql_fetch_assoc($sql_info);
+    $NbNuages = $donnees_info['nombre'];
+
+    $sql = mysql_query("SELECT COUNT(*) AS nb_pos FROM membres WHERE nuage=$NbNuages");
+
+    $nbPos = mysql_result($sql, 0, 'nb_pos');
+
+    // Neuf personnes par nuage max, lors de l'attribution.
+    if ($nbPos > 8) {
+        ++$NbNuages;
+        mysql_query("UPDATE nuage SET nombre=$NbNuages WHERE id=1");
+        $nbPos = 0;
+    }
+
+    if ($nbPos > 0) {
+        $OccPos = [];
+
+        $sql_info = mysql_query("SELECT position FROM membres WHERE nuage=$NbNuages");
+        $i = 0;
+        // On récupère les positions occupées.
+        while ($donnees_info = mysql_fetch_assoc($sql_info)) {
+            $OccPos[$i] = $donnees_info['position'];
+            ++$i;
+        }
+
+        $FreePos = [];
+
+        $nbLibre = 16 - $nbPos;
+
+        $j = 0;
+
+        // Rempli FreePos avec les positions libres
+        for ($i = 1; $i <= 16; ++$i) {
+            if (!in_array($i, $OccPos)) {
+                $FreePos[$j] = $i;
+                ++$j;
+            }
+        }
+
+        // On choisi une valeur au hasard.
+
+        $FinalPos = $FreePos[mt_rand(0, $nbLibre - 1)];
+    } else {
+        $FinalPos = mt_rand(1, 16);
+    }
+    // On enregistre.
+    mysql_query("UPDATE membres SET nuage=$NbNuages, position=$FinalPos WHERE id=$idJoueur");
+}

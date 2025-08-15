@@ -137,14 +137,14 @@ CREATE TABLE IF NOT EXISTS attaque (
 );
 
 -- Nuage (cloud) configuration table
--- Stores the maximum number of clouds/servers, used in confirmation.php:5, reductionNuages.php:40
+-- Stores the maximum number of clouds/servers, used in fctIndex.php::GiveNewPosition(), reductionNuages.php:40
 CREATE TABLE IF NOT EXISTS nuage (
     id INT PRIMARY KEY AUTO_INCREMENT,  -- Config entry ID (always 1)
-    nombre INT NOT NULL DEFAULT 0       -- Maximum number of clouds, updated in confirmation.php:17
+    nombre INT NOT NULL DEFAULT 0       -- Maximum number of clouds, updated in fctIndex.php::GiveNewPosition()
 );
 
 -- Insert default nuage configuration
-INSERT INTO nuage (id, nombre) VALUES (1, 100) ON DUPLICATE KEY UPDATE nombre=nombre;
+INSERT INTO nuage (id, nombre) VALUES (1, 1) ON DUPLICATE KEY UPDATE nombre=nombre;
 
 -- Insert a default admin user (password: admin, hashed with md5)
 INSERT INTO membres (pseudo, mdp, confirmation, timestamp, lastconnect) 

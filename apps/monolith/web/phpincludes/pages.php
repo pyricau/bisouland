@@ -37,10 +37,6 @@ $pages = [
         'file' => 'aide.php',
         'title' => 'Aide',
     ],
-    'confirmation' => [ // @todo use
-        'file' => 'confirmation.php',
-        'title' => 'Confirmation',
-    ],
     'connexion' => [ // LogIn
         'file' => 'connexion.php',
         'title' => 'Connexion',

@@ -18,10 +18,10 @@ final readonly class SignUpNewPlayer
         $timestamp = time();
 
         try {
-            $stmt = $pdo->prepare('
-                INSERT INTO membres (pseudo, mdp, confirmation, timestamp, lastconnect)
-                VALUES (?, ?, 1, ?, ?)
-            ');
+            $stmt = $pdo->prepare(<<<'SQL'
+                INSERT INTO membres (pseudo, mdp, confirmation, timestamp, lastconnect, amour)
+                VALUES (?, ?, 1, ?, ?, '300')
+            SQL);
             $stmt->execute([$username, $passwordHash, $timestamp, $timestamp]);
         } catch (\PDOException $e) {
             // Ignore duplicate entry errors - user already exists, which is fine

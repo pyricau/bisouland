@@ -1,4 +1,5 @@
 <?php
+
 if (false == $_SESSION['logged']) {
     $send = 0;
     $pseudo = '';
@@ -40,12 +41,25 @@ if (false == $_SESSION['logged']) {
                                     $hmdp = md5($mdp);
 
                                     $result = mysql_query(
-                                        'INSERT INTO membres (pseudo, mdp, confirmation, timestamp, lastconnect)'
-                                        ."VALUES ('{$pseudo}', '{$hmdp}', '1', ".time().', '.time().')'
+                                        'INSERT INTO membres (pseudo, mdp, confirmation, timestamp, lastconnect, amour)'
+                                        ."VALUES ('{$pseudo}', '{$hmdp}', '1', ".time().', '.time().", '300')"
                                     );
                                     if (false === $result) {
                                         echo 'Error: '.mysql_error();
                                     }
+                                    $id = mysql_insert_id();
+
+                                    GiveNewPosition($id);
+
+                                    AdminMP($id, 'Bienvenue sur BisouLand', "Merci pour l'intérêt que tu portes à BisouLand.
+                                        Il est probable que certaines choses te paraissent obscures pour le moment.
+                                        Pense à faire un tour sur la page Aide, puis sur la page Encyclopédie, pour découvrir comment fonctionne BisouLand.
+                                        En haut à droite se trouve le menu de jeu, c'est ici que tu pourras gérer ton compte BisouLand.
+                                        Si tu as des questions, n'hésite pas à envoyer un message privé à l'admin.
+
+                                        Amicalement, et avec plein de Bisous
+                                        L'équipe BisouLand
+                                    ");
 
                                     echo 'Ton inscription est confirmée ! Tu peux maintenant te connecter.<br />';
                                     $send = 1;

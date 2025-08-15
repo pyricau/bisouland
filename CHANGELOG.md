@@ -4,6 +4,7 @@ This file logs the changes between versions.
 
 ## 4.0: Second v1 Rollback
 
+* `4.0.12`: created monolith Smoke Tests (for logged in player pages)
 * `4.0.11`: Trust and Safety - removed private messages
 * `4.0.10`: fixed Sign Up
 * `4.0.9`: created qa Static Analysis (monolith planed for future scope)

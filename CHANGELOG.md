@@ -4,6 +4,7 @@ This file logs the changes between versions.
 
 ## 4.0: Second v1 Rollback
 
+* `4.0.14`: fixed Welcome Notification for new signed up players
 * `4.0.13`: fixed clouds to start at 1 instead of 100
 * `4.0.12`: created monolith Smoke Tests (for logged in player pages)
 * `4.0.11`: Trust and Safety - removed private messages

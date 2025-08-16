@@ -66,7 +66,7 @@ final class SignUpTest extends TestCase
     {
         $httpClient = TestKernelSingleton::get()->httpClient();
 
-        $username = 'test_sign_up04';
+        $username = 'BisouTest_';
         $password = 'password';
         $passwordConfirmation = $password;
 
@@ -90,7 +90,7 @@ final class SignUpTest extends TestCase
     {
         $httpClient = TestKernelSingleton::get()->httpClient();
 
-        $username = 'test_sign_up08';
+        $username = 'BisouTest';
         $password = 'password';
         $passwordConfirmation = 'different';
 

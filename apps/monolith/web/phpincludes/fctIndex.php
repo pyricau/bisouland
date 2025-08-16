@@ -126,7 +126,12 @@ function AdminMP($cible, $objet, $message, $lu = 0)
         mysql_query('DELETE FROM messages WHERE destin='.$cible." AND timestamp<=$date48 ORDER BY id LIMIT $Asuppr");
     }
 
-    mysql_query("INSERT INTO messages VALUES('', 1, '".$cible."', '".$message."', '".time()."', $lu, '".$objet."')");
+    $timestamp = time();
+    mysql_query(
+        'INSERT INTO messages'
+        .' (posteur, destin, message, timestamp, statut, titre)'
+        ." VALUES(1, '{$cible}', '{$message}', '{$timestamp}', {$lu}, '{$objet}')"
+    );
 }
 
 function SupprimerCompte($idCompteSuppr)

@@ -44,7 +44,7 @@ CREATE TABLE IF NOT EXISTS membres (
 -- Messages table
 -- Field order MUST match INSERT statements in fctIndex.php::AdminMP()
 CREATE TABLE IF NOT EXISTS messages (
-    id INT PRIMARY KEY AUTO_INCREMENT,  -- Auto-increment, '' in INSERT
+    id INT PRIMARY KEY AUTO_INCREMENT,  -- Auto-increment
     posteur INT NOT NULL,               -- Matches $source/$expediteur from INSERT
     destin INT NOT NULL,                -- Matches $cible from INSERT
     message TEXT NOT NULL,              -- Matches $message from INSERT

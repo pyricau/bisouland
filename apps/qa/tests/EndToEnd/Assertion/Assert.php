@@ -69,6 +69,32 @@ final readonly class Assert
         PHPUnitAssert::fail("Failed asserting that Player's Cloud {$actualCloud} is {$expectedCloud}");
     }
 
+    public static function playerNotified(Player $player, string $expectedTitle): void
+    {
+        $pdo = TestKernelSingleton::get()->pdo();
+
+        $stmt = $pdo->prepare(<<<'SQL'
+            SELECT messages.titre
+            FROM messages
+            INNER JOIN membres ON messages.destin = membres.id
+            WHERE membres.pseudo = :username
+            ORDER BY messages.timestamp DESC
+            LIMIT 1
+        SQL);
+        $stmt->execute([
+            'username' => $player->username,
+        ]);
+        $actualTitle = $stmt->fetchColumn();
+
+        if ($expectedTitle === $actualTitle) {
+            PHPUnitAssert::assertSame($expectedTitle, $actualTitle);
+
+            return;
+        }
+
+        PHPUnitAssert::fail("Failed asserting that Player's notification '{$actualTitle}' is '{$expectedTitle}'");
+    }
+
     public static function signedUpCount(string $username, int $expectedCount): void
     {
         $pdo = TestKernelSingleton::get()->pdo();

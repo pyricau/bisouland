@@ -57,4 +57,17 @@ final class NewPlayerTest extends TestCase
 
         Assert::playerCloud($player, 1);
     }
+
+    public function test_it_receives_a_welcome_notification(): void
+    {
+        $httpClient = TestKernelSingleton::get()->httpClient();
+
+        $player = SignUpNewPlayer::run(
+            'BisouTest',
+            'password',
+            'password',
+        );
+
+        Assert::PlayerNotified($player, 'Bienvenue sur BisouLand');
+    }
 }

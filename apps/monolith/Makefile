@@ -38,11 +38,4 @@ bash: ## Connect to the container via bash so up and down arrows go to previous 
 
 ## —— Project 🐘 ———————————————————————————————————————————————————————————————
 db-reset: ## Reset the database by dropping and recreating it with schema.sql
-	@set -a && source .env && set +a && \
-	echo "🗑️  Dropping database..." && \
-	docker compose exec db mysql -u root -p$${MYSQL_ROOT_PASSWORD} -e "DROP DATABASE IF EXISTS $${DATABASE_NAME};" && \
-	echo "🆕 Creating database..." && \
-	docker compose exec db mysql -u root -p$${MYSQL_ROOT_PASSWORD} -e "CREATE DATABASE $${DATABASE_NAME};" && \
-	echo "📋 Loading schema.sql..." && \
-	docker compose exec -T db mysql -u root -p$${MYSQL_ROOT_PASSWORD} $${DATABASE_NAME} < schema.sql && \
-	echo "🎉 Database reset complete!"
+	@./bin/db-reset.sh

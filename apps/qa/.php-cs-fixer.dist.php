@@ -17,7 +17,6 @@ return (new PhpCsFixer\Config())
         // —— CS Rule Sets —————————————————————————————————————————————————————
         '@Symfony' => true,
         '@Symfony:risky' => true,
-        '@PER-CS2.0:risky' => true,
 
         // —— Overriden rules ——————————————————————————————————————————————————
 
@@ -29,11 +28,6 @@ return (new PhpCsFixer\Config())
         // [PSR-2] Disabled as the fixes break the following files:
         // 1) ../monolith/web/phpincludes/bisous.php
         // 2) ../monolith/web/phpincludes/cerveau.php
-        'statement_indentation' => false,
-
-        // [Symfony] Disabled as the fixes break the following files:
-        // 1) ../monolith/web/phpincludes/cerveau.php
-        // 2) ../monolith/web/phpincludes/bisous.php
         'statement_indentation' => false,
 
         // —— Disabed rules due to PHP version compatibility ———————————————————

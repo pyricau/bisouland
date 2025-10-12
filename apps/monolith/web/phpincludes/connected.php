@@ -1,8 +1,10 @@
 <?php
 // Ce qu'on affiche si on est connecte
 if (true == $_SESSION['logged']) {
-    $sql_info = mysql_query("SELECT espion FROM membres WHERE id='".$id."'");
-    $donnees_info = mysql_fetch_assoc($sql_info);
+    $pdo = bd_connect();
+    $stmt = $pdo->prepare('SELECT espion FROM membres WHERE id = :id');
+    $stmt->execute(['id' => $id]);
+    $donnees_info = $stmt->fetch();
     $espion = $donnees_info['espion'];
 
     if (isset($_POST['infos'])) {
@@ -13,7 +15,8 @@ if (true == $_SESSION['logged']) {
         }
         if ($espion != $esp) {
             $espion = $esp;
-            mysql_query('UPDATE membres SET espion='.$espion.' WHERE id='.$id.'');
+            $stmt = $pdo->prepare('UPDATE membres SET espion = :espion WHERE id = :id');
+            $stmt->execute(['espion' => $espion, 'id' => $id]);
         }
     }
 

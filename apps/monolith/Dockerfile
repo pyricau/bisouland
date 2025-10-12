@@ -1,6 +1,6 @@
 # syntax=docker/dockerfile:1
 # Dockerfile for SkySwoon (2005 LAMP project)
-# Uses PHP 5.6 to support legacy mysql_* functions
+# Uses PHP 5.6 with PDO MySQL driver
 
 FROM php:5.6-apache
 
@@ -10,7 +10,7 @@ RUN sed -i 's/deb.debian.org/archive.debian.org/g' /etc/apt/sources.list \
     && sed -i '/stretch-updates/d' /etc/apt/sources.list
 
 # Install system dependencies and PHP extensions in single layer
-RUN docker-php-ext-install mysql \
+RUN docker-php-ext-install pdo pdo_mysql \
     && a2enmod rewrite
 
 # Set working directory

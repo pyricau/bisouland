@@ -1,17 +1,20 @@
 <h1>Cerveau</h1>
 <?php
 if (true == $_SESSION['logged']) {
+$pdo = bd_connect();
 $production = calculerGenAmour(0, 3600, $nbE[0][0], $nbE[1][0], $nbE[1][1], $nbE[1][2]);
 
-$sql_info = mysql_query('SELECT score FROM membres WHERE id='.$id);
-$donnees_info = mysql_fetch_assoc($sql_info);
+$stmt = $pdo->prepare('SELECT score FROM membres WHERE id = :id');
+$stmt->execute(['id' => $id]);
+$donnees_info = $stmt->fetch();
 $score = floor($donnees_info['score'] / 1000.);
 
-$sql = mysql_query('SELECT COUNT(*) AS position FROM membres WHERE score>'.$donnees_info['score']);
-$position = mysql_result($sql, 0, 'position') + 1;
+$stmt = $pdo->prepare('SELECT COUNT(*) AS position FROM membres WHERE score > :score');
+$stmt->execute(['score' => $donnees_info['score']]);
+$position = $stmt->fetchColumn() + 1;
 
-$sql = mysql_query("SELECT COUNT(*) AS nb_joueur FROM membres WHERE confirmation='1'");
-$totalJoueur = mysql_result($sql, 0, 'nb_joueur');
+$sql = $pdo->query('SELECT COUNT(*) AS nb_joueur FROM membres WHERE confirmation = 1');
+$totalJoueur = $sql->fetchColumn();
 
 ?>
 Score : <strong><?php echo formaterNombre($score); ?></strong> Point<?php echo pluriel($score); ?><br />
@@ -30,11 +33,13 @@ Production : <strong><?php echo formaterNombre(floor($production)); ?></strong> 
 <?php
 
 // On récupère les infos sur le joueur que l'on attaque.
-$sql_info = mysql_query('SELECT cible, finaller, finretour, butin FROM attaque WHERE auteur='.$id);
+$stmt = $pdo->prepare('SELECT cible, finaller, finretour, butin FROM attaque WHERE auteur = :auteur');
+$stmt->execute(['auteur' => $id]);
 
-if ($donnees_info = mysql_fetch_assoc($sql_info)) {
-    $sql_info2 = mysql_query('SELECT pseudo, nuage, position FROM membres WHERE id='.$donnees_info['cible']);
-    $donnees_info2 = mysql_fetch_assoc($sql_info2);
+if ($donnees_info = $stmt->fetch()) {
+    $stmt2 = $pdo->prepare('SELECT pseudo, nuage, position FROM membres WHERE id = :id');
+    $stmt2->execute(['id' => $donnees_info['cible']]);
+    $donnees_info2 = $stmt2->fetch();
     $pseudoCible = $donnees_info2['pseudo'];
     $nuageCible = $donnees_info2['nuage'];
     $positionCible = $donnees_info2['position'];
@@ -46,7 +51,8 @@ if ($donnees_info = mysql_fetch_assoc($sql_info)) {
         if (0 != $finAll) {
             $finRet = (2 * time() + $finRet - 2 * $finAll);
             $finAll = 0;
-            mysql_query("UPDATE attaque SET finaller=0, finretour=$finRet WHERE auteur=".$id);
+            $stmt3 = $pdo->prepare('UPDATE attaque SET finaller = 0, finretour = :finretour WHERE auteur = :auteur');
+            $stmt3->execute(['finretour' => $finRet, 'auteur' => $id]);
             AdminMP($donnees_info['cible'], 'Attaque annulée', "$pseudo a annulé son attaque.
 			Tu n'es plus en danger.");
         }
@@ -110,10 +116,12 @@ Ils ont pris &agrave; <strong><?php echo $pseudoCible; ?></strong> <strong><?php
     }
 }
 // Infos sur les joueurs qui nous attaquent.
-$sql_info = mysql_query('SELECT auteur, finaller FROM attaque WHERE cible='.$id.' AND finaller!=0 ORDER BY finaller');
-while ($donnees_info = mysql_fetch_assoc($sql_info)) {
-    $sql_info2 = mysql_query('SELECT pseudo, nuage, position FROM membres WHERE id='.$donnees_info['auteur']);
-    $donnees_info2 = mysql_fetch_assoc($sql_info2);
+$stmt = $pdo->prepare('SELECT auteur, finaller FROM attaque WHERE cible = :cible AND finaller != 0 ORDER BY finaller');
+$stmt->execute(['cible' => $id]);
+while ($donnees_info = $stmt->fetch()) {
+    $stmt2 = $pdo->prepare('SELECT pseudo, nuage, position FROM membres WHERE id = :id');
+    $stmt2->execute(['id' => $donnees_info['auteur']]);
+    $donnees_info2 = $stmt2->fetch();
     $pseudoAuteur = $donnees_info2['pseudo'];
     $nuageAuteur = $donnees_info2['nuage'];
     $positionAuteur = $donnees_info2['position'];

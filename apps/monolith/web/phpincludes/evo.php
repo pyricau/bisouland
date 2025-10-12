@@ -82,6 +82,8 @@ function arbre($classe, $type, $nbE)
 }
 
 if (isset($inMainPage) && true == $inMainPage) {
+    $pdo = bd_connect();
+
     // Nombre de type différents pour la classe concernée.
     $nbEvol = $nbType[$evolPage];
     $evolution = -1; // Valeur par défaut ( = aucune construction en cours).
@@ -89,17 +91,22 @@ if (isset($inMainPage) && true == $inMainPage) {
     // Annuler une construction ne permet pas de récupérer les points.
     if (isset($_POST['cancel']) || isset($_GET['cancel'])) {
         $classeCancel = $evolPage;
-        $sql_info = mysql_query('SELECT cout FROM evolution WHERE auteur='.$id.' AND classe='.$classeCancel);
-        $donnees_info = mysql_fetch_assoc($sql_info);
+        $stmt = $pdo->prepare('SELECT cout FROM evolution WHERE auteur = :auteur AND classe = :classe');
+        $stmt->execute(['auteur' => $id, 'classe' => $classeCancel]);
+        $donnees_info = $stmt->fetch();
         $amour += ($donnees_info['cout'] / 2);
-        mysql_query('DELETE FROM evolution WHERE auteur='.$id.' AND classe='.$classeCancel);
+        $stmt = $pdo->prepare('DELETE FROM evolution WHERE auteur = :auteur AND classe = :classe');
+        $stmt->execute(['auteur' => $id, 'classe' => $classeCancel]);
 
         // On passe à une nouvelle construction si disponible.
-        $sql = mysql_query("SELECT id, duree, type, cout FROM liste WHERE auteur=$id AND classe=$classeCancel ORDER BY id LIMIT 0,1");
-        if ($donnees_info = mysql_fetch_assoc($sql)) {
+        $stmt = $pdo->prepare('SELECT id, duree, type, cout FROM liste WHERE auteur = :auteur AND classe = :classe ORDER BY id LIMIT 0,1');
+        $stmt->execute(['auteur' => $id, 'classe' => $classeCancel]);
+        if ($donnees_info = $stmt->fetch()) {
             $timeFin2 = time() + $donnees_info['duree'];
-            mysql_query("INSERT INTO evolution (id, timestamp, classe, type, auteur, cout) VALUES ('', '".$timeFin2."', $classeCancel, ".$donnees_info['type'].", $id, ".$donnees_info['cout'].')');
-            mysql_query('DELETE FROM liste WHERE id='.$donnees_info['id']);
+            $stmt2 = $pdo->prepare('INSERT INTO evolution (timestamp, classe, type, auteur, cout) VALUES (:timestamp, :classe, :type, :auteur, :cout)');
+            $stmt2->execute(['timestamp' => $timeFin2, 'classe' => $classeCancel, 'type' => $donnees_info['type'], 'auteur' => $id, 'cout' => $donnees_info['cout']]);
+            $stmt2 = $pdo->prepare('DELETE FROM liste WHERE id = :id');
+            $stmt2->execute(['id' => $donnees_info['id']]);
 
             if (1 == $classeCancel) {
                 // $amour -= $donnees_info['cout'];
@@ -108,11 +115,13 @@ if (isset($inMainPage) && true == $inMainPage) {
     }
 
     // On détermine s'il y a une construction en cours.
-    $sql = mysql_query("SELECT COUNT(*) AS nb_id FROM evolution WHERE auteur='".$id."' AND classe='".$evolPage."'");
-    if (0 != mysql_result($sql, 0, 'nb_id')) {
+    $stmt = $pdo->prepare('SELECT COUNT(*) AS nb_id FROM evolution WHERE auteur = :auteur AND classe = :classe');
+    $stmt->execute(['auteur' => $id, 'classe' => $evolPage]);
+    if (0 != $stmt->fetchColumn()) {
         // Si oui, on récupère les infos sur la construction.
-        $sql_info = mysql_query("SELECT timestamp, type FROM evolution WHERE auteur='".$id."' AND classe=".$evolPage.'');
-        $donnees_info = mysql_fetch_assoc($sql_info);
+        $stmt = $pdo->prepare('SELECT timestamp, type FROM evolution WHERE auteur = :auteur AND classe = :classe');
+        $stmt->execute(['auteur' => $id, 'classe' => $evolPage]);
+        $donnees_info = $stmt->fetch();
         // Date a laquelle la construction sera terminée.
         $timeFin = $donnees_info['timestamp'];
         // Type de la construction.
@@ -130,12 +139,14 @@ if (isset($inMainPage) && true == $inMainPage) {
                 if (1 == $evolPage) {
                     if ($amour >= $amourE[$evolPage][$i]) {
                         if (arbre($evolPage, $i, $nbE)) {
-                            $sql = mysql_query("SELECT COUNT(*) AS nb_id FROM liste WHERE auteur=$id AND classe=1");
-                            if (mysql_result($sql, 0, 'nb_id') < 9) {
+                            $stmt = $pdo->prepare('SELECT COUNT(*) AS nb_id FROM liste WHERE auteur = :auteur AND classe = 1');
+                            $stmt->execute(['auteur' => $id]);
+                            if ($stmt->fetchColumn() < 9) {
                                 // Construction demandée, donc on arrete la boucle.
                                 $stop = 1;
                                 $dureeConst = $tempsE[$evolPage][$i];
-                                mysql_query("INSERT INTO liste (id, duree, classe, type, auteur, cout) VALUES ('', $dureeConst, $evolPage, $i, $id, ".$amourE[$evolPage][$i].')');
+                                $stmt2 = $pdo->prepare('INSERT INTO liste (duree, classe, type, auteur, cout) VALUES (:duree, :classe, :type, :auteur, :cout)');
+                                $stmt2->execute(['duree' => $dureeConst, 'classe' => $evolPage, 'type' => $i, 'auteur' => $id, 'cout' => $amourE[$evolPage][$i]]);
                                 // On décrémente le nombre de points d'amour.
                                 $amour -= $amourE[$evolPage][$i];
                             }
@@ -166,7 +177,8 @@ if (isset($inMainPage) && true == $inMainPage) {
                     $timeFin = time() + $tempsE[$evolPage][$i];
                     // On met l'objet en construction. id non définie car auto incrémentée.
                     // Le champ id est peut etre a supprimer.
-                    mysql_query("INSERT INTO evolution (id, timestamp, classe, type, auteur, cout) VALUES ('', '".$timeFin."', ".$evolPage.', '.$i.', '.$id.', '.$amourE[$evolPage][$i].')');
+                    $stmt = $pdo->prepare('INSERT INTO evolution (timestamp, classe, type, auteur, cout) VALUES (:timestamp, :classe, :type, :auteur, :cout)');
+                    $stmt->execute(['timestamp' => $timeFin, 'classe' => $evolPage, 'type' => $i, 'auteur' => $id, 'cout' => $amourE[$evolPage][$i]]);
                     // On décrémente le nombre de points d'amour.
                     $amour -= $amourE[$evolPage][$i];
                     // On indique le type du batiment en construction, pour l'affichage sur la page.

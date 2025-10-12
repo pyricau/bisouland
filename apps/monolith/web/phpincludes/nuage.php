@@ -1,15 +1,18 @@
 <h1>Nuages</h1>
 <?php
 if (true == $_SESSION['logged']) {
+    $pdo = bd_connect();
+
     // Infos sur le joueur.
     $nuageSource = $_SESSION['nuage'];
-    $sql_info = mysql_query("SELECT position, score FROM membres WHERE id='".$id."'");
-    $donnees_info = mysql_fetch_assoc($sql_info);
+    $stmt = $pdo->prepare('SELECT position, score FROM membres WHERE id = :id');
+    $stmt->execute(['id' => $id]);
+    $donnees_info = $stmt->fetch();
     $positionSource = $donnees_info['position'];
     $scoreSource = floor($donnees_info['score'] / 1000.);
 
-    $sql_info = mysql_query('SELECT nombre FROM nuage WHERE id=1');
-    $donnees_info = mysql_fetch_assoc($sql_info);
+    $sql_info = $pdo->query('SELECT nombre FROM nuage WHERE id=1');
+    $donnees_info = $sql_info->fetch();
     $NbNuages = $donnees_info['nombre'];
 
     if (isset($_POST['nuage']) && !empty($_POST['nuage'])) {
@@ -29,11 +32,11 @@ if (true == $_SESSION['logged']) {
             $nuageL = $NbNuages;
         }
     } elseif (isset($_GET['saut']) && !empty($_GET['saut']) && isset($_GET['sautnuage']) && !empty($_GET['sautnuage'])) {
-        $nuageL = htmlentities(addslashes($_GET['sautnuage']));
+        $nuageL = htmlentities($_GET['sautnuage']);
         if ($nuageL > 0) {
             if ($nuageL <= $NbNuages) {
                 if (isset($_GET['sautposition']) && !empty($_GET['sautposition'])) {
-                    $positionCible = addslashes($_GET['sautposition']);
+                    $positionCible = $_GET['sautposition'];
 
                     if ($positionCible > 0 && $positionCible < 17) {
                         // Au moins saut niveau 1.
@@ -43,13 +46,15 @@ if (true == $_SESSION['logged']) {
                             $distMax = distanceMax($nbE[0][4], $nbE[2][3]);
                             if ($distance <= $distMax) {
                                 // Vérifions si il ya quelqu'un :
-                                $sql_info = mysql_query("SELECT id FROM membres WHERE nuage=$nuageL AND position=$positionCible");
-                                if ($donnees_info = mysql_fetch_assoc($sql_info)) {
+                                $stmt = $pdo->prepare('SELECT id FROM membres WHERE nuage = :nuage AND position = :position');
+                                $stmt->execute(['nuage' => $nuageL, 'position' => $positionCible]);
+                                if ($donnees_info = $stmt->fetch()) {
                                     $resultat = 'La position est déjà occupée';
                                 } else {
                                     if (0 == $joueurBloque) {
-                                        $sql_info = mysql_query('SELECT auteur FROM attaque WHERE cible='.$id.' AND finaller!=0');
-                                        if ($donnees_info = mysql_fetch_assoc($sql_info)) {
+                                        $stmt = $pdo->prepare('SELECT auteur FROM attaque WHERE cible = :cible AND finaller != 0');
+                                        $stmt->execute(['cible' => $id]);
+                                        if ($donnees_info = $stmt->fetch()) {
                                             $resultat = "Tu ne peux pas sauter car quelqu'un tente de t'embrasser";
                                         } else {
                                             $ajout = $nbE[0][0] + 0.3 * $nbE[1][0] + 0.6 * $nbE[1][1] + $nbE[1][2];
@@ -57,7 +62,8 @@ if (true == $_SESSION['logged']) {
                                             $cout = expo(20, 0.1, $ajout) * (1 + 0.1 * $distance);
                                             if ($amour >= $cout) {
                                                 $amour -= $cout;
-                                                mysql_query('UPDATE membres SET nuage='.$nuageL.', position='.$positionCible.' WHERE id='.$id);
+                                                $stmt = $pdo->prepare('UPDATE membres SET nuage = :nuage, position = :position WHERE id = :id');
+                                                $stmt->execute(['nuage' => $nuageL, 'position' => $positionCible, 'id' => $id]);
                                                 $_SESSION['nuage'] = $nuageL;
                                                 $nuageSource = $nuageL;
                                                 $positionSource = $positionCible;
@@ -160,8 +166,9 @@ if ($scoreSource < 50) {
 
         $distMax = distanceMax($nbE[0][0], $nbE[0][4]);
 
-    $sql_info = mysql_query("SELECT id, pseudo, position, lastconnect, score FROM membres WHERE nuage=$nuageL ORDER BY position ASC");
-    $donnees_info = mysql_fetch_assoc($sql_info);
+    $stmt = $pdo->prepare('SELECT id, pseudo, position, lastconnect, score FROM membres WHERE nuage = :nuage ORDER BY position ASC');
+    $stmt->execute(['nuage' => $nuageL]);
+    $donnees_info = $stmt->fetch();
     for ($i = 1; $i <= 16; ++$i) {
         if ($donnees_info['position'] == $i) {
             $donnees_info['pseudo'] = stripslashes($donnees_info['pseudo']);
@@ -240,7 +247,7 @@ if ($scoreSource < 50) {
                 }
             }
             echo '</td></tr>';
-            $donnees_info = mysql_fetch_assoc($sql_info);
+            $donnees_info = $stmt->fetch();
         } else {
             echo '<tr><td>',$i,'</td><td></td><td></td>';
             $sautPossible = 0;

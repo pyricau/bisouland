@@ -8,10 +8,10 @@
 include 'phpincludes/fctIndex.php';
 include 'phpincludes/bd.php';
 
-bd_connect();
+$pdo = bd_connect();
 
-$retour = mysql_query("SELECT COUNT(*) AS nb FROM membres WHERE confirmation=1");
-$nbMembres=mysql_result($retour,0,'nb');
+$retour = $pdo->query("SELECT COUNT(*) AS nb FROM membres WHERE confirmation=1");
+$nbMembres = $retour->fetchColumn();
 
 $nbMembresParNuage = 4;
 
@@ -19,10 +19,10 @@ $espacement = 16 / $nbMembresParNuage;
 
 $nbNuagesFinal = ceil($nbMembres/$nbMembresParNuage);
 
-$sql= mysql_query("SELECT id FROM membres WHERE confirmation=1");
+$sql = $pdo->query("SELECT id FROM membres WHERE confirmation=1");
 $membre = 0;
 $nuage = 1;
-while($donnees = mysql_fetch_assoc($sql))
+while($donnees = $sql->fetch())
 {
   $membre++;
   if ($membre>$nbMembresParNuage)
@@ -33,9 +33,11 @@ while($donnees = mysql_fetch_assoc($sql))
 
   $position = (($membre-1)*$espacement)+1;
 
-  mysql_query("UPDATE membres SET nuage=$nuage, position=$position WHERE id=".$donnees['id']);
+  $stmt = $pdo->prepare("UPDATE membres SET nuage = :nuage, position = :position WHERE id = :id");
+  $stmt->execute(['nuage' => $nuage, 'position' => $position, 'id' => $donnees['id']]);
 
 }
 
-mysql_query("UPDATE nuage SET nombre=$nbNuagesFinal WHERE id=1");
+$stmt = $pdo->prepare("UPDATE nuage SET nombre = :nombre WHERE id = 1");
+$stmt->execute(['nombre' => $nbNuagesFinal]);
 // */

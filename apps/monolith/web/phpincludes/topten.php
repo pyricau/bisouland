@@ -22,16 +22,19 @@ if (true == $_SESSION['logged']) {
 ?>
    </tr>
 <?php
+$pdo = bd_connect();
+
 // Si on est loggué (et qu'on peut attaquer, on calcule notre position
 if (true == $_SESSION['logged'] && ($nbE[1][0] + $nbE[1][1] + $nbE[1][2]) > 0) {
     $nuageSource = $_SESSION['nuage'];
-    $sql_info2 = mysql_query("SELECT position FROM membres WHERE id='".$id."'");
-    $donnees_info2 = mysql_fetch_assoc($sql_info2);
+    $stmt = $pdo->prepare('SELECT position FROM membres WHERE id = :id');
+    $stmt->execute(['id' => $id]);
+    $donnees_info2 = $stmt->fetch();
     $positionSource = $donnees_info2['position'];
 }
 
-$sql_info = mysql_query("SELECT id, pseudo, nuage, position, score, lastconnect FROM membres ORDER BY score DESC LIMIT 0,$nbTop");
-$donnees_info = mysql_fetch_assoc($sql_info);
+$sql_info = $pdo->query("SELECT id, pseudo, nuage, position, score, lastconnect FROM membres ORDER BY score DESC LIMIT 0,$nbTop");
+$donnees_info = $sql_info->fetch();
 for ($i = 1; $i <= $nbTop; ++$i) {
     echo '<tr>
 				<td>'.$i.'</td>
@@ -57,7 +60,7 @@ for ($i = 1; $i <= $nbTop; ++$i) {
     }
 
     echo '</tr>';
-    $donnees_info = mysql_fetch_assoc($sql_info);
+    $donnees_info = $sql_info->fetch();
 }
 ?>
 

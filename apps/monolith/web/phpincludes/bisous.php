@@ -11,6 +11,7 @@ if (1 == $joueurBloque) {
 }
 
 if (-1 != $evolution) {
+    $pdo = bd_connect();
 ?>
 <br />
 Liste des Bisous en cr&eacute;ation :<br />
@@ -30,9 +31,10 @@ Liste des Bisous en cr&eacute;ation :<br />
     ];
     $nomActuel = $nom[$evolution];
     echo '<option>1) '.$nomActuel.' (en cours)</option>';
-    $sql = mysql_query("SELECT type,duree FROM liste WHERE auteur=$id AND classe=$evolPage ORDER BY id");
+    $stmt = $pdo->prepare('SELECT type,duree FROM liste WHERE auteur = :auteur AND classe = :classe ORDER BY id');
+    $stmt->execute(['auteur' => $id, 'classe' => $evolPage]);
 
-    while ($donnees_info = mysql_fetch_assoc($sql)) {
+    while ($donnees_info = $stmt->fetch()) {
         $tempsRestant += $donnees_info['duree'];
         $nomActuel = $nom[$donnees_info['type']];
         if ($nomActuel == $nomPrec) {

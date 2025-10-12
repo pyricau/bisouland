@@ -22,12 +22,13 @@ header('Content-type: text/html; charset=UTF-8');
 <?php
 
     include '../phpincludes/bd.php';
-bd_connect();
+$pdo = bd_connect();
 
 if (isset($_GET['modifier_news'])) { // Si on demande de modifier une news
     // On récupère les infos de la correspondante
-    $retour = mysql_query('SELECT * FROM newsbisous WHERE id='.$_GET['modifier_news']);
-    $donnees = mysql_fetch_array($retour);
+    $stmt = $pdo->prepare('SELECT * FROM newsbisous WHERE id = :id');
+    $stmt->execute(['id' => $_GET['modifier_news']]);
+    $donnees = $stmt->fetch();
 
     // On place le titre et le contenu dans des variables simples
     $titre = $donnees['titre'];
@@ -39,8 +40,6 @@ if (isset($_GET['modifier_news'])) { // Si on demande de modifier une news
     $contenu = '';
     $id_news = -1; // La variable vaut -1, donc on se souviendra que ce n'est pas une modification
 }
-// On a fini de travailler, on ferme la connexion :
-mysql_close(); // Déconnexion de MySQL
 
 ?>
 

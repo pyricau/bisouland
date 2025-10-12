@@ -1,23 +1,25 @@
 <?php
 
-$retour = mysql_query('SELECT SUM( amour ) AS nb FROM membres WHERE confirmation = 1');
-$pointsAmourTotal = mysql_result($retour, 0, 'nb');
-$retour = mysql_query('SELECT COUNT(*) AS nb FROM membres WHERE confirmation=1 AND lastconnect>='.(time() - 300));
-$connectCinq = mysql_result($retour, 0, 'nb');
-$retour = mysql_query('SELECT COUNT(*) AS nb FROM membres WHERE confirmation=1 AND lastconnect>='.(time() - 3600));
-$connectHeure = mysql_result($retour, 0, 'nb');
-$retour = mysql_query('SELECT COUNT(*) AS nb FROM membres WHERE confirmation=1 AND lastconnect>='.(time() - 43200));
-$connectMid = mysql_result($retour, 0, 'nb');
-$retour = mysql_query('SELECT COUNT(*) AS nb FROM membres WHERE confirmation=1 AND lastconnect>='.(time() - 86400));
-$connectJour = mysql_result($retour, 0, 'nb');
-$retour = mysql_query('SELECT COUNT(*) AS nb FROM membres WHERE confirmation=1 AND lastconnect>='.(time() - 172800));
-$connect2Jour = mysql_result($retour, 0, 'nb');
-$retour = mysql_query('SELECT COUNT(*) AS nb FROM membres WHERE confirmation=1 AND lastconnect>='.(time() - 604800));
-$connectSemaine = mysql_result($retour, 0, 'nb');
-$retour = mysql_query('SELECT COUNT(*) AS nb FROM membres WHERE confirmation=1 AND lastconnect>='.(time() - 2635200));
-$connectMois = mysql_result($retour, 0, 'nb');
-$retour = mysql_query('SELECT COUNT(*) AS nb FROM membres WHERE confirmation=1 AND lastconnect>='.(time() - 31536000));
-$connectAn = mysql_result($retour, 0, 'nb');
+$pdo = bd_connect();
+
+$retour = $pdo->query('SELECT SUM( amour ) AS nb FROM membres WHERE confirmation = 1');
+$pointsAmourTotal = $retour->fetchColumn();
+$retour = $pdo->query('SELECT COUNT(*) AS nb FROM membres WHERE confirmation=1 AND lastconnect>='.(time() - 300));
+$connectCinq = $retour->fetchColumn();
+$retour = $pdo->query('SELECT COUNT(*) AS nb FROM membres WHERE confirmation=1 AND lastconnect>='.(time() - 3600));
+$connectHeure = $retour->fetchColumn();
+$retour = $pdo->query('SELECT COUNT(*) AS nb FROM membres WHERE confirmation=1 AND lastconnect>='.(time() - 43200));
+$connectMid = $retour->fetchColumn();
+$retour = $pdo->query('SELECT COUNT(*) AS nb FROM membres WHERE confirmation=1 AND lastconnect>='.(time() - 86400));
+$connectJour = $retour->fetchColumn();
+$retour = $pdo->query('SELECT COUNT(*) AS nb FROM membres WHERE confirmation=1 AND lastconnect>='.(time() - 172800));
+$connect2Jour = $retour->fetchColumn();
+$retour = $pdo->query('SELECT COUNT(*) AS nb FROM membres WHERE confirmation=1 AND lastconnect>='.(time() - 604800));
+$connectSemaine = $retour->fetchColumn();
+$retour = $pdo->query('SELECT COUNT(*) AS nb FROM membres WHERE confirmation=1 AND lastconnect>='.(time() - 2635200));
+$connectMois = $retour->fetchColumn();
+$retour = $pdo->query('SELECT COUNT(*) AS nb FROM membres WHERE confirmation=1 AND lastconnect>='.(time() - 31536000));
+$connectAn = $retour->fetchColumn();
 ?>
 <h1>Statistiques</h1>
 <span class="info">[ Statistiques à compter du 26 avril 2006 ]</span><br />

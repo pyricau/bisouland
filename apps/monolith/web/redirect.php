@@ -2,26 +2,28 @@
 
 session_start();
 include 'phpincludes/bd.php';
-bd_connect();
+$pdo = bd_connect();
 
 if (isset($_POST['connexion'])) {
     // Ensuite on vérifie que les variables existent et contiennent quelque chose :)
     if (isset($_POST['pseudo'], $_POST['mdp']) && !empty($_POST['pseudo']) && !empty($_POST['mdp'])) {
         // Mesure de sécurité, notamment pour éviter les injections sql.
         // Le htmlentities évitera de le passer par la suite.
-        $pseudo = htmlentities(addslashes($_POST['pseudo']));
-        $mdp = htmlentities(addslashes($_POST['mdp']));
+        $pseudo = htmlentities($_POST['pseudo']);
+        $mdp = htmlentities($_POST['mdp']);
         // Hashage du mot de passe.
         $mdp = md5($mdp);
 
         // La requête qui compte le nombre de pseudos
-        $sql = mysql_query("SELECT COUNT(*) AS nb_pseudo FROM membres WHERE pseudo='".$pseudo."'");
+        $stmt = $pdo->prepare('SELECT COUNT(*) AS nb_pseudo FROM membres WHERE pseudo = :pseudo');
+        $stmt->execute(['pseudo' => $pseudo]);
 
         // La on vérifie si le nombre est différent que zéro
-        if (0 != mysql_result($sql, 0, 'nb_pseudo')) {
+        if (0 != $stmt->fetchColumn()) {
             // Sélection des informations.
-            $sql_info = mysql_query("SELECT id, confirmation, mdp, nuage FROM membres WHERE pseudo='".$pseudo."'");
-            $donnees_info = mysql_fetch_array($sql_info);
+            $stmt = $pdo->prepare('SELECT id, confirmation, mdp, nuage FROM membres WHERE pseudo = :pseudo');
+            $stmt->execute(['pseudo' => $pseudo]);
+            $donnees_info = $stmt->fetch();
 
             // Si le mot de passe est le même.
             if ($donnees_info['mdp'] == $mdp) {
@@ -42,7 +44,8 @@ if (isset($_POST['connexion'])) {
                     }
 
                     // On supprime le membre non connecté du nombre de visiteurs :
-                    mysql_query("DELETE FROM connectbisous WHERE ip='".$_SERVER['REMOTE_ADDR']."'");
+                    $stmt = $pdo->prepare('DELETE FROM connectbisous WHERE ip = :ip');
+                    $stmt->execute(['ip' => $_SERVER['REMOTE_ADDR']]);
 
                     // On redirige le membre.
                     header('location: cerveau.html');

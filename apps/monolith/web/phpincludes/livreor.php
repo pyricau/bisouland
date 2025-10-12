@@ -4,15 +4,18 @@
 // Si un message est envoyé, on l'enregistre
 // -----------------------------------------
 
+$pdo = bd_connect();
+
 if (isset($_POST['message'])) {
     if (true == $_SESSION['logged']) {
         $psd = htmlentities($_SESSION['pseudo']);
 
-        $message = htmlentities(addslashes($_POST['message']), \ENT_QUOTES); // De même pour le message
+        $message = htmlentities($_POST['message'], \ENT_QUOTES); // De même pour le message
         $message = nl2br($message); // Pour le message, comme on utilise un textarea, il faut remplacer les Entrées par des <br />
 
         // On peut enfin enregistrer :o)
-        // mysql_query("INSERT INTO orbisous VALUES('', '" . $psd . "', '" . $message . "', '" .time()."')");
+        // $stmt = $pdo->prepare("INSERT INTO orbisous (pseudo, message, timestamp) VALUES(?, ?, ?)");
+        // $stmt->execute([$psd, $message, time()]);
     }
 } else {
     $psd = 'Votre pseudo';
@@ -26,8 +29,8 @@ if (isset($_POST['message'])) {
 $nombreDeMessagesParPage = 5; // Essayez de changer ce nombre pour voir :o)
 
 // On récupère le nombre total de messages
-$retour = mysql_query('SELECT COUNT(*) AS nb_messages FROM orbisous');
-$donnees = mysql_fetch_array($retour);
+$retour = $pdo->query('SELECT COUNT(*) AS nb_messages FROM orbisous');
+$donnees = $retour->fetch();
 $totalDesMessages = $donnees['nb_messages'];
 
 // On calcule le nombre de pages à créer
@@ -80,7 +83,7 @@ if (isset($_GET['or'])) {
 // On calcule le numéro du premier message qu'on prend pour le LIMIT de MySQL
 $premierMessageAafficher = ($or - 1) * $nombreDeMessagesParPage;
 
-$reponse = mysql_query('SELECT * FROM orbisous ORDER BY id DESC LIMIT '.$premierMessageAafficher.', '.$nombreDeMessagesParPage);
+$reponse = $pdo->query('SELECT * FROM orbisous ORDER BY id DESC LIMIT '.(int) $premierMessageAafficher.', '.(int) $nombreDeMessagesParPage);
 
 if ($nombreDePages > 1) {
     echo '<center>Page :';
@@ -99,7 +102,7 @@ if ($nombreDePages > 1) {
 </p>
 
 <?php
-while ($donnees = mysql_fetch_array($reponse)) {
+while ($donnees = $reponse->fetch()) {
     ?>
 <div class=livreor>
 <?php

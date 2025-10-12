@@ -1,6 +1,7 @@
 <h1>Embrasser</h1>
 <?php
 if (true == $_SESSION['logged']) {
+    $pdo = bd_connect();
     if (isset($_POST['action'])) {
         $cout = 0;
         $nuageCible = htmlentities($_POST['nuage']);
@@ -11,28 +12,32 @@ if (true == $_SESSION['logged']) {
                 if (0 == $nuageCible || 0 == $positionCible) {
                     $resultat = 'Evite les valeurs nulles pour les deux champs';
                 } else {
-                    $sql_info = mysql_query('SELECT id, score FROM membres WHERE nuage='.$nuageCible.' AND position='.$positionCible);
-                    if ($donnees_info = mysql_fetch_assoc($sql_info)) {
+                    $stmt = $pdo->prepare('SELECT id, score FROM membres WHERE nuage = :nuage AND position = :position');
+                    $stmt->execute(['nuage' => $nuageCible, 'position' => $positionCible]);
+                    if ($donnees_info = $stmt->fetch()) {
                         $cible = $donnees_info['id'];
                         $score = $donnees_info['score'];
 
                         if ($cible == $id) {
                             $resultat = 'Il est impossible s\'attaquer soi même';
                         } else {
-                            $sql_info = mysql_query("SELECT COUNT(*) AS nb_id FROM evolution WHERE auteur=$id AND classe=1");
-                            if (0 != mysql_result($sql_info, 0, 'nb_id')) {
+                            $stmt = $pdo->prepare('SELECT COUNT(*) AS nb_id FROM evolution WHERE auteur = :auteur AND classe = 1');
+                            $stmt->execute(['auteur' => $id]);
+                            if (0 != $stmt->fetchColumn()) {
                                 $resultat = 'Action impossible car tu es en train de créer des Bisous';
                             } else {
                                 // On détermine s'il y a une construction en cours.
-                                $sql_info = mysql_query("SELECT COUNT(*) AS nb_id FROM liste WHERE auteur=$id AND classe=1");
-                                if (0 != mysql_result($sql_info, 0, 'nb_id')) {
+                                $stmt = $pdo->prepare('SELECT COUNT(*) AS nb_id FROM liste WHERE auteur = :auteur AND classe = 1');
+                                $stmt->execute(['auteur' => $id]);
+                                if (0 != $stmt->fetchColumn()) {
                                     $resultat = 'Action impossible car tu es en train de créer des Bisous';
                                 }
 
                                 $nuageSource = $_SESSION['nuage'];
 
-                                $sql_info = mysql_query("SELECT position, score FROM membres WHERE id='".$id."'");
-                                $donnees_info = mysql_fetch_assoc($sql_info);
+                                $stmt = $pdo->prepare('SELECT position, score FROM membres WHERE id = :id');
+                                $stmt->execute(['id' => $id]);
+                                $donnees_info = $stmt->fetch();
 
                                 $positionSource = $donnees_info['position'];
                                 $scoreSource = $donnees_info['score'];
@@ -49,13 +54,16 @@ if (true == $_SESSION['logged']) {
                                     if ($distance <= $distMax) {
                                         $cout = coutAttaque($distance, $nbE[0][4]);
                                         if ($amour >= $cout) {
-                                            $sql = mysql_query("SELECT COUNT(*) AS nb_att FROM logatt WHERE auteur=$id AND cible=$cible AND timestamp>=".(time() - 43200));
-                                            if (mysql_result($sql, 0, 'nb_att') < 3) {
+                                            $stmt = $pdo->prepare('SELECT COUNT(*) AS nb_att FROM logatt WHERE auteur = :auteur AND cible = :cible AND timestamp >= :timestamp');
+                                            $stmt->execute(['auteur' => $id, 'cible' => $cible, 'timestamp' => time() - 43200]);
+                                            if ($stmt->fetchColumn() < 3) {
                                                 $amour -= $cout;
                                                 $joueurBloque = 1;
                                                 $duree = tempsAttaque($distance, $nbE[0][4]);
-                                                mysql_query("UPDATE membres SET bloque=1 WHERE id='".$id."'");
-                                                mysql_query('INSERT INTO attaque VALUES ('.$id.', '.$cible.', '.(time() + $duree).', '.(time() + 2 * $duree).', 0)');
+                                                $stmt = $pdo->prepare('UPDATE membres SET bloque = 1 WHERE id = :id');
+                                                $stmt->execute(['id' => $id]);
+                                                $stmt = $pdo->prepare('INSERT INTO attaque VALUES (:auteur, :cible, :finaller, :finretour, 0)');
+                                                $stmt->execute(['auteur' => $id, 'cible' => $cible, 'finaller' => time() + $duree, 'finretour' => time() + 2 * $duree]);
                                                 AdminMP($cible, $pseudo." veut t'embrasser", $pseudo." vient d'envoyer ses bisous dans ta direction, et va tenter de t'embrasser.
 						".$pseudo.' est situé sur le nuage '.$nuageSource.', à la position '.$positionSource.'.
 						Ses Bisous arrivent dans '.strTemps($duree).'.');
@@ -87,13 +95,15 @@ if (true == $_SESSION['logged']) {
             $resultat = 'Tu as déjà une cible';
         }
     } elseif (isset($_GET['nuage']) && isset($_GET['position'])) {
+        $pdo = bd_connect();
         $nuageCible = htmlentities($_GET['nuage']);
         $positionCible = htmlentities($_GET['position']);
 
         $nuageSource = $_SESSION['nuage'];
 
-        $sql_info = mysql_query("SELECT position FROM membres WHERE id='".$id."'");
-        $donnees_info = mysql_fetch_assoc($sql_info);
+        $stmt = $pdo->prepare('SELECT position FROM membres WHERE id = :id');
+        $stmt->execute(['id' => $id]);
+        $donnees_info = $stmt->fetch();
         $positionSource = $donnees_info['position'];
 
         $distance = abs(16 * ($nuageCible - $nuageSource) + $positionCible - $positionSource);

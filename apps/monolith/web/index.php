@@ -17,7 +17,7 @@ session_start();
 ob_start();
 
 include 'phpincludes/bd.php';
-bd_connect();
+$pdo = bd_connect();
 
 include 'phpincludes/fctIndex.php';
 
@@ -53,12 +53,14 @@ if (false == $_SESSION['logged']) {
         $pseudo = htmlentities(addslashes($_COOKIE['pseudo']));
         $mdp = htmlentities(addslashes($_COOKIE['mdp']));
         // La requête qui compte le nombre de pseudos
-        $sql = mysql_query("SELECT COUNT(*) AS nb_pseudo FROM membres WHERE pseudo='".$pseudo."'");
+        $stmt = $pdo->prepare('SELECT COUNT(*) AS nb_pseudo FROM membres WHERE pseudo = :pseudo');
+        $stmt->execute(['pseudo' => $pseudo]);
 
-        if (0 != mysql_result($sql, 0, 'nb_pseudo')) {
+        if (0 != $stmt->fetchColumn()) {
             // Sélection des informations.
-            $sql_info = mysql_query("SELECT id, confirmation, mdp, nuage FROM membres WHERE pseudo='".$pseudo."'");
-            $donnees_info = mysql_fetch_assoc($sql_info);
+            $stmt = $pdo->prepare('SELECT id, confirmation, mdp, nuage FROM membres WHERE pseudo = :pseudo');
+            $stmt->execute(['pseudo' => $pseudo]);
+            $donnees_info = $stmt->fetch();
 
             // Si le mot de passe est le même (le mot de passe est déjà crypté).
             if ($donnees_info['mdp'] == $mdp) {
@@ -124,8 +126,9 @@ if (true == $_SESSION['logged']) {
         actionAdmin();
     }
 
-    $sql_info = mysql_query("SELECT timestamp, coeur, bouche, amour, jambes, smack, baiser, pelle, tech1, tech2, tech3, tech4, dent, langue, bloque, soupe, oeil FROM membres WHERE id='".$id."'");
-    $donnees_info = mysql_fetch_assoc($sql_info);
+    $stmt = $pdo->prepare('SELECT timestamp, coeur, bouche, amour, jambes, smack, baiser, pelle, tech1, tech2, tech3, tech4, dent, langue, bloque, soupe, oeil FROM membres WHERE id = :id');
+    $stmt->execute(['id' => $id]);
+    $donnees_info = $stmt->fetch();
     // Date du dernier calcul du nombre de points d'amour.
     $lastTime = $donnees_info['timestamp'];
     // Temps écoulé depuis le dernier calcul.
@@ -280,7 +283,8 @@ if (true == $_SESSION['logged']) {
                 }
             }
             if (true == $modif) {
-                mysql_query('UPDATE membres SET '.$Obj[1][0]."='".$nbE[1][0]."', ".$Obj[1][1]."='".$nbE[1][1]."', ".$Obj[1][2]."='".$nbE[1][2]."' WHERE id='".$id."'");
+                $stmt = $pdo->prepare('UPDATE membres SET '.$Obj[1][0].' = :smack, '.$Obj[1][1].' = :baiser, '.$Obj[1][2].' = :pelle WHERE id = :id');
+                $stmt->execute(['smack' => $nbE[1][0], 'baiser' => $nbE[1][1], 'pelle' => $nbE[1][2], 'id' => $id]);
             }
         }
     } elseif ('techno' == $page) {
@@ -316,8 +320,9 @@ if (true == $_SESSION['logged']) {
     }
 
     // Récupération du nombre de messages non lus.
-    $retour = mysql_query('SELECT COUNT(*) AS nbMsg FROM messages WHERE destin='.$id.' AND statut = 0');
-    $nbNewMsg = mysql_result($retour, 0, 'nbMsg');
+    $stmt = $pdo->prepare('SELECT COUNT(*) AS nbMsg FROM messages WHERE destin = :destin AND statut = 0');
+    $stmt->execute(['destin' => $id]);
+    $nbNewMsg = $stmt->fetchColumn();
     if ($nbNewMsg > 0) {
         $NewMsgString = $nbNewMsg.' nouveau'.pluriel($nbNewMsg, 'x').' message'.pluriel($nbNewMsg);
     } else {
@@ -333,9 +338,10 @@ $temps12 = microtime_float();
     Il permet de créer une sorte de boucle de calcul virtuelle, pour peu qu'il y ait suffisament de gens qui se connectent.
 */
 // On récupère les évolutions dont la date de création est atteinte ou dépassée.
-$sql_info = mysql_query("SELECT auteur, id, type, classe, cout FROM evolution WHERE timestamp<='".time()."'");
+$stmt = $pdo->prepare('SELECT auteur, id, type, classe, cout FROM evolution WHERE timestamp <= :timestamp');
+$stmt->execute(['timestamp' => time()]);
 // Boucle qui permet de traiter construction par construction.
-while ($donnees_info = mysql_fetch_assoc($sql_info)) {
+while ($donnees_info = $stmt->fetch()) {
     // Id de l'auteur de la construction
     $id2 = $donnees_info['auteur'];
     // Id de la tache en question dans la base de donnée. (permet de la supprimer plus rapidement de la bdd)
@@ -349,25 +355,31 @@ while ($donnees_info = mysql_fetch_assoc($sql_info)) {
     // On ajoute le nombre de points d'amour dépensés au score :
     AjouterScore($id2, $coutObjet);
     // On supprime la construction de la liste des taches.
-    mysql_query("DELETE FROM evolution WHERE id='".$idtache."'");
+    $stmt2 = $pdo->prepare('DELETE FROM evolution WHERE id = :id');
+    $stmt2->execute(['id' => $idtache]);
     // On effectue la tache dans la table membre.
-    $sql_info2 = mysql_query('SELECT '.$Obj[$classe][$type].", amour FROM membres WHERE id='".$id2."'");
-    $donnees_info = mysql_fetch_assoc($sql_info2);
+    $stmt2 = $pdo->prepare('SELECT '.$Obj[$classe][$type].', amour FROM membres WHERE id = :id');
+    $stmt2->execute(['id' => $id2]);
+    $donnees_info = $stmt2->fetch();
     $amourConstructeur = $donnees_info['amour'];
     // On récupère l'ancienne valeur.
     $nbObjEvol = $donnees_info[$Obj[$classe][$type]];
     // On augmente d'un.
     ++$nbObjEvol;
     // On met a jour la table.
-    mysql_query('UPDATE membres SET '.$Obj[$classe][$type]."='".$nbObjEvol."' WHERE id='".$id2."'");
+    $stmt2 = $pdo->prepare('UPDATE membres SET '.$Obj[$classe][$type].' = :nb WHERE id = :id');
+    $stmt2->execute(['nb' => $nbObjEvol, 'id' => $id2]);
     // Si le visiteur est connecté et membre, et si la construction est la sienne, on met a jour les infos sur la page.
 
     // S'il ya des constructions sur la liste de construction, on relance une construction.
-    $sql_info2 = mysql_query("SELECT id, duree, type, cout FROM liste WHERE auteur=$id2 AND classe=$classe ORDER BY id LIMIT 0,1");
-    if ($donnees_info = mysql_fetch_assoc($sql_info2)) {
+    $stmt2 = $pdo->prepare('SELECT id, duree, type, cout FROM liste WHERE auteur = :auteur AND classe = :classe ORDER BY id LIMIT 0,1');
+    $stmt2->execute(['auteur' => $id2, 'classe' => $classe]);
+    if ($donnees_info = $stmt2->fetch()) {
         $timeFin2 = time() + $donnees_info['duree'];
-        mysql_query("INSERT INTO evolution (id, timestamp, classe, type, auteur, cout) VALUES ('', '".$timeFin2."', $classe, ".$donnees_info['type'].", $id2, ".$donnees_info['cout'].')');
-        mysql_query('DELETE FROM liste WHERE id='.$donnees_info['id']);
+        $stmt3 = $pdo->prepare('INSERT INTO evolution (timestamp, classe, type, auteur, cout) VALUES (:timestamp, :classe, :type, :auteur, :cout)');
+        $stmt3->execute(['timestamp' => $timeFin2, 'classe' => $classe, 'type' => $donnees_info['type'], 'auteur' => $id2, 'cout' => $donnees_info['cout']]);
+        $stmt3 = $pdo->prepare('DELETE FROM liste WHERE id = :id');
+        $stmt3->execute(['id' => $donnees_info['id']]);
         if ($id == $id2) {
             $nbE[$classe][$type] = $nbObjEvol;
             if (1 == $classe) {
@@ -415,27 +427,32 @@ if (isset($pages[$page])) {
 $temps31 = microtime_float();
 
 if (false == $_SESSION['logged']) {
-    $retour = mysql_query("SELECT COUNT(*) AS nbre_entrees FROM connectbisous WHERE ip='".$_SERVER['REMOTE_ADDR']."'");
-    $donnees = mysql_fetch_assoc($retour);
+    $stmt = $pdo->prepare('SELECT COUNT(*) AS nbre_entrees FROM connectbisous WHERE ip = :ip');
+    $stmt->execute(['ip' => $_SERVER['REMOTE_ADDR']]);
+    $donnees = $stmt->fetch();
     if (0 == $donnees['nbre_entrees']) { // L'ip ne se trouve pas dans la table, on va l'ajouter
-        mysql_query("INSERT INTO connectbisous VALUES('".$_SERVER['REMOTE_ADDR']."', ".time().', 2) ');
+        $stmt = $pdo->prepare('INSERT INTO connectbisous VALUES(:ip, :timestamp, 2)');
+        $stmt->execute(['ip' => $_SERVER['REMOTE_ADDR'], 'timestamp' => time()]);
     } else { // L'ip se trouve déjà dans la table, on met juste à jour le timestamp
-        mysql_query('UPDATE connectbisous SET timestamp='.time()." WHERE ip='".$_SERVER['REMOTE_ADDR']."'");
+        $stmt = $pdo->prepare('UPDATE connectbisous SET timestamp = :timestamp WHERE ip = :ip');
+        $stmt->execute(['timestamp' => time(), 'ip' => $_SERVER['REMOTE_ADDR']]);
     }
 }
 $temps32 = microtime_float();
 
 // ETAPE 2 : on supprime toutes les entrées dont le timestamp est plus vieux que 5 minutes
 $timestamp_5min = time() - 300;
-mysql_query('DELETE FROM connectbisous WHERE timestamp < '.$timestamp_5min);
+$stmt = $pdo->prepare('DELETE FROM connectbisous WHERE timestamp < :timestamp');
+$stmt->execute(['timestamp' => $timestamp_5min]);
 
 // Etape 3 : on demande maintenant le nombre de gens connectés.
 // Nombre de visiteurs
-$retour = mysql_query('SELECT COUNT(*) AS nbre_visit FROM connectbisous');
-$donnees = mysql_fetch_assoc($retour);
+$stmt = $pdo->query('SELECT COUNT(*) AS nbre_visit FROM connectbisous');
+$donnees = $stmt->fetch();
 $NbVisit = $donnees['nbre_visit'];
-$retour = mysql_query('SELECT COUNT(*) AS nb_membres FROM membres WHERE lastconnect>='.$timestamp_5min);
-$NbMemb = mysql_result($retour, 0, 'nb_membres');
+$stmt = $pdo->prepare('SELECT COUNT(*) AS nb_membres FROM membres WHERE lastconnect >= :lastconnect');
+$stmt->execute(['lastconnect' => $timestamp_5min]);
+$NbMemb = $stmt->fetchColumn();
 
 $temps14 = microtime_float();
 
@@ -553,7 +570,8 @@ $temps16 = microtime_float();
 
 <?php
     if (true == $_SESSION['logged']) {
-        mysql_query('UPDATE membres SET lastconnect='.time().", timestamp='".time()."' , amour='".$amour."' WHERE id='".$id."'");
+        $stmt = $pdo->prepare('UPDATE membres SET lastconnect = :lastconnect, timestamp = :timestamp, amour = :amour WHERE id = :id');
+        $stmt->execute(['lastconnect' => time(), 'timestamp' => time(), 'amour' => $amour, 'id' => $id]);
     }
 ?>
 

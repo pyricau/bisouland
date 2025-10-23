@@ -1,21 +1,26 @@
 <?php
 
 if (isset($inMainPage) && true == $inMainPage) {
+    $pdo = bd_connect();
+
     // ***************************************************************************
     // Gestion des attaques.
     // Phase d'aller :
-    $sql_info = mysql_query("SELECT finaller, auteur, cible FROM attaque WHERE finaller<='".time()."' AND finaller!=0");
-    while ($donnees_info = mysql_fetch_assoc($sql_info)) {
+    $sql_info = $pdo->query("SELECT finaller, auteur, cible FROM attaque WHERE finaller<='".time()."' AND finaller!=0");
+    while ($donnees_info = $sql_info->fetch()) {
         $idAuteur = $donnees_info['auteur'];
         $idCible = $donnees_info['cible'];
         $finaller = $donnees_info['finaller'];
-        mysql_query("UPDATE attaque SET finaller='0' WHERE auteur='".$idAuteur."'");
+        $stmt = $pdo->prepare('UPDATE attaque SET finaller = 0 WHERE auteur = :auteur');
+        $stmt->execute(['auteur' => $idAuteur]);
 
         // On indique que l'attaque a eu lieu.
-        mysql_query("INSERT INTO logatt VALUES($idAuteur, $idCible, $finaller)");
+        $stmt = $pdo->prepare('INSERT INTO logatt VALUES(:auteur, :cible, :timestamp)');
+        $stmt->execute(['auteur' => $idAuteur, 'cible' => $idCible, 'timestamp' => $finaller]);
         // Supprimer ceux vieux de plus de 12 heures.
         $timeAtt = time() - 43200;
-        mysql_query("DELETE FROM logatt WHERE timestamp<$timeAtt");
+        $stmt = $pdo->prepare('DELETE FROM logatt WHERE timestamp < :timestamp');
+        $stmt->execute(['timestamp' => $timeAtt]);
 
         /*
         Quelques notes :
@@ -31,8 +36,9 @@ if (isset($inMainPage) && true == $inMainPage) {
             Langue : baisers langoureux sont plus forts
         */
         // Infos attaquant :
-        $sql_info3 = mysql_query('SELECT bouche, smack, baiser, pelle, tech1, tech2, langue, score FROM membres WHERE id='.$idAuteur);
-        $donnees_info3 = mysql_fetch_assoc($sql_info3);
+        $stmt = $pdo->prepare('SELECT bouche, smack, baiser, pelle, tech1, tech2, langue, score FROM membres WHERE id = :id');
+        $stmt->execute(['id' => $idAuteur]);
+        $donnees_info3 = $stmt->fetch();
         $AttSmack = $donnees_info3['smack'];
         $AttBaiser = $donnees_info3['baiser'];
         $AttPelle = $donnees_info3['pelle'];
@@ -42,8 +48,9 @@ if (isset($inMainPage) && true == $inMainPage) {
         $AttLangue = $donnees_info3['langue'];
         $AttScore = $donnees_info3['score'];
 
-        $sql_info4 = mysql_query("SELECT coeur, timestamp, bouche, amour, smack, baiser, pelle, tech3, dent, langue, bloque, score FROM membres WHERE id='".$idCible."'");
-        $donnees_info4 = mysql_fetch_assoc($sql_info4);
+        $stmt = $pdo->prepare('SELECT coeur, timestamp, bouche, amour, smack, baiser, pelle, tech3, dent, langue, bloque, score FROM membres WHERE id = :id');
+        $stmt->execute(['id' => $idCible]);
+        $donnees_info4 = $stmt->fetch();
         $DefSmack = $donnees_info4['smack'];
         $DefBaiser = $donnees_info4['baiser'];
         $DefPelle = $donnees_info4['pelle'];
@@ -81,11 +88,14 @@ if (isset($inMainPage) && true == $inMainPage) {
             }
 
             // Attaque terminée, plus rien à voir.
-            mysql_query("DELETE FROM attaque WHERE auteur='".$idAuteur."'");
+            $stmt = $pdo->prepare('DELETE FROM attaque WHERE auteur = :auteur');
+            $stmt->execute(['auteur' => $idAuteur]);
             // Envoyer un MP pour signifier les résultats.
             // On supprime les unités.
-            mysql_query('UPDATE membres SET smack='.$AttSmack.', baiser='.$AttBaiser.', pelle='.$AttPelle.", bloque=0 WHERE id='".$idAuteur."'");
-            mysql_query('UPDATE membres SET smack='.$DefSmack.', baiser='.$DefBaiser.', pelle='.$DefPelle." WHERE id='".$idCible."'");
+            $stmt = $pdo->prepare('UPDATE membres SET smack = :smack, baiser = :baiser, pelle = :pelle, bloque = 0 WHERE id = :id');
+            $stmt->execute(['smack' => $AttSmack, 'baiser' => $AttBaiser, 'pelle' => $AttPelle, 'id' => $idAuteur]);
+            $stmt = $pdo->prepare('UPDATE membres SET smack = :smack, baiser = :baiser, pelle = :pelle WHERE id = :id');
+            $stmt->execute(['smack' => $DefSmack, 'baiser' => $DefBaiser, 'pelle' => $DefPelle, 'id' => $idCible]);
 
             AdminMP($idAuteur, 'Quel rateau !!', "Bouuhh, t'as perdu tout tes bisous !!
 			Tu n'as pas réussi à embrasser ton adversaire !!
@@ -122,8 +132,10 @@ if (isset($inMainPage) && true == $inMainPage) {
             }
 
             // Ca retourne, pas de blocage
-            mysql_query('UPDATE membres SET smack='.$AttSmack.', baiser='.$AttBaiser.', pelle='.$AttPelle.", WHERE id='".$idAuteur."'");
-            mysql_query('UPDATE membres SET smack='.$DefSmack.', baiser='.$DefBaiser.', pelle='.$DefPelle." WHERE id='".$idCible."'");
+            $stmt = $pdo->prepare('UPDATE membres SET smack = :smack, baiser = :baiser, pelle = :pelle WHERE id = :id');
+            $stmt->execute(['smack' => $AttSmack, 'baiser' => $AttBaiser, 'pelle' => $AttPelle, 'id' => $idAuteur]);
+            $stmt = $pdo->prepare('UPDATE membres SET smack = :smack, baiser = :baiser, pelle = :pelle WHERE id = :id');
+            $stmt->execute(['smack' => $DefSmack, 'baiser' => $DefBaiser, 'pelle' => $DefPelle, 'id' => $idCible]);
 
             AdminMP($idAuteur, 'Ex Aequo', "Egalité parfaite lors de ta dernière tentative.
 			Tu ne ramène pas de points d'amour !!
@@ -184,10 +196,13 @@ if (isset($inMainPage) && true == $inMainPage) {
             }
 
             // Ca retourne, pas de blocage
-            mysql_query('UPDATE membres SET smack='.$AttSmack.', baiser='.$AttBaiser.', pelle='.$AttPelle.' WHERE id='.$idAuteur);
-            mysql_query('UPDATE membres SET amour='.$DefAmour.' ,smack='.$DefSmack.', baiser='.$DefBaiser.', pelle='.$DefPelle.' WHERE id='.$idCible);
+            $stmt = $pdo->prepare('UPDATE membres SET smack = :smack, baiser = :baiser, pelle = :pelle WHERE id = :id');
+            $stmt->execute(['smack' => $AttSmack, 'baiser' => $AttBaiser, 'pelle' => $AttPelle, 'id' => $idAuteur]);
+            $stmt = $pdo->prepare('UPDATE membres SET amour = :amour, smack = :smack, baiser = :baiser, pelle = :pelle WHERE id = :id');
+            $stmt->execute(['amour' => $DefAmour, 'smack' => $DefSmack, 'baiser' => $DefBaiser, 'pelle' => $DefPelle, 'id' => $idCible]);
 
-            mysql_query('UPDATE attaque SET butin='.$butin.' WHERE auteur='.$idAuteur);
+            $stmt = $pdo->prepare('UPDATE attaque SET butin = :butin WHERE auteur = :auteur');
+            $stmt->execute(['butin' => $butin, 'auteur' => $idAuteur]);
 
             AdminMP($idAuteur, "Tu l'as embrassé !!", 'Bravo, tu as réussi à embrasser ton adversaire.
 			Tes bisous seront bientôt revenus près de toi.
@@ -212,17 +227,19 @@ if (isset($inMainPage) && true == $inMainPage) {
     }
 
     // Phase retour
-    $sql_info = mysql_query("SELECT auteur, butin FROM attaque WHERE finretour<='".time()."'");
-    while ($donnees_info = mysql_fetch_assoc($sql_info)) {
+    $sql_info = $pdo->query("SELECT auteur, butin FROM attaque WHERE finretour<='".time()."'");
+    while ($donnees_info = $sql_info->fetch()) {
         $idAuteur = $donnees_info['auteur'];
         $butinAuteur = $donnees_info['butin'];
-        mysql_query("DELETE FROM attaque WHERE auteur='".$idAuteur."'");
+        $stmt = $pdo->prepare('DELETE FROM attaque WHERE auteur = :auteur');
+        $stmt->execute(['auteur' => $idAuteur]);
 
         if ($idAuteur == $id && true == $_SESSION['logged']) {
             $AttAmour = $amour;
         } else {
-            $sql_info3 = mysql_query("SELECT amour FROM membres WHERE id='".$idAuteur."'");
-            $donnees_info3 = mysql_fetch_assoc($sql_info3);
+            $stmt = $pdo->prepare('SELECT amour FROM membres WHERE id = :id');
+            $stmt->execute(['id' => $idAuteur]);
+            $donnees_info3 = $stmt->fetch();
             $AttAmour = $donnees_info3['amour'];
         }
         // On fais pas de mise à jour du nb de points d'amour, pas besoin.
@@ -234,6 +251,7 @@ if (isset($inMainPage) && true == $inMainPage) {
             $joueurBloque = 0;
         }
         // Libérer l'auteur et ajouter butin
-        mysql_query('UPDATE membres SET bloque=0, amour='.$AttAmour." WHERE id='".$idAuteur."'");
+        $stmt = $pdo->prepare('UPDATE membres SET bloque = 0, amour = :amour WHERE id = :id');
+        $stmt->execute(['amour' => $AttAmour, 'id' => $idAuteur]);
     }
 }

@@ -1,10 +1,12 @@
 <h1>Recherche</h1>
 <?php
+$pdo = bd_connect();
 if (isset($_POST['recherche'])) {
     if (isset($_POST['nomCherche']) && !empty($_POST['nomCherche'])) {
-        $pseudoCherche = htmlentities(addslashes($_POST['nomCherche']));
-        $sql_info = mysql_query("SELECT id, pseudo, confirmation, nuage, lastconnect FROM membres WHERE pseudo='$pseudoCherche'");
-        if ($donnees = mysql_fetch_assoc($sql_info)) {
+        $pseudoCherche = htmlentities($_POST['nomCherche']);
+        $stmt = $pdo->prepare('SELECT id, pseudo, confirmation, nuage, lastconnect FROM membres WHERE pseudo = :pseudo');
+        $stmt->execute(['pseudo' => $pseudoCherche]);
+        if ($donnees = $stmt->fetch()) {
             $pseudoCherche = $donnees['pseudo'];
             if (1 == $donnees['confirmation']) {
                 $resultat = "<h2>$pseudoCherche joue bien sur BisouLand</h2>";

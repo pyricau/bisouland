@@ -33,22 +33,24 @@ header('Content-type: text/html; charset=UTF-8');
 
 <?php
     include '../phpincludes/bd.php';
-bd_connect();
+$pdo = bd_connect();
 
 // -----------------------------------------------------
 // Verification 1 : est-ce qu'on veut poster une news ?
 // -----------------------------------------------------
 
 if (isset($_POST['titre']) && isset($_POST['contenu'])) {
-    $titre = addslashes($_POST['titre']);
-    $contenu = addslashes($_POST['contenu']);
+    $titre = $_POST['titre'];
+    $contenu = $_POST['contenu'];
     // On verifie si c'est une modification de news ou pas
     if (-1 == $_POST['id_news']) {
         // Ce n'est pas une modification, on cree une nouvelle entree dans la table
-        mysql_query("INSERT INTO newsbisous VALUES('', '".$titre."', '".$contenu."', '".time()."','0')");
+        $stmt = $pdo->prepare('INSERT INTO newsbisous (titre, contenu, timestamp, timestamp_modification) VALUES(:titre, :contenu, :timestamp, 0)');
+        $stmt->execute(['titre' => $titre, 'contenu' => $contenu, 'timestamp' => time()]);
     } else {
         // C'est une modification, on met juste a jour le titre et le contenu
-        mysql_query("UPDATE newsbisous SET titre='".$titre."', contenu='".$contenu."', timestamp_modification='".time()."' WHERE id=".$_POST['id_news']);
+        $stmt = $pdo->prepare('UPDATE newsbisous SET titre = :titre, contenu = :contenu, timestamp_modification = :timestamp_modification WHERE id = :id');
+        $stmt->execute(['titre' => $titre, 'contenu' => $contenu, 'timestamp_modification' => time(), 'id' => $_POST['id_news']]);
     }
 }
 
@@ -58,7 +60,8 @@ if (isset($_POST['titre']) && isset($_POST['contenu'])) {
 
 if (isset($_GET['supprimer_news'])) { // Si on demande de supprimer une news
     // Alors on supprime la news correspondante
-    mysql_query('DELETE FROM newsbisous WHERE id='.$_GET['supprimer_news']);
+    $stmt = $pdo->prepare('DELETE FROM newsbisous WHERE id = :id');
+    $stmt->execute(['id' => $_GET['supprimer_news']]);
 }
 
 ?>
@@ -71,8 +74,8 @@ if (isset($_GET['supprimer_news'])) { // Si on demande de supprimer une news
 </tr>
 
 <?php
-$retour = mysql_query('SELECT * FROM newsbisous ORDER BY id DESC');
-while ($donnees = mysql_fetch_array($retour)) { // On fait une boucle pour lister les news
+$retour = $pdo->query('SELECT * FROM newsbisous ORDER BY id DESC');
+while ($donnees = $retour->fetch()) { // On fait une boucle pour lister les news
     ?>
 
 <tr>
@@ -84,8 +87,6 @@ while ($donnees = mysql_fetch_array($retour)) { // On fait une boucle pour liste
 
 <?php
 } // Fin de la boucle qui liste les news
-// On a fini de travailler, on ferme la connexion :
-mysql_close(); // Deconnexion de MySQL
 ?>
 </table>
 

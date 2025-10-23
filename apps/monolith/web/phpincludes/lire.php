@@ -1,16 +1,21 @@
 <?php
 
 if (true == $_SESSION['logged']) {
+    $pdo = bd_connect();
+
     if (isset($_GET['idmsg']) && !empty($_GET['idmsg'])) {
-        $idmsg = htmlentities(addslashes($_GET['idmsg']));
-        $retour = mysql_query("SELECT posteur, destin, message, timestamp, statut, titre FROM messages WHERE id='".$idmsg."'");
-        $donnees = mysql_fetch_assoc($retour);
+        $idmsg = htmlentities($_GET['idmsg']);
+        $stmt = $pdo->prepare('SELECT posteur, destin, message, timestamp, statut, titre FROM messages WHERE id = :id');
+        $stmt->execute(['id' => $idmsg]);
+        $donnees = $stmt->fetch();
         if ($donnees['destin'] == $_SESSION['id']) {
             if (0 == $donnees['statut']) {
-                mysql_query("UPDATE messages SET statut='1' WHERE id='".$idmsg."'");
+                $stmt2 = $pdo->prepare('UPDATE messages SET statut = 1 WHERE id = :id');
+                $stmt2->execute(['id' => $idmsg]);
             }
-            $retour = mysql_query("SELECT pseudo FROM membres WHERE id='".$donnees['posteur']."'");
-            $donnees2 = mysql_fetch_assoc($retour);
+            $stmt = $pdo->prepare('SELECT pseudo FROM membres WHERE id = :id');
+            $stmt->execute(['id' => $donnees['posteur']]);
+            $donnees2 = $stmt->fetch();
             $from = $donnees2['pseudo'];
 
             $objet = $donnees['titre'];

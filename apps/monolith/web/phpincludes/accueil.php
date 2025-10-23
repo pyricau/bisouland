@@ -55,9 +55,10 @@ if (true == $_SESSION['logged'] && 'admin' == $pseudo) {
         return $text;
     }
 
-$retour = mysql_query('SELECT * FROM newsbisous ORDER BY id DESC LIMIT 0, 5');
+$pdo = bd_connect();
+$stmt = $pdo->query('SELECT * FROM newsbisous ORDER BY id DESC LIMIT 0, 5');
 
-while ($donnees = mysql_fetch_array($retour)) {
+while ($donnees = $stmt->fetch(PDO::FETCH_ASSOC)) {
     ?>
 
 <div class="news">

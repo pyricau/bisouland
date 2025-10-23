@@ -116,43 +116,59 @@ function ExpoSeuil($a, $b, $val, $int = 0)
 
 function AdminMP($cible, $objet, $message, $lu = 0)
 {
-    $message = nl2br(addslashes($message));
-    $objet = addslashes($objet);
+    $pdo = bd_connect();
+    $message = nl2br($message);
 
-    $sql = mysql_query('SELECT COUNT(*) AS nbmsg FROM messages WHERE destin='.$cible);
-    if (mysql_result($sql, 0, 'nbmsg') >= 20) {
-        $Asuppr = mysql_result($sql, 0, 'nbmsg') - 19;
+    $stmt = $pdo->prepare('SELECT COUNT(*) AS nbmsg FROM messages WHERE destin = :destin');
+    $stmt->execute(['destin' => $cible]);
+    $nbmsg = $stmt->fetchColumn();
+    if ($nbmsg >= 20) {
+        $Asuppr = $nbmsg - 19;
         $date48 = time() - 172800;
-        mysql_query('DELETE FROM messages WHERE destin='.$cible." AND timestamp<=$date48 ORDER BY id LIMIT $Asuppr");
+        $stmt = $pdo->prepare('DELETE FROM messages WHERE destin = :destin AND timestamp <= :timestamp ORDER BY id LIMIT :limit');
+        $stmt->execute(['destin' => $cible, 'timestamp' => $date48, 'limit' => $Asuppr]);
     }
 
     $timestamp = time();
-    mysql_query(
+    $stmt = $pdo->prepare(
         'INSERT INTO messages'
         .' (posteur, destin, message, timestamp, statut, titre)'
-        ." VALUES(1, '{$cible}', '{$message}', '{$timestamp}', {$lu}, '{$objet}')"
+        .' VALUES(1, :destin, :message, :timestamp, :statut, :titre)'
     );
+    $stmt->execute(['destin' => $cible, 'message' => $message, 'timestamp' => $timestamp, 'statut' => $lu, 'titre' => $objet]);
 }
 
 function SupprimerCompte($idCompteSuppr)
 {
-    mysql_query("DELETE FROM membres WHERE id=$idCompteSuppr");
-    mysql_query("DELETE FROM messages WHERE destin=$idCompteSuppr");
-    mysql_query("DELETE FROM messages WHERE auteur=$idCompteSuppr");
-    mysql_query("DELETE FROM evolution WHERE auteur=$idCompteSuppr");
-    mysql_query("DELETE FROM liste WHERE auteur=$idCompteSuppr");
-    mysql_query("DELETE FROM logatt WHERE auteur=$idCompteSuppr");
+    $pdo = bd_connect();
+    $stmt = $pdo->prepare('DELETE FROM membres WHERE id = :id');
+    $stmt->execute(['id' => $idCompteSuppr]);
+    $stmt = $pdo->prepare('DELETE FROM messages WHERE destin = :destin');
+    $stmt->execute(['destin' => $idCompteSuppr]);
+    $stmt = $pdo->prepare('DELETE FROM messages WHERE auteur = :auteur');
+    $stmt->execute(['auteur' => $idCompteSuppr]);
+    $stmt = $pdo->prepare('DELETE FROM evolution WHERE auteur = :auteur');
+    $stmt->execute(['auteur' => $idCompteSuppr]);
+    $stmt = $pdo->prepare('DELETE FROM liste WHERE auteur = :auteur');
+    $stmt->execute(['auteur' => $idCompteSuppr]);
+    $stmt = $pdo->prepare('DELETE FROM logatt WHERE auteur = :auteur');
+    $stmt->execute(['auteur' => $idCompteSuppr]);
     // Attaques a gerer.
-    $sql_info = mysql_query('SELECT auteur FROM attaque WHERE cible='.$idCompteSuppr);
-    while ($donnees_info = mysql_fetch_assoc($sql_info)) {
-        mysql_query('UPDATE membres SET bloque=0 WHERE id='.$donnees_info['auteur']);
-        mysql_query('DELETE FROM attaque WHERE auteur='.$donnees_info['auteur']);
+    $stmt = $pdo->prepare('SELECT auteur FROM attaque WHERE cible = :cible');
+    $stmt->execute(['cible' => $idCompteSuppr]);
+    while ($donnees_info = $stmt->fetch()) {
+        $stmt2 = $pdo->prepare('UPDATE membres SET bloque = 0 WHERE id = :id');
+        $stmt2->execute(['id' => $donnees_info['auteur']]);
+        $stmt2 = $pdo->prepare('DELETE FROM attaque WHERE auteur = :auteur');
+        $stmt2->execute(['auteur' => $donnees_info['auteur']]);
         AdminMP($donnees_info['auteur'], 'Pas de chance', 'Ta cible vient de supprimer son compte.
 			Une prochaine fois, peut-etre...');
     }
-    $sql_info = mysql_query('SELECT cible FROM attaque WHERE auteur='.$idCompteSuppr);
-    if ($donnees_info = mysql_fetch_assoc($sql_info)) {
-        mysql_query('DELETE FROM attaque WHERE auteur='.$idCompteSuppr);
+    $stmt = $pdo->prepare('SELECT cible FROM attaque WHERE auteur = :auteur');
+    $stmt->execute(['auteur' => $idCompteSuppr]);
+    if ($donnees_info = $stmt->fetch()) {
+        $stmt2 = $pdo->prepare('DELETE FROM attaque WHERE auteur = :auteur');
+        $stmt2->execute(['auteur' => $idCompteSuppr]);
         AdminMP($donnees_info['cible'], 'Veinard !!', 'Tu as vraiment de la chance !!
 			Ton agresseur vient de supprimer son compte, tu peux donc dormir tranquille.');
     }
@@ -161,16 +177,21 @@ function SupprimerCompte($idCompteSuppr)
 // Presuppose que toutes les verifications ont ete faites.
 function ChangerMotPasse($idChange, $newMdp)
 {
+    $pdo = bd_connect();
     $newMdp = md5($newMdp);
-    mysql_query("UPDATE membres SET mdp='".$newMdp."' WHERE id='".$idChange."'");
+    $stmt = $pdo->prepare('UPDATE membres SET mdp = :mdp WHERE id = :id');
+    $stmt->execute(['mdp' => $newMdp, 'id' => $idChange]);
 }
 
 // Presuppose que toutes les verifications ont ete faites.
 function AjouterScore($idScore, $valeur)
 {
-    $sql_info = mysql_query('SELECT score FROM membres WHERE id='.$idScore);
-    $donnees_info = mysql_fetch_assoc($sql_info);
-    mysql_query('UPDATE membres SET score='.($donnees_info['score'] + $valeur).' WHERE id='.$idScore);
+    $pdo = bd_connect();
+    $stmt = $pdo->prepare('SELECT score FROM membres WHERE id = :id');
+    $stmt->execute(['id' => $idScore]);
+    $donnees_info = $stmt->fetch();
+    $stmt = $pdo->prepare('UPDATE membres SET score = :score WHERE id = :id');
+    $stmt->execute(['score' => $donnees_info['score'] + $valeur, 'id' => $idScore]);
 }
 
 function formaterNombre($nombre)
@@ -287,28 +308,32 @@ function coutAttaque($distance, $jambes)
 
 function GiveNewPosition($idJoueur)
 {
-    $sql_info = mysql_query('SELECT nombre FROM nuage WHERE id=1');
-    $donnees_info = mysql_fetch_assoc($sql_info);
+    $pdo = bd_connect();
+    $sql_info = $pdo->query('SELECT nombre FROM nuage WHERE id=1');
+    $donnees_info = $sql_info->fetch();
     $NbNuages = $donnees_info['nombre'];
 
-    $sql = mysql_query("SELECT COUNT(*) AS nb_pos FROM membres WHERE nuage=$NbNuages");
+    $stmt = $pdo->prepare('SELECT COUNT(*) AS nb_pos FROM membres WHERE nuage = :nuage');
+    $stmt->execute(['nuage' => $NbNuages]);
 
-    $nbPos = mysql_result($sql, 0, 'nb_pos');
+    $nbPos = $stmt->fetchColumn();
 
     // Neuf personnes par nuage max, lors de l'attribution.
     if ($nbPos > 8) {
         ++$NbNuages;
-        mysql_query("UPDATE nuage SET nombre=$NbNuages WHERE id=1");
+        $stmt = $pdo->prepare('UPDATE nuage SET nombre = :nombre WHERE id = 1');
+        $stmt->execute(['nombre' => $NbNuages]);
         $nbPos = 0;
     }
 
     if ($nbPos > 0) {
         $OccPos = [];
 
-        $sql_info = mysql_query("SELECT position FROM membres WHERE nuage=$NbNuages");
+        $stmt = $pdo->prepare('SELECT position FROM membres WHERE nuage = :nuage');
+        $stmt->execute(['nuage' => $NbNuages]);
         $i = 0;
         // On récupère les positions occupées.
-        while ($donnees_info = mysql_fetch_assoc($sql_info)) {
+        while ($donnees_info = $stmt->fetch()) {
             $OccPos[$i] = $donnees_info['position'];
             ++$i;
         }
@@ -334,5 +359,6 @@ function GiveNewPosition($idJoueur)
         $FinalPos = mt_rand(1, 16);
     }
     // On enregistre.
-    mysql_query("UPDATE membres SET nuage=$NbNuages, position=$FinalPos WHERE id=$idJoueur");
+    $stmt = $pdo->prepare('UPDATE membres SET nuage = :nuage, position = :position WHERE id = :id');
+    $stmt->execute(['nuage' => $NbNuages, 'position' => $FinalPos, 'id' => $idJoueur]);
 }

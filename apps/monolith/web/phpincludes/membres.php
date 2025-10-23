@@ -1,8 +1,9 @@
 <h1>Liste des joueurs</h1>
 <?php
-$sql = mysql_query("SELECT COUNT(*) AS nb_pseudo FROM membres WHERE confirmation='1'");
+$pdo = bd_connect();
+$sql = $pdo->query('SELECT COUNT(*) AS nb_pseudo FROM membres WHERE confirmation = 1');
 
-$total = mysql_result($sql, 0, 'nb_pseudo');
+$total = $sql->fetchColumn();
 
 echo 'Nombre de membres : '.$total.'<br /><br />';
 
@@ -25,7 +26,7 @@ if (isset($_GET['num'])) {
 // On calcule le numéro du premier message qu'on prend pour le LIMIT de MySQL
 $premier = ($num - 1) * $nombreParPage;
 
-$retour = mysql_query('SELECT id, pseudo, nuage, lastconnect FROM membres WHERE confirmation=1 ORDER BY id DESC LIMIT '.$premier.', '.$nombreParPage);
+$stmt = $pdo->query('SELECT id, pseudo, nuage, lastconnect FROM membres WHERE confirmation = 1 ORDER BY id DESC LIMIT '.(int) $premier.', '.(int) $nombreParPage);
 
 if ($nombreDePages > 1) {
     echo '<center>Page :';
@@ -40,7 +41,7 @@ if ($nombreDePages > 1) {
 }
 
 if (true == $_SESSION['logged']) {
-    while ($donnees = mysql_fetch_assoc($retour)) {
+    while ($donnees = $stmt->fetch()) {
         $donnees['pseudo'] = stripslashes($donnees['pseudo']);
         if ($donnees['lastconnect'] > time() - 300) {
             echo '<a class="bulle" style="cursor: default;" onclick="return false;" href=""><img src="images/on.png" alt="Connect&eacute;" title=""/><span>',$donnees['pseudo'],' est connect&eacute;</span></a> ';
@@ -53,7 +54,7 @@ if (true == $_SESSION['logged']) {
 		<br />';
     }
 } else {
-    while ($donnees = mysql_fetch_assoc($retour)) {
+    while ($donnees = $stmt->fetch()) {
         $donnees['pseudo'] = stripslashes($donnees['pseudo']);
         if ($donnees['lastconnect'] > time() - 300) {
             echo '<a class="bulle" style="cursor: default;" onclick="return false;" href=""><img src="images/on.png" alt="Connect&eacute;" title=""/><span>',$donnees['pseudo'],' est connect&eacute;</span></a> ';

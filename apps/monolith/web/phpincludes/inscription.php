@@ -1,14 +1,15 @@
 <?php
 
 if (false == $_SESSION['logged']) {
+    $pdo = bd_connect();
     $send = 0;
     $pseudo = '';
     $mdp = '';
     if (isset($_POST['inscription'])) {
         // Mesure de securite.
-        $pseudo = htmlentities(addslashes($_POST['Ipseudo']));
-        $mdp = htmlentities(addslashes($_POST['Imdp']));
-        $mdp2 = htmlentities(addslashes($_POST['Imdp2']));
+        $pseudo = htmlentities($_POST['Ipseudo']);
+        $mdp = htmlentities($_POST['Imdp']);
+        $mdp2 = htmlentities($_POST['Imdp2']);
         // Prevoir empecher de prendre un pseudo deje existant
         // Si les variables contenant le pseudo, le mot de passe existent et contiennent quelque chose.
         if (isset($_POST['Ipseudo'], $_POST['Imdp'], $_POST['Imdp2']) && !empty($_POST['Ipseudo']) && !empty($_POST['Imdp']) && !empty($_POST['Imdp2'])) {
@@ -21,11 +22,12 @@ if (false == $_SESSION['logged']) {
                     $mdp = htmlentities(addslashes($_POST['mdp']));*/
 
                     // La requete qui compte le nombre de pseudos
-                    $sql = mysql_query("SELECT COUNT(*) AS nb_pseudo FROM membres WHERE pseudo='".$pseudo."'");
+                    $stmt = $pdo->prepare('SELECT COUNT(*) AS nb_pseudo FROM membres WHERE pseudo = :pseudo');
+                    $stmt->execute(['pseudo' => $pseudo]);
 
                     // Verifie si le pseudo n'est pas deje pris.
                     if (
-                        0 == mysql_result($sql, 0, 'nb_pseudo')
+                        0 == $stmt->fetchColumn()
                         && 'BisouLand' != $pseudo
                     ) {
                         // Verifie que le pseudo est correct.
@@ -39,14 +41,12 @@ if (false == $_SESSION['logged']) {
                                     // Hashage du mot de passe avec md5().
                                     $hmdp = md5($mdp);
 
-                                    $result = mysql_query(
+                                    $stmt = $pdo->prepare(
                                         'INSERT INTO membres (pseudo, mdp, confirmation, timestamp, lastconnect, amour)'
-                                        ."VALUES ('{$pseudo}', '{$hmdp}', '1', ".time().', '.time().", '300')"
+                                        .' VALUES (:pseudo, :mdp, :confirmation, :timestamp, :lastconnect, :amour)'
                                     );
-                                    if (false === $result) {
-                                        echo 'Error: '.mysql_error();
-                                    }
-                                    $id = mysql_insert_id();
+                                    $stmt->execute(['pseudo' => $pseudo, 'mdp' => $hmdp, 'confirmation' => 1, 'timestamp' => time(), 'lastconnect' => time(), 'amour' => 300]);
+                                    $id = $pdo->lastInsertId();
 
                                     GiveNewPosition($id);
 

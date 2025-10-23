@@ -1,17 +1,21 @@
 <?php if (true == $_SESSION['logged']) {
+    $pdo = bd_connect();
+
     if (isset($_GET['Dnuage'], $_GET['Dpos']) && !empty($_GET['Dnuage']) && !empty($_GET['Dpos'])) {
-        $Dnuage = htmlentities(addslashes($_GET['Dnuage']));
-        $Dpos = htmlentities(addslashes($_GET['Dpos']));
+        $Dnuage = htmlentities($_GET['Dnuage']);
+        $Dpos = htmlentities($_GET['Dpos']);
         if ($nbE[0][5] > 0) {
-            $sql = mysql_query("SELECT id, oeil, score, pseudo FROM membres WHERE nuage=$Dnuage AND position=$Dpos");
-            if ($donnees = mysql_fetch_assoc($sql)) {
+            $stmt = $pdo->prepare('SELECT id, oeil, score, pseudo FROM membres WHERE nuage = :nuage AND position = :position');
+            $stmt->execute(['nuage' => $Dnuage, 'position' => $Dpos]);
+            if ($donnees = $stmt->fetch()) {
                 $Did = $donnees['id'];
                 $Doeil = $donnees['oeil'];
                 $scoreCible = $donnees['score'];
                 $pseudoCible = $donnees['pseudo'];
 
-                $sql = mysql_query('SELECT score, position, nuage, espion, oeil FROM membres WHERE id='.$id);
-                $donnees = mysql_fetch_assoc($sql);
+                $stmt = $pdo->prepare('SELECT score, position, nuage, espion, oeil FROM membres WHERE id = :id');
+                $stmt->execute(['id' => $id]);
+                $donnees = $stmt->fetch();
                 $scoreSource = $donnees['score'];
                 $positionSource = $donnees['position'];
                 $nuageSource = $donnees['nuage'];
@@ -48,8 +52,9 @@
 							';
                                 break;
                             default:
-                                $sql = mysql_query("SELECT amour, timestamp, oeil, smack, baiser, pelle, coeur FROM membres WHERE id=$Did");
-                                $donnees = mysql_fetch_assoc($sql);
+                                $stmt = $pdo->prepare('SELECT amour, timestamp, oeil, smack, baiser, pelle, coeur FROM membres WHERE id = :id');
+                                $stmt->execute(['id' => $Did]);
+                                $donnees = $stmt->fetch();
                         }
 
                         if ($lvlInfo >= 1) {

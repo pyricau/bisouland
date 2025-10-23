@@ -92,25 +92,31 @@ function checkall()
 
 <?php
 if (true == $_SESSION['logged']) {
+    $pdo = bd_connect();
+
     if (isset($_POST['supprimer'])) {
-        $idmsg = htmlentities(addslashes($_POST['supprimer']));
-        mysql_query('DELETE FROM messages WHERE id='.$idmsg.' AND destin='.$id);
+        $idmsg = htmlentities($_POST['supprimer']);
+        $stmt = $pdo->prepare('DELETE FROM messages WHERE id = :id AND destin = :destin');
+        $stmt->execute(['id' => $idmsg, 'destin' => $id]);
     } else {
         if (isset($_POST['supboite'])) {
             foreach ($_POST['supboite'] as $key => $value) {
-                $key = htmlentities(addslashes($key));
-                mysql_query('DELETE FROM messages WHERE id='.$key.' AND destin='.$id);
+                $key = htmlentities($key);
+                $stmt = $pdo->prepare('DELETE FROM messages WHERE id = :id AND destin = :destin');
+                $stmt->execute(['id' => $key, 'destin' => $id]);
             }
         }
     }
 
-    $sql = mysql_query('SELECT COUNT(*) AS nbmsg FROM messages WHERE destin='.$id);
-    $nbmsg = mysql_result($sql, 0, 'nbmsg');
+    $stmt = $pdo->prepare('SELECT COUNT(*) AS nbmsg FROM messages WHERE destin = :destin');
+    $stmt->execute(['destin' => $id]);
+    $nbmsg = $stmt->fetchColumn();
     if ($nbmsg > 20) {
         $nbmsg = 20;
     }
 
-    $retour = mysql_query("SELECT id, posteur, timestamp, statut, titre FROM messages WHERE destin='".$id."' ORDER BY timestamp DESC LIMIT 20");
+    $stmt = $pdo->prepare('SELECT id, posteur, timestamp, statut, titre FROM messages WHERE destin = :destin ORDER BY timestamp DESC LIMIT 20');
+    $stmt->execute(['destin' => $id]);
 
     ?>
 <h1>Messages</h1>
@@ -128,11 +134,12 @@ if (true == $_SESSION['logged']) {
 			</tr>
 <?php
         $i = 0;
-    while (($donnees = mysql_fetch_assoc($retour)) && $i < 20) {
+    while (($donnees = $stmt->fetch()) && $i < 20) {
         ++$i;
         // Suppression : bouton supprimer en bas, et checkbox //Ajouter bouton lu/non lu  //Max messages
-        $retour2 = mysql_query("SELECT pseudo FROM membres WHERE id='".$donnees['posteur']."'");
-        if (!$donnees2 = mysql_fetch_assoc($retour2)) {
+        $stmt2 = $pdo->prepare('SELECT pseudo FROM membres WHERE id = :id');
+        $stmt2->execute(['id' => $donnees['posteur']]);
+        if (!$donnees2 = $stmt2->fetch()) {
             $donnees2['pseudo'] = 'Supprim&eacute;';
         }
         ?>

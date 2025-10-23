@@ -8,7 +8,9 @@ env ?= test
 QA_SERVICE = app
 
 # Executables
+BENCHMARK = docker compose exec $(QA_SERVICE) php bin/benchmark.php
 COMPOSER = docker compose exec $(QA_SERVICE) composer
+PERFORMANCE = docker compose exec $(QA_SERVICE) php bin/performance.php
 PHP_CS_FIXER = docker compose exec $(QA_SERVICE) php vendor/bin/php-cs-fixer
 PHPSTAN = docker compose exec $(QA_SERVICE) php vendor/bin/phpstan
 PHPUNIT = docker compose exec $(QA_SERVICE) php vendor/bin/phpunit
@@ -52,7 +54,7 @@ cs-check: ## Checks CS with PHP-CS-Fixer (arg, eg `arg='../monolith/web'`)
 static-analysis: ## Static Analysis with phpstan (arg, eg `arg='../monolith/web'`)
 	@$(PHPSTAN) analyze $(arg)
 
-test: ## Runs the tests with PHPUnit (arg, eg `arg='./tests/Smoke'`)
+test: ## Runs the tests with PHPUnit (arg, eg `arg='./tests/Monolith/Smoke'`)
 	@$(PHPUNIT) $(arg)
 
 qa: ## Equivalent to cs-check
@@ -62,3 +64,28 @@ qa: ## Equivalent to cs-check
 
 cs-fix: ## Fixes CS with PHP-CS-Fixer (arg, eg `arg='../monolith/web'`)
 	@$(PHP_CS_FIXER) fix --verbose $(arg)
+
+## —— Performance 📊 ———————————————————————————————————————————————————————————
+## To measure the performance impact of a change, follow this workflow:
+## 1. run `make benchmark` (before your change)
+## 2. make your change (feature, refactoring, etc)
+## 3. run `make benchmark` (after your change)
+## 4. run `make performance-history` to see when runs happened
+## 5. run the suggested comparison command from the history output
+benchmark: ## Runs performance benchmark (arg, eg `arg='20'` for 20 iterations, default: 10)
+	@$(BENCHMARK) $(arg)
+
+performance: ## Runs performance script (arg, eg `arg='metrics:report --hours=24'`)
+	@$(PERFORMANCE) $(arg)
+
+benchmark-compare: ## Compares before/after performance (arg, eg `arg='--datetime=now --hours=2 --threshold=10'`, default: now with 1-hour window, 5% threshold)
+	@$(PERFORMANCE) metrics:compare $(arg)
+
+performance-history: ## Shows benchmark run history (arg, eg `arg='--days=7'` for last week)
+	@$(PERFORMANCE) metrics:history $(arg)
+
+performance-report: ## Shows performance report (arg, eg `arg='--hours=168'` for last week)
+	@$(PERFORMANCE) metrics:report $(arg)
+
+performance-cleanup: ## Cleans up old performance metrics (arg, eg `arg='--days=30'` to keep 30 days)
+	@$(PERFORMANCE) metrics:prune $(arg)

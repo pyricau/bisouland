@@ -42,7 +42,7 @@ Then follow these 2 small steps to configure it.
 
 #### Configuration
 
-For different environments, copy `.env` (eg into `.env.local`) and change its values:
+For local development, copy `.env` into `.env.local` and customize the values:
 
 ```bash
 # Database
@@ -53,6 +53,31 @@ DATABASE_NAME=skyswoon
 # MySQL root password (for Docker)
 MYSQL_ROOT_PASSWORD=root_password
 ```
+
+#### Running in Different Environments
+
+The project supports multiple environments through Docker Compose override files:
+
+- **Test** (default, uses `.env.test`):
+  ```bash
+  make up
+  make db-reset
+  ```
+
+- **Development**: Uses `.env` and `.env.local`
+  ```bash
+  make up env=dev
+  make db-reset env=dev
+  ```
+
+
+The same commands work for all environments - just pass the `env` parameter:
+- `make build env=test` - Build for test environment
+- `make up` - Start development environment
+- `make down env=test` - Stop test environment
+- `make bash env=test` - Open shell in test environment
+
+Note: The `env` parameter defaults to `test`. For development, explicitly use `env=prod`.
 
 #### Administration access
 

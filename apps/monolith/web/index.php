@@ -17,14 +17,27 @@ session_start();
 ob_start();
 
 include 'phpincludes/bd.php';
-$pdo = bd_connect();
-
 include 'phpincludes/fctIndex.php';
+require_once __DIR__.'/../src/Infrastructure/Monitoring/PerformanceRecorder.php';
+require_once __DIR__.'/../src/Infrastructure/Monitoring/PerformanceRecorder/NullPerformanceRecorder.php';
+require_once __DIR__.'/../src/Infrastructure/Monitoring/PerformanceRecorder/DatabasePerformanceRecorder.php';
 
-$inMainPage = true;
+use Bl\Infrastructure\Monitoring\PerformanceRecorder\DatabasePerformanceRecorder;
+use Bl\Infrastructure\Monitoring\PerformanceRecorder\NullPerformanceRecorder;
 
 // Mesures de temps pour évaluer le temps que met la page a se créer.
 $temps_debut = microtime_float();
+
+$pdo = bd_connect();
+
+// Initialize performance recorder
+$performanceRecorder = new NullPerformanceRecorder();
+$performanceRecordingEnabled = getenv('PERFORMANCE_RECORDING_ENABLED');
+if (!empty($performanceRecordingEnabled) && filter_var($performanceRecordingEnabled, \FILTER_VALIDATE_BOOLEAN)) {
+    $performanceRecorder = new DatabasePerformanceRecorder($pdo);
+}
+
+$inMainPage = true;
 
 // Si la variable $_SESSION['logged'] n'existe pas, on la créée, et on l'initialise a false
 if (!isset($_SESSION['logged'])) {
@@ -594,7 +607,12 @@ if ($NbMemb + $NbVisit > 1) {
 <p><?php
 $temps17 = microtime_float();
 $temps_fin = microtime_float();
-echo '<p class="Tpetit" >Page g&eacute;n&eacute;r&eacute;e en '.round($temps_fin - $temps_debut, 4).' secondes</p>';
+$totalTimeSeconds = $temps_fin - $temps_debut;
+echo '<p class="Tpetit" >Page g&eacute;n&eacute;r&eacute;e en '.round($totalTimeSeconds, 4).' secondes</p>';
+
+// Record performance metric (duration in milliseconds)
+$duration = $totalTimeSeconds * 1000;
+$performanceRecorder->record($page, $duration);
 if (true == $_SESSION['logged']) {
     /*
         echo 'Bench temporaire, ne pas tenir compte :<br />';

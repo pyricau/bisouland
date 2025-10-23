@@ -15,12 +15,18 @@
         "friendsofphp/php-cs-fixer": "^3.88.2",
         "larastan/larastan": "^3.7.2",
         "phpunit/phpunit": "^12.3.15",
+        "symfony/console": "^7.3",
         "symfony/dotenv": "^7.3.2",
         "symfony/http-client": "^7.3.4"
     },
     "config": {
         "bump-after-update": true,
         "sort-packages": true
+    },
+    "autoload": {
+        "psr-4": {
+            "Bl\\Qa\\": "src/"
+        }
     },
     "autoload-dev": {
         "psr-4": {

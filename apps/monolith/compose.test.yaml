@@ -1,0 +1,21 @@
+# compose.test.yaml
+# Docker Compose override file for test environment
+# Usage: docker compose -f compose.yaml -f compose.test.yaml up -d
+
+services:
+  web:
+    env_file:
+      - .env
+      - .env.test
+    environment:
+      DATABASE_HOST: ${DATABASE_HOST}
+      DATABASE_USER: ${DATABASE_USER}
+      DATABASE_PASSWORD: ${DATABASE_PASSWORD}
+      DATABASE_NAME: ${DATABASE_NAME}
+
+  db:
+    environment:
+      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
+      MYSQL_DATABASE: ${DATABASE_NAME}
+      MYSQL_USER: ${DATABASE_USER}
+      MYSQL_PASSWORD: ${DATABASE_PASSWORD}

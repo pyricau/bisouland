@@ -7,8 +7,12 @@ services:
       - "8080:80"
     volumes:
       - ./web:/var/www/html
+      - ./src:/var/www/src
     depends_on:
       - db
+    env_file:
+      - .env
+      - .env.local
     environment:
       DATABASE_HOST: ${DATABASE_HOST}
       DATABASE_USER: ${DATABASE_USER}

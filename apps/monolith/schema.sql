@@ -147,6 +147,17 @@ CREATE TABLE IF NOT EXISTS nuage (
 INSERT INTO nuage (id, nombre) VALUES (1, 1) ON DUPLICATE KEY UPDATE nombre=nombre;
 
 -- Insert a default admin user (password: admin, hashed with md5)
-INSERT INTO membres (pseudo, mdp, confirmation, timestamp, lastconnect) 
+INSERT INTO membres (pseudo, mdp, confirmation, timestamp, lastconnect)
 VALUES ('admin', '21232f297a57a5a743894a0e4a801fc3', 1, UNIX_TIMESTAMP(), UNIX_TIMESTAMP())
 ON DUPLICATE KEY UPDATE pseudo=pseudo;
+
+-- Performance metrics table
+-- Tracks server-side execution times for monitoring and optimization
+CREATE TABLE IF NOT EXISTS performance_metrics (
+    id INT PRIMARY KEY AUTO_INCREMENT,
+    timestamp INT NOT NULL,             -- Request timestamp
+    operation VARCHAR(50) NOT NULL,     -- Page/operation name (e.g., 'accueil', 'cerveau')
+    duration FLOAT NOT NULL,            -- Execution time in milliseconds
+    INDEX idx_operation_timestamp (operation, timestamp),
+    INDEX idx_timestamp (timestamp)
+);

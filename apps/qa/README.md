@@ -42,7 +42,7 @@ make test
 make test arg='--testdox'
 
 ### To just run Smoke tests:
-make test arg='./tests/Smoke'
+make test arg='./tests/Monolith/Smoke'
 
 # Run php-cs-fixer fix
 make cs-fix

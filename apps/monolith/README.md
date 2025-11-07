@@ -12,25 +12,29 @@ Requirements (LAMP stack):
 Use GNU Make to run the project's mundane commands:
 
 ```console
+# 📱 App related rules
+## First install / complete reset (Docker build, up, db-reset)
+make app-init
+
 # 🐳 Docker related rules
-## Build the Docker image
-make build
+## Build the Docker images
+make docker-build
 
 ## Start the services (eg database, message queue, etc)
-make up
+make docker-up
 
 ## Check the services logs
-make logs
+make docker-compose arg='logs --tail=0 --follow'
 
 ## Stop the services
-make down
+make docker-down
 
-## Open interactive shell in container
-make bash
+## Open a bash shell in the container
+make docker-bash
 
-# 🐘 Project related rules
-## Drops, Create and Imports database & schema
-make db-rest
+# ⛁ Database related rules
+## Drops, creates and imports database & schema
+make db-reset
 
 # Discover everything you can do
 make

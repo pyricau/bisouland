@@ -36,7 +36,7 @@ make db-rest
 make
 ```
 
-The website will then be available at: http://localhost:8080
+The website will then be available at: http://localhost:43000
 
 Then follow these 2 small steps to configure it.
 

@@ -30,6 +30,20 @@ The `apps` folder contains the different applications:
 * [QA](./apps/qa/README.md):
   tools to keep BisouLand on its toes
 
+## Port Convention
+
+BisouLand uses the `43YYX` port convention:
+
+* `43` = "love you" prefix (love = 4 letters, you = 3 letters)
+* `YY` = app identifier (`00` = monolith, `01` = qa, etc)
+* `X` = service type (0 = web server, 1 = database, etc.)
+
+For example:
+
+* `43000`: Monolith web server
+* `43001`: Monolith database
+* `43010`: QA web server
+
 ## Further documentation
 
 You can find more documentation at the following links:

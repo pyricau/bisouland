@@ -3,7 +3,9 @@ name: bisouland-qa
 services:
   app:
     build: .
-    command: php -S 0.0.0.0:8081
+    command: php -S 0.0.0.0:8080
+    ports:
+      - "43010:8080"
     volumes:
       # Mount current directory into container for QA tools and configs
       - .:/apps/qa

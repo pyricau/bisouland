@@ -43,9 +43,6 @@ return (new PhpCsFixer\Config())
                 // 'parameters', For PHP 8.0+
             ],
         ],
-        
-        // [Symfony:risky][PHP80Migration:risky] Disabled as the fixes break the following files:
-        'modernize_strpos' => false,
     ])
     ->setRiskyAllowed(true)
     ->setParallelConfig(ParallelConfigFactory::detect())

@@ -1,36 +1,44 @@
 # Quality Assurance
 
-This application makes sure SkySwoon follows the highest standards.
+This application makes sure BisouLand follows the highest standards.
 Or it will die trying.
 
 Use GNU Make to run the project's mundane commands:
 
 ```console
+# 📱 App related rules
+## First install / complete reset (docker build, up)
+## ⚠️ Make sure monolith is running first
+make app-init
+
+## Run full QA pipeline (dump, cs-check, static-analysis, test)
+make app-qa
+
 # 🐳 Docker related rules
-## Build the Docker image
-make build
+## Build the Docker images
+make docker-build
 
 ## Start the services (eg database, message queue, etc)
-make up
+make docker-up
 
 ## Check the services logs
-make logs
+make docker-compose arg='logs --tail=0 --follow'
 
 ## Stop the services
-make down
+make docker-down
 
-## Open interactive shell in container
-make bash
+## Open a bash shell in the container
+make docker-bash
 
-# 🐘 Project related rules
+# 🐘 PHP related rules
 ## Install dependencies
-make composer arg='install --optimize-autoloader'
-
-## Run php-cs-fixer (check), phpstan and phpunit
-make qa
+make composer-install
 
 ## To just run php-cs-fixer check
 make cs-check
+
+## To just run php-cs-fixer fix
+make cs-fix
 
 ## To just run phpstan
 make static-analysis
@@ -43,9 +51,6 @@ make test arg='--testdox'
 
 ### To just run Smoke tests:
 make test arg='./tests/Smoke'
-
-# Run php-cs-fixer fix
-make cs-fix
 
 # Discover everything you can do
 make

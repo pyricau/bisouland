@@ -1,6 +1,6 @@
 # Monolith
 
-The main (original) SkySwoon / Bisouland application.
+The main (original) BisouLand application.
 
 Requirements (LAMP stack):
 
@@ -12,31 +12,35 @@ Requirements (LAMP stack):
 Use GNU Make to run the project's mundane commands:
 
 ```console
+# 📱 App related rules
+## First install / complete reset (Docker build, up, db-reset)
+make app-init
+
 # 🐳 Docker related rules
-## Build the Docker image
-make build
+## Build the Docker images
+make docker-build
 
 ## Start the services (eg database, message queue, etc)
-make up
+make docker-up
 
 ## Check the services logs
-make logs
+make docker-compose arg='logs --tail=0 --follow'
 
 ## Stop the services
-make down
+make docker-down
 
-## Open interactive shell in container
-make bash
+## Open a bash shell in the container
+make docker-bash
 
-# 🐘 Project related rules
-## Drops, Create and Imports database & schema
-make db-rest
+# ⛁ Database related rules
+## Drops, creates and imports database & schema
+make db-reset
 
 # Discover everything you can do
 make
 ```
 
-The website will then be available at: http://localhost:8080
+The website will then be available at: http://localhost:43000
 
 Then follow these 2 small steps to configure it.
 
@@ -47,9 +51,9 @@ For different environments, copy `.env` (eg into `.env.local`) and change its va
 ```bash
 # Database
 DATABASE_HOST=db
-DATABASE_USER=skyswoon
-DATABASE_PASSWORD=skyswoon_pass
-DATABASE_NAME=skyswoon
+DATABASE_USER=bisouland
+DATABASE_PASSWORD=bisouland_pass
+DATABASE_NAME=bisouland
 # MySQL root password (for Docker)
 MYSQL_ROOT_PASSWORD=root_password
 ```

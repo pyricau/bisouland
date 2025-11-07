@@ -12,12 +12,13 @@ COMPOSER = docker compose exec $(QA_SERVICE) composer
 PHP_CS_FIXER = docker compose exec $(QA_SERVICE) php vendor/bin/php-cs-fixer
 PHPSTAN = docker compose exec $(QA_SERVICE) php vendor/bin/phpstan
 PHPUNIT = docker compose exec $(QA_SERVICE) php vendor/bin/phpunit
+SWISS_KNIFE = docker compose exec $(QA_SERVICE) php vendor/bin/swiss-knife
 
 # Misc
 .DEFAULT_GOAL = help
 .PHONY: *
 
-## —— 🎵 🐳 The Symfony Docker Makefile 🐳 🎵 ——————————————————————————————————
+## ——  💋 The BisouLand Makefile  ——————————————————————————————————————————————
 ## Based on https://github.com/dunglas/symfony-docker
 ## (arg) denotes the possibility to pass "arg=" parameter to the target
 ##     this allows to add command and options, example: make composer arg='dump --optimize'
@@ -27,27 +28,44 @@ help: ## Outputs this help screen
 	@grep -E '(^[a-zA-Z0-9\./_-]+:.*?##.*$$)|(^##)' $(MAKEFILE_LIST) | awk 'BEGIN {FS = ":.*?## "}{printf "\033[32m%-30s\033[0m %s\n", $$1, $$2}' | sed -e 's/\[32m##/[33m/'
 
 ## —— Docker 🐳 ————————————————————————————————————————————————————————————————
-build: ## Builds the Docker images
-	@docker compose build --pull
+docker: ## Runs Docker (arg, eg `arg='compose logs --tail=0 --follow'`)
+	@docker $(arg)
 
-up: ## Starts Docker Compose services, in detached mode (no logs)
+docker-compose: ## Runs Docker Compose (arg, eg `arg='logs --tail=0 --follow'`)
+	@docker compose $(arg)
+
+docker-init: ## Builds the Docker images and starts the services in detached mode (no logs)
+	@docker compose build --pull
 	@docker compose up --detach
 
-logs: ## Show live logs
-	@docker compose logs --tail=0 --follow
-
-down: ## Stops Docker Compose services
+docker-down: ## Stops the services
 	@docker compose down --remove-orphans
 
-bash: ## Connect to the container via bash so up and down arrows go to previous commands
+docker-bash: ## Opens a (bash) shell in the container
 	@docker compose exec $(QA_SERVICE) bash
 
-## —— Project 🐘 ———————————————————————————————————————————————————————————————
-composer: ## Runs Composer (arg, eg `arg='install --optimize-autoloader'`)
+## —— PHP 🐘 ———————————————————————————————————————————————————————————————————
+composer: ## Runs Composer (arg, eg `arg='outdated'`)
 	@$(COMPOSER) $(arg)
+
+composer-install: ## Install dependencies (arg, eg `arg='--no-dev'`)
+	@$(COMPOSER) install --optimize-autoloader $(arg)
+
+composer-update: ## Updates dependencies (arg, eg `arg='--no-dev'`)
+	@$(COMPOSER) update --optimize-autoloader $(arg)
+
+composer-dump: ## Dumps autoloader (arg, eg `arg='--classmap-authoritative'`)
+	@$(COMPOSER) dump-autoload --optimize --strict-psr --strict-ambiguous $(arg)
 
 cs-check: ## Checks CS with PHP-CS-Fixer (arg, eg `arg='../monolith/web'`)
 	@$(PHP_CS_FIXER) check --verbose $(arg)
+
+cs-fix: ## Fixes CS with Swiss Knife and PHP-CS-Fixer
+	@$(SWISS_KNIFE) namespace-to-psr-4 tests --namespace-root 'Bl\\Qa\\Tests\\'
+	@$(PHP_CS_FIXER) fix --verbose $(arg)
+
+swiss-knife: ## Automated refactorings with Swiss Knife (arg, eg `arg='namespace-to-psr-4 src --namespace-root \'App\\\''`)
+	@$(SWISS_KNIFE) $(arg)
 
 static-analysis: ## Static Analysis with phpstan (arg, eg `arg='../monolith/web'`)
 	@$(PHPSTAN) analyze $(arg)
@@ -55,10 +73,16 @@ static-analysis: ## Static Analysis with phpstan (arg, eg `arg='../monolith/web'
 test: ## Runs the tests with PHPUnit (arg, eg `arg='./tests/Smoke'`)
 	@$(PHPUNIT) $(arg)
 
-qa: ## Equivalent to cs-check
+## —— App 📱 ———————————————————————————————————————————————————————————————————
+app-init: ## First install / resetting (Docker build, up, etc)
+	@echo ''
+	@echo 'ℹ️ This will fail if monolith is not running'
+	@echo ''
+	@$(MAKE) docker-down
+	@$(MAKE) docker-init
+
+app-qa: ## Runs full QA pipeline (dump, cs-check, static-analysis, test)
+	@$(MAKE) composer-dump
 	@$(MAKE) cs-check
 	@$(MAKE) static-analysis
 	@$(MAKE) test
-
-cs-fix: ## Fixes CS with PHP-CS-Fixer (arg, eg `arg='../monolith/web'`)
-	@$(PHP_CS_FIXER) fix --verbose $(arg)

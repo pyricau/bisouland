@@ -1,6 +1,6 @@
 # Quality Assurance
 
-This application makes sure SkySwoon follows the highest standards.
+This application makes sure BisouLand follows the highest standards.
 Or it will die trying.
 
 Use GNU Make to run the project's mundane commands:

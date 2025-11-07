@@ -1,6 +1,6 @@
 # Monolith
 
-The main (original) SkySwoon / Bisouland application.
+The main (original) BisouLand application.
 
 Requirements (LAMP stack):
 
@@ -47,9 +47,9 @@ For different environments, copy `.env` (eg into `.env.local`) and change its va
 ```bash
 # Database
 DATABASE_HOST=db
-DATABASE_USER=skyswoon
-DATABASE_PASSWORD=skyswoon_pass
-DATABASE_NAME=skyswoon
+DATABASE_USER=bisouland
+DATABASE_PASSWORD=bisouland_pass
+DATABASE_NAME=bisouland
 # MySQL root password (for Docker)
 MYSQL_ROOT_PASSWORD=root_password
 ```

@@ -1,4 +1,4 @@
-name: skyswoon-qa
+name: bisouland-qa
 
 services:
   app:
@@ -11,8 +11,8 @@ services:
       - ../monolith:/apps/monolith
     networks:
       - default
-      - skyswoon-monolith_default
+      - bisouland-monolith_default
 
 networks:
-  skyswoon-monolith_default:
+  bisouland-monolith_default:
     external: true

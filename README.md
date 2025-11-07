@@ -1,7 +1,7 @@
-# SkySwoon (Bisouland)
+# BisouLand
 
-SkySwoon (originally Bisouland) is a free browser-based strategy game that turns
-romance into competitive gameplay.
+BisouLand is a free browser-based strategy game that turns romance into
+competitive gameplay.
 
 Join other players online as you strategically send **Kisses** to capture
 **Love Points** and dominate the clouds.
@@ -16,19 +16,19 @@ and quirky game design.
 
 ## Installation
 
-To install SkySwoon, first get its sources:
+To install BisouLand, first get its sources:
 
 ```console
-git clone git://github.com/pyricau/bisouland.git skyswoon
-cd skyswoon
+git clone git://github.com/pyricau/bisouland.git bisouland
+cd bisouland
 ```
 
 The `apps` folder contains the different applications:
 
 * [Monolith](./apps/monolith/README.md):
-  the main (original) SkySwoon / Bisouland application
+  the main (original) BisouLand application
 * [QA](./apps/qa/README.md):
-  tools to keep SkySwoon on its toes
+  tools to keep BisouLand on its toes
 
 ## Further documentation
 

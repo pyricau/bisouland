@@ -1,7 +1,7 @@
 -- Basic database schema for Bisouland
 -- This creates the minimum tables needed based on the PHP code analysis
 
-USE skyswoon;
+USE bisouland;
 
 -- Members table (main user table)
 -- Used throughout the application for user authentication and game state

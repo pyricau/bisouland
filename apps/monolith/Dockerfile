@@ -1,5 +1,5 @@
 # syntax=docker/dockerfile:1
-# Dockerfile for SkySwoon (2005 LAMP project)
+# Dockerfile for BisouLand (2005 LAMP project)
 # Uses PHP 5.6 with PDO MySQL driver
 
 FROM php:5.6-apache

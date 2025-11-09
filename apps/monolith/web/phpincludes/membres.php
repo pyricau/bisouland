@@ -42,7 +42,7 @@ if ($nombreDePages > 1) {
 
 if (true == $_SESSION['logged']) {
     while ($donnees = $stmt->fetch()) {
-        $donnees['pseudo'] = stripslashes($donnees['pseudo']);
+        $donnees['pseudo'] = stripslashes((string) $donnees['pseudo']);
         if ($donnees['lastconnect'] > time() - 300) {
             echo '<a class="bulle" style="cursor: default;" onclick="return false;" href=""><img src="images/on.png" alt="Connect&eacute;" title=""/><span>',$donnees['pseudo'],' est connect&eacute;</span></a> ';
         } else {
@@ -55,7 +55,7 @@ if (true == $_SESSION['logged']) {
     }
 } else {
     while ($donnees = $stmt->fetch()) {
-        $donnees['pseudo'] = stripslashes($donnees['pseudo']);
+        $donnees['pseudo'] = stripslashes((string) $donnees['pseudo']);
         if ($donnees['lastconnect'] > time() - 300) {
             echo '<a class="bulle" style="cursor: default;" onclick="return false;" href=""><img src="images/on.png" alt="Connect&eacute;" title=""/><span>',$donnees['pseudo'],' est connect&eacute;</span></a> ';
         } else {

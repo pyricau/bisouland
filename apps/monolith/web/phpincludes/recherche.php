@@ -3,7 +3,7 @@
 $pdo = bd_connect();
 if (isset($_POST['recherche'])) {
     if (isset($_POST['nomCherche']) && !empty($_POST['nomCherche'])) {
-        $pseudoCherche = htmlentities($_POST['nomCherche']);
+        $pseudoCherche = htmlentities((string) $_POST['nomCherche']);
         $stmt = $pdo->prepare('SELECT id, pseudo, confirmation, nuage, lastconnect FROM membres WHERE pseudo = :pseudo');
         $stmt->execute(['pseudo' => $pseudoCherche]);
         if ($donnees = $stmt->fetch()) {
@@ -26,7 +26,7 @@ if (isset($_POST['recherche'])) {
 					Tu peux t\'inscrire en cliquant <a href="inscription.html" title="S\'inscrire sur BisouLand">ici</a>.';
                 }
             } else {
-                if ('bisouland' == strtolower($pseudoCherche)) {
+                if ('bisouland' == strtolower((string) $pseudoCherche)) {
                     $resultat = 'BisouLand est notre maitre a tous';
                 } else {
                     $resultat = "Ce compte existe mais le joueur n'a pas confirme son inscription";

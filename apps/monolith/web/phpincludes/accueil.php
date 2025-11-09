@@ -39,18 +39,18 @@ if (true == $_SESSION['logged'] && 'admin' == $pseudo) {
             '<a href="', '</a>',
         ];
 
-        $text = htmlentities(stripslashes($text));
+        $text = htmlentities(stripslashes((string) $text));
 
         $text = str_replace($bbcode, $htmlcode, $text);
 
         $text = preg_replace('!\[color=(red|green|blue|yellow|purple|olive|white|black)\](.+)\[/color\]!isU', '<span style="color:$1">$2</span>', $text);
-        $text = preg_replace('!\[size=(xx-small|x-small|small|medium|large|x-large|xx-large)\](.+)\[/size\]!isU', '<span style="font-size:$1">$2</span>', $text);
+        $text = preg_replace('!\[size=(xx-small|x-small|small|medium|large|x-large|xx-large)\](.+)\[/size\]!isU', '<span style="font-size:$1">$2</span>', (string) $text);
 
-        $text = preg_replace('![^\"]http://[a-z0-9._/?&=-]+!i', '<a href="$0">$0</a>', $text);
+        $text = preg_replace('![^\"]http://[a-z0-9._/?&=-]+!i', '<a href="$0">$0</a>', (string) $text);
 
         $text = smileys($text);
 
-        $text = nl2br($text);
+        $text = nl2br((string) $text);
 
         return $text;
     }
@@ -63,7 +63,7 @@ while ($donnees = $stmt->fetch(PDO::FETCH_ASSOC)) {
 
 <div class="news">
     <h3>
-        <?php echo stripslashes($donnees['titre']); ?>
+        <?php echo stripslashes((string) $donnees['titre']); ?>
 	</h3>
 	<em>
         le <?php echo date('d/m/Y à H\hi', $donnees['timestamp']); ?></em>

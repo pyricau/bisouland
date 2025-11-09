@@ -4,7 +4,7 @@ if (true == $_SESSION['logged']) {
     $pdo = bd_connect();
 
     if (isset($_GET['idmsg']) && !empty($_GET['idmsg'])) {
-        $idmsg = htmlentities($_GET['idmsg']);
+        $idmsg = htmlentities((string) $_GET['idmsg']);
         $stmt = $pdo->prepare('SELECT posteur, destin, message, timestamp, statut, titre FROM messages WHERE id = :id');
         $stmt->execute(['id' => $idmsg]);
         $donnees = $stmt->fetch();
@@ -25,9 +25,9 @@ if (true == $_SESSION['logged']) {
 
 <a href="boite.html" title="Messages">Retour à la liste des messages</a>
 <br />
-<p>Auteur : <?php echo stripslashes($from); ?></p>
+<p>Auteur : <?php echo stripslashes((string) $from); ?></p>
 <p>Envoyé le <?php echo date('d/m/Y à H\hi', $dateEnvoie); ?></p>
-<p>Objet : <?php echo stripslashes($objet); ?></p>
+<p>Objet : <?php echo stripslashes((string) $objet); ?></p>
 Message :<br />
 <div class="message"><?php echo bbLow($message); ?></div>
 <form method="post" action="boite.html">

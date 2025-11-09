@@ -2,8 +2,8 @@
     $pdo = bd_connect();
 
     if (isset($_GET['Dnuage'], $_GET['Dpos']) && !empty($_GET['Dnuage']) && !empty($_GET['Dpos'])) {
-        $Dnuage = htmlentities($_GET['Dnuage']);
-        $Dpos = htmlentities($_GET['Dpos']);
+        $Dnuage = htmlentities((string) $_GET['Dnuage']);
+        $Dpos = htmlentities((string) $_GET['Dpos']);
         if ($nbE[0][5] > 0) {
             $stmt = $pdo->prepare('SELECT id, oeil, score, pseudo FROM membres WHERE nuage = :nuage AND position = :position');
             $stmt->execute(['nuage' => $Dnuage, 'position' => $Dpos]);

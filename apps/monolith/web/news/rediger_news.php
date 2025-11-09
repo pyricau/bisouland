@@ -32,7 +32,7 @@ if (isset($_GET['modifier_news'])) { // Si on demande de modifier une news
 
     // On place le titre et le contenu dans des variables simples
     $titre = $donnees['titre'];
-    $contenu = stripslashes($donnees['contenu']);
+    $contenu = stripslashes((string) $donnees['contenu']);
     $id_news = $donnees['id']; // Cette variable va servir pour se souvenir que c'est une modification
 } else { // C'est qu'on rédige une nouvelle news
     // Les variables $titre et $contenu sont vides, puisque c'est une nouvelle news

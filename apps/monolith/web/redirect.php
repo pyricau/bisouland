@@ -9,8 +9,8 @@ if (isset($_POST['connexion'])) {
     if (isset($_POST['pseudo'], $_POST['mdp']) && !empty($_POST['pseudo']) && !empty($_POST['mdp'])) {
         // Mesure de sécurité, notamment pour éviter les injections sql.
         // Le htmlentities évitera de le passer par la suite.
-        $pseudo = htmlentities($_POST['pseudo']);
-        $mdp = htmlentities($_POST['mdp']);
+        $pseudo = htmlentities((string) $_POST['pseudo']);
+        $mdp = htmlentities((string) $_POST['mdp']);
         // Hashage du mot de passe.
         $mdp = md5($mdp);
 

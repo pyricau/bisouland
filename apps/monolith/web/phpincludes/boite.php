@@ -95,13 +95,13 @@ if (true == $_SESSION['logged']) {
     $pdo = bd_connect();
 
     if (isset($_POST['supprimer'])) {
-        $idmsg = htmlentities($_POST['supprimer']);
+        $idmsg = htmlentities((string) $_POST['supprimer']);
         $stmt = $pdo->prepare('DELETE FROM messages WHERE id = :id AND destin = :destin');
         $stmt->execute(['id' => $idmsg, 'destin' => $id]);
     } else {
         if (isset($_POST['supboite'])) {
             foreach ($_POST['supboite'] as $key => $value) {
-                $key = htmlentities($key);
+                $key = htmlentities((string) $key);
                 $stmt = $pdo->prepare('DELETE FROM messages WHERE id = :id AND destin = :destin');
                 $stmt->execute(['id' => $key, 'destin' => $id]);
             }
@@ -148,9 +148,9 @@ if (true == $_SESSION['logged']) {
 				<td><?php if (0 == $donnees['statut']) {
                     echo '<a class="bulle" style="cursor: default;" onclick="return false;" href=""><img src="images/newmess.png" alt="Message non lu" title="" /><span>Message non lu</span></a>';
                 }?></td>
-				<td> <?php echo stripslashes($donnees2['pseudo']); ?> </td>
+				<td> <?php echo stripslashes((string) $donnees2['pseudo']); ?> </td>
 				<td>le <?php echo date('d/m/Y à H\hi', $donnees['timestamp']); ?></td>
-				<td><a href="<?php echo $donnees['id']; ?>.lire.html"><?php echo stripslashes($donnees['titre']); ?></a></td>
+				<td><a href="<?php echo $donnees['id']; ?>.lire.html"><?php echo stripslashes((string) $donnees['titre']); ?></a></td>
 			</tr>
 <?php
     }

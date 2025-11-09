@@ -39,8 +39,8 @@ if (isset($_POST['connexion'])) {
 
                     if (isset($_POST['auto'])) {
                         $timestamp_expire = time() + 30 * 24 * 3600;
-                        setcookie('pseudo', $pseudo, $timestamp_expire);
-                        setcookie('mdp', $mdp, $timestamp_expire);
+                        setcookie('pseudo', $pseudo, ['expires' => $timestamp_expire]);
+                        setcookie('mdp', $mdp, ['expires' => $timestamp_expire]);
                     }
 
                     // On supprime le membre non connecté du nombre de visiteurs :

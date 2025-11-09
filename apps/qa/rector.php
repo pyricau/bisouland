@@ -18,5 +18,5 @@ return RectorConfig::configure()
         __DIR__ . '/../monolith/web/smileys',
     ])
     ->withSets([
-        SetList::PHP_56,
+        SetList::PHP_70,
     ]);

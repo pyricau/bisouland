@@ -34,7 +34,7 @@
                         if ($max < 0) {
                             $max = 0;
                         }
-                        $lvlInfo = rand(0, $max);
+                        $lvlInfo = random_int(0, $max);
 
                         AdminMP($Did, "$pseudo t'a dévisagé", $pseudo." vient de te dévisager, et cherche peut-être à t'embrasser.");
 

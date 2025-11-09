@@ -82,9 +82,9 @@ if (isset($inMainPage) && true == $inMainPage) {
             $coeffBilan = $AttForce / $DefForce;
             // Si les bisous du défenseurs sont présent, donc qu'il n'attaque pas.
             if (0 == $DefBloque) {
-                $DefSmack = floor($DefSmack * (1 - $coeffBilan / rand(2, 10)));
-                $DefBaiser = floor($DefBaiser * (1 - $coeffBilan / rand(2, 10)));
-                $DefPelle = floor($DefPelle * (1 - $coeffBilan / rand(2, 10)));
+                $DefSmack = floor($DefSmack * (1 - $coeffBilan / random_int(2, 10)));
+                $DefBaiser = floor($DefBaiser * (1 - $coeffBilan / random_int(2, 10)));
+                $DefPelle = floor($DefPelle * (1 - $coeffBilan / random_int(2, 10)));
             }
 
             // Attaque terminée, plus rien à voir.
@@ -115,20 +115,20 @@ if (isset($inMainPage) && true == $inMainPage) {
             $addScore = 5000 * ($AttScore / $DefScore);
             AjouterScore($idCible, $addScore);
         } elseif (0 == $bilan) {
-            $AttSmack = floor($AttSmack * (1 - 1 / rand(2, 10)));
-            $AttBaiser = floor($AttBaiser * (1 - 1 / rand(2, 10)));
+            $AttSmack = floor($AttSmack * (1 - 1 / random_int(2, 10)));
+            $AttBaiser = floor($AttBaiser * (1 - 1 / random_int(2, 10)));
             // Gestion des dents, ca fait plutot mal...
             $dentsCoeff = $DefDent - $AttLangue;
             if ($dentsCoeff < 0) {
                 $dentsCoeff = 0;
             }
-            $AttPelle = floor($AttPelle * ((1 - 1 / rand(2, 10)) * (1 - 0.1 * $dentsCoeff)));
+            $AttPelle = floor($AttPelle * ((1 - 1 / random_int(2, 10)) * (1 - 0.1 * $dentsCoeff)));
 
             // Si les bisous du défenseurs sont présent, donc qu'il n'attaque pas.
             if (0 == $DefBloque) {
-                $DefSmack = floor($DefSmack * (1 - 1 / rand(2, 10)));
-                $DefBaiser = floor($DefBaiser * (1 - 1 / rand(2, 10)));
-                $DefPelle = floor($DefPelle * (1 - 1 / rand(2, 10)));
+                $DefSmack = floor($DefSmack * (1 - 1 / random_int(2, 10)));
+                $DefBaiser = floor($DefBaiser * (1 - 1 / random_int(2, 10)));
+                $DefPelle = floor($DefPelle * (1 - 1 / random_int(2, 10)));
             }
 
             // Ca retourne, pas de blocage
@@ -152,14 +152,14 @@ if (isset($inMainPage) && true == $inMainPage) {
 			');
         } elseif ($bilan > 0) {
             $coeffBilan = $DefForce / $AttForce;
-            $AttSmack = floor($AttSmack * (1 - $coeffBilan / rand(2, 10)));
-            $AttBaiser = floor($AttBaiser * (1 - $coeffBilan / rand(2, 10)));
+            $AttSmack = floor($AttSmack * (1 - $coeffBilan / random_int(2, 10)));
+            $AttBaiser = floor($AttBaiser * (1 - $coeffBilan / random_int(2, 10)));
             // Gestion des dents, ca fait plutot mal...
             $dentsCoeff = $DefDent - $AttLangue;
             if ($dentsCoeff < 0) {
                 $dentsCoeff = 0;
             }
-            $AttPelle = floor($AttPelle * ((1 - $coeffBilan / rand(2, 10)) * (1 - 0.1 * $dentsCoeff)));
+            $AttPelle = floor($AttPelle * ((1 - $coeffBilan / random_int(2, 10)) * (1 - 0.1 * $dentsCoeff)));
             // Si les bisous du défenseurs sont présent, donc qu'il n'attaque pas.
             if (0 == $DefBloque) {
                 $DefSmack = floor($DefSmack * ($coeffBilan / 2));

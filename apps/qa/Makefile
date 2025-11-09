@@ -12,6 +12,7 @@ COMPOSER = docker compose exec $(QA_SERVICE) composer
 PHP_CS_FIXER = docker compose exec $(QA_SERVICE) php vendor/bin/php-cs-fixer
 PHPSTAN = docker compose exec $(QA_SERVICE) php vendor/bin/phpstan
 PHPUNIT = docker compose exec $(QA_SERVICE) php vendor/bin/phpunit
+RECTOR = docker compose exec $(QA_SERVICE) php vendor/bin/rector
 SWISS_KNIFE = docker compose exec $(QA_SERVICE) php vendor/bin/swiss-knife
 
 # Misc
@@ -64,14 +65,20 @@ cs-fix: ## Fixes CS with Swiss Knife and PHP-CS-Fixer
 	@$(SWISS_KNIFE) namespace-to-psr-4 tests --namespace-root 'Bl\\Qa\\Tests\\'
 	@$(PHP_CS_FIXER) fix --verbose $(arg)
 
-swiss-knife: ## Automated refactorings with Swiss Knife (arg, eg `arg='namespace-to-psr-4 src --namespace-root \'App\\\''`)
-	@$(SWISS_KNIFE) $(arg)
-
 static-analysis: ## Static Analysis with phpstan (arg, eg `arg='../monolith/web'`)
 	@$(PHPSTAN) analyze $(arg)
 
+swiss-knife: ## Automated refactorings with Swiss Knife (arg, eg `arg='namespace-to-psr-4 src --namespace-root \'App\\\''`)
+	@$(SWISS_KNIFE) $(arg)
+
 test: ## Runs the tests with PHPUnit (arg, eg `arg='./tests/Smoke'`)
 	@$(PHPUNIT) $(arg)
+
+rector: ## Runs Rector (arg, eg `arg='list-rules'`)
+	@$(RECTOR) $(arg)
+
+rector-process: ## Automated refactorings with Rector (arg, eg `arg='--dry-run'`)
+	@$(RECTOR) process $(arg)
 
 ## —— App 📱 ———————————————————————————————————————————————————————————————————
 app-init: ## First install / resetting (Docker build, up, etc)

@@ -1,13 +1,8 @@
 # syntax=docker/dockerfile:1
 # Dockerfile for BisouLand (2005 LAMP project)
-# Uses PHP 5.6 with PDO MySQL driver
+# Uses PHP 8.4 with PDO MySQL driver
 
-FROM php:5.6-apache
-
-# Update sources.list to use archive repositories for Debian Stretch
-RUN sed -i 's/deb.debian.org/archive.debian.org/g' /etc/apt/sources.list \
-    && sed -i 's/security.debian.org/archive.debian.org/g' /etc/apt/sources.list \
-    && sed -i '/stretch-updates/d' /etc/apt/sources.list
+FROM php:8.4-apache
 
 # Install system dependencies and PHP extensions in single layer
 RUN docker-php-ext-install pdo pdo_mysql \

@@ -48,3 +48,40 @@ This means:
 * `Failed requests`: requests with connection errors, timeouts, or unexpected response properties
 * `Requests per second`: average total requests handled by the server per second
 * `Time per request`: average server response time
+
+## PDO benchmark (PHP 5.6)
+
+Homepage (Visitor - Not Logged In):
+
+* Complete requests:      10000
+* Failed requests:        0
+* Requests per second:    545.67 [#/sec] (mean)
+* Time per request:       1.833 [ms] (mean, across all concurrent requests)
+
+Brain Page (Logged In User):
+
+* Complete requests:      10000
+* Failed requests:        0
+* Requests per second:    313.88 [#/sec] (mean)
+* Time per request:       3.186 [ms] (mean, across all concurrent requests)
+
+## PHP 8.4
+
+Homepage (Visitor - Not Logged In):
+
+* Complete requests:      10000
+* Failed requests:        0
+* Requests per second:    594.49 [#/sec] (mean)
+* Time per request:       1.682 [ms] (mean, across all concurrent requests)
+
+Brain Page (Logged In User):
+
+* Complete requests:      10000
+* Failed requests:        0
+* Requests per second:    408.78 [#/sec] (mean)
+* Time per request:       2.446 [ms] (mean, across all concurrent requests)
+
+Compared to the PDO benchmark results:
+
+* Homepage: +8.9% improvement
+* Brain Page: +30.2% improvement

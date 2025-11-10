@@ -30,7 +30,7 @@ final readonly class TestKernel
         $pdo = new \PDO(
             "mysql:host={$dbHost};port={$dbPort};dbname={$dbName}",
             $dbUser,
-            $dbPass
+            $dbPass,
         );
 
         return new self(

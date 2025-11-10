@@ -114,7 +114,7 @@ function ExpoSeuil($a, $b, $val, $int = 0)
     }
 }
 
-function AdminMP($cible, $objet, $message, $lu = 0)
+function AdminMP($cible, $objet, $message, $lu = 0): void
 {
     $pdo = bd_connect();
     $message = nl2br((string) $message);
@@ -133,12 +133,12 @@ function AdminMP($cible, $objet, $message, $lu = 0)
     $stmt = $pdo->prepare(
         'INSERT INTO messages'
         .' (posteur, destin, message, timestamp, statut, titre)'
-        .' VALUES(1, :destin, :message, :timestamp, :statut, :titre)'
+        .' VALUES(1, :destin, :message, :timestamp, :statut, :titre)',
     );
     $stmt->execute(['destin' => $cible, 'message' => $message, 'timestamp' => $timestamp, 'statut' => $lu, 'titre' => $objet]);
 }
 
-function SupprimerCompte($idCompteSuppr)
+function SupprimerCompte($idCompteSuppr): void
 {
     $pdo = bd_connect();
     $stmt = $pdo->prepare('DELETE FROM membres WHERE id = :id');
@@ -175,7 +175,7 @@ function SupprimerCompte($idCompteSuppr)
 }
 
 // Presuppose que toutes les verifications ont ete faites.
-function ChangerMotPasse($idChange, $newMdp)
+function ChangerMotPasse($idChange, $newMdp): void
 {
     $pdo = bd_connect();
     $newMdp = md5((string) $newMdp);
@@ -184,7 +184,7 @@ function ChangerMotPasse($idChange, $newMdp)
 }
 
 // Presuppose que toutes les verifications ont ete faites.
-function AjouterScore($idScore, $valeur)
+function AjouterScore($idScore, $valeur): void
 {
     $pdo = bd_connect();
     $stmt = $pdo->prepare('SELECT score FROM membres WHERE id = :id');
@@ -306,7 +306,7 @@ function coutAttaque($distance, $jambes)
     return expo(100, 0.4, $exp, 1);
 }
 
-function GiveNewPosition($idJoueur)
+function GiveNewPosition($idJoueur): void
 {
     $pdo = bd_connect();
     $sql_info = $pdo->query('SELECT nombre FROM nuage WHERE id=1');
@@ -354,9 +354,9 @@ function GiveNewPosition($idJoueur)
 
         // On choisi une valeur au hasard.
 
-        $FinalPos = $FreePos[mt_rand(0, $nbLibre - 1)];
+        $FinalPos = $FreePos[random_int(0, $nbLibre - 1)];
     } else {
-        $FinalPos = mt_rand(1, 16);
+        $FinalPos = random_int(1, 16);
     }
     // On enregistre.
     $stmt = $pdo->prepare('UPDATE membres SET nuage = :nuage, position = :position WHERE id = :id');

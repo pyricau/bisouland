@@ -17,8 +17,8 @@ return (new PhpCsFixer\Config())
         // —— CS Rule Sets —————————————————————————————————————————————————————
         '@Symfony' => true,
         '@Symfony:risky' => true,
-        '@PHP7x1Migration' => true,
-        '@PHP7x1Migration:risky' => true,
+        '@PHP8x4Migration' => true,
+        '@PHP8x2Migration:risky' => true,
 
         // —— Overriden rules ——————————————————————————————————————————————————
 

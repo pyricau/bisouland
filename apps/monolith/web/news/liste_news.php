@@ -81,7 +81,7 @@ while ($donnees = $retour->fetch()) { // On fait une boucle pour lister les news
 <tr>
 <td><?php echo '<a href="rediger_news.php?modifier_news='.$donnees['id'].'">'; ?>Modifier</a></td>
 <td><?php echo '<a href="liste_news.php?supprimer_news='.$donnees['id'].'">'; ?>Supprimer</a></td>
-<td><?php echo stripslashes($donnees['titre']); ?></td>
+<td><?php echo stripslashes((string) $donnees['titre']); ?></td>
 <td><?php echo date('d/m/Y', $donnees['timestamp']); ?></td>
 </tr>
 

@@ -4,8 +4,8 @@ if (true == $_SESSION['logged']) {
     $pdo = bd_connect();
     if (isset($_POST['action'])) {
         $cout = 0;
-        $nuageCible = htmlentities($_POST['nuage']);
-        $positionCible = htmlentities($_POST['position']);
+        $nuageCible = htmlentities((string) $_POST['nuage']);
+        $positionCible = htmlentities((string) $_POST['position']);
 
         if (0 == $joueurBloque) {
             if (($nbE[1][0] + $nbE[1][1] + $nbE[1][2]) > 0) {
@@ -96,7 +96,7 @@ if (true == $_SESSION['logged']) {
         }
     } elseif (isset($_GET['nuage']) && isset($_GET['position'])) {
         $pdo = bd_connect();
-        $nuageCible = htmlentities($_GET['nuage']);
+        $nuageCible = htmlentities((string) $_GET['nuage']);
         $positionCible = htmlentities($_GET['position']);
 
         $nuageSource = $_SESSION['nuage'];

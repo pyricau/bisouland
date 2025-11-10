@@ -16,7 +16,7 @@ if (true == $_SESSION['logged']) {
     $NbNuages = $donnees_info['nombre'];
 
     if (isset($_POST['nuage']) && !empty($_POST['nuage'])) {
-        $nuageL = htmlentities($_POST['nuage']);
+        $nuageL = htmlentities((string) $_POST['nuage']);
         if ($nuageL < 1) {
             $nuageL = 1;
         }
@@ -24,7 +24,7 @@ if (true == $_SESSION['logged']) {
             $nuageL = $NbNuages;
         }
     } elseif (isset($_GET['nuage']) && !empty($_GET['nuage'])) {
-        $nuageL = htmlentities($_GET['nuage']);
+        $nuageL = htmlentities((string) $_GET['nuage']);
         if ($nuageL < 1) {
             $nuageL = 1;
         }
@@ -32,7 +32,7 @@ if (true == $_SESSION['logged']) {
             $nuageL = $NbNuages;
         }
     } elseif (isset($_GET['saut']) && !empty($_GET['saut']) && isset($_GET['sautnuage']) && !empty($_GET['sautnuage'])) {
-        $nuageL = htmlentities($_GET['sautnuage']);
+        $nuageL = htmlentities((string) $_GET['sautnuage']);
         if ($nuageL > 0) {
             if ($nuageL <= $NbNuages) {
                 if (isset($_GET['sautposition']) && !empty($_GET['sautposition'])) {
@@ -171,7 +171,7 @@ if ($scoreSource < 50) {
     $donnees_info = $stmt->fetch();
     for ($i = 1; $i <= 16; ++$i) {
         if ($donnees_info['position'] == $i) {
-            $donnees_info['pseudo'] = stripslashes($donnees_info['pseudo']);
+            $donnees_info['pseudo'] = stripslashes((string) $donnees_info['pseudo']);
             echo '<tr><td>',$i,'</td><td>';
             if ($donnees_info['lastconnect'] > time() - 300) {
                 echo '<a class="bulle" style="cursor: default;" onclick="return false;" href=""><img src="images/on.png" alt="Connect&eacute;" title=""/><span>'.$donnees_info['pseudo'].' est connect&eacute;</span></a> ';

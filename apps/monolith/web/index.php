@@ -32,7 +32,7 @@ if (!isset($_SESSION['logged'])) {
 }
 
 // Gestion de la page courante : Permet de désigner la page a inclure. Si la variable est vide, alors ca sera 'accueil'.
-$page = (!empty($_GET['page'])) ? htmlentities($_GET['page']) : 'accueil';
+$page = (!empty($_GET['page'])) ? htmlentities((string) $_GET['page']) : 'accueil';
 
 // Test en cas de suppression de compte
 // Il faudra a jouter ici une routine de suppression des messages dans la bdd.
@@ -50,7 +50,7 @@ if (false == $_SESSION['logged']) {
     $id = 0;
     // On récupère les cookies enregistrés chez l'utilisateurs, s'ils sont la.
     if (isset($_COOKIE['pseudo']) && isset($_COOKIE['mdp'])) {
-        $pseudo = htmlentities(addslashes($_COOKIE['pseudo']));
+        $pseudo = htmlentities(addslashes((string) $_COOKIE['pseudo']));
         $mdp = htmlentities(addslashes($_COOKIE['mdp']));
         // La requête qui compte le nombre de pseudos
         $stmt = $pdo->prepare('SELECT COUNT(*) AS nb_pseudo FROM membres WHERE pseudo = :pseudo');

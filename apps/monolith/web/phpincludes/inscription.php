@@ -7,15 +7,15 @@ if (false == $_SESSION['logged']) {
     $mdp = '';
     if (isset($_POST['inscription'])) {
         // Mesure de securite.
-        $pseudo = htmlentities($_POST['Ipseudo']);
-        $mdp = htmlentities($_POST['Imdp']);
-        $mdp2 = htmlentities($_POST['Imdp2']);
+        $pseudo = htmlentities((string) $_POST['Ipseudo']);
+        $mdp = htmlentities((string) $_POST['Imdp']);
+        $mdp2 = htmlentities((string) $_POST['Imdp2']);
         // Prevoir empecher de prendre un pseudo deje existant
         // Si les variables contenant le pseudo, le mot de passe existent et contiennent quelque chose.
         if (isset($_POST['Ipseudo'], $_POST['Imdp'], $_POST['Imdp2']) && !empty($_POST['Ipseudo']) && !empty($_POST['Imdp']) && !empty($_POST['Imdp2'])) {
             if ($mdp == $mdp2) {
                 // Si le pseudo est superieur e 3 caracteres et inferieur e 35 caracteres.
-                $taille = strlen(trim($_POST['Ipseudo']));
+                $taille = strlen(trim((string) $_POST['Ipseudo']));
                 if ($taille >= 4 && $taille <= 15) {
                     /* //Mesure de securite.
                     $pseudo = htmlentities(addslashes($_POST['pseudo']));
@@ -34,7 +34,7 @@ if (false == $_SESSION['logged']) {
                         if (preg_match("!^\w+$!", $pseudo)) {
                             if (preg_match("!^\w+$!", $mdp)) {
                                 // Si le mot de passe est superieur e 4 caracteres.
-                                $taille = strlen(trim($_POST['Imdp']));
+                                $taille = strlen(trim((string) $_POST['Imdp']));
                                 if ($taille >= 5 && $taille <= 15) {
                                     // On execute la requete qui enregistre un nouveau membre.
 

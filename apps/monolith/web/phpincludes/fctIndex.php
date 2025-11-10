@@ -117,7 +117,7 @@ function ExpoSeuil($a, $b, $val, $int = 0)
 function AdminMP($cible, $objet, $message, $lu = 0)
 {
     $pdo = bd_connect();
-    $message = nl2br($message);
+    $message = nl2br((string) $message);
 
     $stmt = $pdo->prepare('SELECT COUNT(*) AS nbmsg FROM messages WHERE destin = :destin');
     $stmt->execute(['destin' => $cible]);
@@ -178,7 +178,7 @@ function SupprimerCompte($idCompteSuppr)
 function ChangerMotPasse($idChange, $newMdp)
 {
     $pdo = bd_connect();
-    $newMdp = md5($newMdp);
+    $newMdp = md5((string) $newMdp);
     $stmt = $pdo->prepare('UPDATE membres SET mdp = :mdp WHERE id = :id');
     $stmt->execute(['mdp' => $newMdp, 'id' => $idChange]);
 }
@@ -279,12 +279,12 @@ function bbLow($text)
         '<em>', '</em>',
     ];
 
-    $text = stripslashes($text);
+    $text = stripslashes((string) $text);
 
     $text = str_replace($bbcode, $htmlcode, $text);
 
     $text = preg_replace('!\[color=(red|green|blue|yellow|purple|olive|white|black)\](.+)\[/color\]!isU', '<span style="color:$1">$2</span>', $text);
-    $text = preg_replace('!\[size=(xx-small|x-small|small|medium|large|x-large|xx-large)\](.+)\[/size\]!isU', '<span style="font-size:$1">$2</span>', $text);
+    $text = preg_replace('!\[size=(xx-small|x-small|small|medium|large|x-large|xx-large)\](.+)\[/size\]!isU', '<span style="font-size:$1">$2</span>', (string) $text);
 
     $text = smileys($text);
 

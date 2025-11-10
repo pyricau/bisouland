@@ -11,7 +11,7 @@ Il est désormais possible de changer de mot de passe, si l'ancien ne vous convi
         if (isset($_POST['changepswd'])) {
             if (isset($_POST['oldpass']) && isset($_POST['newpass']) && isset($_POST['newpass2']) && !empty($_POST['oldpass']) && !empty($_POST['newpass']) && !empty($_POST['newpass2'])) {
                 $oldmdp = $_POST['oldpass'];
-                $oldmdp = md5($oldmdp);
+                $oldmdp = md5((string) $oldmdp);
                 // Sélection des informations.
                 $stmt = $pdo->prepare('SELECT mdp FROM membres WHERE id = :id');
                 $stmt->execute(['id' => $id]);
@@ -22,7 +22,7 @@ Il est désormais possible de changer de mot de passe, si l'ancien ne vous convi
                     $newpass2 = $_POST['newpass2'];
                     if ($newpass == $newpass2) {
                         if (preg_match("!^\w+$!", $newpass)) {
-                            $newpass = htmlentities($_POST['newpass']); // Normalement inutile.
+                            $newpass = htmlentities((string) $_POST['newpass']); // Normalement inutile.
                             $taille = strlen(trim($newpass));
                             if ($taille >= 5 && $taille <= 15) {
                                 // On change le mot de passe.

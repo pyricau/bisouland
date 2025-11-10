@@ -11,7 +11,7 @@ Use GNU Make to run the project's mundane commands:
 ## ⚠️ Make sure monolith is running first
 make app-init
 
-## Run full QA pipeline (dump, cs-check, static-analysis, test)
+## Run full QA pipeline (composer-dump, cs-check, static-analysis, rector-process, test)
 make app-qa
 
 # 🐳 Docker related rules
@@ -42,6 +42,9 @@ make cs-fix
 
 ## To just run phpstan
 make static-analysis
+
+## To just run rector
+make rector-process
 
 ## To just run phpunit
 make test

@@ -12,7 +12,7 @@ final readonly class TestKernel
 {
     public static function make(): self
     {
-        (new Dotenv())->load(__DIR__.'/../../../monolith/.env');
+        new Dotenv()->load(__DIR__.'/../../../monolith/.env');
 
         $httpClient = HttpClient::createForBaseUri('http://web/');
 

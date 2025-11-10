@@ -14,8 +14,8 @@ if (isset($_SESSION['logged']) && true == $_SESSION['logged']) {
     // On modifie la valeur de $_SESSION['logged'], qui devient false.
     $_SESSION['logged'] = false;
     $timestamp_expire = time() - 1000;
-    setcookie('pseudo', '', $timestamp_expire);
-    setcookie('mdp', '', $timestamp_expire);
+    setcookie('pseudo', '', ['expires' => $timestamp_expire]);
+    setcookie('mdp', '', ['expires' => $timestamp_expire]);
 
     // Redirection.
     header('location: accueil.html');

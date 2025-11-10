@@ -8,9 +8,9 @@ $pdo = bd_connect();
 
 if (isset($_POST['message'])) {
     if (true == $_SESSION['logged']) {
-        $psd = htmlentities($_SESSION['pseudo']);
+        $psd = htmlentities((string) $_SESSION['pseudo']);
 
-        $message = htmlentities($_POST['message'], \ENT_QUOTES); // De même pour le message
+        $message = htmlentities((string) $_POST['message'], \ENT_QUOTES); // De même pour le message
         $message = nl2br($message); // Pour le message, comme on utilise un textarea, il faut remplacer les Entrées par des <br />
 
         // On peut enfin enregistrer :o)
@@ -106,7 +106,7 @@ while ($donnees = $reponse->fetch()) {
     ?>
 <div class=livreor>
 <?php
-        echo '<p><strong>'.stripslashes($donnees['pseudo']).'</strong> a &eacute;crit le '.date('d/m/Y à H\hi', $donnees['timestamp']).' :<br /><br />'.stripslashes($donnees['message']).'</p>';
+        echo '<p><strong>'.stripslashes((string) $donnees['pseudo']).'</strong> a &eacute;crit le '.date('d/m/Y à H\hi', $donnees['timestamp']).' :<br /><br />'.stripslashes((string) $donnees['message']).'</p>';
     ?>
 </div>
 <?php

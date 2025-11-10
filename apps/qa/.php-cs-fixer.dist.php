@@ -29,20 +29,6 @@ return (new PhpCsFixer\Config())
         // 1) ../monolith/web/phpincludes/bisous.php
         // 2) ../monolith/web/phpincludes/cerveau.php
         'statement_indentation' => false,
-
-        // —— Disabed rules due to PHP version compatibility ———————————————————
-
-        // [PER-CS2.0] Partially disabled due to PHP version constraints.
-        'trailing_comma_in_multiline' => [
-            'after_heredoc' => true,
-            'elements' => [
-                // 'arguments', For PHP 7.3+
-                // 'array_destructuring', For PHP 7.1+
-                'arrays',
-                // 'match', For PHP 8.0+
-                // 'parameters', For PHP 8.0+
-            ],
-        ],
     ])
     ->setRiskyAllowed(true)
     ->setParallelConfig(ParallelConfigFactory::detect())

@@ -133,7 +133,7 @@ function AdminMP($cible, $objet, $message, $lu = 0)
     $stmt = $pdo->prepare(
         'INSERT INTO messages'
         .' (posteur, destin, message, timestamp, statut, titre)'
-        .' VALUES(1, :destin, :message, :timestamp, :statut, :titre)'
+        .' VALUES(1, :destin, :message, :timestamp, :statut, :titre)',
     );
     $stmt->execute(['destin' => $cible, 'message' => $message, 'timestamp' => $timestamp, 'statut' => $lu, 'titre' => $objet]);
 }

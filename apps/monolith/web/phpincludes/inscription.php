@@ -43,7 +43,7 @@ if (false == $_SESSION['logged']) {
 
                                     $stmt = $pdo->prepare(
                                         'INSERT INTO membres (pseudo, mdp, confirmation, timestamp, lastconnect, amour)'
-                                        .' VALUES (:pseudo, :mdp, :confirmation, :timestamp, :lastconnect, :amour)'
+                                        .' VALUES (:pseudo, :mdp, :confirmation, :timestamp, :lastconnect, :amour)',
                                     );
                                     $stmt->execute(['pseudo' => $pseudo, 'mdp' => $hmdp, 'confirmation' => 1, 'timestamp' => time(), 'lastconnect' => time(), 'amour' => 300]);
                                     $id = $pdo->lastInsertId();

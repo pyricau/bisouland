@@ -97,7 +97,7 @@ final class SignUpTest extends TestCase
         SignUpNewPlayer::run(
             $username,
             $password,
-            $passwordConfirmation
+            $passwordConfirmation,
         );
 
         Assert::signedUpCount($username, 0);

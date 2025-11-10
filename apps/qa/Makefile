@@ -88,8 +88,9 @@ app-init: ## First install / resetting (Docker build, up, etc)
 	@$(MAKE) docker-down
 	@$(MAKE) docker-init
 
-app-qa: ## Runs full QA pipeline (dump, cs-check, static-analysis, test)
+app-qa: ## Runs full QA pipeline (composer-dump, cs-check, static-analysis, rector-process, test)
 	@$(MAKE) composer-dump
 	@$(MAKE) cs-check
 	@$(MAKE) static-analysis
+	@$(MAKE) rector-process
 	@$(MAKE) test

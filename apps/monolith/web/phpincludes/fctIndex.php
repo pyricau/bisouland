@@ -354,9 +354,9 @@ function GiveNewPosition($idJoueur)
 
         // On choisi une valeur au hasard.
 
-        $FinalPos = $FreePos[mt_rand(0, $nbLibre - 1)];
+        $FinalPos = $FreePos[random_int(0, $nbLibre - 1)];
     } else {
-        $FinalPos = mt_rand(1, 16);
+        $FinalPos = random_int(1, 16);
     }
     // On enregistre.
     $stmt = $pdo->prepare('UPDATE membres SET nuage = :nuage, position = :position WHERE id = :id');

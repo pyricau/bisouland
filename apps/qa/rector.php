@@ -2,20 +2,26 @@
 
 declare(strict_types=1);
 
+use Rector\Caching\ValueObject\Storage\FileCacheStorage;
 use Rector\Config\RectorConfig;
 use Rector\Set\ValueObject\SetList;
 
 return RectorConfig::configure()
+    ->withCache(
+        cacheClass: FileCacheStorage::class,
+        cacheDirectory: '/tmp/rector',
+    )
     ->withPaths([
-        __DIR__ . '/tests',
-        __DIR__ . '/../monolith/web',
+        __DIR__,
+        __DIR__.'/../monolith/web',
     ])
     ->withSkip([
-        __DIR__ . '/../monolith/web/ban',
-        __DIR__ . '/../monolith/web/images',
-        __DIR__ . '/../monolith/web/includes',
-        __DIR__ . '/../monolith/web/polices',
-        __DIR__ . '/../monolith/web/smileys',
+        __DIR__.'/vendor',
+        __DIR__.'/../monolith/web/ban',
+        __DIR__.'/../monolith/web/images',
+        __DIR__.'/../monolith/web/includes',
+        __DIR__.'/../monolith/web/polices',
+        __DIR__.'/../monolith/web/smileys',
     ])
     ->withSets([
         SetList::PHP_84,

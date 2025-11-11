@@ -6,7 +6,8 @@ function arbre($classe, $type, $nbE)
         if (0 == $type) {
             // coeur
             return true;
-        } elseif (1 == $type) {
+        }
+        if (1 == $type) {
             // bouche
             if ($nbE[0][0] >= 2) {
                 return true;

@@ -37,31 +37,29 @@ function strTemps($s)
     $h = 0;
     if ($s < 0) {
         return '0:00:00';
-    } else {
-        if ($s > 59) {
-            $m = floor($s / 60);
-            $s = $s - $m * 60;
-        }
-        if ($m > 59) {
-            $h = floor($m / 60);
-            $m = $m - $h * 60;
-        }
-        $ts = $s;
-        $tm = $m;
-        if ($s < 10) {
-            $ts = '0'.$s;
-        }
-        if ($m < 10) {
-            $tm = '0'.$m;
-        }
-        if ($h > 24) {
-            $d = floor($h / 24);
-            $h = $h - $d * 24;
-            $h = $d.' jours '.$h;
-        }
-
-        return $h.' h '.$tm.' min '.$ts.' sec';
     }
+    if ($s > 59) {
+        $m = floor($s / 60);
+        $s = $s - $m * 60;
+    }
+    if ($m > 59) {
+        $h = floor($m / 60);
+        $m = $m - $h * 60;
+    }
+    $ts = $s;
+    $tm = $m;
+    if ($s < 10) {
+        $ts = '0'.$s;
+    }
+    if ($m < 10) {
+        $tm = '0'.$m;
+    }
+    if ($h > 24) {
+        $d = floor($h / 24);
+        $h = $h - $d * 24;
+        $h = $d.' jours '.$h;
+    }
+    return $h.' h '.$tm.' min '.$ts.' sec';
 }
 
 // Renvoi un s (ou^$lettre) si le nombre est plus grand que 1, renvoi '' (ou $alt) sinon.
@@ -76,9 +74,8 @@ function expo($a, $b, $val, $int = 0)
 
     if (1 == $int) {
         return ceil($ret);
-    } else {
-        return $ret;
     }
+    return $ret;
 }
 
 // Val doit etre different de 0.
@@ -93,9 +90,8 @@ function InvExpo($a, $b, $val, $int = 0)
 
     if (1 == $int) {
         return ceil($ret);
-    } else {
-        return $ret;
     }
+    return $ret;
 }
 
 // Plus a augmente, plus on augmente la valeur de seuil
@@ -109,9 +105,8 @@ function ExpoSeuil($a, $b, $val, $int = 0)
 
     if (1 == $int) {
         return ceil($ret);
-    } else {
-        return $ret;
     }
+    return $ret;
 }
 
 function AdminMP($cible, $objet, $message, $lu = 0): void
@@ -221,9 +216,8 @@ function voirNiveau($scoreJoueur, $scoreAutre)
     }
     if ($scoreJoueur - $scoreAutre > 200) {
         return 1;
-    } else {
-        return 2;
     }
+    return 2;
 }
 
 // transformation de bbcode smiley en images.

@@ -24,5 +24,11 @@ return RectorConfig::configure()
         __DIR__.'/../monolith/web/smileys',
     ])
     ->withSets([
+        // PHP
         SetList::PHP_84,
+
+        // Core
+        SetList::NAMING,
+        SetList::PRIVATIZATION,
+        SetList::STRICT_BOOLEANS,
     ]);

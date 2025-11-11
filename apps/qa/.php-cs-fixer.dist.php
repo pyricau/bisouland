@@ -3,7 +3,7 @@
 use PhpCsFixer\Runner\Parallel\ParallelConfigFactory;
 
 $finder = (new PhpCsFixer\Finder())
-    ->in(__DIR__.'/tests')
+    ->in(__DIR__)
     ->in(__DIR__.'/../monolith/web')
     ->exclude('ban')
     ->exclude('images')
@@ -24,6 +24,18 @@ return (new PhpCsFixer\Config())
 
         // [Symfony] `snake_case` (phpspec style) instead of `camelCase`
         'php_unit_method_casing' => ['case' => 'snake_case'],
+
+        // [Symfony] adding `['elements']['parameters']` (Symfony doesn't have it)
+        'trailing_comma_in_multiline' => [
+            'after_heredoc' => true,
+            'elements' => [
+                'arguments',
+                'array_destructuring',
+                'arrays',
+                'match',
+                'parameters',
+            ],
+        ] ,
 
         // —— Disabed rules due to breaking changes ————————————————————————————
 

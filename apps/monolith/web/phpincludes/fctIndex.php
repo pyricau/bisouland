@@ -38,27 +38,33 @@ function strTemps($s)
     if ($s < 0) {
         return '0:00:00';
     }
+
     if ($s > 59) {
         $m = floor($s / 60);
         $s = $s - $m * 60;
     }
+
     if ($m > 59) {
         $h = floor($m / 60);
         $m = $m - $h * 60;
     }
+
     $ts = $s;
     $tm = $m;
     if ($s < 10) {
         $ts = '0'.$s;
     }
+
     if ($m < 10) {
         $tm = '0'.$m;
     }
+
     if ($h > 24) {
         $d = floor($h / 24);
         $h = $h - $d * 24;
         $h = $d.' jours '.$h;
     }
+
     return $h.' h '.$tm.' min '.$ts.' sec';
 }
 
@@ -75,6 +81,7 @@ function expo($a, $b, $val, $int = 0)
     if (1 == $int) {
         return ceil($ret);
     }
+
     return $ret;
 }
 
@@ -91,6 +98,7 @@ function InvExpo($a, $b, $val, $int = 0)
     if (1 == $int) {
         return ceil($ret);
     }
+
     return $ret;
 }
 
@@ -101,11 +109,13 @@ function ExpoSeuil($a, $b, $val, $int = 0)
     if ($val <= 0) {
         $val = 1;
     }
+
     $ret = $a * exp((-1 * $b) / $val);
 
     if (1 == $int) {
         return ceil($ret);
     }
+
     return $ret;
 }
 
@@ -159,6 +169,7 @@ function SupprimerCompte($idCompteSuppr): void
         AdminMP($donnees_info['auteur'], 'Pas de chance', 'Ta cible vient de supprimer son compte.
 			Une prochaine fois, peut-etre...');
     }
+
     $stmt = $pdo->prepare('SELECT cible FROM attaque WHERE auteur = :auteur');
     $stmt->execute(['auteur' => $idCompteSuppr]);
     if ($donnees_info = $stmt->fetch()) {
@@ -205,18 +216,23 @@ function voirNiveau($scoreJoueur, $scoreAutre)
     if ($scoreJoueur < 50) {
         return 2;
     }
+
     if ($scoreAutre < 50) {
         return 1;
     }
+
     if ($scoreJoueur > 2000 && $scoreAutre > 2000) {
         return 0;
     }
+
     if (abs($scoreAutre - $scoreJoueur) <= 200) {
         return 0;
     }
+
     if ($scoreJoueur - $scoreAutre > 200) {
         return 1;
     }
+
     return 2;
 }
 
@@ -352,6 +368,7 @@ function GiveNewPosition($idJoueur): void
     } else {
         $FinalPos = random_int(1, 16);
     }
+
     // On enregistre.
     $stmt = $pdo->prepare('UPDATE membres SET nuage = :nuage, position = :position WHERE id = :id');
     $stmt->execute(['nuage' => $NbNuages, 'position' => $FinalPos, 'id' => $idJoueur]);

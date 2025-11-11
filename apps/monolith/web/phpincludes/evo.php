@@ -7,6 +7,7 @@ function arbre($classe, $type, $nbE)
             // coeur
             return true;
         }
+
         if (1 == $type) {
             // bouche
             if ($nbE[0][0] >= 2) {
@@ -134,6 +135,7 @@ if (isset($inMainPage) && true == $inMainPage) {
         if (1 == $joueurBloque && 1 == $evolPage) {
             $stop = 1;
         }
+
         while ($i != $nbEvol && 0 == $stop) {
             if (isset($_POST[$Obj[$evolPage][$i]])) {
                 // Pour l'instant, on gère ca que pour les bisous.
@@ -155,6 +157,7 @@ if (isset($inMainPage) && true == $inMainPage) {
                     }
                 }
             }
+
             ++$i;
         }
     } else {
@@ -167,6 +170,7 @@ if (isset($inMainPage) && true == $inMainPage) {
         if (1 == $joueurBloque && 1 == $evolPage) {
             $stop = 1;
         }
+
         while ($i != $nbEvol && 0 == $stop) {
             // On regarde si on a demandé la construction, et si on a le nombre de points d'amour nécessaire.
             // (La vérification du nombre de points d'amour permet d'éviter les tricheurs --> sécurité)
@@ -186,6 +190,7 @@ if (isset($inMainPage) && true == $inMainPage) {
                     $evolution = $i;
                 }
             }
+
             // Incrémentation de la boucle.
             ++$i;
         }

@@ -44,7 +44,6 @@ return RectorConfig::configure()
         SetList::STRICT_BOOLEANS,
     ])
     ->withRules([
-        \Rector\CodingStyle\Rector\Encapsed\WrapEncapsedVariableInCurlyBracesRector::class,
-        // \Rector\CodingStyle\Rector\Stmt\NewlineAfterStatementRector::class,
+        \Rector\CodingStyle\Rector\Stmt\NewlineAfterStatementRector::class,
         // \Rector\CodingStyle\Rector\String_\SymplifyQuoteEscapeRector::class,
     ]);

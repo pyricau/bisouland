@@ -28,6 +28,7 @@ return RectorConfig::configure()
         SetList::PHP_84,
 
         // Core
+        // SetList::CODING_STYLE,
         SetList::EARLY_RETURN,
         SetList::INSTANCEOF,
         SetList::NAMING,
@@ -35,4 +36,9 @@ return RectorConfig::configure()
         SetList::STRICT_BOOLEANS,
     ])
     ->withRules([
+        \Rector\CodingStyle\Rector\Catch_\CatchExceptionNameMatchingTypeRector::class,
+        // \Rector\CodingStyle\Rector\Encapsed\EncapsedStringsToSprintfRector::class,
+        // \Rector\CodingStyle\Rector\Encapsed\WrapEncapsedVariableInCurlyBracesRector::class,
+        // \Rector\CodingStyle\Rector\Stmt\NewlineAfterStatementRector::class,
+        // \Rector\CodingStyle\Rector\String_\SymplifyQuoteEscapeRector::class,
     ]);

@@ -92,5 +92,5 @@ app-qa: ## Runs full QA pipeline (composer-dump, cs-check, static-analysis, rect
 	@$(MAKE) composer-dump
 	@$(MAKE) cs-check
 	@$(MAKE) static-analysis
-	@$(MAKE) rector-process --dry-run
+	@$(RECTOR) process --dry-run
 	@$(MAKE) test

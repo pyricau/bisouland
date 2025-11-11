@@ -11,7 +11,7 @@ function calculterAmour($CalAmour, $timeDiff, $LvlCoeur, $nb1, $nb2, $nb3)
     $CalAmour = calculerGenAmour($CalAmour, $timeDiff, $LvlCoeur, $nb1, $nb2, $nb3);
     // Cette fonction ajoute un frein sur le minima.
     if ($CalAmour < 0) {
-        $CalAmour = 0;
+        return 0;
     }
 
     return $CalAmour;

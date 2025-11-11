@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 use Rector\Caching\ValueObject\Storage\FileCacheStorage;
 use Rector\Config\RectorConfig;
+use Rector\EarlyReturn\Rector\StmtsAwareInterface\ReturnEarlyIfVariableRector;
 use Rector\Set\ValueObject\SetList;
 
 return RectorConfig::configure()
@@ -28,8 +29,12 @@ return RectorConfig::configure()
         SetList::PHP_84,
 
         // Core
+        // SetList::EARLY_RETURN,
         SetList::INSTANCEOF,
         SetList::NAMING,
         SetList::PRIVATIZATION,
         SetList::STRICT_BOOLEANS,
+    ])
+    ->withRules([
+        ReturnEarlyIfVariableRector::class,
     ]);

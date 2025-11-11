@@ -10,7 +10,7 @@ final class TestKernelSingleton
 
     public static function get(): TestKernel
     {
-        if (null === self::$testKernel) {
+        if (!self::$testKernel instanceof TestKernel) {
             self::$testKernel = TestKernel::make();
         }
 

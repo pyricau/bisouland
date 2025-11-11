@@ -10,7 +10,7 @@ final class GetLoggedInPlayer
 
     public static function run(): LoggedInPlayer
     {
-        if (null === self::$loggedInPlayer) {
+        if (!self::$loggedInPlayer instanceof LoggedInPlayer) {
             $player = SignUpNewPlayer::run();
             $sessionCookie = LogInPlayer::run($player);
 

@@ -28,6 +28,7 @@ return RectorConfig::configure()
         SetList::PHP_84,
 
         // Core
+        SetList::INSTANCEOF,
         SetList::NAMING,
         SetList::PRIVATIZATION,
         SetList::STRICT_BOOLEANS,

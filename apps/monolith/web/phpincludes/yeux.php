@@ -36,9 +36,9 @@
                         }
                         $lvlInfo = random_int(0, $max);
 
-                        AdminMP($Did, "$pseudo t'a dévisagé", $pseudo." vient de te dévisager, et cherche peut-être à t'embrasser.");
+                        AdminMP($Did, "{$pseudo} t'a dévisagé", $pseudo." vient de te dévisager, et cherche peut-être à t'embrasser.");
 
-                        $resultat = "Tu as dévisagé $pseudoCible";
+                        $resultat = "Tu as dévisagé {$pseudoCible}";
 
                         // Mise à jour des PA de l'espionné :
 
@@ -91,7 +91,7 @@
 
                         // Envoyer un MP si le user le désire.
                         if (1 == $espionSource && 0 != $lvlInfo) {
-                            AdminMP($id, "Tu as dévisagé $pseudoCible", $resDev, 1);
+                            AdminMP($id, "Tu as dévisagé {$pseudoCible}", $resDev, 1);
                         }
                     } else {
                         $resultat = "Tu n'as pas assez de Points d'Amour";

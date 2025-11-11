@@ -53,7 +53,7 @@ if ($donnees_info = $stmt->fetch()) {
             $finAll = 0;
             $stmt3 = $pdo->prepare('UPDATE attaque SET finaller = 0, finretour = :finretour WHERE auteur = :auteur');
             $stmt3->execute(['finretour' => $finRet, 'auteur' => $id]);
-            AdminMP($donnees_info['cible'], 'Attaque annulée', "$pseudo a annulé son attaque.
+            AdminMP($donnees_info['cible'], 'Attaque annulée', "{$pseudo} a annulé son attaque.
 			Tu n'es plus en danger.");
         }
     }

@@ -210,7 +210,7 @@ if (isset($inMainPage) && true == $inMainPage) {
 			Il te reste :
 			- ".$AttSmack.' smacks
 			- '.$AttBaiser." baisers
-			- $AttPelle baisers langoureux
+			- {$AttPelle} baisers langoureux
 			");
             AdminMP($idCible, "Tu t'es fait embrasser", "Tu n'as pas su résister à ses Bisous !!
 			Tu t'es fait prendre ".$butin." Points d'Amour !!

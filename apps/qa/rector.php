@@ -16,12 +16,20 @@ return RectorConfig::configure()
         __DIR__.'/../monolith/web',
     ])
     ->withSkip([
+        // —— Excluded paths ———————————————————————————————————————————————————
+        // Excluded folders
+        // [qa]
         __DIR__.'/vendor',
+        // [monolith]
         __DIR__.'/../monolith/web/ban',
         __DIR__.'/../monolith/web/images',
         __DIR__.'/../monolith/web/includes',
         __DIR__.'/../monolith/web/polices',
         __DIR__.'/../monolith/web/smileys',
+
+        // —— Excluded rules ———————————————————————————————————————————————————
+        // [CODING_STYLE]
+        \Rector\CodingStyle\Rector\Encapsed\EncapsedStringsToSprintfRector::class,
     ])
     ->withSets([
         // PHP
@@ -36,9 +44,7 @@ return RectorConfig::configure()
         SetList::STRICT_BOOLEANS,
     ])
     ->withRules([
-        \Rector\CodingStyle\Rector\Catch_\CatchExceptionNameMatchingTypeRector::class,
-        // \Rector\CodingStyle\Rector\Encapsed\EncapsedStringsToSprintfRector::class,
-        // \Rector\CodingStyle\Rector\Encapsed\WrapEncapsedVariableInCurlyBracesRector::class,
+        \Rector\CodingStyle\Rector\Encapsed\WrapEncapsedVariableInCurlyBracesRector::class,
         // \Rector\CodingStyle\Rector\Stmt\NewlineAfterStatementRector::class,
         // \Rector\CodingStyle\Rector\String_\SymplifyQuoteEscapeRector::class,
     ]);

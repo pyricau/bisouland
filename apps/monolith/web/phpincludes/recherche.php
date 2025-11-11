@@ -9,7 +9,7 @@ if (isset($_POST['recherche'])) {
         if ($donnees = $stmt->fetch()) {
             $pseudoCherche = $donnees['pseudo'];
             if (1 == $donnees['confirmation']) {
-                $resultat = "<h2>$pseudoCherche joue bien sur BisouLand</h2>";
+                $resultat = "<h2>{$pseudoCherche} joue bien sur BisouLand</h2>";
 
                 if ($donnees['lastconnect'] > time() - 300) {
                     $resultat .= '<a class="bulle" style="cursor: default;" onclick="return false;" href=""><img src="images/on.png" alt="Connect&eacute;" title=""/><span>'.$pseudoCherche.' est connect&eacute;</span></a> ';

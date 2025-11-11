@@ -162,6 +162,6 @@ if (true == $_SESSION['logged']) {
 
 <?php
 } else {
-    echo 'Tu n\'es pas connect&eacute; !!';
+    echo "Tu n'es pas connect&eacute; !!";
 }
 ?>

@@ -14,7 +14,7 @@ if (isset($_POST['recherche'])) {
                 if ($donnees['lastconnect'] > time() - 300) {
                     $resultat .= '<a class="bulle" style="cursor: default;" onclick="return false;" href=""><img src="images/on.png" alt="Connect&eacute;" title=""/><span>'.$pseudoCherche.' est connect&eacute;</span></a> ';
                 } else {
-                    $resultat .= '<a class="bulle" style="cursor: default;" onclick="return false;" href=""><img src="images/off.png" alt="Non connect&eacute;" title="" /><span>'.$pseudoCherche.' n\'est pas connect&eacute;</span></a> ';
+                    $resultat .= '<a class="bulle" style="cursor: default;" onclick="return false;" href=""><img src="images/off.png" alt="Non connect&eacute;" title="" /><span>'.$pseudoCherche." n'est pas connect&eacute;</span></a> ";
                 }
                 if (true == $_SESSION['logged']) {
                     $resultat .= '<a class="bulle" href="'.$donnees['nuage'].'.nuage.html" >

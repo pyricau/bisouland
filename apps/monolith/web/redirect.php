@@ -60,7 +60,7 @@ if (isset($_POST['connexion'])) {
                 header('location: connexion.html');
             }
         } else {
-            $_SESSION['errCon'] = 'Erreur : le pseudo n\'existe pas !';
+            $_SESSION['errCon'] = "Erreur : le pseudo n'existe pas !";
             $_SESSION['logged'] = false;
             header('location: connexion.html');
         }

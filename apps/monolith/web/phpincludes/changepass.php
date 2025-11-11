@@ -30,10 +30,10 @@ Il est désormais possible de changer de mot de passe, si l'ancien ne vous convi
                                 $resultat = 'Le mot de passe a été changé.<br /><br />
 							Il vous sera demandé lors de votre prochaine visite sur BisouLand.';
                             } else {
-                                $resultat = 'Le nouveau mot de passe n\'a pas la bonne longueur';
+                                $resultat = "Le nouveau mot de passe n'a pas la bonne longueur";
                             }
                         } else {
-                            $resultat = 'Le nouveau mot de passe n\'est pas valide.';
+                            $resultat = "Le nouveau mot de passe n'est pas valide.";
                         }
                     } else {
                         $resultat = 'Vous n\'avez pas rentré deux fois le même mot de passe.';

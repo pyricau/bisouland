@@ -124,7 +124,7 @@
                 }
             }
             if ($amour >= $cout) {
-                echo '<a href="'.$Dnuage.'.'.$Dpos.'.yeux.html">Dévisager '.$pseudoCible.' de nouveau (nécessite '.$cout.' Points d\'Amour)</a>';
+                echo '<a href="'.$Dnuage.'.'.$Dpos.'.yeux.html">Dévisager '.$pseudoCible.' de nouveau (nécessite '.$cout." Points d'Amour)</a>";
             }
         }
     } else {

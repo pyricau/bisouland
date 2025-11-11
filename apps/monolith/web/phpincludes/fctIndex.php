@@ -126,6 +126,7 @@ function AdminMP($cible, $objet, $message, $lu = 0): void
 
     $stmt = $pdo->prepare('SELECT COUNT(*) AS nbmsg FROM messages WHERE destin = :destin');
     $stmt->execute(['destin' => $cible]);
+
     $nbmsg = $stmt->fetchColumn();
     if ($nbmsg >= 20) {
         $Asuppr = $nbmsg - 19;
@@ -195,6 +196,7 @@ function AjouterScore($idScore, $valeur): void
     $pdo = bd_connect();
     $stmt = $pdo->prepare('SELECT score FROM membres WHERE id = :id');
     $stmt->execute(['id' => $idScore]);
+
     $donnees_info = $stmt->fetch();
     $stmt = $pdo->prepare('UPDATE membres SET score = :score WHERE id = :id');
     $stmt->execute(['score' => $donnees_info['score'] + $valeur, 'id' => $idScore]);

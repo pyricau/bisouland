@@ -72,7 +72,7 @@ if (true == $_SESSION['logged']) {
                                                 $resultat = "Il est impossible d'embrasser le même joueur plus de 3 fois toutes les 12 heures";
                                             }
                                         } else {
-                                            $resultat = 'Tu ne disposes pas d\'assez de Points d\'Amour';
+                                            $resultat = "Tu ne disposes pas d'assez de Points d'Amour";
                                         }
                                     } else {
                                         $resultat = 'Cette position est hors de portée';
@@ -88,7 +88,7 @@ if (true == $_SESSION['logged']) {
                 }
             }// Pas de bisous
             else {
-                $resultat = 'Tu ne disposes d\'aucun Bisou';
+                $resultat = "Tu ne disposes d'aucun Bisou";
             }
         }// joueur bloqué
         else {

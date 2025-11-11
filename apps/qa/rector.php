@@ -36,7 +36,7 @@ return RectorConfig::configure()
         SetList::PHP_84,
 
         // Core
-        // SetList::CODING_STYLE,
+        SetList::CODING_STYLE,
         SetList::EARLY_RETURN,
         SetList::INSTANCEOF,
         SetList::NAMING,
@@ -44,6 +44,4 @@ return RectorConfig::configure()
         SetList::STRICT_BOOLEANS,
     ])
     ->withRules([
-        \Rector\CodingStyle\Rector\Stmt\NewlineAfterStatementRector::class,
-        // \Rector\CodingStyle\Rector\String_\SymplifyQuoteEscapeRector::class,
     ]);

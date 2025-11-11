@@ -17,6 +17,6 @@ if (false == $_SESSION['logged']) {
 
 <?php
 } else {
-    echo 'T\'es dja connected !!';
+    echo "T'es dja connected !!";
 }
 ?>

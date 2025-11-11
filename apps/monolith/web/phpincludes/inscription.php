@@ -66,10 +66,10 @@ if (false == $_SESSION['logged']) {
                                     echo 'Erreur : le mot de passe est soit trop court, soit trop long !';
                                 }
                             } else {
-                                echo 'Erreur : le mot de passe n\'est pas valide !';
+                                echo "Erreur : le mot de passe n'est pas valide !";
                             }
                         } else {
-                            echo 'Erreur : le pseudo n\'est pas valide !';
+                            echo "Erreur : le pseudo n'est pas valide !";
                         }
                     } else {
                         echo 'Erreur : pseudo deje pris !';
@@ -78,7 +78,7 @@ if (false == $_SESSION['logged']) {
                     echo 'Erreur : le pseudo est soit trop court, soit trop long !';
                 }
             } else {
-                echo 'Erreur : Tu n\'as pas rentre deux fois le meme mot de passe !';
+                echo "Erreur : Tu n'as pas rentre deux fois le meme mot de passe !";
             }
         } else {
             echo 'Erreur : Pense e remplir tous les champs !';
@@ -95,6 +95,6 @@ if (false == $_SESSION['logged']) {
 <?php
     }
 } else {
-    echo 'Pfiou t\'es dja connected toi !!';
+    echo "Pfiou t'es dja connected toi !!";
 }
 ?>

@@ -46,7 +46,7 @@ if (true == $_SESSION['logged']) {
         if ($donnees['lastconnect'] > time() - 300) {
             echo '<a class="bulle" style="cursor: default;" onclick="return false;" href=""><img src="images/on.png" alt="Connect&eacute;" title=""/><span>',$donnees['pseudo'],' est connect&eacute;</span></a> ';
         } else {
-            echo '<a class="bulle" style="cursor: default;" onclick="return false;" href=""><img src="images/off.png" alt="Non connect&eacute;" title="" /><span>',$donnees['pseudo'],' n\'est pas connect&eacute;</span></a> ';
+            echo '<a class="bulle" style="cursor: default;" onclick="return false;" href=""><img src="images/off.png" alt="Non connect&eacute;" title="" /><span>',$donnees['pseudo']," n'est pas connect&eacute;</span></a> ";
         }
         echo '<a class="bulle" href="',$donnees['nuage'],'.nuage.html" >
 		<img src="images/nuage.png" title="" alt="" /><span>Nuage : ',$donnees['nuage'],'</span></a>
@@ -59,7 +59,7 @@ if (true == $_SESSION['logged']) {
         if ($donnees['lastconnect'] > time() - 300) {
             echo '<a class="bulle" style="cursor: default;" onclick="return false;" href=""><img src="images/on.png" alt="Connect&eacute;" title=""/><span>',$donnees['pseudo'],' est connect&eacute;</span></a> ';
         } else {
-            echo '<a class="bulle" style="cursor: default;" onclick="return false;" href=""><img src="images/off.png" alt="Non connect&eacute;" title="" /><span>',$donnees['pseudo'],' n\'est pas connect&eacute;</span></a> ';
+            echo '<a class="bulle" style="cursor: default;" onclick="return false;" href=""><img src="images/off.png" alt="Non connect&eacute;" title="" /><span>',$donnees['pseudo']," n'est pas connect&eacute;</span></a> ";
         }
         echo '<strong>'.$donnees['pseudo'].'</strong><br />';
     }

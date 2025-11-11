@@ -43,7 +43,7 @@ for ($i = 1; $i <= $nbTop; ++$i) {
     if ($donnees_info['lastconnect'] > time() - 300) {
         echo ' <a class="bulle" style="cursor: default;" onclick="return false;" href=""><img src="images/on.png" alt="Connect&eacute;" title=""/><span>',$donnees_info['pseudo'],' est connect&eacute;</span></a>';
     } else {
-        echo ' <a class="bulle" style="cursor: default;" onclick="return false;" href=""><img src="images/off.png" alt="Non connect&eacute;" title="" /><span>',$donnees_info['pseudo'],' n\'est pas connect&eacute;</span></a>';
+        echo ' <a class="bulle" style="cursor: default;" onclick="return false;" href=""><img src="images/off.png" alt="Non connect&eacute;" title="" /><span>',$donnees_info['pseudo']," n'est pas connect&eacute;</span></a>";
     }
 
     echo '</td>

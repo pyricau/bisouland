@@ -32,7 +32,7 @@ if (!isset($_SESSION['logged'])) {
 }
 
 // Gestion de la page courante : Permet de désigner la page a inclure. Si la variable est vide, alors ca sera 'accueil'.
-$page = (!empty($_GET['page'])) ? htmlentities((string) $_GET['page']) : 'accueil';
+$page = (empty($_GET['page'])) ? 'accueil' : htmlentities((string) $_GET['page']);
 
 // Test en cas de suppression de compte
 // Il faudra a jouter ici une routine de suppression des messages dans la bdd.

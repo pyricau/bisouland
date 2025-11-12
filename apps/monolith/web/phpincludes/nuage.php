@@ -260,7 +260,7 @@ if ($scoreSource < 50) {
                     $sautPossible = 1;
                 }
             }
-            if (1 == $sautPossible) {
+            if (1 === $sautPossible) {
                 $ajout = $nbE[0][0] + 0.3 * $nbE[1][0] + 0.6 * $nbE[1][1] + $nbE[1][2];
                 // A modifier si on modifie calcul amour, car il est basé dessu.
                 $cout = expo(20, 0.1, $ajout) * (1 + 0.1 * $distance);

@@ -28,6 +28,8 @@ return RectorConfig::configure()
         __DIR__.'/../monolith/web/smileys',
 
         // —— Excluded rules ———————————————————————————————————————————————————
+        // [CODE_QUALITY]
+        \Rector\CodeQuality\Rector\Assign\CombinedAssignRector::class,
         // [CODING_STYLE]
         \Rector\CodingStyle\Rector\Encapsed\EncapsedStringsToSprintfRector::class,
     ])
@@ -36,6 +38,7 @@ return RectorConfig::configure()
         SetList::PHP_84,
 
         // Core
+        // SetList::CODE_QUALITY,
         SetList::CODING_STYLE,
         SetList::EARLY_RETURN,
         SetList::INSTANCEOF,
@@ -44,4 +47,12 @@ return RectorConfig::configure()
         SetList::STRICT_BOOLEANS,
     ])
     ->withRules([
+        \Rector\CodeQuality\Rector\Equal\UseIdenticalOverEqualWithSameTypeRector::class,
+        // \Rector\CodeQuality\Rector\FuncCall\SortNamedParamRector::class,
+        // \Rector\CodeQuality\Rector\Identical\SimplifyBoolIdenticalTrueRector::class,
+        // \Rector\CodeQuality\Rector\If_\CombineIfRector::class,
+        // \Rector\CodeQuality\Rector\If_\ShortenElseIfRector::class,
+        // \Rector\CodeQuality\Rector\If_\SimplifyIfElseToTernaryRector::class,
+        // \Rector\CodeQuality\Rector\Include_\AbsolutizeRequireAndIncludePathRector::class,
+        // \Rector\CodeQuality\Rector\Ternary\SwitchNegatedTernaryRector::class,
     ]);

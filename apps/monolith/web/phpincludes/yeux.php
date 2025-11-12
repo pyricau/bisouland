@@ -90,7 +90,7 @@
                         }
 
                         // Envoyer un MP si le user le désire.
-                        if (1 == $espionSource && 0 != $lvlInfo) {
+                        if (1 == $espionSource && 0 !== $lvlInfo) {
                             AdminMP($id, "Tu as dévisagé {$pseudoCible}", $resDev, 1);
                         }
                     } else {

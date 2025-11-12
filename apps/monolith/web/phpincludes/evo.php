@@ -136,7 +136,7 @@ if (isset($inMainPage) && true == $inMainPage) {
             $stop = 1;
         }
 
-        while ($i != $nbEvol && 0 == $stop) {
+        while ($i != $nbEvol && 0 === $stop) {
             if (isset($_POST[$Obj[$evolPage][$i]])) {
                 // Pour l'instant, on gère ca que pour les bisous.
                 if (1 == $evolPage) {
@@ -171,7 +171,7 @@ if (isset($inMainPage) && true == $inMainPage) {
             $stop = 1;
         }
 
-        while ($i != $nbEvol && 0 == $stop) {
+        while ($i != $nbEvol && 0 === $stop) {
             // On regarde si on a demandé la construction, et si on a le nombre de points d'amour nécessaire.
             // (La vérification du nombre de points d'amour permet d'éviter les tricheurs --> sécurité)
             if (isset($_POST[$Obj[$evolPage][$i]]) && $amour >= $amourE[$evolPage][$i]) {

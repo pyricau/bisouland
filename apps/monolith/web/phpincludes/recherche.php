@@ -26,7 +26,7 @@ if (isset($_POST['recherche'])) {
 					Tu peux t\'inscrire en cliquant <a href="inscription.html" title="S\'inscrire sur BisouLand">ici</a>.';
                 }
             } else {
-                if ('bisouland' == strtolower((string) $pseudoCherche)) {
+                if ('bisouland' === strtolower((string) $pseudoCherche)) {
                     $resultat = 'BisouLand est notre maitre a tous';
                 } else {
                     $resultat = "Ce compte existe mais le joueur n'a pas confirme son inscription";

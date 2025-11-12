@@ -209,7 +209,7 @@ if (true == $_SESSION['logged']) {
 
     // Gestion des pages d'évolution (constructions).
     $evolPage = -1; // Valeur par défaut.
-    if ('construction' == $page) {
+    if ('construction' === $page) {
         $evolPage = 0;
         // Nom de chaque objet d'un type différent.
         $evolNom = [
@@ -251,7 +251,7 @@ if (true == $_SESSION['logged']) {
 				[ Chaque niveau augmente les chances d\'obtenir plus d\'information sur un joueur ]<br />
 				[ Chaque niveau diminue les chances d\'obtenir plus d\'information sur vous ]</span><br />',
         ];
-    } elseif ('bisous' == $page) {
+    } elseif ('bisous' === $page) {
         $evolPage = 1;
         // Nom de chaque objet d'un type différent.
         $evolNom = [
@@ -282,12 +282,12 @@ if (true == $_SESSION['logged']) {
                     }
                 }
             }
-            if (true == $modif) {
+            if (true === $modif) {
                 $stmt = $pdo->prepare('UPDATE membres SET '.$Obj[1][0].' = :smack, '.$Obj[1][1].' = :baiser, '.$Obj[1][2].' = :pelle WHERE id = :id');
                 $stmt->execute(['smack' => $nbE[1][0], 'baiser' => $nbE[1][1], 'pelle' => $nbE[1][2], 'id' => $id]);
             }
         }
-    } elseif ('techno' == $page) {
+    } elseif ('techno' === $page) {
         $evolPage = 2;
         // Nom de chaque objet d'un type différent.
         $evolNom = [
@@ -315,7 +315,7 @@ if (true == $_SESSION['logged']) {
     }
 
     // Si on veut acceder a une des pages d'évolution -> prétraitement.
-    if (-1 != $evolPage) {
+    if (-1 !== $evolPage) {
         include 'phpincludes/evo.php';
     }
 
@@ -608,7 +608,7 @@ if (true == $_SESSION['logged']) {
         echo 'T5 (include):       '.round($temps16 - $temps15, 4).'<br />';
         echo 'T6 (pied):          '.round($temps17 - $temps16, 4).'<br />';
         */
-    if (12 == $id && 'cerveau' == $page) {
+    if (12 == $id && 'cerveau' === $page) {
         echo '<form class="Tpetit" method="post" action="accueil.html"><input type="submit" name="UnAct" tabindex="100" value="Action Unique" /></form>';
     }
 }

@@ -137,23 +137,19 @@ if (isset($inMainPage) && true == $inMainPage) {
         }
 
         while ($i != $nbEvol && 0 === $stop) {
-            if (isset($_POST[$Obj[$evolPage][$i]])) {
-                // Pour l'instant, on gère ca que pour les bisous.
-                if (1 == $evolPage) {
-                    if ($amour >= $amourE[$evolPage][$i]) {
-                        if (arbre($evolPage, $i, $nbE)) {
-                            $stmt = $pdo->prepare('SELECT COUNT(*) AS nb_id FROM liste WHERE auteur = :auteur AND classe = 1');
-                            $stmt->execute(['auteur' => $id]);
-                            if ($stmt->fetchColumn() < 9) {
-                                // Construction demandée, donc on arrete la boucle.
-                                $stop = 1;
-                                $dureeConst = $tempsE[$evolPage][$i];
-                                $stmt2 = $pdo->prepare('INSERT INTO liste (duree, classe, type, auteur, cout) VALUES (:duree, :classe, :type, :auteur, :cout)');
-                                $stmt2->execute(['duree' => $dureeConst, 'classe' => $evolPage, 'type' => $i, 'auteur' => $id, 'cout' => $amourE[$evolPage][$i]]);
-                                // On décrémente le nombre de points d'amour.
-                                $amour -= $amourE[$evolPage][$i];
-                            }
-                        }
+            // Pour l'instant, on gère ca que pour les bisous.
+            if (isset($_POST[$Obj[$evolPage][$i]]) && 1 == $evolPage) {
+                if ($amour >= $amourE[$evolPage][$i] && arbre($evolPage, $i, $nbE)) {
+                    $stmt = $pdo->prepare('SELECT COUNT(*) AS nb_id FROM liste WHERE auteur = :auteur AND classe = 1');
+                    $stmt->execute(['auteur' => $id]);
+                    if ($stmt->fetchColumn() < 9) {
+                        // Construction demandée, donc on arrete la boucle.
+                        $stop = 1;
+                        $dureeConst = $tempsE[$evolPage][$i];
+                        $stmt2 = $pdo->prepare('INSERT INTO liste (duree, classe, type, auteur, cout) VALUES (:duree, :classe, :type, :auteur, :cout)');
+                        $stmt2->execute(['duree' => $dureeConst, 'classe' => $evolPage, 'type' => $i, 'auteur' => $id, 'cout' => $amourE[$evolPage][$i]]);
+                        // On décrémente le nombre de points d'amour.
+                        $amour -= $amourE[$evolPage][$i];
                     }
                 }
             }
@@ -174,21 +170,19 @@ if (isset($inMainPage) && true == $inMainPage) {
         while ($i != $nbEvol && 0 === $stop) {
             // On regarde si on a demandé la construction, et si on a le nombre de points d'amour nécessaire.
             // (La vérification du nombre de points d'amour permet d'éviter les tricheurs --> sécurité)
-            if (isset($_POST[$Obj[$evolPage][$i]]) && $amour >= $amourE[$evolPage][$i]) {
-                if (arbre($evolPage, $i, $nbE)) {
-                    // Construction demandée, donc on arrete la boucle.
-                    $stop = 1;
-                    // On calcule la date de fin du calcul (servira aussi pour l'affichage sur la page).
-                    $timeFin = time() + $tempsE[$evolPage][$i];
-                    // On met l'objet en construction. id non définie car auto incrémentée.
-                    // Le champ id est peut etre a supprimer.
-                    $stmt = $pdo->prepare('INSERT INTO evolution (timestamp, classe, type, auteur, cout) VALUES (:timestamp, :classe, :type, :auteur, :cout)');
-                    $stmt->execute(['timestamp' => $timeFin, 'classe' => $evolPage, 'type' => $i, 'auteur' => $id, 'cout' => $amourE[$evolPage][$i]]);
-                    // On décrémente le nombre de points d'amour.
-                    $amour -= $amourE[$evolPage][$i];
-                    // On indique le type du batiment en construction, pour l'affichage sur la page.
-                    $evolution = $i;
-                }
+            if (isset($_POST[$Obj[$evolPage][$i]]) && $amour >= $amourE[$evolPage][$i] && arbre($evolPage, $i, $nbE)) {
+                // Construction demandée, donc on arrete la boucle.
+                $stop = 1;
+                // On calcule la date de fin du calcul (servira aussi pour l'affichage sur la page).
+                $timeFin = time() + $tempsE[$evolPage][$i];
+                // On met l'objet en construction. id non définie car auto incrémentée.
+                // Le champ id est peut etre a supprimer.
+                $stmt = $pdo->prepare('INSERT INTO evolution (timestamp, classe, type, auteur, cout) VALUES (:timestamp, :classe, :type, :auteur, :cout)');
+                $stmt->execute(['timestamp' => $timeFin, 'classe' => $evolPage, 'type' => $i, 'auteur' => $id, 'cout' => $amourE[$evolPage][$i]]);
+                // On décrémente le nombre de points d'amour.
+                $amour -= $amourE[$evolPage][$i];
+                // On indique le type du batiment en construction, pour l'affichage sur la page.
+                $evolution = $i;
             }
 
             // Incrémentation de la boucle.

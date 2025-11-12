@@ -37,12 +37,10 @@ $page = (!empty($_GET['page'])) ? htmlentities((string) $_GET['page']) : 'accuei
 // Test en cas de suppression de compte
 // Il faudra a jouter ici une routine de suppression des messages dans la bdd.
 // Ainsi que des constructions en cours, etc..
-if (isset($_POST['suppr'])) {
-    if (true == $_SESSION['logged']) {
-        $_SESSION['pseudo'] = 'Not Connected';
-        $_SESSION['logged'] = false;
-        SupprimerCompte($_SESSION['id']);
-    }
+if (isset($_POST['suppr']) && true == $_SESSION['logged']) {
+    $_SESSION['pseudo'] = 'Not Connected';
+    $_SESSION['logged'] = false;
+    SupprimerCompte($_SESSION['id']);
 }
 
 // Si on est pas connecté.
@@ -63,18 +61,15 @@ if (false == $_SESSION['logged']) {
             $donnees_info = $stmt->fetch();
 
             // Si le mot de passe est le même (le mot de passe est déjà crypté).
-            if ($donnees_info['mdp'] == $mdp) {
-                // Si le compte est confirmé.
-                if (1 == $donnees_info['confirmation']) {
-                    // On modifie la variable qui nous indique que le membre est connecté.
-                    $_SESSION['logged'] = true;
-
-                    // On créé les variables contenant des informations sur le membre.
-                    $_SESSION['id'] = $donnees_info['id'];
-                    $_SESSION['pseudo'] = $pseudo;
-                    $_SESSION['nuage'] = $donnees_info['nuage'];
-                    $page = 'cerveau';
-                }
+            // Si le compte est confirmé.
+            if ($donnees_info['mdp'] == $mdp && 1 == $donnees_info['confirmation']) {
+                // On modifie la variable qui nous indique que le membre est connecté.
+                $_SESSION['logged'] = true;
+                // On créé les variables contenant des informations sur le membre.
+                $_SESSION['id'] = $donnees_info['id'];
+                $_SESSION['pseudo'] = $pseudo;
+                $_SESSION['nuage'] = $donnees_info['nuage'];
+                $page = 'cerveau';
             }
         }
     }
@@ -397,12 +392,10 @@ while ($donnees_info = $stmt->fetch()) {
             }
         }
     } else {
-        if ($id == $id2) {
-            if ($evolPage == $classe) {
-                $nbE[$classe][$type] = $nbObjEvol;
-                // Permet a la page de savoir qu'il n'y a plus de construction en cours (pour l'affichage).
-                $evolution = -1;
-            }
+        if ($id == $id2 && $evolPage == $classe) {
+            $nbE[$classe][$type] = $nbObjEvol;
+            // Permet a la page de savoir qu'il n'y a plus de construction en cours (pour l'affichage).
+            $evolution = -1;
         }
     }
 }
@@ -595,22 +588,20 @@ if ($NbMemb + $NbVisit > 1) {
 $temps17 = microtime_float();
 $temps_fin = microtime_float();
 echo '<p class="Tpetit" >Page g&eacute;n&eacute;r&eacute;e en '.round($temps_fin - $temps_debut, 4).' secondes</p>';
-if (true == $_SESSION['logged']) {
-    /*
-        echo 'Bench temporaire, ne pas tenir compte :<br />';
-        echo 'T1 (compte):        '.round($temps12 - $temps11, 4).'<br />';
-        echo 'T2 (constructions): '.round($temps13 - $temps12, 4).'<br />';
-        echo 'T3 (pages+nb):      '.round($temps14 - $temps13, 4).'<br />';
-        echo 'T31 :               '.round($temps31 - $temps13, 4).'<br />';
-        echo 'T32 :               '.round($temps32 - $temps31, 4).'<br />';
-        echo 'T33 :               '.round($temps14 - $temps32, 4).'<br />';
-        echo 'T4 (tete):          '.round($temps15 - $temps14, 4).'<br />';
-        echo 'T5 (include):       '.round($temps16 - $temps15, 4).'<br />';
-        echo 'T6 (pied):          '.round($temps17 - $temps16, 4).'<br />';
-        */
-    if (12 == $id && 'cerveau' === $page) {
-        echo '<form class="Tpetit" method="post" action="accueil.html"><input type="submit" name="UnAct" tabindex="100" value="Action Unique" /></form>';
-    }
+/*
+echo 'Bench temporaire, ne pas tenir compte :<br />';
+echo 'T1 (compte):        '.round($temps12 - $temps11, 4).'<br />';
+echo 'T2 (constructions): '.round($temps13 - $temps12, 4).'<br />';
+echo 'T3 (pages+nb):      '.round($temps14 - $temps13, 4).'<br />';
+echo 'T31 :               '.round($temps31 - $temps13, 4).'<br />';
+echo 'T32 :               '.round($temps32 - $temps31, 4).'<br />';
+echo 'T33 :               '.round($temps14 - $temps32, 4).'<br />';
+echo 'T4 (tete):          '.round($temps15 - $temps14, 4).'<br />';
+echo 'T5 (include):       '.round($temps16 - $temps15, 4).'<br />';
+echo 'T6 (pied):          '.round($temps17 - $temps16, 4).'<br />';
+*/
+if (true == $_SESSION['logged'] && (12 == $id && 'cerveau' === $page)) {
+    echo '<form class="Tpetit" method="post" action="accueil.html"><input type="submit" name="UnAct" tabindex="100" value="Action Unique" /></form>';
 }
 ?>
 </p>

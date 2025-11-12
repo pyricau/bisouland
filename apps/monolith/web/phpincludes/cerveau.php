@@ -47,15 +47,13 @@ if ($donnees_info = $stmt->fetch()) {
     $finRet = $donnees_info['finretour'];
     $butinPris = $donnees_info['butin'];
 
-    if (isset($_POST['cancelAttaque'])) {
-        if (0 != $finAll) {
-            $finRet = (2 * time() + $finRet - 2 * $finAll);
-            $finAll = 0;
-            $stmt3 = $pdo->prepare('UPDATE attaque SET finaller = 0, finretour = :finretour WHERE auteur = :auteur');
-            $stmt3->execute(['finretour' => $finRet, 'auteur' => $id]);
-            AdminMP($donnees_info['cible'], 'Attaque annulée', "{$pseudo} a annulé son attaque.
+    if (isset($_POST['cancelAttaque']) && 0 != $finAll) {
+        $finRet = (2 * time() + $finRet - 2 * $finAll);
+        $finAll = 0;
+        $stmt3 = $pdo->prepare('UPDATE attaque SET finaller = 0, finretour = :finretour WHERE auteur = :auteur');
+        $stmt3->execute(['finretour' => $finRet, 'auteur' => $id]);
+        AdminMP($donnees_info['cible'], 'Attaque annulée', "{$pseudo} a annulé son attaque.
 			Tu n'es plus en danger.");
-        }
     }
 
     if (0 != $finAll) {

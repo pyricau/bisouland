@@ -40,7 +40,7 @@ return RectorConfig::configure()
         // Core
         SetList::CODE_QUALITY,
         SetList::CODING_STYLE,
-        // SetList::DEAD_CODE,
+        SetList::DEAD_CODE,
         SetList::EARLY_RETURN,
         SetList::INSTANCEOF,
         SetList::NAMING,
@@ -48,5 +48,4 @@ return RectorConfig::configure()
         SetList::STRICT_BOOLEANS,
     ])
     ->withRules([
-        \Rector\DeadCode\Rector\If_\RemoveAlwaysTrueIfConditionRector::class,
     ]);

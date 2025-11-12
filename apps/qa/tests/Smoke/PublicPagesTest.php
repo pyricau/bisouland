@@ -23,7 +23,7 @@ final class PublicPagesTest extends TestCase
 
         $response = $httpClient->request('GET', $url);
 
-        $this->assertSame(200, $response->getStatusCode(), (string) $response->getContent());
+        $this->assertSame(200, $response->getStatusCode(), $response->getContent());
     }
 
     /**

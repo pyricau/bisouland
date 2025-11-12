@@ -19,7 +19,7 @@ final readonly class Assert
 
     public static function blocksPageForLoggedOutVisitors(ResponseInterface $response): void
     {
-        $content = (string) $response->getContent();
+        $content = $response->getContent();
 
         foreach (self::NOT_LOGGED_IN_MESSAGES as $message) {
             if (str_contains($content, $message)) {
@@ -34,7 +34,7 @@ final readonly class Assert
 
     public static function loadsPageForLoggedInPlayers(ResponseInterface $response): void
     {
-        $content = (string) $response->getContent();
+        $content = $response->getContent();
 
         foreach (self::NOT_LOGGED_IN_MESSAGES as $message) {
             if (str_contains($content, $message)) {

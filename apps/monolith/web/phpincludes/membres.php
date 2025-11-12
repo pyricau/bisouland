@@ -26,7 +26,7 @@ if (isset($_GET['num'])) {
 // On calcule le numéro du premier message qu'on prend pour le LIMIT de MySQL
 $premier = ($num - 1) * $nombreParPage;
 
-$stmt = $pdo->query('SELECT id, pseudo, nuage, lastconnect FROM membres WHERE confirmation = 1 ORDER BY id DESC LIMIT '.(int) $premier.', '.(int) $nombreParPage);
+$stmt = $pdo->query('SELECT id, pseudo, nuage, lastconnect FROM membres WHERE confirmation = 1 ORDER BY id DESC LIMIT '.(int) $premier.', '.$nombreParPage);
 
 if ($nombreDePages > 1) {
     echo '<center>Page :';

@@ -8,8 +8,8 @@ use Rector\Set\ValueObject\SetList;
 
 return RectorConfig::configure()
     ->withCache(
-        cacheClass: FileCacheStorage::class,
         cacheDirectory: '/tmp/rector',
+        cacheClass: FileCacheStorage::class,
     )
     ->withPaths([
         __DIR__,
@@ -38,7 +38,7 @@ return RectorConfig::configure()
         SetList::PHP_84,
 
         // Core
-        // SetList::CODE_QUALITY,
+        SetList::CODE_QUALITY,
         SetList::CODING_STYLE,
         SetList::EARLY_RETURN,
         SetList::INSTANCEOF,
@@ -47,5 +47,4 @@ return RectorConfig::configure()
         SetList::STRICT_BOOLEANS,
     ])
     ->withRules([
-        \Rector\CodeQuality\Rector\Ternary\SwitchNegatedTernaryRector::class,
     ]);

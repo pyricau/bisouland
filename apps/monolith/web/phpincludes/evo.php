@@ -138,19 +138,17 @@ if (isset($inMainPage) && true == $inMainPage) {
 
         while ($i != $nbEvol && 0 === $stop) {
             // Pour l'instant, on gère ca que pour les bisous.
-            if (isset($_POST[$Obj[$evolPage][$i]]) && 1 == $evolPage) {
-                if ($amour >= $amourE[$evolPage][$i] && arbre($evolPage, $i, $nbE)) {
-                    $stmt = $pdo->prepare('SELECT COUNT(*) AS nb_id FROM liste WHERE auteur = :auteur AND classe = 1');
-                    $stmt->execute(['auteur' => $id]);
-                    if ($stmt->fetchColumn() < 9) {
-                        // Construction demandée, donc on arrete la boucle.
-                        $stop = 1;
-                        $dureeConst = $tempsE[$evolPage][$i];
-                        $stmt2 = $pdo->prepare('INSERT INTO liste (duree, classe, type, auteur, cout) VALUES (:duree, :classe, :type, :auteur, :cout)');
-                        $stmt2->execute(['duree' => $dureeConst, 'classe' => $evolPage, 'type' => $i, 'auteur' => $id, 'cout' => $amourE[$evolPage][$i]]);
-                        // On décrémente le nombre de points d'amour.
-                        $amour -= $amourE[$evolPage][$i];
-                    }
+            if (isset($_POST[$Obj[$evolPage][$i]]) && 1 == $evolPage && ($amour >= $amourE[$evolPage][$i] && arbre($evolPage, $i, $nbE))) {
+                $stmt = $pdo->prepare('SELECT COUNT(*) AS nb_id FROM liste WHERE auteur = :auteur AND classe = 1');
+                $stmt->execute(['auteur' => $id]);
+                if ($stmt->fetchColumn() < 9) {
+                    // Construction demandée, donc on arrete la boucle.
+                    $stop = 1;
+                    $dureeConst = $tempsE[$evolPage][$i];
+                    $stmt2 = $pdo->prepare('INSERT INTO liste (duree, classe, type, auteur, cout) VALUES (:duree, :classe, :type, :auteur, :cout)');
+                    $stmt2->execute(['duree' => $dureeConst, 'classe' => $evolPage, 'type' => $i, 'auteur' => $id, 'cout' => $amourE[$evolPage][$i]]);
+                    // On décrémente le nombre de points d'amour.
+                    $amour -= $amourE[$evolPage][$i];
                 }
             }
 

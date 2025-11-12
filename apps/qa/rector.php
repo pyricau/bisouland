@@ -5,6 +5,20 @@ declare(strict_types=1);
 use Rector\Caching\ValueObject\Storage\FileCacheStorage;
 use Rector\Config\RectorConfig;
 use Rector\Set\ValueObject\SetList;
+use Rector\TypeDeclarationDocblocks\Rector\Class_\AddReturnDocblockDataProviderRector;
+use Rector\TypeDeclarationDocblocks\Rector\Class_\ClassMethodArrayDocblockParamFromLocalCallsRector;
+use Rector\TypeDeclarationDocblocks\Rector\Class_\DocblockVarArrayFromGetterReturnRector;
+use Rector\TypeDeclarationDocblocks\Rector\Class_\DocblockVarArrayFromPropertyDefaultsRector;
+use Rector\TypeDeclarationDocblocks\Rector\Class_\DocblockVarFromParamDocblockInConstructorRector;
+use Rector\TypeDeclarationDocblocks\Rector\ClassMethod\AddParamArrayDocblockBasedOnArrayMapRector;
+use Rector\TypeDeclarationDocblocks\Rector\ClassMethod\AddParamArrayDocblockFromAssignsParamToParamReferenceRector;
+use Rector\TypeDeclarationDocblocks\Rector\ClassMethod\AddParamArrayDocblockFromDataProviderRector;
+use Rector\TypeDeclarationDocblocks\Rector\ClassMethod\AddParamArrayDocblockFromDimFetchAccessRector;
+use Rector\TypeDeclarationDocblocks\Rector\ClassMethod\AddReturnDocblockForArrayDimAssignedObjectRector;
+use Rector\TypeDeclarationDocblocks\Rector\ClassMethod\AddReturnDocblockForCommonObjectDenominatorRector;
+use Rector\TypeDeclarationDocblocks\Rector\ClassMethod\AddReturnDocblockForJsonArrayRector;
+use Rector\TypeDeclarationDocblocks\Rector\ClassMethod\DocblockGetterReturnArrayFromPropertyDocblockVarRector;
+use Rector\TypeDeclarationDocblocks\Rector\ClassMethod\DocblockReturnArrayFromDirectArrayInstanceRector;
 
 return RectorConfig::configure()
     ->withCache(
@@ -34,10 +48,10 @@ return RectorConfig::configure()
         Rector\CodingStyle\Rector\Encapsed\EncapsedStringsToSprintfRector::class,
     ])
     ->withSets([
-        // PHP
+        // —— PHP ——————————————————————————————————————————————————————————————
         SetList::PHP_84,
 
-        // Core
+        // —— Core —————————————————————————————————————————————————————————————
         SetList::CODE_QUALITY,
         SetList::CODING_STYLE,
         SetList::DEAD_CODE,
@@ -48,4 +62,20 @@ return RectorConfig::configure()
         SetList::STRICT_BOOLEANS,
     ])
     ->withRules([
+        // —— Core —————————————————————————————————————————————————————————————
+        // PHPdoc array types
+        AddParamArrayDocblockBasedOnArrayMapRector::class,
+        AddParamArrayDocblockFromAssignsParamToParamReferenceRector::class,
+        AddParamArrayDocblockFromDataProviderRector::class,
+        AddParamArrayDocblockFromDimFetchAccessRector::class,
+        AddReturnDocblockDataProviderRector::class,
+        AddReturnDocblockForArrayDimAssignedObjectRector::class,
+        AddReturnDocblockForCommonObjectDenominatorRector::class,
+        AddReturnDocblockForJsonArrayRector::class,
+        ClassMethodArrayDocblockParamFromLocalCallsRector::class,
+        DocblockGetterReturnArrayFromPropertyDocblockVarRector::class,
+        DocblockReturnArrayFromDirectArrayInstanceRector::class,
+        DocblockVarArrayFromGetterReturnRector::class,
+        DocblockVarArrayFromPropertyDefaultsRector::class,
+        DocblockVarFromParamDocblockInConstructorRector::class,
     ]);

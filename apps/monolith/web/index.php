@@ -16,10 +16,10 @@ header('Content-type: text/html; charset=UTF-8');
 session_start();
 ob_start();
 
-include __DIR__ . '/phpincludes/bd.php';
+include __DIR__.'/phpincludes/bd.php';
 $pdo = bd_connect();
 
-include __DIR__ . '/phpincludes/fctIndex.php';
+include __DIR__.'/phpincludes/fctIndex.php';
 
 $inMainPage = true;
 
@@ -311,7 +311,7 @@ if (true == $_SESSION['logged']) {
 
     // Si on veut acceder a une des pages d'évolution -> prétraitement.
     if (-1 !== $evolPage) {
-        include __DIR__ . '/phpincludes/evo.php';
+        include __DIR__.'/phpincludes/evo.php';
     }
 
     // Récupération du nombre de messages non lus.
@@ -397,13 +397,13 @@ while ($donnees_info = $stmt->fetch()) {
 }
 
 // Gestion automatisée des attaques.
-include __DIR__ . '/phpincludes/attaque.php';
+include __DIR__.'/phpincludes/attaque.php';
 
 // ***************************************************************************
 $temps13 = microtime_float();
 
 // Gestion des différentes pages dispo.
-include __DIR__ . '/phpincludes/pages.php';
+include __DIR__.'/phpincludes/pages.php';
 
 // Si on décide que la page existe.
 if (isset($pages[$page])) {

@@ -32,7 +32,7 @@ header('Content-type: text/html; charset=UTF-8');
 <p><a href="../index.php">Retourner sur bisouland.piwai.info</a></p>
 
 <?php
-    include __DIR__ . '/../phpincludes/bd.php';
+    include __DIR__.'/../phpincludes/bd.php';
 $pdo = bd_connect();
 
 // -----------------------------------------------------

@@ -29,9 +29,9 @@ return RectorConfig::configure()
 
         // —— Excluded rules ———————————————————————————————————————————————————
         // [CODE_QUALITY]
-        \Rector\CodeQuality\Rector\Assign\CombinedAssignRector::class,
+        Rector\CodeQuality\Rector\Assign\CombinedAssignRector::class,
         // [CODING_STYLE]
-        \Rector\CodingStyle\Rector\Encapsed\EncapsedStringsToSprintfRector::class,
+        Rector\CodingStyle\Rector\Encapsed\EncapsedStringsToSprintfRector::class,
     ])
     ->withSets([
         // PHP

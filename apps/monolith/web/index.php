@@ -282,7 +282,7 @@ if (true == $_SESSION['logged']) {
                     }
                 }
             }
-            if (true === $modif) {
+            if ($modif) {
                 $stmt = $pdo->prepare('UPDATE membres SET '.$Obj[1][0].' = :smack, '.$Obj[1][1].' = :baiser, '.$Obj[1][2].' = :pelle WHERE id = :id');
                 $stmt->execute(['smack' => $nbE[1][0], 'baiser' => $nbE[1][1], 'pelle' => $nbE[1][2], 'id' => $id]);
             }

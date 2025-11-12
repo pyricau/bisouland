@@ -47,9 +47,7 @@ return RectorConfig::configure()
         SetList::STRICT_BOOLEANS,
     ])
     ->withRules([
-        \Rector\CodeQuality\Rector\Equal\UseIdenticalOverEqualWithSameTypeRector::class,
-        // \Rector\CodeQuality\Rector\FuncCall\SortNamedParamRector::class,
-        // \Rector\CodeQuality\Rector\Identical\SimplifyBoolIdenticalTrueRector::class,
+        \Rector\CodeQuality\Rector\Identical\SimplifyBoolIdenticalTrueRector::class,
         // \Rector\CodeQuality\Rector\If_\CombineIfRector::class,
         // \Rector\CodeQuality\Rector\If_\ShortenElseIfRector::class,
         // \Rector\CodeQuality\Rector\If_\SimplifyIfElseToTernaryRector::class,

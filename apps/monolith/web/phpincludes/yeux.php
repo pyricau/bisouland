@@ -111,9 +111,7 @@
 <a href="<?php echo $Dnuage; ?>.nuage.html">Retourner sur le nuage en cours</a><br />
 <br />
 <?php
-            if (isset($resultat)) {
-                echo '<span class="info">[ '.$resultat.' ]</span><br /><br />';
-            }
+            echo '<span class="info">[ '.$resultat.' ]</span><br /><br />';
         if (isset($resDev)) {
             echo nl2br(htmlentities($resDev));
             if (0 != $lvlInfo) {

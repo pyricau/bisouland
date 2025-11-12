@@ -310,7 +310,7 @@ function coutAttaque($distance, $jambes)
 {
     $exp = $distance - $jambes;
     if ($exp < 0) {
-        0 == $exp;
+        $exp = 0;
     }
 
     return expo(100, 0.4, $exp, 1);

@@ -48,9 +48,5 @@ return RectorConfig::configure()
         SetList::STRICT_BOOLEANS,
     ])
     ->withRules([
-        \Rector\DeadCode\Rector\Assign\RemoveUnusedVariableAssignRector::class,
-        // \Rector\DeadCode\Rector\Cast\RecastingRemovalRector::class,
-        // \Rector\DeadCode\Rector\Expression\RemoveDeadStmtRector::class,
-        // \Rector\DeadCode\Rector\For_\RemoveDeadIfForeachForRector::class,
-        // \Rector\DeadCode\Rector\If_\RemoveAlwaysTrueIfConditionRector::class,
+        \Rector\DeadCode\Rector\If_\RemoveAlwaysTrueIfConditionRector::class,
     ]);

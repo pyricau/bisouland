@@ -40,6 +40,7 @@ return RectorConfig::configure()
         // Core
         SetList::CODE_QUALITY,
         SetList::CODING_STYLE,
+        // SetList::DEAD_CODE,
         SetList::EARLY_RETURN,
         SetList::INSTANCEOF,
         SetList::NAMING,
@@ -47,4 +48,10 @@ return RectorConfig::configure()
         SetList::STRICT_BOOLEANS,
     ])
     ->withRules([
+        \Rector\CodeQuality\Rector\FunctionLike\SimplifyUselessVariableRector::class,
+        // \Rector\DeadCode\Rector\Assign\RemoveUnusedVariableAssignRector::class,
+        // \Rector\DeadCode\Rector\Cast\RecastingRemovalRector::class,
+        // \Rector\DeadCode\Rector\Expression\RemoveDeadStmtRector::class,
+        // \Rector\DeadCode\Rector\For_\RemoveDeadIfForeachForRector::class,
+        // \Rector\DeadCode\Rector\If_\RemoveAlwaysTrueIfConditionRector::class,
     ]);

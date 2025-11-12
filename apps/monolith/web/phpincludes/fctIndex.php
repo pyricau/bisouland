@@ -298,9 +298,7 @@ function bbLow($text)
     $text = preg_replace('!\[color=(red|green|blue|yellow|purple|olive|white|black)\](.+)\[/color\]!isU', '<span style="color:$1">$2</span>', $text);
     $text = preg_replace('!\[size=(xx-small|x-small|small|medium|large|x-large|xx-large)\](.+)\[/size\]!isU', '<span style="font-size:$1">$2</span>', (string) $text);
 
-    $text = smileys($text);
-
-    return $text;
+    return smileys($text);
 }
 
 function tempsAttaque($distance, $jambes)

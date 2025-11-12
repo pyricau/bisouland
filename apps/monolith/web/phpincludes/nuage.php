@@ -50,31 +50,29 @@ if (true == $_SESSION['logged']) {
                                 $stmt->execute(['nuage' => $nuageL, 'position' => $positionCible]);
                                 if ($donnees_info = $stmt->fetch()) {
                                     $resultat = 'La position est déjà occupée';
-                                } else {
-                                    if (0 == $joueurBloque) {
-                                        $stmt = $pdo->prepare('SELECT auteur FROM attaque WHERE cible = :cible AND finaller != 0');
-                                        $stmt->execute(['cible' => $id]);
-                                        if ($donnees_info = $stmt->fetch()) {
-                                            $resultat = "Tu ne peux pas sauter car quelqu'un tente de t'embrasser";
-                                        } else {
-                                            $ajout = $nbE[0][0] + 0.3 * $nbE[1][0] + 0.6 * $nbE[1][1] + $nbE[1][2];
-                                            // A modifier si on modifie calcul amour, car il est basé dessu.
-                                            $cout = expo(20, 0.1, $ajout) * (1 + 0.1 * $distance);
-                                            if ($amour >= $cout) {
-                                                $amour -= $cout;
-                                                $stmt = $pdo->prepare('UPDATE membres SET nuage = :nuage, position = :position WHERE id = :id');
-                                                $stmt->execute(['nuage' => $nuageL, 'position' => $positionCible, 'id' => $id]);
-                                                $_SESSION['nuage'] = $nuageL;
-                                                $nuageSource = $nuageL;
-                                                $positionSource = $positionCible;
-                                                $resultat = 'Saut effectué, tu as utilisé '.ceil($cout)." Points d'Amour";
-                                            } else {
-                                                $resultat = "Tu ne disposes pas d'assez de Points d'Amour : il faut ".ceil($cout)." Points d'Amour.";
-                                            }
-                                        }
+                                } elseif (0 == $joueurBloque) {
+                                    $stmt = $pdo->prepare('SELECT auteur FROM attaque WHERE cible = :cible AND finaller != 0');
+                                    $stmt->execute(['cible' => $id]);
+                                    if ($donnees_info = $stmt->fetch()) {
+                                        $resultat = "Tu ne peux pas sauter car quelqu'un tente de t'embrasser";
                                     } else {
-                                        $resultat = "Tu tentes d'embrasser quelqu'un, tu ne peux pas sauter";
+                                        $ajout = $nbE[0][0] + 0.3 * $nbE[1][0] + 0.6 * $nbE[1][1] + $nbE[1][2];
+                                        // A modifier si on modifie calcul amour, car il est basé dessu.
+                                        $cout = expo(20, 0.1, $ajout) * (1 + 0.1 * $distance);
+                                        if ($amour >= $cout) {
+                                            $amour -= $cout;
+                                            $stmt = $pdo->prepare('UPDATE membres SET nuage = :nuage, position = :position WHERE id = :id');
+                                            $stmt->execute(['nuage' => $nuageL, 'position' => $positionCible, 'id' => $id]);
+                                            $_SESSION['nuage'] = $nuageL;
+                                            $nuageSource = $nuageL;
+                                            $positionSource = $positionCible;
+                                            $resultat = 'Saut effectué, tu as utilisé '.ceil($cout)." Points d'Amour";
+                                        } else {
+                                            $resultat = "Tu ne disposes pas d'assez de Points d'Amour : il faut ".ceil($cout)." Points d'Amour.";
+                                        }
                                     }
+                                } else {
+                                    $resultat = "Tu tentes d'embrasser quelqu'un, tu ne peux pas sauter";
                                 }
                             } else {
                                 $resultat = 'Distance trop grande';
@@ -190,12 +188,10 @@ if ($scoreSource < 50) {
                     }
                 } elseif (0 == $Niveau) {
                     echo '<a class="bulle" style="cursor: default;color:red;" onclick="return false;" href=""><strong>',$donnees_info['pseudo'],'</strong><span style="color:red;">Ce joueur a ton niveau</span>';
+                } elseif ($score >= 50) {
+                    echo '<a class="bulle" style="cursor: default;color:black;" onclick="return false;" href=""><strong>',$donnees_info['pseudo'],'</strong><span style="color:black;">Joueur trop fort</span>';
                 } else {
-                    if ($score >= 50) {
-                        echo '<a class="bulle" style="cursor: default;color:black;" onclick="return false;" href=""><strong>',$donnees_info['pseudo'],'</strong><span style="color:black;">Joueur trop fort</span>';
-                    } else {
-                        echo '<a class="bulle" style="cursor: default;color:teal;" onclick="return false;" href=""><strong>',$donnees_info['pseudo'],'</strong><span style="color:teal;">Joueur ayant moins de 50 points</span>';
-                    }
+                    echo '<a class="bulle" style="cursor: default;color:teal;" onclick="return false;" href=""><strong>',$donnees_info['pseudo'],'</strong><span style="color:teal;">Joueur ayant moins de 50 points</span>';
                 }
             } else {
                 echo '<a class="bulle" style="cursor: default;color:red;" onclick="return false;" href=""><strong>',$pseudo,'</strong><span style="color:red;">Tu es sur le nuage <b>'.$nuageL.'</b>, à la position <b>'.$i.'</b></span>';

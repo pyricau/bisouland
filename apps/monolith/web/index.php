@@ -385,18 +385,14 @@ while ($donnees_info = $stmt->fetch()) {
                 $timeFin = $timeFin2;
                 $evolution = $donnees_info['type'];
             }
-        } else {
-            if (1 == $classe) {
-                // $amourConstructeur -= $donnees_info['cout'];
-                // mysql_query("UPDATE membres SET amour=$amourConstructeur WHERE id=$id2");
-            }
+        } elseif (1 == $classe) {
+            // $amourConstructeur -= $donnees_info['cout'];
+            // mysql_query("UPDATE membres SET amour=$amourConstructeur WHERE id=$id2");
         }
-    } else {
-        if ($id == $id2 && $evolPage == $classe) {
-            $nbE[$classe][$type] = $nbObjEvol;
-            // Permet a la page de savoir qu'il n'y a plus de construction en cours (pour l'affichage).
-            $evolution = -1;
-        }
+    } elseif ($id == $id2 && $evolPage == $classe) {
+        $nbE[$classe][$type] = $nbObjEvol;
+        // Permet a la page de savoir qu'il n'y a plus de construction en cours (pour l'affichage).
+        $evolution = -1;
     }
 }
 

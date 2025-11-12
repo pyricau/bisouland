@@ -39,8 +39,7 @@ Liste des Bisous en cr&eacute;ation :<br />
         $nomActuel = $nom[$donnees_info['type']];
         if ($nomActuel === $nomPrec) {
             ++$nbIdent;
-        } else {
-            if ('' !== $nomPrec) {
+        } elseif ('' !== $nomPrec) {
             ++$i;
             if (0 !== $nbIdent) {
                 if (2 != $typePrec) {
@@ -51,7 +50,6 @@ Liste des Bisous en cr&eacute;ation :<br />
                 $nbIdent = 1;
             } else {
                 echo '<option>'.$i.') '.$nomPrec.'</option>';
-            }
             }
         }
 

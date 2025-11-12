@@ -47,7 +47,6 @@ return RectorConfig::configure()
         SetList::STRICT_BOOLEANS,
     ])
     ->withRules([
-        \Rector\CodeQuality\Rector\If_\SimplifyIfElseToTernaryRector::class,
-        // \Rector\CodeQuality\Rector\Include_\AbsolutizeRequireAndIncludePathRector::class,
+        \Rector\CodeQuality\Rector\Include_\AbsolutizeRequireAndIncludePathRector::class,
         // \Rector\CodeQuality\Rector\Ternary\SwitchNegatedTernaryRector::class,
     ]);

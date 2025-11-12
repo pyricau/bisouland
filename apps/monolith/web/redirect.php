@@ -1,7 +1,7 @@
 <?php
 
 session_start();
-include 'phpincludes/bd.php';
+include __DIR__ . '/phpincludes/bd.php';
 $pdo = bd_connect();
 
 if (isset($_POST['connexion'])) {

@@ -8,11 +8,7 @@ if (true == $_SESSION['logged']) {
     $espion = $donnees_info['espion'];
 
     if (isset($_POST['infos'])) {
-        if (isset($_POST['espion'])) {
-            $esp = 1;
-        } else {
-            $esp = 0;
-        }
+        $esp = isset($_POST['espion']) ? 1 : 0;
         if ($espion != $esp) {
             $espion = $esp;
             $stmt = $pdo->prepare('UPDATE membres SET espion = :espion WHERE id = :id');

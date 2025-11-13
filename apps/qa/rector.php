@@ -19,6 +19,8 @@ use Rector\TypeDeclarationDocblocks\Rector\ClassMethod\AddReturnDocblockForCommo
 use Rector\TypeDeclarationDocblocks\Rector\ClassMethod\AddReturnDocblockForJsonArrayRector;
 use Rector\TypeDeclarationDocblocks\Rector\ClassMethod\DocblockGetterReturnArrayFromPropertyDocblockVarRector;
 use Rector\TypeDeclarationDocblocks\Rector\ClassMethod\DocblockReturnArrayFromDirectArrayInstanceRector;
+use Rector\Visibility\Rector\ClassConst\ChangeConstantVisibilityRector;
+use Rector\Visibility\Rector\ClassMethod\ChangeMethodVisibilityRector;
 
 return RectorConfig::configure()
     ->withCache(
@@ -78,4 +80,8 @@ return RectorConfig::configure()
         DocblockVarArrayFromGetterReturnRector::class,
         DocblockVarArrayFromPropertyDefaultsRector::class,
         DocblockVarFromParamDocblockInConstructorRector::class,
+
+        // Inherit parent visibility
+        ChangeConstantVisibilityRector::class,
+        ChangeMethodVisibilityRector::class,
     ]);

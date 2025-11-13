@@ -3,6 +3,8 @@
 declare(strict_types=1);
 
 use Rector\Caching\ValueObject\Storage\FileCacheStorage;
+use Rector\CodingStyle\Rector\Closure\StaticClosureRector;
+use Rector\CodingStyle\Rector\FuncCall\ArraySpreadInsteadOfArrayMergeRector;
 use Rector\Config\RectorConfig;
 use Rector\Set\ValueObject\SetList;
 use Rector\TypeDeclarationDocblocks\Rector\Class_\AddReturnDocblockDataProviderRector;
@@ -84,4 +86,8 @@ return RectorConfig::configure()
         // Inherit parent visibility
         ChangeConstantVisibilityRector::class,
         ChangeMethodVisibilityRector::class,
+
+        // More Coding Style
+        ArraySpreadInsteadOfArrayMergeRector::class,
+        StaticClosureRector::class,
     ]);

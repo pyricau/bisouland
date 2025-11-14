@@ -43,19 +43,17 @@ final class SignUpTest extends TestCase
     /**
      * [string $username, string $password, string $description][].
      *
-     * @return array<array{string, string, string}>
+     * @return \Iterator<(int | string), array{string, string, string}>
      */
-    public static function invalidCredentialsProvider(): array
+    public static function invalidCredentialsProvider(): \Iterator
     {
-        return [
-            ['usr', 'password', 'username too short (< 4 characters)'],
-            ['test_sign_up02__', 'password', 'username too long (> 15 characters)'],
-            ['test_sign_up03!', 'password', 'username contains special characters (non alpha-numerical, not an underscore (`_`))'],
-            ['test_sign_up05', 'pass', 'password too short (< 5 characters)'],
-            ['test_sign_up06', 'passwordthatistoolong', 'password too long (> 15 characters)'],
-            ['test_sign_up07', 'password!', 'password contains special characters (non alpha-numerical, not an underscore (`_`))'],
-            ['BisouLand', 'password', 'system account, for notifications'],
-        ];
+        yield ['usr', 'password', 'username too short (< 4 characters)'];
+        yield ['test_sign_up02__', 'password', 'username too long (> 15 characters)'];
+        yield ['test_sign_up03!', 'password', 'username contains special characters (non alpha-numerical, not an underscore (`_`))'];
+        yield ['test_sign_up05', 'pass', 'password too short (< 5 characters)'];
+        yield ['test_sign_up06', 'passwordthatistoolong', 'password too long (> 15 characters)'];
+        yield ['test_sign_up07', 'password!', 'password contains special characters (non alpha-numerical, not an underscore (`_`))'];
+        yield ['BisouLand', 'password', 'system account, for notifications'];
     }
 
     #[TestDox('It prevents usernames that are already used')]

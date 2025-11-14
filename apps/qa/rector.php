@@ -6,6 +6,7 @@ use Rector\Caching\ValueObject\Storage\FileCacheStorage;
 use Rector\CodingStyle\Rector\Closure\StaticClosureRector;
 use Rector\CodingStyle\Rector\FuncCall\ArraySpreadInsteadOfArrayMergeRector;
 use Rector\Config\RectorConfig;
+use Rector\PHPUnit\Set\PHPUnitSetList;
 use Rector\Set\ValueObject\SetList;
 use Rector\TypeDeclarationDocblocks\Rector\Class_\AddReturnDocblockDataProviderRector;
 use Rector\TypeDeclarationDocblocks\Rector\Class_\ClassMethodArrayDocblockParamFromLocalCallsRector;
@@ -64,6 +65,9 @@ return RectorConfig::configure()
         SetList::NAMING,
         SetList::PRIVATIZATION,
         SetList::STRICT_BOOLEANS,
+
+        // —— PHPUnit ——————————————————————————————————————————————————————————
+        PHPUnitSetList::PHPUNIT_CODE_QUALITY,
     ])
     ->withRules([
         // —— Core —————————————————————————————————————————————————————————————

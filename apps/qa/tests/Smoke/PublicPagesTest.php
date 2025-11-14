@@ -27,22 +27,20 @@ final class PublicPagesTest extends TestCase
     }
 
     /**
-     * @return array<array{string, string}>
+     * @return \Iterator<(int | string), array{string, string}>
      */
-    public static function publicPagesProvider(): array
+    public static function publicPagesProvider(): \Iterator
     {
-        return [
-            ['/', 'homepage'],
-            ['/contact.html', 'contact'],
-            ['/faq.html', 'FAQ'],
-            ['/livreor.html', 'guestbook'],
-            ['/aide.html', 'help'],
-            ['/connexion.html', 'login'],
-            ['/membres.html', 'players'],
-            ['/topten.html', 'ranking'],
-            ['/recherche.html', 'search'],
-            ['/inscription.html', 'signup'],
-            ['/stats.html', 'statistics'],
-        ];
+        yield ['/', 'homepage'];
+        yield ['/contact.html', 'contact'];
+        yield ['/faq.html', 'FAQ'];
+        yield ['/livreor.html', 'guestbook'];
+        yield ['/aide.html', 'help'];
+        yield ['/connexion.html', 'login'];
+        yield ['/membres.html', 'players'];
+        yield ['/topten.html', 'ranking'];
+        yield ['/recherche.html', 'search'];
+        yield ['/inscription.html', 'signup'];
+        yield ['/stats.html', 'statistics'];
     }
 }

@@ -46,23 +46,21 @@ final class PlayerPagesTest extends TestCase
     }
 
     /**
-     * @return array<array{string, string}>
+     * @return \Iterator<(int | string), array{string, string}>
      */
-    public static function playerPagesProvider(): array
+    public static function playerPagesProvider(): \Iterator
     {
-        return [
-            ['/connected.html', 'account'],
-            ['/action.html', 'blow kisses'],
-            ['/cerveau.html', 'brain'],
-            ['/changepass.html', 'change password'],
-            ['/nuage.html', 'clouds'],
-            ['/yeux.html', 'eyes'],
-            ['/boite.html', 'inbox'],
-            ['/bisous.html', 'kisses'],
-            ['/construction.html', 'organs'],
-            ['/infos.html', 'reference'],
-            ['/techno.html', 'techniques'],
-            ['/lire.html', 'view message'],
-        ];
+        yield ['/connected.html', 'account'];
+        yield ['/action.html', 'blow kisses'];
+        yield ['/cerveau.html', 'brain'];
+        yield ['/changepass.html', 'change password'];
+        yield ['/nuage.html', 'clouds'];
+        yield ['/yeux.html', 'eyes'];
+        yield ['/boite.html', 'inbox'];
+        yield ['/bisous.html', 'kisses'];
+        yield ['/construction.html', 'organs'];
+        yield ['/infos.html', 'reference'];
+        yield ['/techno.html', 'techniques'];
+        yield ['/lire.html', 'view message'];
     }
 }

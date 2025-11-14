@@ -213,7 +213,7 @@ function distanceMax($coeur, $jambes)
 }
 
 // Fonction qui retourne 0 si joueurAutre est meme niveau, 1 s'il est intouchable parce que trop faible, 2 s'il est intouchable parce que trop fort.
-function voirNiveau($scoreJoueur, $scoreAutre)
+function voirNiveau($scoreJoueur, $scoreAutre): int
 {
     if ($scoreJoueur < 50) {
         return 2;

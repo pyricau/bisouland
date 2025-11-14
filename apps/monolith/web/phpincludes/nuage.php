@@ -180,13 +180,13 @@ if ($scoreSource < 50) {
             if ($donnees_info['id'] != $id) {
                 $score = floor($donnees_info['score'] / 1000.);
                 $Niveau = voirNiveau($scoreSource, $score);
-                if (1 == $Niveau) {
+                if (1 === $Niveau) {
                     if ($score >= 50) {
                         echo '<a class="bulle" style="cursor: default;color:blue;" onclick="return false;" href=""><strong>',$donnees_info['pseudo'],'</strong><span style="color:blue;">Joueur trop faible</span>';
                     } else {
                         echo '<a class="bulle" style="cursor: default;color:teal;" onclick="return false;" href=""><strong>',$donnees_info['pseudo'],'</strong><span style="color:teal;">Joueur ayant moins de 50 points</span>';
                     }
-                } elseif (0 == $Niveau) {
+                } elseif (0 === $Niveau) {
                     echo '<a class="bulle" style="cursor: default;color:red;" onclick="return false;" href=""><strong>',$donnees_info['pseudo'],'</strong><span style="color:red;">Ce joueur a ton niveau</span>';
                 } elseif ($score >= 50) {
                     echo '<a class="bulle" style="cursor: default;color:black;" onclick="return false;" href=""><strong>',$donnees_info['pseudo'],'</strong><span style="color:black;">Joueur trop fort</span>';

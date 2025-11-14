@@ -46,7 +46,7 @@ if (true == $_SESSION['logged']) {
                                 $scoreSource = floor($scoreSource / 1000.);
                                 $Niveau = voirNiveau($scoreSource, $score);
 
-                                if (0 == $Niveau) {
+                                if (0 === $Niveau) {
                                     $distance = abs(16 * ($nuageCible - $nuageSource) + $positionCible - $positionSource);
 
                                     $distMax = distanceMax($nbE[0][0], $nbE[0][4]);

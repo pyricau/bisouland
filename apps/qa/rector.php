@@ -68,6 +68,7 @@ return RectorConfig::configure()
 
         // —— PHPUnit ——————————————————————————————————————————————————————————
         PHPUnitSetList::PHPUNIT_CODE_QUALITY,
+        PHPUnitSetList::PHPUNIT_120,
     ])
     ->withRules([
         // —— Core —————————————————————————————————————————————————————————————

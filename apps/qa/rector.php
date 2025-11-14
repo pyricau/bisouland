@@ -98,6 +98,5 @@ return RectorConfig::configure()
         StaticClosureRector::class,
 
         // Type declaration
-        \Rector\TypeDeclaration\Rector\ClassMethod\ReturnTypeFromStrictNativeCallRector::class,
-        // \Rector\TypeDeclaration\Rector\ClassMethod\StringReturnTypeFromStrictStringReturnsRector::class,
+        \Rector\TypeDeclaration\Rector\ClassMethod\StringReturnTypeFromStrictStringReturnsRector::class,
     ]);

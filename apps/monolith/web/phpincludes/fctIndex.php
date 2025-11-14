@@ -31,7 +31,7 @@ function calculerGenAmour($CalAmour, $timeDiff, $LvlCoeur, $nb1, $nb2, $nb3)
 }
 
 // Permet de convertir un timestamp en chaine sous la forme heure:minutes:secondes.
-function strTemps($s)
+function strTemps($s): string
 {
     $m = 0;
     $h = 0;

@@ -26,7 +26,7 @@ if (isset($_GET['num'])) {
 // On calcule le numéro du premier message qu'on prend pour le LIMIT de MySQL
 $premier = ($num - 1) * $nombreParPage;
 
-$stmt = $pdo->query('SELECT id, pseudo, nuage, lastconnect FROM membres WHERE confirmation = 1 ORDER BY id DESC LIMIT '.(int) $premier.', '.(int) $nombreParPage);
+$stmt = $pdo->query('SELECT id, pseudo, nuage, lastconnect FROM membres WHERE confirmation = 1 ORDER BY id DESC LIMIT '.(int) $premier.', '.$nombreParPage);
 
 if ($nombreDePages > 1) {
     echo '<center>Page :';
@@ -46,7 +46,7 @@ if (true == $_SESSION['logged']) {
         if ($donnees['lastconnect'] > time() - 300) {
             echo '<a class="bulle" style="cursor: default;" onclick="return false;" href=""><img src="images/on.png" alt="Connect&eacute;" title=""/><span>',$donnees['pseudo'],' est connect&eacute;</span></a> ';
         } else {
-            echo '<a class="bulle" style="cursor: default;" onclick="return false;" href=""><img src="images/off.png" alt="Non connect&eacute;" title="" /><span>',$donnees['pseudo'],' n\'est pas connect&eacute;</span></a> ';
+            echo '<a class="bulle" style="cursor: default;" onclick="return false;" href=""><img src="images/off.png" alt="Non connect&eacute;" title="" /><span>',$donnees['pseudo']," n'est pas connect&eacute;</span></a> ";
         }
         echo '<a class="bulle" href="',$donnees['nuage'],'.nuage.html" >
 		<img src="images/nuage.png" title="" alt="" /><span>Nuage : ',$donnees['nuage'],'</span></a>
@@ -59,7 +59,7 @@ if (true == $_SESSION['logged']) {
         if ($donnees['lastconnect'] > time() - 300) {
             echo '<a class="bulle" style="cursor: default;" onclick="return false;" href=""><img src="images/on.png" alt="Connect&eacute;" title=""/><span>',$donnees['pseudo'],' est connect&eacute;</span></a> ';
         } else {
-            echo '<a class="bulle" style="cursor: default;" onclick="return false;" href=""><img src="images/off.png" alt="Non connect&eacute;" title="" /><span>',$donnees['pseudo'],' n\'est pas connect&eacute;</span></a> ';
+            echo '<a class="bulle" style="cursor: default;" onclick="return false;" href=""><img src="images/off.png" alt="Non connect&eacute;" title="" /><span>',$donnees['pseudo']," n'est pas connect&eacute;</span></a> ";
         }
         echo '<strong>'.$donnees['pseudo'].'</strong><br />';
     }

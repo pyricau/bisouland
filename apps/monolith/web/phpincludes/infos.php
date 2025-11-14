@@ -219,12 +219,12 @@ Lorsque tu annules une cr&eacute;ation, tu ne r&eacute;cup&eacute;res que la  mo
 	</tr>';
         foreach ($requis[$c]['nom'] as $i => $Nom) {
             $nbCond = count($requis[$c][$i]['Niveau']);
-            if (0 == $nbCond) {
+            if (0 === $nbCond) {
                 echo '<tr>
 					<td>'.$Nom.'</td>
 					<td><strong>Pas de conditions</strong></td>';
             } else {
-                if (1 == $nbCond) {
+                if (1 === $nbCond) {
                     echo '<tr>
 						<td>'.$Nom.'</td>';
                 } else {

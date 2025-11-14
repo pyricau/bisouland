@@ -71,6 +71,7 @@ if (isset($inMainPage) && true == $inMainPage) {
             if (0 == $somme) {
                 $somme = 1;
             }
+
             $DefForce /= $somme;
         }
 
@@ -122,6 +123,7 @@ if (isset($inMainPage) && true == $inMainPage) {
             if ($dentsCoeff < 0) {
                 $dentsCoeff = 0;
             }
+
             $AttPelle = floor($AttPelle * ((1 - 1 / random_int(2, 10)) * (1 - 0.1 * $dentsCoeff)));
 
             // Si les bisous du défenseurs sont présent, donc qu'il n'attaque pas.
@@ -159,6 +161,7 @@ if (isset($inMainPage) && true == $inMainPage) {
             if ($dentsCoeff < 0) {
                 $dentsCoeff = 0;
             }
+
             $AttPelle = floor($AttPelle * ((1 - $coeffBilan / random_int(2, 10)) * (1 - 0.1 * $dentsCoeff)));
             // Si les bisous du défenseurs sont présent, donc qu'il n'attaque pas.
             if (0 == $DefBloque) {
@@ -166,6 +169,7 @@ if (isset($inMainPage) && true == $inMainPage) {
                 $DefBaiser = floor($DefBaiser * ($coeffBilan / 2));
                 $DefPelle = floor($DefPelle * ($coeffBilan / 2));
             }
+
             // Faire retourner, Avec butin.
 
             // Gestion du butin
@@ -182,13 +186,16 @@ if (isset($inMainPage) && true == $inMainPage) {
             if ($coeffButin < -1) {
                 $coeffButin = -1;
             }
+
             $butin = floor((1 + $coeffButin) * ($AttSmack * 100 + $AttBaiser * 1000 + $AttPelle * 10000));
             if ($butin < ($AttSmack + $AttBaiser * 10 + $AttPelle * 100)) {
                 $butin = ($AttSmack + $AttBaiser * 10 + $AttPelle * 100);
             }
+
             if ($butin > floor($DefAmour / 2)) {
                 $butin = floor($DefAmour / 2);
             }
+
             $DefAmour -= $butin;
 
             if ($idCible == $id && true == $_SESSION['logged']) {
@@ -210,7 +217,7 @@ if (isset($inMainPage) && true == $inMainPage) {
 			Il te reste :
 			- ".$AttSmack.' smacks
 			- '.$AttBaiser." baisers
-			- $AttPelle baisers langoureux
+			- {$AttPelle} baisers langoureux
 			");
             AdminMP($idCible, "Tu t'es fait embrasser", "Tu n'as pas su résister à ses Bisous !!
 			Tu t'es fait prendre ".$butin." Points d'Amour !!
@@ -242,6 +249,7 @@ if (isset($inMainPage) && true == $inMainPage) {
             $donnees_info3 = $stmt->fetch();
             $AttAmour = $donnees_info3['amour'];
         }
+
         // On fais pas de mise à jour du nb de points d'amour, pas besoin.
         // Récupération des points d'amour.
         $AttAmour += $butinAuteur;
@@ -250,6 +258,7 @@ if (isset($inMainPage) && true == $inMainPage) {
             $amour = $AttAmour;
             $joueurBloque = 0;
         }
+
         // Libérer l'auteur et ajouter butin
         $stmt = $pdo->prepare('UPDATE membres SET bloque = 0, amour = :amour WHERE id = :id');
         $stmt->execute(['amour' => $AttAmour, 'id' => $idAuteur]);

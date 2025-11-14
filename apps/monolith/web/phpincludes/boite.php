@@ -98,13 +98,11 @@ if (true == $_SESSION['logged']) {
         $idmsg = htmlentities((string) $_POST['supprimer']);
         $stmt = $pdo->prepare('DELETE FROM messages WHERE id = :id AND destin = :destin');
         $stmt->execute(['id' => $idmsg, 'destin' => $id]);
-    } else {
-        if (isset($_POST['supboite'])) {
-            foreach ($_POST['supboite'] as $key => $value) {
-                $key = htmlentities((string) $key);
-                $stmt = $pdo->prepare('DELETE FROM messages WHERE id = :id AND destin = :destin');
-                $stmt->execute(['id' => $key, 'destin' => $id]);
-            }
+    } elseif (isset($_POST['supboite'])) {
+        foreach ($_POST['supboite'] as $key => $value) {
+            $key = htmlentities((string) $key);
+            $stmt = $pdo->prepare('DELETE FROM messages WHERE id = :id AND destin = :destin');
+            $stmt->execute(['id' => $key, 'destin' => $id]);
         }
     }
 
@@ -162,6 +160,6 @@ if (true == $_SESSION['logged']) {
 
 <?php
 } else {
-    echo 'Tu n\'es pas connect&eacute; !!';
+    echo "Tu n'es pas connect&eacute; !!";
 }
 ?>

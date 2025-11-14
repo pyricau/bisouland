@@ -37,12 +37,11 @@ Liste des Bisous en cr&eacute;ation :<br />
     while ($donnees_info = $stmt->fetch()) {
         $tempsRestant += $donnees_info['duree'];
         $nomActuel = $nom[$donnees_info['type']];
-        if ($nomActuel == $nomPrec) {
+        if ($nomActuel === $nomPrec) {
             ++$nbIdent;
-        } else {
-            if ('' != $nomPrec) {
+        } elseif ('' !== $nomPrec) {
             ++$i;
-            if (0 != $nbIdent) {
+            if (0 !== $nbIdent) {
                 if (2 != $typePrec) {
                     echo '<option>'.$i.') '.$nbIdent.' '.($nomPrec.pluriel($nbIdent)).'</option>';
                 } else {
@@ -52,15 +51,14 @@ Liste des Bisous en cr&eacute;ation :<br />
             } else {
                 echo '<option>'.$i.') '.$nomPrec.'</option>';
             }
-            }
         }
 
         $nomPrec = $nomActuel;
         $typePrec = $donnees_info['type'];
     }
-    if ('' != $nomPrec) {
+    if ('' !== $nomPrec) {
     ++$i;
-    if (0 != $nbIdent) {
+    if (0 !== $nbIdent) {
         if (2 != $typePrec) {
             echo '<option>'.$i.') '.$nbIdent.' '.($nomPrec.pluriel($nbIdent)).'</option>';
         } else {

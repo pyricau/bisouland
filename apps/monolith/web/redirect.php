@@ -1,7 +1,7 @@
 <?php
 
 session_start();
-include 'phpincludes/bd.php';
+include __DIR__.'/phpincludes/bd.php';
 $pdo = bd_connect();
 
 if (isset($_POST['connexion'])) {
@@ -60,7 +60,7 @@ if (isset($_POST['connexion'])) {
                 header('location: connexion.html');
             }
         } else {
-            $_SESSION['errCon'] = 'Erreur : le pseudo n\'existe pas !';
+            $_SESSION['errCon'] = "Erreur : le pseudo n'existe pas !";
             $_SESSION['logged'] = false;
             header('location: connexion.html');
         }

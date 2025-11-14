@@ -46,7 +46,7 @@ if (true == $_SESSION['logged']) {
                                 $scoreSource = floor($scoreSource / 1000.);
                                 $Niveau = voirNiveau($scoreSource, $score);
 
-                                if (0 == $Niveau) {
+                                if (0 === $Niveau) {
                                     $distance = abs(16 * ($nuageCible - $nuageSource) + $positionCible - $positionSource);
 
                                     $distMax = distanceMax($nbE[0][0], $nbE[0][4]);
@@ -72,7 +72,7 @@ if (true == $_SESSION['logged']) {
                                                 $resultat = "Il est impossible d'embrasser le même joueur plus de 3 fois toutes les 12 heures";
                                             }
                                         } else {
-                                            $resultat = 'Tu ne disposes pas d\'assez de Points d\'Amour';
+                                            $resultat = "Tu ne disposes pas d'assez de Points d'Amour";
                                         }
                                     } else {
                                         $resultat = 'Cette position est hors de portée';
@@ -88,7 +88,7 @@ if (true == $_SESSION['logged']) {
                 }
             }// Pas de bisous
             else {
-                $resultat = 'Tu ne disposes d\'aucun Bisou';
+                $resultat = "Tu ne disposes d'aucun Bisou";
             }
         }// joueur bloqué
         else {

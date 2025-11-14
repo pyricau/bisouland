@@ -20,7 +20,7 @@ final readonly class Assert
                 'Cookie' => $loggedInPlayer->sessionCookie,
             ],
         ]);
-        $content = (string) $response->getContent();
+        $content = $response->getContent();
 
         if (str_contains($content, "D&eacute;connexion ({$loggedInPlayer->username})")) {
             PHPUnitAssert::assertSame(200, $response->getStatusCode(), $content);

@@ -1,7 +1,7 @@
 <?php
 
 // Fonction pour calculer un temps en millisecondes.
-function microtime_float()
+function microtime_float(): int|float
 {
     return array_sum(explode(' ', microtime()));
 }
@@ -11,7 +11,7 @@ function calculterAmour($CalAmour, $timeDiff, $LvlCoeur, $nb1, $nb2, $nb3)
     $CalAmour = calculerGenAmour($CalAmour, $timeDiff, $LvlCoeur, $nb1, $nb2, $nb3);
     // Cette fonction ajoute un frein sur le minima.
     if ($CalAmour < 0) {
-        $CalAmour = 0;
+        return 0;
     }
 
     return $CalAmour;
@@ -31,37 +31,41 @@ function calculerGenAmour($CalAmour, $timeDiff, $LvlCoeur, $nb1, $nb2, $nb3)
 }
 
 // Permet de convertir un timestamp en chaine sous la forme heure:minutes:secondes.
-function strTemps($s)
+function strTemps($s): string
 {
     $m = 0;
     $h = 0;
     if ($s < 0) {
         return '0:00:00';
-    } else {
-        if ($s > 59) {
-            $m = floor($s / 60);
-            $s = $s - $m * 60;
-        }
-        if ($m > 59) {
-            $h = floor($m / 60);
-            $m = $m - $h * 60;
-        }
-        $ts = $s;
-        $tm = $m;
-        if ($s < 10) {
-            $ts = '0'.$s;
-        }
-        if ($m < 10) {
-            $tm = '0'.$m;
-        }
-        if ($h > 24) {
-            $d = floor($h / 24);
-            $h = $h - $d * 24;
-            $h = $d.' jours '.$h;
-        }
-
-        return $h.' h '.$tm.' min '.$ts.' sec';
     }
+
+    if ($s > 59) {
+        $m = floor($s / 60);
+        $s = $s - $m * 60;
+    }
+
+    if ($m > 59) {
+        $h = floor($m / 60);
+        $m = $m - $h * 60;
+    }
+
+    $ts = $s;
+    $tm = $m;
+    if ($s < 10) {
+        $ts = '0'.$s;
+    }
+
+    if ($m < 10) {
+        $tm = '0'.$m;
+    }
+
+    if ($h > 24) {
+        $d = floor($h / 24);
+        $h = $h - $d * 24;
+        $h = $d.' jours '.$h;
+    }
+
+    return $h.' h '.$tm.' min '.$ts.' sec';
 }
 
 // Renvoi un s (ou^$lettre) si le nombre est plus grand que 1, renvoi '' (ou $alt) sinon.
@@ -70,19 +74,19 @@ function pluriel($nombre, $lettre = 's', $alt = '')
     return ($nombre > 1) ? $lettre : $alt;
 }
 
-function expo($a, $b, $val, $int = 0)
+function expo($a, $b, $val, $int = 0): float
 {
     $ret = $a * exp($b * $val);
 
     if (1 == $int) {
         return ceil($ret);
-    } else {
-        return $ret;
     }
+
+    return $ret;
 }
 
 // Val doit etre different de 0.
-function InvExpo($a, $b, $val, $int = 0)
+function InvExpo($a, $b, $val, $int = 0): float
 {
     // Patch to avoid division by 0...
     if (0 == $val) {
@@ -93,25 +97,26 @@ function InvExpo($a, $b, $val, $int = 0)
 
     if (1 == $int) {
         return ceil($ret);
-    } else {
-        return $ret;
     }
+
+    return $ret;
 }
 
 // Plus a augmente, plus on augmente la valeur de seuil
 // Plus b augmente, plus on eloigne le moment ou on atteint le seuil .
-function ExpoSeuil($a, $b, $val, $int = 0)
+function ExpoSeuil($a, $b, $val, $int = 0): float
 {
     if ($val <= 0) {
         $val = 1;
     }
+
     $ret = $a * exp((-1 * $b) / $val);
 
     if (1 == $int) {
         return ceil($ret);
-    } else {
-        return $ret;
     }
+
+    return $ret;
 }
 
 function AdminMP($cible, $objet, $message, $lu = 0): void
@@ -121,6 +126,7 @@ function AdminMP($cible, $objet, $message, $lu = 0): void
 
     $stmt = $pdo->prepare('SELECT COUNT(*) AS nbmsg FROM messages WHERE destin = :destin');
     $stmt->execute(['destin' => $cible]);
+
     $nbmsg = $stmt->fetchColumn();
     if ($nbmsg >= 20) {
         $Asuppr = $nbmsg - 19;
@@ -164,6 +170,7 @@ function SupprimerCompte($idCompteSuppr): void
         AdminMP($donnees_info['auteur'], 'Pas de chance', 'Ta cible vient de supprimer son compte.
 			Une prochaine fois, peut-etre...');
     }
+
     $stmt = $pdo->prepare('SELECT cible FROM attaque WHERE auteur = :auteur');
     $stmt->execute(['auteur' => $idCompteSuppr]);
     if ($donnees_info = $stmt->fetch()) {
@@ -189,45 +196,50 @@ function AjouterScore($idScore, $valeur): void
     $pdo = bd_connect();
     $stmt = $pdo->prepare('SELECT score FROM membres WHERE id = :id');
     $stmt->execute(['id' => $idScore]);
+
     $donnees_info = $stmt->fetch();
     $stmt = $pdo->prepare('UPDATE membres SET score = :score WHERE id = :id');
     $stmt->execute(['score' => $donnees_info['score'] + $valeur, 'id' => $idScore]);
 }
 
-function formaterNombre($nombre)
+function formaterNombre($nombre): string
 {
     return number_format($nombre, 0, ',', ' ');
 }
 
-function distanceMax($coeur, $jambes)
+function distanceMax($coeur, $jambes): int|float
 {
     return $coeur + 8 * $jambes;
 }
 
 // Fonction qui retourne 0 si joueurAutre est meme niveau, 1 s'il est intouchable parce que trop faible, 2 s'il est intouchable parce que trop fort.
-function voirNiveau($scoreJoueur, $scoreAutre)
+function voirNiveau($scoreJoueur, $scoreAutre): int
 {
     if ($scoreJoueur < 50) {
         return 2;
     }
+
     if ($scoreAutre < 50) {
         return 1;
     }
+
     if ($scoreJoueur > 2000 && $scoreAutre > 2000) {
         return 0;
     }
+
     if (abs($scoreAutre - $scoreJoueur) <= 200) {
         return 0;
     }
+
     if ($scoreJoueur - $scoreAutre > 200) {
         return 1;
-    } else {
-        return 2;
     }
+
+    return 2;
 }
 
 // transformation de bbcode smiley en images.
-function smileys($texte)
+function smileys($texte): string|array
 {
     $in = [
         'o_O',
@@ -266,7 +278,7 @@ function smileys($texte)
     return str_replace($in, $out, $texte);
 }
 
-function bbLow($text)
+function bbLow($text): string|array
 {
     $bbcode = [
         '[b]', '[/b]',
@@ -286,21 +298,19 @@ function bbLow($text)
     $text = preg_replace('!\[color=(red|green|blue|yellow|purple|olive|white|black)\](.+)\[/color\]!isU', '<span style="color:$1">$2</span>', $text);
     $text = preg_replace('!\[size=(xx-small|x-small|small|medium|large|x-large|xx-large)\](.+)\[/size\]!isU', '<span style="font-size:$1">$2</span>', (string) $text);
 
-    $text = smileys($text);
-
-    return $text;
+    return smileys($text);
 }
 
-function tempsAttaque($distance, $jambes)
+function tempsAttaque($distance, $jambes): float
 {
     return floor(($distance * 1000) / (1 + 0.3 * $jambes));
 }
 
-function coutAttaque($distance, $jambes)
+function coutAttaque($distance, $jambes): float
 {
     $exp = $distance - $jambes;
     if ($exp < 0) {
-        0 == $exp;
+        $exp = 0;
     }
 
     return expo(100, 0.4, $exp, 1);
@@ -358,6 +368,7 @@ function GiveNewPosition($idJoueur): void
     } else {
         $FinalPos = random_int(1, 16);
     }
+
     // On enregistre.
     $stmt = $pdo->prepare('UPDATE membres SET nuage = :nuage, position = :position WHERE id = :id');
     $stmt->execute(['nuage' => $NbNuages, 'position' => $FinalPos, 'id' => $idJoueur]);

@@ -8,7 +8,6 @@ use Bl\Qa\Tests\EndToEnd\Assertion\Assert;
 use Bl\Qa\Tests\Infrastructure\Scenario\LoggedInPlayer;
 use Bl\Qa\Tests\Infrastructure\Scenario\LogInPlayer;
 use Bl\Qa\Tests\Infrastructure\Scenario\SignUpNewPlayer;
-use Bl\Qa\Tests\Infrastructure\TestKernelSingleton;
 use PHPUnit\Framework\Attributes\CoversNothing;
 use PHPUnit\Framework\Attributes\Large;
 use PHPUnit\Framework\TestCase;
@@ -19,8 +18,6 @@ final class NewPlayerTest extends TestCase
 {
     public function test_it_can_log_in(): void
     {
-        $httpClient = TestKernelSingleton::get()->httpClient();
-
         $player = SignUpNewPlayer::run(
             'BisouTest',
             'password',
@@ -34,8 +31,6 @@ final class NewPlayerTest extends TestCase
 
     public function test_it_gets_an_initial_300_love_points(): void
     {
-        $httpClient = TestKernelSingleton::get()->httpClient();
-
         $player = SignUpNewPlayer::run(
             'BisouTest',
             'password',
@@ -47,8 +42,6 @@ final class NewPlayerTest extends TestCase
 
     public function test_it_gets_placed_in_clouds(): void
     {
-        $httpClient = TestKernelSingleton::get()->httpClient();
-
         $player = SignUpNewPlayer::run(
             'BisouTest',
             'password',
@@ -60,8 +53,6 @@ final class NewPlayerTest extends TestCase
 
     public function test_it_receives_a_welcome_notification(): void
     {
-        $httpClient = TestKernelSingleton::get()->httpClient();
-
         $player = SignUpNewPlayer::run(
             'BisouTest',
             'password',

@@ -37,7 +37,7 @@ Message :<br />
 
 <?php
         } else {
-            echo 'Tu n\'as pas le droit de visionner ce message !!';
+            echo "Tu n'as pas le droit de visionner ce message !!";
         }
     } else {
         echo 'Pas d\'id message spécifiée !!';

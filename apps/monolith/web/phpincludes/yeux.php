@@ -25,7 +25,7 @@
                 $scoreCible = floor($scoreCible / 1000.);
                 $scoreSource = floor($scoreSource / 1000.);
                 $Niveau = voirNiveau($scoreSource, $scoreCible);
-                if (0 == $Niveau) {
+                if (0 === $Niveau) {
                     $distance = abs(16 * ($Dnuage - $nuageSource) + $Dpos - $positionSource);
                     $cout = 1000 * $distance;
                     if ($amour >= $cout) {
@@ -36,9 +36,9 @@
                         }
                         $lvlInfo = random_int(0, $max);
 
-                        AdminMP($Did, "$pseudo t'a dévisagé", $pseudo." vient de te dévisager, et cherche peut-être à t'embrasser.");
+                        AdminMP($Did, "{$pseudo} t'a dévisagé", $pseudo." vient de te dévisager, et cherche peut-être à t'embrasser.");
 
-                        $resultat = "Tu as dévisagé $pseudoCible";
+                        $resultat = "Tu as dévisagé {$pseudoCible}";
 
                         // Mise à jour des PA de l'espionné :
 
@@ -90,8 +90,8 @@
                         }
 
                         // Envoyer un MP si le user le désire.
-                        if (1 == $espionSource && 0 != $lvlInfo) {
-                            AdminMP($id, "Tu as dévisagé $pseudoCible", $resDev, 1);
+                        if (1 == $espionSource && 0 !== $lvlInfo) {
+                            AdminMP($id, "Tu as dévisagé {$pseudoCible}", $resDev, 1);
                         }
                     } else {
                         $resultat = "Tu n'as pas assez de Points d'Amour";
@@ -111,9 +111,7 @@
 <a href="<?php echo $Dnuage; ?>.nuage.html">Retourner sur le nuage en cours</a><br />
 <br />
 <?php
-            if (isset($resultat)) {
-                echo '<span class="info">[ '.$resultat.' ]</span><br /><br />';
-            }
+            echo '<span class="info">[ '.$resultat.' ]</span><br /><br />';
         if (isset($resDev)) {
             echo nl2br(htmlentities($resDev));
             if (0 != $lvlInfo) {
@@ -124,7 +122,7 @@
                 }
             }
             if ($amour >= $cout) {
-                echo '<a href="'.$Dnuage.'.'.$Dpos.'.yeux.html">Dévisager '.$pseudoCible.' de nouveau (nécessite '.$cout.' Points d\'Amour)</a>';
+                echo '<a href="'.$Dnuage.'.'.$Dpos.'.yeux.html">Dévisager '.$pseudoCible.' de nouveau (nécessite '.$cout." Points d'Amour)</a>";
             }
         }
     } else {

@@ -83,7 +83,7 @@ if (isset($_GET['or'])) {
 // On calcule le numéro du premier message qu'on prend pour le LIMIT de MySQL
 $premierMessageAafficher = ($or - 1) * $nombreDeMessagesParPage;
 
-$reponse = $pdo->query('SELECT * FROM orbisous ORDER BY id DESC LIMIT '.(int) $premierMessageAafficher.', '.(int) $nombreDeMessagesParPage);
+$reponse = $pdo->query('SELECT * FROM orbisous ORDER BY id DESC LIMIT '.(int) $premierMessageAafficher.', '.$nombreDeMessagesParPage);
 
 if ($nombreDePages > 1) {
     echo '<center>Page :';

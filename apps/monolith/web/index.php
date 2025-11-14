@@ -16,10 +16,10 @@ header('Content-type: text/html; charset=UTF-8');
 session_start();
 ob_start();
 
-include 'phpincludes/bd.php';
+include __DIR__.'/phpincludes/bd.php';
 $pdo = bd_connect();
 
-include 'phpincludes/fctIndex.php';
+include __DIR__.'/phpincludes/fctIndex.php';
 
 $inMainPage = true;
 
@@ -32,17 +32,15 @@ if (!isset($_SESSION['logged'])) {
 }
 
 // Gestion de la page courante : Permet de désigner la page a inclure. Si la variable est vide, alors ca sera 'accueil'.
-$page = (!empty($_GET['page'])) ? htmlentities((string) $_GET['page']) : 'accueil';
+$page = (empty($_GET['page'])) ? 'accueil' : htmlentities((string) $_GET['page']);
 
 // Test en cas de suppression de compte
 // Il faudra a jouter ici une routine de suppression des messages dans la bdd.
 // Ainsi que des constructions en cours, etc..
-if (isset($_POST['suppr'])) {
-    if (true == $_SESSION['logged']) {
-        $_SESSION['pseudo'] = 'Not Connected';
-        $_SESSION['logged'] = false;
-        SupprimerCompte($_SESSION['id']);
-    }
+if (isset($_POST['suppr']) && true == $_SESSION['logged']) {
+    $_SESSION['pseudo'] = 'Not Connected';
+    $_SESSION['logged'] = false;
+    SupprimerCompte($_SESSION['id']);
 }
 
 // Si on est pas connecté.
@@ -63,18 +61,15 @@ if (false == $_SESSION['logged']) {
             $donnees_info = $stmt->fetch();
 
             // Si le mot de passe est le même (le mot de passe est déjà crypté).
-            if ($donnees_info['mdp'] == $mdp) {
-                // Si le compte est confirmé.
-                if (1 == $donnees_info['confirmation']) {
-                    // On modifie la variable qui nous indique que le membre est connecté.
-                    $_SESSION['logged'] = true;
-
-                    // On créé les variables contenant des informations sur le membre.
-                    $_SESSION['id'] = $donnees_info['id'];
-                    $_SESSION['pseudo'] = $pseudo;
-                    $_SESSION['nuage'] = $donnees_info['nuage'];
-                    $page = 'cerveau';
-                }
+            // Si le compte est confirmé.
+            if ($donnees_info['mdp'] == $mdp && 1 == $donnees_info['confirmation']) {
+                // On modifie la variable qui nous indique que le membre est connecté.
+                $_SESSION['logged'] = true;
+                // On créé les variables contenant des informations sur le membre.
+                $_SESSION['id'] = $donnees_info['id'];
+                $_SESSION['pseudo'] = $pseudo;
+                $_SESSION['nuage'] = $donnees_info['nuage'];
+                $page = 'cerveau';
             }
         }
     }
@@ -209,7 +204,7 @@ if (true == $_SESSION['logged']) {
 
     // Gestion des pages d'évolution (constructions).
     $evolPage = -1; // Valeur par défaut.
-    if ('construction' == $page) {
+    if ('construction' === $page) {
         $evolPage = 0;
         // Nom de chaque objet d'un type différent.
         $evolNom = [
@@ -251,7 +246,7 @@ if (true == $_SESSION['logged']) {
 				[ Chaque niveau augmente les chances d\'obtenir plus d\'information sur un joueur ]<br />
 				[ Chaque niveau diminue les chances d\'obtenir plus d\'information sur vous ]</span><br />',
         ];
-    } elseif ('bisous' == $page) {
+    } elseif ('bisous' === $page) {
         $evolPage = 1;
         // Nom de chaque objet d'un type différent.
         $evolNom = [
@@ -282,12 +277,12 @@ if (true == $_SESSION['logged']) {
                     }
                 }
             }
-            if (true == $modif) {
+            if ($modif) {
                 $stmt = $pdo->prepare('UPDATE membres SET '.$Obj[1][0].' = :smack, '.$Obj[1][1].' = :baiser, '.$Obj[1][2].' = :pelle WHERE id = :id');
                 $stmt->execute(['smack' => $nbE[1][0], 'baiser' => $nbE[1][1], 'pelle' => $nbE[1][2], 'id' => $id]);
             }
         }
-    } elseif ('techno' == $page) {
+    } elseif ('techno' === $page) {
         $evolPage = 2;
         // Nom de chaque objet d'un type différent.
         $evolNom = [
@@ -315,8 +310,8 @@ if (true == $_SESSION['logged']) {
     }
 
     // Si on veut acceder a une des pages d'évolution -> prétraitement.
-    if (-1 != $evolPage) {
-        include 'phpincludes/evo.php';
+    if (-1 !== $evolPage) {
+        include __DIR__.'/phpincludes/evo.php';
     }
 
     // Récupération du nombre de messages non lus.
@@ -390,31 +385,25 @@ while ($donnees_info = $stmt->fetch()) {
                 $timeFin = $timeFin2;
                 $evolution = $donnees_info['type'];
             }
-        } else {
-            if (1 == $classe) {
-                // $amourConstructeur -= $donnees_info['cout'];
-                // mysql_query("UPDATE membres SET amour=$amourConstructeur WHERE id=$id2");
-            }
+        } elseif (1 == $classe) {
+            // $amourConstructeur -= $donnees_info['cout'];
+            // mysql_query("UPDATE membres SET amour=$amourConstructeur WHERE id=$id2");
         }
-    } else {
-        if ($id == $id2) {
-            if ($evolPage == $classe) {
-                $nbE[$classe][$type] = $nbObjEvol;
-                // Permet a la page de savoir qu'il n'y a plus de construction en cours (pour l'affichage).
-                $evolution = -1;
-            }
-        }
+    } elseif ($id == $id2 && $evolPage == $classe) {
+        $nbE[$classe][$type] = $nbObjEvol;
+        // Permet a la page de savoir qu'il n'y a plus de construction en cours (pour l'affichage).
+        $evolution = -1;
     }
 }
 
 // Gestion automatisée des attaques.
-include 'phpincludes/attaque.php';
+include __DIR__.'/phpincludes/attaque.php';
 
 // ***************************************************************************
 $temps13 = microtime_float();
 
 // Gestion des différentes pages dispo.
-include 'phpincludes/pages.php';
+include __DIR__.'/phpincludes/pages.php';
 
 // Si on décide que la page existe.
 if (isset($pages[$page])) {
@@ -595,22 +584,20 @@ if ($NbMemb + $NbVisit > 1) {
 $temps17 = microtime_float();
 $temps_fin = microtime_float();
 echo '<p class="Tpetit" >Page g&eacute;n&eacute;r&eacute;e en '.round($temps_fin - $temps_debut, 4).' secondes</p>';
-if (true == $_SESSION['logged']) {
-    /*
-        echo 'Bench temporaire, ne pas tenir compte :<br />';
-        echo 'T1 (compte):        '.round($temps12 - $temps11, 4).'<br />';
-        echo 'T2 (constructions): '.round($temps13 - $temps12, 4).'<br />';
-        echo 'T3 (pages+nb):      '.round($temps14 - $temps13, 4).'<br />';
-        echo 'T31 :               '.round($temps31 - $temps13, 4).'<br />';
-        echo 'T32 :               '.round($temps32 - $temps31, 4).'<br />';
-        echo 'T33 :               '.round($temps14 - $temps32, 4).'<br />';
-        echo 'T4 (tete):          '.round($temps15 - $temps14, 4).'<br />';
-        echo 'T5 (include):       '.round($temps16 - $temps15, 4).'<br />';
-        echo 'T6 (pied):          '.round($temps17 - $temps16, 4).'<br />';
-        */
-    if (12 == $id && 'cerveau' == $page) {
-        echo '<form class="Tpetit" method="post" action="accueil.html"><input type="submit" name="UnAct" tabindex="100" value="Action Unique" /></form>';
-    }
+/*
+echo 'Bench temporaire, ne pas tenir compte :<br />';
+echo 'T1 (compte):        '.round($temps12 - $temps11, 4).'<br />';
+echo 'T2 (constructions): '.round($temps13 - $temps12, 4).'<br />';
+echo 'T3 (pages+nb):      '.round($temps14 - $temps13, 4).'<br />';
+echo 'T31 :               '.round($temps31 - $temps13, 4).'<br />';
+echo 'T32 :               '.round($temps32 - $temps31, 4).'<br />';
+echo 'T33 :               '.round($temps14 - $temps32, 4).'<br />';
+echo 'T4 (tete):          '.round($temps15 - $temps14, 4).'<br />';
+echo 'T5 (include):       '.round($temps16 - $temps15, 4).'<br />';
+echo 'T6 (pied):          '.round($temps17 - $temps16, 4).'<br />';
+*/
+if (true == $_SESSION['logged'] && (12 == $id && 'cerveau' === $page)) {
+    echo '<form class="Tpetit" method="post" action="accueil.html"><input type="submit" name="UnAct" tabindex="100" value="Action Unique" /></form>';
 }
 ?>
 </p>

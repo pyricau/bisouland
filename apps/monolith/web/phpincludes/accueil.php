@@ -20,7 +20,7 @@ if (true == $_SESSION['logged'] && 'admin' == $pseudo) {
 
 <?php
 
-    function bb2html($text)
+    function bb2html($text): string
     {
         $bbcode = ['<', '>',
             '[list]', '[*]', '[/*]', '[/list]',
@@ -50,9 +50,7 @@ if (true == $_SESSION['logged'] && 'admin' == $pseudo) {
 
         $text = smileys($text);
 
-        $text = nl2br((string) $text);
-
-        return $text;
+        return nl2br((string) $text);
     }
 
 $pdo = bd_connect();

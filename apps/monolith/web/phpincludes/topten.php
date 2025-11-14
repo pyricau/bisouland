@@ -33,7 +33,7 @@ if (true == $_SESSION['logged'] && ($nbE[1][0] + $nbE[1][1] + $nbE[1][2]) > 0) {
     $positionSource = $donnees_info2['position'];
 }
 
-$sql_info = $pdo->query("SELECT id, pseudo, nuage, position, score, lastconnect FROM membres ORDER BY score DESC LIMIT 0,$nbTop");
+$sql_info = $pdo->query("SELECT id, pseudo, nuage, position, score, lastconnect FROM membres ORDER BY score DESC LIMIT 0,{$nbTop}");
 $donnees_info = $sql_info->fetch();
 for ($i = 1; $i <= $nbTop; ++$i) {
     echo '<tr>
@@ -43,7 +43,7 @@ for ($i = 1; $i <= $nbTop; ++$i) {
     if ($donnees_info['lastconnect'] > time() - 300) {
         echo ' <a class="bulle" style="cursor: default;" onclick="return false;" href=""><img src="images/on.png" alt="Connect&eacute;" title=""/><span>',$donnees_info['pseudo'],' est connect&eacute;</span></a>';
     } else {
-        echo ' <a class="bulle" style="cursor: default;" onclick="return false;" href=""><img src="images/off.png" alt="Non connect&eacute;" title="" /><span>',$donnees_info['pseudo'],' n\'est pas connect&eacute;</span></a>';
+        echo ' <a class="bulle" style="cursor: default;" onclick="return false;" href=""><img src="images/off.png" alt="Non connect&eacute;" title="" /><span>',$donnees_info['pseudo']," n'est pas connect&eacute;</span></a>";
     }
 
     echo '</td>

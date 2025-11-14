@@ -12,7 +12,7 @@ Les techniques vous permettent de mieux vous préparer à faire preuve d'amour.<
             echo $evolDesc[$i],'<br />Niveau actuel : ';
             echo $nbE[$evolPage][$i],'<br />';
             if ($evolution != $i) {
-                echo 'Niveau suivant : coute ',formaterNombre($amourE[$evolPage][$i]), ' points d\'amour<br />';
+                echo 'Niveau suivant : coute ',formaterNombre($amourE[$evolPage][$i]), " points d'amour<br />";
                 echo 'Temps de construction : ',strTemps($tempsE[$evolPage][$i]),'<br />';
             }
             if (-1 == $evolution) {
@@ -20,7 +20,7 @@ Les techniques vous permettent de mieux vous préparer à faire preuve d'amour.<
                     echo '<form method="post" action="techno.html"><input type="submit"
 		name="'.$Obj[$evolPage][$i].'" value="Passer au niveau suivant" /></form>';
                 } else {
-                    echo '<span class="info">[ Il te manque '.formaterNombre(ceil($amourE[$evolPage][$i] - $amour)).' points d\'amour pour pouvoir passer au niveau suivant ]</span><br />';
+                    echo '<span class="info">[ Il te manque '.formaterNombre(ceil($amourE[$evolPage][$i] - $amour))." points d'amour pour pouvoir passer au niveau suivant ]</span><br />";
                 }
             } elseif ($evolution == $i) {
                 ?>

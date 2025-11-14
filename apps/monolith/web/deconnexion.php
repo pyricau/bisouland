@@ -2,7 +2,7 @@
 
 session_start();
 
-include 'phpincludes/bd.php';
+include __DIR__.'/phpincludes/bd.php';
 
 // Ensuite on vérifie que la variable $_SESSION['logged'] existe et vaut bien true.
 if (isset($_SESSION['logged']) && true == $_SESSION['logged']) {

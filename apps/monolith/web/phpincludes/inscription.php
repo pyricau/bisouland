@@ -13,7 +13,7 @@ if (false == $_SESSION['logged']) {
         // Prevoir empecher de prendre un pseudo deje existant
         // Si les variables contenant le pseudo, le mot de passe existent et contiennent quelque chose.
         if (isset($_POST['Ipseudo'], $_POST['Imdp'], $_POST['Imdp2']) && !empty($_POST['Ipseudo']) && !empty($_POST['Imdp']) && !empty($_POST['Imdp2'])) {
-            if ($mdp == $mdp2) {
+            if ($mdp === $mdp2) {
                 // Si le pseudo est superieur e 3 caracteres et inferieur e 35 caracteres.
                 $taille = strlen(trim((string) $_POST['Ipseudo']));
                 if ($taille >= 4 && $taille <= 15) {
@@ -28,7 +28,7 @@ if (false == $_SESSION['logged']) {
                     // Verifie si le pseudo n'est pas deje pris.
                     if (
                         0 == $stmt->fetchColumn()
-                        && 'BisouLand' != $pseudo
+                        && 'BisouLand' !== $pseudo
                     ) {
                         // Verifie que le pseudo est correct.
                         if (preg_match("!^\w+$!", $pseudo)) {
@@ -66,10 +66,10 @@ if (false == $_SESSION['logged']) {
                                     echo 'Erreur : le mot de passe est soit trop court, soit trop long !';
                                 }
                             } else {
-                                echo 'Erreur : le mot de passe n\'est pas valide !';
+                                echo "Erreur : le mot de passe n'est pas valide !";
                             }
                         } else {
-                            echo 'Erreur : le pseudo n\'est pas valide !';
+                            echo "Erreur : le pseudo n'est pas valide !";
                         }
                     } else {
                         echo 'Erreur : pseudo deje pris !';
@@ -78,13 +78,13 @@ if (false == $_SESSION['logged']) {
                     echo 'Erreur : le pseudo est soit trop court, soit trop long !';
                 }
             } else {
-                echo 'Erreur : Tu n\'as pas rentre deux fois le meme mot de passe !';
+                echo "Erreur : Tu n'as pas rentre deux fois le meme mot de passe !";
             }
         } else {
             echo 'Erreur : Pense e remplir tous les champs !';
         }
     }
-    if (0 == $send) {
+    if (0 === $send) {
         ?>
 <form method="post" class="formul" action="inscription.html">
 	<label>Pseudo :<br /><span class="petit">(Entre 4 et 15 caracteres)</span><br /><input type="text" name="Ipseudo" tabindex="10" size="15" maxlength="15" value="<?php echo stripslashes($pseudo); ?>"/></label><br />
@@ -95,6 +95,6 @@ if (false == $_SESSION['logged']) {
 <?php
     }
 } else {
-    echo 'Pfiou t\'es dja connected toi !!';
+    echo "Pfiou t'es dja connected toi !!";
 }
 ?>

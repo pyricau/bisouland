@@ -25,10 +25,10 @@ final readonly class LogInPlayer
                 ],
                 'max_redirects' => 0,
             ]);
-        } catch (RedirectionException $e) { // @phpstan-ignore catch.neverThrown
+        } catch (RedirectionException $redirectionException) { // @phpstan-ignore catch.neverThrown
             // With max_redirects=0, HttpClient throws an exception when we get a 302
             // This is expected on successful login
-            $response = $e->getResponse();
+            $response = $redirectionException->getResponse();
         }
 
         $headers = $response->getHeaders(false);

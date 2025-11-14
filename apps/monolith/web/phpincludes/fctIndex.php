@@ -1,7 +1,7 @@
 <?php
 
 // Fonction pour calculer un temps en millisecondes.
-function microtime_float()
+function microtime_float(): int|float
 {
     return array_sum(explode(' ', microtime()));
 }
@@ -202,7 +202,7 @@ function AjouterScore($idScore, $valeur): void
     $stmt->execute(['score' => $donnees_info['score'] + $valeur, 'id' => $idScore]);
 }
 
-function formaterNombre($nombre)
+function formaterNombre($nombre): string
 {
     return number_format($nombre, 0, ',', ' ');
 }
@@ -239,7 +239,7 @@ function voirNiveau($scoreJoueur, $scoreAutre): int
 }
 
 // transformation de bbcode smiley en images.
-function smileys($texte)
+function smileys($texte): string|array
 {
     $in = [
         'o_O',

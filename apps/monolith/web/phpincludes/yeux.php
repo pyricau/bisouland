@@ -25,7 +25,7 @@
                 $scoreCible = floor($scoreCible / 1000.);
                 $scoreSource = floor($scoreSource / 1000.);
                 $Niveau = voirNiveau($scoreSource, $scoreCible);
-                if (0 == $Niveau) {
+                if (0 === $Niveau) {
                     $distance = abs(16 * ($Dnuage - $nuageSource) + $Dpos - $positionSource);
                     $cout = 1000 * $distance;
                     if ($amour >= $cout) {

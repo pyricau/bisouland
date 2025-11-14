@@ -20,7 +20,7 @@ if (true == $_SESSION['logged'] && 'admin' == $pseudo) {
 
 <?php
 
-    function bb2html($text)
+    function bb2html($text): string
     {
         $bbcode = ['<', '>',
             '[list]', '[*]', '[/*]', '[/list]',

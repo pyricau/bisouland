@@ -207,7 +207,7 @@ function formaterNombre($nombre): string
     return number_format($nombre, 0, ',', ' ');
 }
 
-function distanceMax($coeur, $jambes)
+function distanceMax($coeur, $jambes): int|float
 {
     return $coeur + 8 * $jambes;
 }
@@ -278,7 +278,7 @@ function smileys($texte): string|array
     return str_replace($in, $out, $texte);
 }
 
-function bbLow($text)
+function bbLow($text): string|array
 {
     $bbcode = [
         '[b]', '[/b]',
@@ -306,7 +306,7 @@ function tempsAttaque($distance, $jambes): float
     return floor(($distance * 1000) / (1 + 0.3 * $jambes));
 }
 
-function coutAttaque($distance, $jambes)
+function coutAttaque($distance, $jambes): float
 {
     $exp = $distance - $jambes;
     if ($exp < 0) {

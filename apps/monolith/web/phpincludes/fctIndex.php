@@ -74,7 +74,7 @@ function pluriel($nombre, $lettre = 's', $alt = '')
     return ($nombre > 1) ? $lettre : $alt;
 }
 
-function expo($a, $b, $val, $int = 0)
+function expo($a, $b, $val, $int = 0): float
 {
     $ret = $a * exp($b * $val);
 
@@ -86,7 +86,7 @@ function expo($a, $b, $val, $int = 0)
 }
 
 // Val doit etre different de 0.
-function InvExpo($a, $b, $val, $int = 0)
+function InvExpo($a, $b, $val, $int = 0): float
 {
     // Patch to avoid division by 0...
     if (0 == $val) {
@@ -104,7 +104,7 @@ function InvExpo($a, $b, $val, $int = 0)
 
 // Plus a augmente, plus on augmente la valeur de seuil
 // Plus b augmente, plus on eloigne le moment ou on atteint le seuil .
-function ExpoSeuil($a, $b, $val, $int = 0)
+function ExpoSeuil($a, $b, $val, $int = 0): float
 {
     if ($val <= 0) {
         $val = 1;
@@ -301,7 +301,7 @@ function bbLow($text)
     return smileys($text);
 }
 
-function tempsAttaque($distance, $jambes)
+function tempsAttaque($distance, $jambes): float
 {
     return floor(($distance * 1000) / (1 + 0.3 * $jambes));
 }

@@ -65,6 +65,7 @@ return RectorConfig::configure()
         SetList::NAMING,
         SetList::PRIVATIZATION,
         SetList::STRICT_BOOLEANS,
+        //SetList::TYPE_DECLARATION,
 
         // —— PHPUnit ——————————————————————————————————————————————————————————
         PHPUnitSetList::PHPUNIT_CODE_QUALITY,
@@ -95,4 +96,11 @@ return RectorConfig::configure()
         // More Coding Style
         ArraySpreadInsteadOfArrayMergeRector::class,
         StaticClosureRector::class,
+
+        // Type declaration
+        \Rector\TypeDeclaration\Rector\ClassMethod\BoolReturnTypeFromBooleanConstReturnsRector::class,
+        // \Rector\TypeDeclaration\Rector\ClassMethod\NumericReturnTypeFromStrictReturnsRector::class,
+        // \Rector\TypeDeclaration\Rector\ClassMethod\NumericReturnTypeFromStrictScalarReturnsRector::class,
+        // \Rector\TypeDeclaration\Rector\ClassMethod\ReturnTypeFromStrictNativeCallRector::class,
+        // \Rector\TypeDeclaration\Rector\ClassMethod\StringReturnTypeFromStrictStringReturnsRector::class,
     ]);

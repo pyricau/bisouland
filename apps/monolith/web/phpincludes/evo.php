@@ -1,6 +1,6 @@
 <?php
 
-function arbre($classe, $type, $nbE)
+function arbre($classe, $type, $nbE): bool
 {
     if (0 == $classe) {
         if (0 == $type) {

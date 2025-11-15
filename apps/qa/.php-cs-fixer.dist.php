@@ -4,12 +4,7 @@ use PhpCsFixer\Runner\Parallel\ParallelConfigFactory;
 
 $finder = (new PhpCsFixer\Finder())
     ->in(__DIR__)
-    ->in(__DIR__.'/../monolith/web')
-    ->exclude('ban')
-    ->exclude('images')
-    ->exclude('includes')
-    ->exclude('polices')
-    ->exclude('smileys')
+    ->in(__DIR__.'/../monolith')
 ;
 
 return (new PhpCsFixer\Config())

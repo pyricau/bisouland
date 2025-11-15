@@ -501,10 +501,10 @@ include __DIR__.'/pages.php';
 // Si on décide que la page existe.
 if (isset($pages[$page])) {
     $title = $pages[$page]['title'].' - Bienvenue sur Bisouland';
-    $include = 'phpincludes/'.$pages[$page]['file'];
+    $include = __DIR__.'/'.$pages[$page]['file'];
 } else {
     $title = 'Erreur 404 - Bienvenue sur Bisouland';
-    $include = 'phpincludes/erreur404.php';
+    $include = __DIR__.'/erreur404.php';
 }
 $temps31 = microtime_float();
 

@@ -44,4 +44,23 @@ final readonly class Assert
 
         PHPUnitAssert::assertSame(200, $response->getStatusCode(), $content);
     }
+
+    public static function noPhpErrorsOrWarnings(ResponseInterface $response): void
+    {
+        $content = $response->getContent();
+
+        $phpErrorPatterns = [
+            '<b>Warning</b>',
+            '<b>Notice</b>',
+            '<b>Fatal error</b>',
+            '<b>Parse error</b>',
+            '<b>Deprecated</b>',
+        ];
+
+        foreach ($phpErrorPatterns as $phpErrorPattern) {
+            if (str_contains($content, $phpErrorPattern)) {
+                PHPUnitAssert::fail("Failed asserting that response has no PHP errors or warnings. Found: {$phpErrorPattern}");
+            }
+        }
+    }
 }

@@ -218,7 +218,7 @@ Lorsque tu annules une cr&eacute;ation, tu ne r&eacute;cup&eacute;res que la  mo
 		<th >Requis</th>
 	</tr>';
         foreach ($requis[$c]['nom'] as $i => $Nom) {
-            $nbCond = count($requis[$c][$i]['Niveau']);
+            $nbCond = count($requis[$c][$i]['Niveau'] ?? []);
             if (0 === $nbCond) {
                 echo '<tr>
 					<td>'.$Nom.'</td>

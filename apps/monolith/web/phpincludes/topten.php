@@ -36,6 +36,9 @@ if (true == $_SESSION['logged'] && ($nbE[1][0] + $nbE[1][1] + $nbE[1][2]) > 0) {
 $sql_info = $pdo->query("SELECT id, pseudo, nuage, position, score, lastconnect FROM membres ORDER BY score DESC LIMIT 0,{$nbTop}");
 $donnees_info = $sql_info->fetch();
 for ($i = 1; $i <= $nbTop; ++$i) {
+    if (false === $donnees_info) {
+        break;
+    }
     echo '<tr>
 				<td>'.$i.'</td>
 				<td>';

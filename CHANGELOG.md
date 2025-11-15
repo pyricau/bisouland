@@ -4,6 +4,7 @@ This file logs the changes between versions.
 
 ## 4.0: Second v1 Rollback
 
+* `4.0.16`: upgraded from PHP 5.6 to PHP 8.4
 * `4.0.15`: migrated from deprecated MySQL extension to PDO
 * `4.0.14`: fixed Welcome Notification for new signed up players
 * `4.0.13`: fixed clouds to start at 1 instead of 100

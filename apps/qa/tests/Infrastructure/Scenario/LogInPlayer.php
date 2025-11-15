@@ -14,7 +14,7 @@ final readonly class LogInPlayer
         $httpClient = TestKernelSingleton::get()->httpClient();
 
         try {
-            $response = $httpClient->request('POST', '/redirect.php', [
+            $response = $httpClient->request('POST', '/connexion.html', [
                 'body' => [
                     'pseudo' => $player->username,
                     'mdp' => $player->password,

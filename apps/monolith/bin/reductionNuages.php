@@ -5,8 +5,8 @@
 // Décommenter la ligne ci dessous pour désactiver le script
 /*
 
-include 'phpincludes/fctIndex.php';
-include 'phpincludes/bd.php';
+include __DIR__.'/../phpincludes/fctIndex.php';
+include __DIR__.'/../phpincludes/bd.php';
 
 $pdo = bd_connect();
 

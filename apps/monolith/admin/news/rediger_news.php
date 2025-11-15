@@ -21,7 +21,7 @@ header('Content-type: text/html; charset=UTF-8');
 
 <?php
 
-    include __DIR__.'/../phpincludes/bd.php';
+    include __DIR__.'/../../phpincludes/bd.php';
 $pdo = bd_connect();
 
 if (isset($_GET['modifier_news'])) { // Si on demande de modifier une news

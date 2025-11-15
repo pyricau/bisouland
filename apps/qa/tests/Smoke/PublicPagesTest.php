@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Bl\Qa\Tests\Smoke;
 
 use Bl\Qa\Tests\Infrastructure\TestKernelSingleton;
+use Bl\Qa\Tests\Smoke\Assertion\Assert;
 use PHPUnit\Framework\Attributes\CoversNothing;
 use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\Attributes\Large;
@@ -24,6 +25,7 @@ final class PublicPagesTest extends TestCase
         $response = $httpClient->request('GET', $url);
 
         $this->assertSame(200, $response->getStatusCode(), $response->getContent());
+        Assert::noPhpErrorsOrWarnings($response);
     }
 
     /**

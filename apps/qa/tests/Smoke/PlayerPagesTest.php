@@ -43,6 +43,7 @@ final class PlayerPagesTest extends TestCase
         ]);
 
         Assert::loadsPageForLoggedInPlayers($response);
+        Assert::noPhpErrorsOrWarnings($response);
     }
 
     /**

@@ -168,7 +168,7 @@ if ($scoreSource < 50) {
     $stmt->execute(['nuage' => $nuageL]);
     $donnees_info = $stmt->fetch();
     for ($i = 1; $i <= 16; ++$i) {
-        if ($donnees_info['position'] == $i) {
+        if (false !== $donnees_info && $donnees_info['position'] == $i) {
             $donnees_info['pseudo'] = stripslashes((string) $donnees_info['pseudo']);
             echo '<tr><td>',$i,'</td><td>';
             if ($donnees_info['lastconnect'] > time() - 300) {

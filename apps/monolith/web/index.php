@@ -23,6 +23,100 @@ include __DIR__.'/phpincludes/fctIndex.php';
 
 $inMainPage = true;
 
+// Front Controller: Handle POST requests
+// Handle login
+if ('POST' === $_SERVER['REQUEST_METHOD'] && isset($_POST['connexion'])) {
+    // Ensuite on vérifie que les variables existent et contiennent quelque chose :)
+    if (isset($_POST['pseudo'], $_POST['mdp']) && !empty($_POST['pseudo']) && !empty($_POST['mdp'])) {
+        // Mesure de sécurité, notamment pour éviter les injections sql.
+        // Le htmlentities évitera de le passer par la suite.
+        $pseudo = htmlentities((string) $_POST['pseudo']);
+        $mdp = htmlentities((string) $_POST['mdp']);
+        // Hashage du mot de passe.
+        $mdp = md5($mdp);
+
+        // La requête qui compte le nombre de pseudos
+        $stmt = $pdo->prepare('SELECT COUNT(*) AS nb_pseudo FROM membres WHERE pseudo = :pseudo');
+        $stmt->execute(['pseudo' => $pseudo]);
+
+        // La on vérifie si le nombre est différent que zéro
+        if (0 != $stmt->fetchColumn()) {
+            // Sélection des informations.
+            $stmt = $pdo->prepare('SELECT id, confirmation, mdp, nuage FROM membres WHERE pseudo = :pseudo');
+            $stmt->execute(['pseudo' => $pseudo]);
+            $donnees_info = $stmt->fetch();
+
+            // Si le mot de passe est le même.
+            if ($donnees_info['mdp'] == $mdp) {
+                // Si le compte est confirmé.
+                if (1 == $donnees_info['confirmation']) {
+                    // On modifie la variable qui nous indique que le membre est connecté.
+                    $_SESSION['logged'] = true;
+
+                    // On créé les variables contenant des informations sur le membre.
+                    $_SESSION['id'] = $donnees_info['id'];
+                    $_SESSION['pseudo'] = $pseudo;
+                    $_SESSION['nuage'] = $donnees_info['nuage'];
+
+                    if (isset($_POST['auto'])) {
+                        $timestamp_expire = time() + 30 * 24 * 3600;
+                        setcookie('pseudo', $pseudo, ['expires' => $timestamp_expire]);
+                        setcookie('mdp', $mdp, ['expires' => $timestamp_expire]);
+                    }
+
+                    // On supprime le membre non connecté du nombre de visiteurs :
+                    $stmt = $pdo->prepare('DELETE FROM connectbisous WHERE ip = :ip');
+                    $stmt->execute(['ip' => $_SERVER['REMOTE_ADDR']]);
+
+                    // On redirige le membre.
+                    header('location: cerveau.html');
+                    exit;
+                }
+                $_SESSION['errCon'] = 'Erreur : le compte n\'est pas confirmé !';
+                $_SESSION['logged'] = false;
+                header('location: connexion.html');
+                exit;
+            }
+            $_SESSION['errCon'] = 'Erreur : le mot de passe est incorrect !';
+            $_SESSION['logged'] = false;
+            header('location: connexion.html');
+            exit;
+        }
+        $_SESSION['errCon'] = "Erreur : le pseudo n'existe pas !";
+        $_SESSION['logged'] = false;
+        header('location: connexion.html');
+        exit;
+    }
+    $_SESSION['errCon'] = 'Erreur : vous avez oublié de remplir un ou plusieurs champs !';
+    $_SESSION['logged'] = false;
+    header('location: connexion.html');
+    exit;
+}
+
+// Front Controller: Handle logout (via GET parameter)
+$page = (empty($_GET['page'])) ? 'accueil' : htmlentities((string) $_GET['page']);
+if ('logout' === $page) {
+    // Ensuite on vérifie que la variable $_SESSION['logged'] existe et vaut bien true.
+    if (isset($_SESSION['logged']) && true == $_SESSION['logged']) {
+        $timeDeco = time() - 600;
+        $stmt = $pdo->prepare('UPDATE membres SET lastconnect = :lastconnect WHERE id = :id');
+        $stmt->execute(['lastconnect' => $timeDeco, 'id' => $_SESSION['id']]);
+        // On modifie la valeur de $_SESSION['logged'], qui devient false.
+        $_SESSION['logged'] = false;
+        $timestamp_expire = time() - 1000;
+        setcookie('pseudo', '', ['expires' => $timestamp_expire]);
+        setcookie('mdp', '', ['expires' => $timestamp_expire]);
+
+        // Redirection.
+        header('location: accueil.html');
+        exit;
+    }
+    $_SESSION['errCon'] = 'Erreur : vous devez être connecté pour vous déconnecter !';
+    $_SESSION['logged'] = false;
+    header('location: connexion.html');
+    exit;
+}
+
 // Mesures de temps pour évaluer le temps que met la page a se créer.
 $temps_debut = microtime_float();
 
@@ -31,8 +125,7 @@ if (!isset($_SESSION['logged'])) {
     $_SESSION['logged'] = false;
 }
 
-// Gestion de la page courante : Permet de désigner la page a inclure. Si la variable est vide, alors ca sera 'accueil'.
-$page = (empty($_GET['page'])) ? 'accueil' : htmlentities((string) $_GET['page']);
+// Note: $page is already set above in the logout handler (line 103)
 
 // Test en cas de suppression de compte
 // Il faudra a jouter ici une routine de suppression des messages dans la bdd.
@@ -475,7 +568,7 @@ $temps14 = microtime_float();
 				</li>
 				<li class="speedgauche">Adoptez la strat&eacute;gie BisouLand !!</li>
 				<li class="speeddroite">
-					<a href="deconnexion.php" title="Vous avez termin&eacute; ? D&eacute;connectez-vous !">D&eacute;connexion (<?php echo $_SESSION['pseudo']; ?>)</a>
+					<a href="logout.html" title="Vous avez termin&eacute; ? D&eacute;connectez-vous !">D&eacute;connexion (<?php echo $_SESSION['pseudo']; ?>)</a>
 				</li>
 				<li class="speeddroite">
 					<a href="boite.html" title="<?php echo $NewMsgString; ?>"><?php echo $NewMsgString; ?></a>

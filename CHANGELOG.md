@@ -4,6 +4,7 @@ This file logs the changes between versions.
 
 ## 4.0: Second v1 Rollback
 
+* `4.0.18`: created front controller
 * `4.0.17`: fixed PHP warning
 * `4.0.16`: upgraded from PHP 5.6 to PHP 8.4
 * `4.0.15`: migrated from deprecated MySQL extension to PDO

@@ -6,9 +6,8 @@ services:
     ports:
       - "43000:80"
     volumes:
-      - ./web:/var/www/html
-      - ./phpincludes:/var/www/phpincludes
-      - ./config:/var/www/config
+      - .:/apps/monolith
+      - vendor:/apps/monolith/vendor
     depends_on:
       - db
     environment:
@@ -35,3 +34,4 @@ services:
 
 volumes:
   mysql_data:
+  vendor:

@@ -2,8 +2,7 @@
 
 declare(strict_types=1);
 
-// For when we start using composer:
-// require __DIR__.'/../vendor/autoload.php';
+require __DIR__.'/../vendor/autoload.php';
 
 try {
     require __DIR__.'/../phpincludes/app.php';

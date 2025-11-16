@@ -2,6 +2,9 @@
 /web/news/.htaccess
 /web/news/.htpasswd
 
+# composer
+vendor/
+
 # environment variables
 /.env.local
 /.env.local.php

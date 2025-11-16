@@ -9,8 +9,10 @@ services:
     volumes:
       # Mount current directory into container for QA tools and configs
       - .:/apps/qa
+      - vendor:/apps/qa/vendor
       # Mount the monolith source code for analysis
       - ../monolith:/apps/monolith
+      - monolith_vendor:/apps/monolith/vendor
     networks:
       - default
       - bisouland-monolith_default
@@ -18,3 +20,9 @@ services:
 networks:
   bisouland-monolith_default:
     external: true
+
+volumes:
+  vendor:
+  monolith_vendor:
+    external: true
+    name: bisouland-monolith_vendor

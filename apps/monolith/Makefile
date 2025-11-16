@@ -37,6 +37,13 @@ docker-down: ## Stops the services
 docker-bash: ## Opens a (bash) shell in the container
 	@docker compose exec $(LEGACY_SERVICE) bash
 
+## —— PHP 🐘 ———————————————————————————————————————————————————————————————————
+composer: ## Runs Composer (arg, eg `arg='outdated'`)
+	@docker compose exec $(LEGACY_SERVICE) composer $(arg)
+
+composer-install: ## Install dependencies
+	@docker compose exec $(LEGACY_SERVICE) composer install --optimize-autoloader
+
 ## —— Database ⛁ ———————————————————————————————————————————————————————————————
 db-reset: ## Reset the database by dropping and recreating it with schema.sql
 	@./bin/db-reset.sh

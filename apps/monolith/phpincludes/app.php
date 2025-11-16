@@ -16,10 +16,7 @@ header('Content-type: text/html; charset=UTF-8');
 session_start();
 ob_start();
 
-include __DIR__.'/bd.php';
 $pdo = bd_connect();
-
-include __DIR__.'/fctIndex.php';
 
 $inMainPage = true;
 

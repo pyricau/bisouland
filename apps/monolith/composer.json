@@ -19,7 +19,11 @@
     "autoload": {
         "psr-4": {
             "Bl\\": "src/"
-        }
+        },
+        "files": [
+            "phpincludes/bd.php",
+            "phpincludes/fctIndex.php"
+        ]
     },
     "config": {
         "bump-after-update": true,

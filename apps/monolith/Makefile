@@ -39,10 +39,16 @@ docker-bash: ## Opens a (bash) shell in the container
 
 ## —— PHP 🐘 ———————————————————————————————————————————————————————————————————
 composer: ## Runs Composer (arg, eg `arg='outdated'`)
-	@docker compose exec $(LEGACY_SERVICE) composer $(arg)
+	@$(COMPOSER) $(arg)
 
-composer-install: ## Install dependencies
-	@docker compose exec $(LEGACY_SERVICE) composer install --optimize-autoloader
+composer-install: ## Install dependencies (arg, eg `arg='--no-dev'`)
+	@$(COMPOSER) install --optimize-autoloader $(arg)
+
+composer-update: ## Updates dependencies (arg, eg `arg='--no-dev'`)
+	@$(COMPOSER) update --optimize-autoloader $(arg)
+
+composer-dump: ## Dumps autoloader (arg, eg `arg='--classmap-authoritative'`)
+	@$(COMPOSER) dump-autoload --optimize --strict-psr --strict-ambiguous $(arg)
 
 ## —— Database ⛁ ———————————————————————————————————————————————————————————————
 db-reset: ## Reset the database by dropping and recreating it with schema.sql

@@ -4,7 +4,7 @@ This file logs the changes between versions.
 
 ## 4.0: Second v1 Rollback
 
-v4: Second v1 Rollback, refactoring attempt.
+v4: 2025 second v1 rollback, refactoring attempt.
 
 * `4.0.19`: migrated to composer
 * `4.0.18`: created front controller
@@ -29,6 +29,6 @@ v4: Second v1 Rollback, refactoring attempt.
 
 ## Previously
 
-* v3: First v1 Rollback, strangler pattern attempt
+* v3: 2013 first v1 rollback, strangler fig pattern attempt
 * v2: 2012 reboot (totally different)
 * v1: 2005 original LAMP app

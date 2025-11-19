@@ -54,7 +54,7 @@ if (true == $_SESSION['logged'] && 'admin' == $pseudo) {
     }
 
 $pdo = bd_connect();
-$stmt = $pdo->query('SELECT * FROM newsbisous ORDER BY id DESC LIMIT 0, 5');
+$stmt = $pdo->query('SELECT * FROM newsbisous ORDER BY id DESC LIMIT 5 OFFSET 0');
 
 while ($donnees = $stmt->fetch(PDO::FETCH_ASSOC)) {
     ?>

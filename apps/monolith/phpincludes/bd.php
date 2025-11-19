@@ -7,7 +7,7 @@ function bd_connect()
     static $pdo = null;
 
     if (null === $pdo) {
-        $dsn = 'mysql:host='.DATABASE_HOST.';port='.DATABASE_PORT.';dbname='.DATABASE_NAME.';charset=utf8mb4';
+        $dsn = 'pgsql:host='.DATABASE_HOST.';port='.DATABASE_PORT.';dbname='.DATABASE_NAME;
         $options = [
             PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION,
             PDO::ATTR_DEFAULT_FETCH_MODE => PDO::FETCH_ASSOC,

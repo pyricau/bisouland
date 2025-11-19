@@ -96,12 +96,12 @@ if (isset($inMainPage) && true == $inMainPage) {
         $stmt = $pdo->prepare('SELECT cout FROM evolution WHERE auteur = :auteur AND classe = :classe');
         $stmt->execute(['auteur' => $id, 'classe' => $classeCancel]);
         $donnees_info = $stmt->fetch();
-        $amour += ($donnees_info['cout'] / 2);
+        $amour += (int) ($donnees_info['cout'] / 2);
         $stmt = $pdo->prepare('DELETE FROM evolution WHERE auteur = :auteur AND classe = :classe');
         $stmt->execute(['auteur' => $id, 'classe' => $classeCancel]);
 
         // On passe à une nouvelle construction si disponible.
-        $stmt = $pdo->prepare('SELECT id, duree, type, cout FROM liste WHERE auteur = :auteur AND classe = :classe ORDER BY id LIMIT 0,1');
+        $stmt = $pdo->prepare('SELECT id, duree, type, cout FROM liste WHERE auteur = :auteur AND classe = :classe ORDER BY id LIMIT 1 OFFSET 0');
         $stmt->execute(['auteur' => $id, 'classe' => $classeCancel]);
         if ($donnees_info = $stmt->fetch()) {
             $timeFin2 = time() + $donnees_info['duree'];

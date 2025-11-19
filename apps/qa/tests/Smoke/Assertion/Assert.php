@@ -50,6 +50,7 @@ final readonly class Assert
         $content = $response->getContent();
 
         $phpErrorPatterns = [
+            'An error occurred',
             '<b>Warning</b>',
             '<b>Notice</b>',
             '<b>Fatal error</b>',

@@ -16,7 +16,7 @@ ENV COMPOSER_ALLOW_SUPERUSER=1 \
 # Install dependencies:
 # * apache for the web server
 # * bash for shell access and scripting
-# * PDO (MySQL) extension for database access
+# * PDO (PostgreSQL) extension for database access
 # * zip for composer packages that use ZIP archives
 # _Note (Alpine)_: `--no-cache` includes `--update` and keeps image size minimal
 #
@@ -30,12 +30,13 @@ RUN apk add --update --no-cache \
         apache2-ssl \
         bash \
         libzip-dev \
+        postgresql-dev \
         zip \
     && sed -i 's/^#LoadModule rewrite_module/LoadModule rewrite_module/' /etc/apache2/httpd.conf \
     && docker-php-ext-install \
         bcmath \
         pdo \
-        pdo_mysql \
+        pdo_pgsql \
         zip
 
 # Copy Composer binary from composer image

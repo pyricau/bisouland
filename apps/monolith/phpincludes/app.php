@@ -457,7 +457,7 @@ while ($donnees_info = $stmt->fetch()) {
     // Si le visiteur est connecté et membre, et si la construction est la sienne, on met a jour les infos sur la page.
 
     // S'il ya des constructions sur la liste de construction, on relance une construction.
-    $stmt2 = $pdo->prepare('SELECT id, duree, type, cout FROM liste WHERE auteur = :auteur AND classe = :classe ORDER BY id LIMIT 0,1');
+    $stmt2 = $pdo->prepare('SELECT id, duree, type, cout FROM liste WHERE auteur = :auteur AND classe = :classe ORDER BY id LIMIT 1 OFFSET 0');
     $stmt2->execute(['auteur' => $id2, 'classe' => $classe]);
     if ($donnees_info = $stmt2->fetch()) {
         $timeFin2 = time() + $donnees_info['duree'];
@@ -650,7 +650,7 @@ $temps16 = microtime_float();
 <?php
     if (true == $_SESSION['logged']) {
         $stmt = $pdo->prepare('UPDATE membres SET lastconnect = :lastconnect, timestamp = :timestamp, amour = :amour WHERE id = :id');
-        $stmt->execute(['lastconnect' => time(), 'timestamp' => time(), 'amour' => $amour, 'id' => $id]);
+        $stmt->execute(['lastconnect' => time(), 'timestamp' => time(), 'amour' => (int) $amour, 'id' => $id]);
     }
 ?>
 

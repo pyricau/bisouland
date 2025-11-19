@@ -18,7 +18,7 @@ final readonly class TestKernel
 
         // Database connection
         $dbHost = $_ENV['DATABASE_HOST'] ?? 'localhost';
-        $dbPort = $_ENV['DATABASE_PORT'] ?? '3306';
+        $dbPort = $_ENV['DATABASE_PORT'] ?? '5432';
         $dbName = $_ENV['DATABASE_NAME'] ?? '';
         $dbUser = $_ENV['DATABASE_USER'] ?? '';
         $dbPass = $_ENV['DATABASE_PASSWORD'] ?? '';
@@ -28,7 +28,7 @@ final readonly class TestKernel
         }
 
         $pdo = new \PDO(
-            "mysql:host={$dbHost};port={$dbPort};dbname={$dbName}",
+            "pgsql:host={$dbHost};port={$dbPort};dbname={$dbName}",
             $dbUser,
             $dbPass,
             [

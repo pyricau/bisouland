@@ -206,7 +206,7 @@ if (isset($inMainPage) && true == $inMainPage) {
             $stmt = $pdo->prepare('UPDATE membres SET smack = :smack, baiser = :baiser, pelle = :pelle WHERE id = :id');
             $stmt->execute(['smack' => $AttSmack, 'baiser' => $AttBaiser, 'pelle' => $AttPelle, 'id' => $idAuteur]);
             $stmt = $pdo->prepare('UPDATE membres SET amour = :amour, smack = :smack, baiser = :baiser, pelle = :pelle WHERE id = :id');
-            $stmt->execute(['amour' => $DefAmour, 'smack' => $DefSmack, 'baiser' => $DefBaiser, 'pelle' => $DefPelle, 'id' => $idCible]);
+            $stmt->execute(['amour' => (int) $DefAmour, 'smack' => $DefSmack, 'baiser' => $DefBaiser, 'pelle' => $DefPelle, 'id' => $idCible]);
 
             $stmt = $pdo->prepare('UPDATE attaque SET butin = :butin WHERE auteur = :auteur');
             $stmt->execute(['butin' => $butin, 'auteur' => $idAuteur]);
@@ -261,6 +261,6 @@ if (isset($inMainPage) && true == $inMainPage) {
 
         // Libérer l'auteur et ajouter butin
         $stmt = $pdo->prepare('UPDATE membres SET bloque = 0, amour = :amour WHERE id = :id');
-        $stmt->execute(['amour' => $AttAmour, 'id' => $idAuteur]);
+        $stmt->execute(['amour' => (int) $AttAmour, 'id' => $idAuteur]);
     }
 }

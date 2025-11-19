@@ -63,6 +63,7 @@ db-reset: ## Reset the database by dropping and recreating it with schema.sql
 app-init: ## First install / resetting (Docker build, up, etc)
 	@$(MAKE) docker-down
 	@$(MAKE) docker-init
-	@sleep 2
+	@echo 'Waiting for MySQL 8.4 to initialize...'
+	@sleep 30
 	@echo ''
 	@$(MAKE) db-reset

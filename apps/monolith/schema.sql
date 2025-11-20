@@ -55,7 +55,7 @@ CREATE TABLE IF NOT EXISTS messages (
 -- Online users tracking
 -- Tracks visitor IPs and connection times, managed in index.php:492-512
 CREATE TABLE IF NOT EXISTS connectbisous (
-    ip VARCHAR(15) PRIMARY KEY,         -- Visitor IP address, from $_SERVER['REMOTE_ADDR']
+    ip INET PRIMARY KEY,                -- Visitor IP address, from $_SERVER['REMOTE_ADDR']
     timestamp INTEGER NOT NULL,         -- Last activity time, updated in index.php:500
     type SMALLINT DEFAULT 1             -- Connection type (2 for new, 1 for existing)
 );
@@ -89,7 +89,7 @@ CREATE TABLE IF NOT EXISTS livreor (
     pseudo VARCHAR(50) NOT NULL,        -- Name of guest book signer
     message TEXT NOT NULL,              -- Guest book message content
     timestamp INTEGER NOT NULL,         -- Entry creation time
-    ip VARCHAR(15) NOT NULL             -- IP address of the signer
+    ip INET NOT NULL                    -- IP address of the signer
 );
 
 -- News (renamed from 'news' to 'newsbisous' to match PHP code)
@@ -110,7 +110,7 @@ CREATE TABLE IF NOT EXISTS orbisous (
     pseudo VARCHAR(50) NOT NULL,        -- Name of guest book signer
     message TEXT NOT NULL,              -- Guest book message content
     timestamp INTEGER NOT NULL,         -- Entry creation time
-    ip VARCHAR(15) NOT NULL             -- IP address of the signer
+    ip INET NOT NULL                    -- IP address of the signer
 );
 
 -- Attack log table

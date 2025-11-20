@@ -1,4 +1,4 @@
-<?php if (true == $_SESSION['logged']) {
+<?php if (true === $_SESSION['logged']) {
     $pdo = bd_connect();
 
     if (isset($_GET['Dnuage'], $_GET['Dpos']) && !empty($_GET['Dnuage']) && !empty($_GET['Dpos'])) {
@@ -90,8 +90,8 @@
                         }
 
                         // Envoyer un MP si le user le désire.
-                        if (1 == $espionSource && 0 !== $lvlInfo) {
-                            AdminMP($id, "Tu as dévisagé {$pseudoCible}", $resDev, 1);
+                        if (true === $espionSource && 0 !== $lvlInfo) {
+                            AdminMP($id, "Tu as dévisagé {$pseudoCible}", $resDev, true);
                         }
                     } else {
                         $resultat = "Tu n'as pas assez de Points d'Amour";
@@ -115,7 +115,7 @@
         if (isset($resDev)) {
             echo nl2br(htmlentities($resDev));
             if (0 != $lvlInfo) {
-                if (1 == $espionSource) {
+                if (true === $espionSource) {
                     echo "Un message t'a été envoyé pour enregistrer ces informations.<br />";
                 } else {
                     echo 'Va dans Mon compte si tu désires sauvegarder ces informations dans des messages.<br />';

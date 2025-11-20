@@ -1,7 +1,10 @@
 <?php
 
-if (false == $_SESSION['logged']) {
+if (false === $_SESSION['logged']) {
     $pdo = bd_connect();
+    $castToPgBoolean = cast_to_pg_boolean();
+    $castToUnixTimestamp = cast_to_unix_timestamp();
+    $castToPgTimestamptz = cast_to_pg_timestamptz();
     $send = 0;
     $pseudo = '';
     $mdp = '';
@@ -45,7 +48,13 @@ if (false == $_SESSION['logged']) {
                                         'INSERT INTO membres (pseudo, mdp, confirmation, timestamp, lastconnect, amour)'
                                         .' VALUES (:pseudo, :mdp, :confirmation, :timestamp, :lastconnect, :amour)',
                                     );
-                                    $stmt->execute(['pseudo' => $pseudo, 'mdp' => $hmdp, 'confirmation' => 1, 'timestamp' => time(), 'lastconnect' => time(), 'amour' => 300]);
+<<<<<<< HEAD
+                                    $stmt->execute(['pseudo' => $pseudo, 'mdp' => $hmdp, 'confirmation' => $castBoolean->from(true), 'timestamp' => time(), 'lastconnect' => time(), 'amour' => 300]);
+||||||| parent of eb73946 (bool)
+                                    $stmt->execute(['pseudo' => $pseudo, 'mdp' => $hmdp, 'confirmation' => $castBoolean->from(true), 'amour' => 300]);
+=======
+                                    $stmt->execute(['pseudo' => $pseudo, 'mdp' => $hmdp, 'confirmation' => $castToPgBoolean->from(true), 'amour' => 300]);
+>>>>>>> eb73946 (bool)
                                     $id = $pdo->lastInsertId();
 
                                     GiveNewPosition($id);

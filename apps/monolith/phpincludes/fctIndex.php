@@ -119,9 +119,11 @@ function ExpoSeuil($a, $b, $val, $int = 0): float
     return $ret;
 }
 
-function AdminMP($cible, $objet, $message, $lu = 0): void
+function AdminMP($cible, $objet, $message, bool $lu = false): void
 {
     $pdo = bd_connect();
+    $castToPgBoolean = cast_to_pg_boolean();
+    $castToPgTimestamptz = cast_to_pg_timestamptz();
     $message = nl2br((string) $message);
 
     $stmt = $pdo->prepare('SELECT COUNT(*) AS nbmsg FROM messages WHERE destin = :destin');
@@ -141,7 +143,7 @@ function AdminMP($cible, $objet, $message, $lu = 0): void
         .' (posteur, destin, message, timestamp, statut, titre)'
         .' VALUES(1, :destin, :message, :timestamp, :statut, :titre)',
     );
-    $stmt->execute(['destin' => $cible, 'message' => $message, 'timestamp' => $timestamp, 'statut' => $lu, 'titre' => $objet]);
+    $stmt->execute(['destin' => $cible, 'message' => $message, 'timestamp' => $castToPgTimestamptz->fromUnixTimestamp($timestamp), 'statut' => $castToPgBoolean->from($lu), 'titre' => $objet]);
 }
 
 function SupprimerCompte($idCompteSuppr): void
@@ -163,7 +165,7 @@ function SupprimerCompte($idCompteSuppr): void
     $stmt = $pdo->prepare('SELECT auteur FROM attaque WHERE cible = :cible');
     $stmt->execute(['cible' => $idCompteSuppr]);
     while ($donnees_info = $stmt->fetch()) {
-        $stmt2 = $pdo->prepare('UPDATE membres SET bloque = 0 WHERE id = :id');
+        $stmt2 = $pdo->prepare('UPDATE membres SET bloque = FALSE WHERE id = :id');
         $stmt2->execute(['id' => $donnees_info['auteur']]);
         $stmt2 = $pdo->prepare('DELETE FROM attaque WHERE auteur = :auteur');
         $stmt2->execute(['auteur' => $donnees_info['auteur']]);

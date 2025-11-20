@@ -1,6 +1,6 @@
 <h1>Embrasser</h1>
 <?php
-if (true == $_SESSION['logged']) {
+if (true === $_SESSION['logged']) {
     $pdo = bd_connect();
     if (isset($_POST['action'])) {
         $cout = 0;
@@ -60,7 +60,7 @@ if (true == $_SESSION['logged']) {
                                                 $amour -= $cout;
                                                 $joueurBloque = 1;
                                                 $duree = tempsAttaque($distance, $nbE[0][4]);
-                                                $stmt = $pdo->prepare('UPDATE membres SET bloque = 1 WHERE id = :id');
+                                                $stmt = $pdo->prepare('UPDATE membres SET bloque = TRUE WHERE id = :id');
                                                 $stmt->execute(['id' => $id]);
                                                 $stmt = $pdo->prepare('INSERT INTO attaque VALUES (:auteur, :cible, :finaller, :finretour, 0)');
                                                 $stmt->execute(['auteur' => $id, 'cible' => $cible, 'finaller' => time() + $duree, 'finretour' => time() + 2 * $duree]);

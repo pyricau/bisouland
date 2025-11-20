@@ -93,7 +93,7 @@ if (isset($inMainPage) && true == $inMainPage) {
             $stmt->execute(['auteur' => $idAuteur]);
             // Envoyer un MP pour signifier les résultats.
             // On supprime les unités.
-            $stmt = $pdo->prepare('UPDATE membres SET smack = :smack, baiser = :baiser, pelle = :pelle, bloque = 0 WHERE id = :id');
+            $stmt = $pdo->prepare('UPDATE membres SET smack = :smack, baiser = :baiser, pelle = :pelle, bloque = FALSE WHERE id = :id');
             $stmt->execute(['smack' => $AttSmack, 'baiser' => $AttBaiser, 'pelle' => $AttPelle, 'id' => $idAuteur]);
             $stmt = $pdo->prepare('UPDATE membres SET smack = :smack, baiser = :baiser, pelle = :pelle WHERE id = :id');
             $stmt->execute(['smack' => $DefSmack, 'baiser' => $DefBaiser, 'pelle' => $DefPelle, 'id' => $idCible]);
@@ -173,7 +173,7 @@ if (isset($inMainPage) && true == $inMainPage) {
             // Faire retourner, Avec butin.
 
             // Gestion du butin
-            if ($idCible == $id && true == $_SESSION['logged']) {
+            if ($idCible == $id && true === $_SESSION['logged']) {
                 $DefAmour = $amour;
             } else {
                 $DefTimestamp = $donnees_info4['timestamp'];
@@ -198,7 +198,7 @@ if (isset($inMainPage) && true == $inMainPage) {
 
             $DefAmour -= $butin;
 
-            if ($idCible == $id && true == $_SESSION['logged']) {
+            if ($idCible == $id && true === $_SESSION['logged']) {
                 $amour = $DefAmour;
             }
 
@@ -241,7 +241,7 @@ if (isset($inMainPage) && true == $inMainPage) {
         $stmt = $pdo->prepare('DELETE FROM attaque WHERE auteur = :auteur');
         $stmt->execute(['auteur' => $idAuteur]);
 
-        if ($idAuteur == $id && true == $_SESSION['logged']) {
+        if ($idAuteur == $id && true === $_SESSION['logged']) {
             $AttAmour = $amour;
         } else {
             $stmt = $pdo->prepare('SELECT amour FROM membres WHERE id = :id');
@@ -254,13 +254,13 @@ if (isset($inMainPage) && true == $inMainPage) {
         // Récupération des points d'amour.
         $AttAmour += $butinAuteur;
 
-        if ($idAuteur == $id && true == $_SESSION['logged']) {
+        if ($idAuteur == $id && true === $_SESSION['logged']) {
             $amour = $AttAmour;
             $joueurBloque = 0;
         }
 
         // Libérer l'auteur et ajouter butin
-        $stmt = $pdo->prepare('UPDATE membres SET bloque = 0, amour = :amour WHERE id = :id');
+        $stmt = $pdo->prepare('UPDATE membres SET bloque = FALSE, amour = :amour WHERE id = :id');
         $stmt->execute(['amour' => (int) $AttAmour, 'id' => $idAuteur]);
     }
 }

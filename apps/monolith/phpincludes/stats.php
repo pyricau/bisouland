@@ -2,23 +2,23 @@
 
 $pdo = bd_connect();
 
-$retour = $pdo->query('SELECT SUM( amour ) AS nb FROM membres WHERE confirmation = 1');
+$retour = $pdo->query('SELECT SUM( amour ) AS nb FROM membres WHERE confirmation = TRUE');
 $pointsAmourTotal = $retour->fetchColumn();
-$retour = $pdo->query('SELECT COUNT(*) AS nb FROM membres WHERE confirmation=1 AND lastconnect>='.(time() - 300));
+$retour = $pdo->query('SELECT COUNT(*) AS nb FROM membres WHERE confirmation=TRUE AND lastconnect>='.(time() - 300));
 $connectCinq = $retour->fetchColumn();
-$retour = $pdo->query('SELECT COUNT(*) AS nb FROM membres WHERE confirmation=1 AND lastconnect>='.(time() - 3600));
+$retour = $pdo->query('SELECT COUNT(*) AS nb FROM membres WHERE confirmation=TRUE AND lastconnect>='.(time() - 3600));
 $connectHeure = $retour->fetchColumn();
-$retour = $pdo->query('SELECT COUNT(*) AS nb FROM membres WHERE confirmation=1 AND lastconnect>='.(time() - 43200));
+$retour = $pdo->query('SELECT COUNT(*) AS nb FROM membres WHERE confirmation=TRUE AND lastconnect>='.(time() - 43200));
 $connectMid = $retour->fetchColumn();
-$retour = $pdo->query('SELECT COUNT(*) AS nb FROM membres WHERE confirmation=1 AND lastconnect>='.(time() - 86400));
+$retour = $pdo->query('SELECT COUNT(*) AS nb FROM membres WHERE confirmation=TRUE AND lastconnect>='.(time() - 86400));
 $connectJour = $retour->fetchColumn();
-$retour = $pdo->query('SELECT COUNT(*) AS nb FROM membres WHERE confirmation=1 AND lastconnect>='.(time() - 172800));
+$retour = $pdo->query('SELECT COUNT(*) AS nb FROM membres WHERE confirmation=TRUE AND lastconnect>='.(time() - 172800));
 $connect2Jour = $retour->fetchColumn();
-$retour = $pdo->query('SELECT COUNT(*) AS nb FROM membres WHERE confirmation=1 AND lastconnect>='.(time() - 604800));
+$retour = $pdo->query('SELECT COUNT(*) AS nb FROM membres WHERE confirmation=TRUE AND lastconnect>='.(time() - 604800));
 $connectSemaine = $retour->fetchColumn();
-$retour = $pdo->query('SELECT COUNT(*) AS nb FROM membres WHERE confirmation=1 AND lastconnect>='.(time() - 2635200));
+$retour = $pdo->query('SELECT COUNT(*) AS nb FROM membres WHERE confirmation=TRUE AND lastconnect>='.(time() - 2635200));
 $connectMois = $retour->fetchColumn();
-$retour = $pdo->query('SELECT COUNT(*) AS nb FROM membres WHERE confirmation=1 AND lastconnect>='.(time() - 31536000));
+$retour = $pdo->query('SELECT COUNT(*) AS nb FROM membres WHERE confirmation=TRUE AND lastconnect>='.(time() - 31536000));
 $connectAn = $retour->fetchColumn();
 ?>
 <h1>Statistiques</h1>

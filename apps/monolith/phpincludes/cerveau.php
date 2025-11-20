@@ -1,6 +1,6 @@
 <h1>Cerveau</h1>
 <?php
-if (true == $_SESSION['logged']) {
+if (true === $_SESSION['logged']) {
 $pdo = bd_connect();
 $production = calculerGenAmour(0, 3600, $nbE[0][0], $nbE[1][0], $nbE[1][1], $nbE[1][2]);
 
@@ -13,7 +13,7 @@ $stmt = $pdo->prepare('SELECT COUNT(*) AS position FROM membres WHERE score > :s
 $stmt->execute(['score' => $donnees_info['score']]);
 $position = $stmt->fetchColumn() + 1;
 
-$sql = $pdo->query('SELECT COUNT(*) AS nb_joueur FROM membres WHERE confirmation = 1');
+$sql = $pdo->query('SELECT COUNT(*) AS nb_joueur FROM membres WHERE confirmation = TRUE');
 $totalJoueur = $sql->fetchColumn();
 
 ?>

@@ -49,6 +49,8 @@ return (new PhpCsFixer\Config())
         // 7) ../monolith/phpincludes/fctIndex.php:201 Fatal error: Uncaught TypeError: number_format(): Argument #1 ($num) must be of type int|float, string given
         'declare_strict_types' => false,
     ])
+    // While waiting for PHP CS Fixer to support PHP 8.5
+    ->setUnsupportedPhpVersionAllowed(true)
     ->setRiskyAllowed(true)
     ->setParallelConfig(ParallelConfigFactory::detect())
     ->setUsingCache(true)

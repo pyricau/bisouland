@@ -4,7 +4,7 @@
 # PHP Dev Container
 # Utility Tools: Apache, PHP-FPM, bash, Composer
 ###
-FROM php:8.4-fpm-alpine AS php_dev_container
+FROM php:8.5-fpm-alpine AS php_dev_container
 
 # Composer environment variables:
 # * default user is superuser (root), so allow them

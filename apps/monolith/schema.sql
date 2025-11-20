@@ -8,13 +8,13 @@ CREATE TABLE IF NOT EXISTS membres (
     id SERIAL PRIMARY KEY,                 -- User ID, referenced in all other tables
     pseudo VARCHAR(50) NOT NULL UNIQUE,    -- Username, used in login (redirect.php:21, index.php:60)
     mdp VARCHAR(255) NOT NULL,             -- Password hash, checked in redirect.php:27
-    confirmation SMALLINT DEFAULT 0,       -- Account confirmed flag, checked in redirect.php:27
+    confirmation BOOLEAN DEFAULT FALSE,    -- Account confirmed flag, checked in redirect.php:27
     timestamp INTEGER NOT NULL,            -- Account creation time, updated in confirmation.php:92
     lastconnect INTEGER DEFAULT 0,         -- Last connection time, updated in index.php:698, deconnexion.php:13
     amour BIGINT DEFAULT 1000,             -- Game currency, updated throughout index.php
     nuage INTEGER DEFAULT 1,               -- Cloud/server number, used in nuage positioning
     position INTEGER DEFAULT 1,            -- Position within cloud, used in action.php and nuage.php
-    bloque SMALLINT DEFAULT 0,             -- User blocked status, set in action.php:80
+    bloque BOOLEAN DEFAULT FALSE,          -- User blocked status, set in action.php:80
     -- Game objects/organs - used in game mechanics (index.php:138, 305)
     coeur INTEGER DEFAULT 1,               -- Heart organ count
     bouche INTEGER DEFAULT 1,              -- Mouth organ count, used in attacks (attaque.php:35, 46)
@@ -35,7 +35,7 @@ CREATE TABLE IF NOT EXISTS membres (
     score BIGINT DEFAULT 0,                -- Player score for rankings, used in topten.php:37, makeBan.php
     -- Notification and admin fields
     lastmsg INTEGER DEFAULT 0,             -- Last message timestamp (referenced in PHP)
-    espion SMALLINT DEFAULT 0,             -- Spy mode flag (referenced in PHP)
+    espion BOOLEAN DEFAULT FALSE,          -- Spy mode flag (referenced in PHP)
     newpass VARCHAR(255) DEFAULT NULL      -- New password reset token, set in perdu.php:20
 );
 
@@ -47,7 +47,7 @@ CREATE TABLE IF NOT EXISTS messages (
     destin INTEGER NOT NULL,            -- Matches $cible from INSERT
     message TEXT NOT NULL,              -- Matches $message from INSERT
     timestamp INTEGER NOT NULL,         -- Matches $timer/time() from INSERT
-    statut SMALLINT DEFAULT 0,          -- Matches '0'/$lu from INSERT
+    statut BOOLEAN DEFAULT FALSE,       -- Matches '0'/$lu from INSERT (FALSE=unread, TRUE=read)
     titre VARCHAR(100) NOT NULL         -- Matches $titre/$objet from INSERT
 );
 
@@ -146,5 +146,5 @@ INSERT INTO nuage (id, nombre) VALUES (1, 1) ON CONFLICT (id) DO UPDATE SET nomb
 
 -- Insert a default admin user (password: admin, hashed with md5)
 INSERT INTO membres (pseudo, mdp, confirmation, timestamp, lastconnect)
-VALUES ('admin', '21232f297a57a5a743894a0e4a801fc3', 1, extract(epoch from now())::integer, extract(epoch from now())::integer)
+VALUES ('admin', '21232f297a57a5a743894a0e4a801fc3', TRUE, extract(epoch from now())::integer, extract(epoch from now())::integer)
 ON CONFLICT (pseudo) DO NOTHING;

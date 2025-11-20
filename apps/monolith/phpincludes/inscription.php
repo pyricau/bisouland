@@ -1,6 +1,6 @@
 <?php
 
-if (false == $_SESSION['logged']) {
+if (false === $_SESSION['logged']) {
     $pdo = bd_connect();
     $send = 0;
     $pseudo = '';
@@ -40,12 +40,13 @@ if (false == $_SESSION['logged']) {
 
                                     // Hashage du mot de passe avec md5().
                                     $hmdp = md5($mdp);
+                                    $castBoolean = pg_cast_boolean();
 
                                     $stmt = $pdo->prepare(
                                         'INSERT INTO membres (pseudo, mdp, confirmation, timestamp, lastconnect, amour)'
                                         .' VALUES (:pseudo, :mdp, :confirmation, :timestamp, :lastconnect, :amour)',
                                     );
-                                    $stmt->execute(['pseudo' => $pseudo, 'mdp' => $hmdp, 'confirmation' => 1, 'timestamp' => time(), 'lastconnect' => time(), 'amour' => 300]);
+                                    $stmt->execute(['pseudo' => $pseudo, 'mdp' => $hmdp, 'confirmation' => $castBoolean->from(true), 'timestamp' => time(), 'lastconnect' => time(), 'amour' => 300]);
                                     $id = $pdo->lastInsertId();
 
                                     GiveNewPosition($id);

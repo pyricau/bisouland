@@ -22,6 +22,7 @@
         },
         "files": [
             "phpincludes/bd.php",
+            "phpincludes/pg_cast_boolean.php",
             "phpincludes/fctIndex.php"
         ]
     },

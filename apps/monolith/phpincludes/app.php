@@ -46,7 +46,7 @@ if ('POST' === $_SERVER['REQUEST_METHOD'] && isset($_POST['connexion'])) {
             // Si le mot de passe est le même.
             if ($donnees_info['mdp'] == $mdp) {
                 // Si le compte est confirmé.
-                if (1 == $donnees_info['confirmation']) {
+                if (true === $donnees_info['confirmation']) {
                     // On modifie la variable qui nous indique que le membre est connecté.
                     $_SESSION['logged'] = true;
 
@@ -152,7 +152,7 @@ if (false == $_SESSION['logged']) {
 
             // Si le mot de passe est le même (le mot de passe est déjà crypté).
             // Si le compte est confirmé.
-            if ($donnees_info['mdp'] == $mdp && 1 == $donnees_info['confirmation']) {
+            if ($donnees_info['mdp'] == $mdp && true === $donnees_info['confirmation']) {
                 // On modifie la variable qui nous indique que le membre est connecté.
                 $_SESSION['logged'] = true;
                 // On créé les variables contenant des informations sur le membre.
@@ -405,7 +405,7 @@ if (true == $_SESSION['logged']) {
     }
 
     // Récupération du nombre de messages non lus.
-    $stmt = $pdo->prepare('SELECT COUNT(*) AS nbMsg FROM messages WHERE destin = :destin AND statut = 0');
+    $stmt = $pdo->prepare('SELECT COUNT(*) AS nbMsg FROM messages WHERE destin = :destin AND statut = FALSE');
     $stmt->execute(['destin' => $id]);
     $nbNewMsg = $stmt->fetchColumn();
     if ($nbNewMsg > 0) {

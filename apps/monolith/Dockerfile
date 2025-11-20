@@ -53,7 +53,8 @@ RUN composer install \
     --no-interaction \
     --no-plugins \
     --no-scripts \
-    --optimize-autoloader
+    --optimize-autoloader \
+    && chmod -R o+rX vendor/
 
 # Copy the remaining application files (excluding those listed in .dockerignore)
 COPY . .

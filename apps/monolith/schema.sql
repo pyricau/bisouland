@@ -9,8 +9,8 @@ CREATE TABLE IF NOT EXISTS membres (
     pseudo VARCHAR(50) NOT NULL UNIQUE,    -- Username, used in login (redirect.php:21, index.php:60)
     mdp VARCHAR(255) NOT NULL,             -- Password hash, checked in redirect.php:27
     confirmation BOOLEAN DEFAULT FALSE,    -- Account confirmed flag, checked in redirect.php:27
-    timestamp INTEGER NOT NULL,            -- Account creation time, updated in confirmation.php:92
-    lastconnect INTEGER DEFAULT 0,         -- Last connection time, updated in index.php:698, deconnexion.php:13
+    timestamp TIMESTAMPTZ NOT NULL DEFAULT CURRENT_TIMESTAMP,  -- Account creation time, updated in confirmation.php:92
+    lastconnect TIMESTAMPTZ NOT NULL DEFAULT CURRENT_TIMESTAMP,        -- Last connection time, updated in index.php:698, deconnexion.php:13
     amour BIGINT DEFAULT 1000,             -- Game currency, updated throughout index.php
     nuage INTEGER DEFAULT 1,               -- Cloud/server number, used in nuage positioning
     position INTEGER DEFAULT 1,            -- Position within cloud, used in action.php and nuage.php
@@ -34,7 +34,6 @@ CREATE TABLE IF NOT EXISTS membres (
     soupe INTEGER DEFAULT 0,               -- Soup count, used in index.php:138
     score BIGINT DEFAULT 0,                -- Player score for rankings, used in topten.php:37, makeBan.php
     -- Notification and admin fields
-    lastmsg INTEGER DEFAULT 0,             -- Last message timestamp (referenced in PHP)
     espion BOOLEAN DEFAULT FALSE,          -- Spy mode flag (referenced in PHP)
     newpass VARCHAR(255) DEFAULT NULL      -- New password reset token, set in perdu.php:20
 );
@@ -46,7 +45,7 @@ CREATE TABLE IF NOT EXISTS messages (
     posteur INTEGER NOT NULL,           -- Matches $source/$expediteur from INSERT
     destin INTEGER NOT NULL,            -- Matches $cible from INSERT
     message TEXT NOT NULL,              -- Matches $message from INSERT
-    timestamp INTEGER NOT NULL,         -- Matches $timer/time() from INSERT
+    timestamp TIMESTAMPTZ NOT NULL,     -- Matches $timer/time() from INSERT
     statut BOOLEAN DEFAULT FALSE,       -- Matches '0'/$lu from INSERT (FALSE=unread, TRUE=read)
     titre VARCHAR(100) NOT NULL         -- Matches $titre/$objet from INSERT
 );
@@ -56,7 +55,7 @@ CREATE TABLE IF NOT EXISTS messages (
 -- Tracks visitor IPs and connection times, managed in index.php:492-512
 CREATE TABLE IF NOT EXISTS connectbisous (
     ip INET PRIMARY KEY,                -- Visitor IP address, from $_SERVER['REMOTE_ADDR']
-    timestamp INTEGER NOT NULL,         -- Last activity time, updated in index.php:500
+    timestamp TIMESTAMPTZ NOT NULL,     -- Last activity time, updated in index.php:500
     type SMALLINT DEFAULT 1             -- Connection type (2 for new, 1 for existing)
 );
 
@@ -64,7 +63,7 @@ CREATE TABLE IF NOT EXISTS connectbisous (
 -- Active construction tasks, INSERT in index.php:427, SELECT/DELETE in index.php:392-409
 CREATE TABLE IF NOT EXISTS evolution (
     id SERIAL PRIMARY KEY,              -- Task ID for deletion when complete
-    timestamp INTEGER NOT NULL,         -- Completion time, checked against time() in index.php:392
+    timestamp TIMESTAMPTZ NOT NULL,     -- Completion time, checked against time() in index.php:392
     classe INTEGER NOT NULL,            -- Object class/category for construction
     type INTEGER NOT NULL,              -- Specific object type within class
     auteur INTEGER NOT NULL,            -- User ID who initiated construction, from $id2
@@ -88,7 +87,7 @@ CREATE TABLE IF NOT EXISTS livreor (
     id SERIAL PRIMARY KEY,              -- Entry ID for ordering and management
     pseudo VARCHAR(50) NOT NULL,        -- Name of guest book signer
     message TEXT NOT NULL,              -- Guest book message content
-    timestamp INTEGER NOT NULL,         -- Entry creation time
+    timestamp TIMESTAMPTZ NOT NULL,     -- Entry creation time
     ip INET NOT NULL                    -- IP address of the signer
 );
 
@@ -98,8 +97,8 @@ CREATE TABLE IF NOT EXISTS newsbisous (
     id SERIAL PRIMARY KEY,                 -- News article ID
     titre VARCHAR(100) NOT NULL,           -- News title, from $titre in liste_news.php:51, 56
     contenu TEXT NOT NULL,                 -- News content, from $contenu in liste_news.php:51, 56
-    timestamp INTEGER NOT NULL,            -- Creation time, set to time() in liste_news.php:51
-    timestamp_modification INTEGER DEFAULT 0   -- Last modification time, set in liste_news.php:56
+    timestamp TIMESTAMPTZ NOT NULL DEFAULT CURRENT_TIMESTAMP,  -- Creation time, set to time() in liste_news.php:51
+    timestamp_modification TIMESTAMPTZ DEFAULT NULL            -- Last modification time, set in liste_news.php:56
 );
 
 -- Insert a default admin user (password: admin, hashed with md5)
@@ -109,7 +108,7 @@ CREATE TABLE IF NOT EXISTS orbisous (
     id SERIAL PRIMARY KEY,              -- Entry ID for ordering and management
     pseudo VARCHAR(50) NOT NULL,        -- Name of guest book signer
     message TEXT NOT NULL,              -- Guest book message content
-    timestamp INTEGER NOT NULL,         -- Entry creation time
+    timestamp TIMESTAMPTZ NOT NULL,     -- Entry creation time
     ip INET NOT NULL                    -- IP address of the signer
 );
 
@@ -119,7 +118,7 @@ CREATE TABLE IF NOT EXISTS logatt (
     id SERIAL PRIMARY KEY,              -- Log entry ID
     auteur INTEGER NOT NULL,            -- Attacker user ID, checked for rate limiting
     cible INTEGER NOT NULL,             -- Target user ID
-    timestamp INTEGER NOT NULL          -- Attack completion time, used for 12-hour limit check
+    timestamp TIMESTAMPTZ NOT NULL      -- Attack completion time, used for 12-hour limit check
 );
 
 -- Attack table
@@ -127,11 +126,10 @@ CREATE TABLE IF NOT EXISTS logatt (
 CREATE TABLE IF NOT EXISTS attaque (
     auteur INTEGER NOT NULL,            -- Attacker user ID, set bloque=1 during attack
     cible INTEGER NOT NULL,             -- Target user ID
-    finaller INTEGER NOT NULL,          -- Attack completion timestamp, checked in attaque.php:7
-    fin INTEGER NOT NULL,               -- Return journey completion timestamp
-    etat SMALLINT DEFAULT 0,            -- Attack state/phase
-    finretour INTEGER DEFAULT 0,        -- Return completion time, checked in attaque.php:220
-    butin BIGINT DEFAULT 0              -- Loot gained from attack, set in attaque.php:193
+    finaller TIMESTAMPTZ NOT NULL,      -- Attack arrival timestamp (when units reach target)
+    finretour TIMESTAMPTZ NOT NULL,     -- Return timestamp (when units return home)
+    etat SMALLINT NOT NULL DEFAULT 0,   -- Attack state: 0=going_to_target, 1=coming_back, 2=cancelled
+    butin BIGINT DEFAULT 0              -- Loot gained from attack, set after battle
 );
 
 -- Nuage (cloud) configuration table
@@ -146,5 +144,5 @@ INSERT INTO nuage (id, nombre) VALUES (1, 1) ON CONFLICT (id) DO UPDATE SET nomb
 
 -- Insert a default admin user (password: admin, hashed with md5)
 INSERT INTO membres (pseudo, mdp, confirmation, timestamp, lastconnect)
-VALUES ('admin', '21232f297a57a5a743894a0e4a801fc3', TRUE, extract(epoch from now())::integer, extract(epoch from now())::integer)
+VALUES ('admin', '21232f297a57a5a743894a0e4a801fc3', TRUE, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP)
 ON CONFLICT (pseudo) DO NOTHING;

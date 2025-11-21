@@ -46,15 +46,9 @@ if (false === $_SESSION['logged']) {
 
                                     $stmt = $pdo->prepare(
                                         'INSERT INTO membres (pseudo, mdp, confirmation, timestamp, lastconnect, amour)'
-                                        .' VALUES (:pseudo, :mdp, :confirmation, :timestamp, :lastconnect, :amour)',
+                                        .' VALUES (:pseudo, :mdp, :confirmation, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, :amour)',
                                     );
-<<<<<<< HEAD
-                                    $stmt->execute(['pseudo' => $pseudo, 'mdp' => $hmdp, 'confirmation' => $castBoolean->from(true), 'timestamp' => time(), 'lastconnect' => time(), 'amour' => 300]);
-||||||| parent of eb73946 (bool)
-                                    $stmt->execute(['pseudo' => $pseudo, 'mdp' => $hmdp, 'confirmation' => $castBoolean->from(true), 'amour' => 300]);
-=======
                                     $stmt->execute(['pseudo' => $pseudo, 'mdp' => $hmdp, 'confirmation' => $castToPgBoolean->from(true), 'amour' => 300]);
->>>>>>> eb73946 (bool)
                                     $id = $pdo->lastInsertId();
 
                                     GiveNewPosition($id);

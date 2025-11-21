@@ -85,6 +85,8 @@ function arbre($classe, $type, $nbE): bool
 
 if (isset($inMainPage) && true == $inMainPage) {
     $pdo = bd_connect();
+    $castToUnixTimestamp = cast_to_unix_timestamp();
+    $castToPgTimestamptz = cast_to_pg_timestamptz();
 
     // Nombre de type différents pour la classe concernée.
     $nbEvol = $nbType[$evolPage];
@@ -106,7 +108,7 @@ if (isset($inMainPage) && true == $inMainPage) {
         if ($donnees_info = $stmt->fetch()) {
             $timeFin2 = time() + $donnees_info['duree'];
             $stmt2 = $pdo->prepare('INSERT INTO evolution (timestamp, classe, type, auteur, cout) VALUES (:timestamp, :classe, :type, :auteur, :cout)');
-            $stmt2->execute(['timestamp' => $timeFin2, 'classe' => $classeCancel, 'type' => $donnees_info['type'], 'auteur' => $id, 'cout' => $donnees_info['cout']]);
+            $stmt2->execute(['timestamp' => $castToPgTimestamptz->fromUnixTimestamp($timeFin2), 'classe' => $classeCancel, 'type' => $donnees_info['type'], 'auteur' => $id, 'cout' => $donnees_info['cout']]);
             $stmt2 = $pdo->prepare('DELETE FROM liste WHERE id = :id');
             $stmt2->execute(['id' => $donnees_info['id']]);
 
@@ -125,7 +127,7 @@ if (isset($inMainPage) && true == $inMainPage) {
         $stmt->execute(['auteur' => $id, 'classe' => $evolPage]);
         $donnees_info = $stmt->fetch();
         // Date a laquelle la construction sera terminée.
-        $timeFin = $donnees_info['timestamp'];
+        $timeFin = $castToUnixTimestamp->fromPgTimestamptz($donnees_info['timestamp']);
         // Type de la construction.
         $evolution = $donnees_info['type'];
 
@@ -176,7 +178,7 @@ if (isset($inMainPage) && true == $inMainPage) {
                 // On met l'objet en construction. id non définie car auto incrémentée.
                 // Le champ id est peut etre a supprimer.
                 $stmt = $pdo->prepare('INSERT INTO evolution (timestamp, classe, type, auteur, cout) VALUES (:timestamp, :classe, :type, :auteur, :cout)');
-                $stmt->execute(['timestamp' => $timeFin, 'classe' => $evolPage, 'type' => $i, 'auteur' => $id, 'cout' => $amourE[$evolPage][$i]]);
+                $stmt->execute(['timestamp' => $castToPgTimestamptz->fromUnixTimestamp($timeFin), 'classe' => $evolPage, 'type' => $i, 'auteur' => $id, 'cout' => $amourE[$evolPage][$i]]);
                 // On décrémente le nombre de points d'amour.
                 $amour -= $amourE[$evolPage][$i];
                 // On indique le type du batiment en construction, pour l'affichage sur la page.

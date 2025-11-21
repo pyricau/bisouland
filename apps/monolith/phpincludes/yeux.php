@@ -1,5 +1,6 @@
 <?php if (true === $_SESSION['logged']) {
     $pdo = bd_connect();
+    $castToUnixTimestamp = cast_to_unix_timestamp();
 
     if (isset($_GET['Dnuage'], $_GET['Dpos']) && !empty($_GET['Dnuage']) && !empty($_GET['Dpos'])) {
         $Dnuage = htmlentities((string) $_GET['Dnuage']);
@@ -58,7 +59,7 @@
                         }
 
                         if ($lvlInfo >= 1) {
-                            $DefAmour = calculterAmour($donnees['amour'], time() - $donnees['timestamp'], $donnees['coeur'], $donnees['smack'], $donnees['baiser'], $donnees['pelle']);
+                            $DefAmour = calculterAmour($donnees['amour'], time() - $castToUnixTimestamp->fromPgTimestamptz($donnees['timestamp']), $donnees['coeur'], $donnees['smack'], $donnees['baiser'], $donnees['pelle']);
 
                             $resDev = 'Degré d\'information : '.$lvlInfo.'/'.$max.'
 

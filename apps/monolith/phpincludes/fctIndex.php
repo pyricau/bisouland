@@ -132,9 +132,8 @@ function AdminMP($cible, $objet, $message, bool $lu = false): void
     $nbmsg = $stmt->fetchColumn();
     if ($nbmsg >= 20) {
         $Asuppr = $nbmsg - 19;
-        $date48 = time() - 172800;
-        $stmt = $pdo->prepare('DELETE FROM messages WHERE destin = :destin AND timestamp <= :timestamp ORDER BY id LIMIT :limit');
-        $stmt->execute(['destin' => $cible, 'timestamp' => $date48, 'limit' => $Asuppr]);
+        $stmt = $pdo->prepare("DELETE FROM messages WHERE destin = :destin AND timestamp <= CURRENT_TIMESTAMP - INTERVAL '48 hours' ORDER BY id LIMIT :limit");
+        $stmt->execute(['destin' => $cible, 'limit' => $Asuppr]);
     }
 
     $timestamp = time();

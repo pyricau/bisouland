@@ -26,7 +26,9 @@ SWISS_KNIFE = docker compose exec $(QA_SERVICE) php vendor/bin/swiss-knife
 ## (env) denotes the possibility to pass "env=" parameter to the target
 ##     this allows to set APP_ENV environment variable (default: test), example: make console env='prod' arg='cache:warmup'
 help: ## Outputs this help screen
-	@grep -E '(^[a-zA-Z0-9\./_-]+:.*?##.*$$)|(^##)' $(MAKEFILE_LIST) | awk 'BEGIN {FS = ":.*?## "}{printf "\033[32m%-30s\033[0m %s\n", $$1, $$2}' | sed -e 's/\[32m##/[33m/'
+	@grep -E '(^[a-zA-Z0-9\./_-]+:.*?##.*$$)|(^##)' $(MAKEFILE_LIST) \
+		| awk 'BEGIN {FS = ":.*?## "}{printf "\033[32m%-30s\033[0m %s\n", $$1, $$2}' \
+		| sed -e 's/\[32m##/[33m/'
 
 ## —— Docker 🐳 ————————————————————————————————————————————————————————————————
 docker: ## Runs Docker (arg, eg `arg='compose logs --tail=0 --follow'`)
@@ -74,11 +76,11 @@ swiss-knife: ## Automated refactorings with Swiss Knife (arg, eg `arg='namespace
 test: ## Runs the tests with PHPUnit (arg, eg `arg='./tests/Smoke'`)
 	@$(PHPUNIT) $(arg)
 
-rector: ## Runs Rector (arg, eg `arg='list-rules'`)
+rector-fix: ## Automated refactorings with Rector (arg, eg `arg='--clear-cache'`)
 	@$(RECTOR) $(arg)
 
-rector-process: ## Automated refactorings with Rector (arg, eg `arg='--dry-run'`)
-	@$(RECTOR) process $(arg)
+rector-check: ## Refactoring checks with Rector
+	@$(RECTOR) process --dry-run
 
 ## —— App 📱 ———————————————————————————————————————————————————————————————————
 app-init: ## First install / resetting (Docker build, up, etc)
@@ -92,5 +94,5 @@ app-qa: ## Runs full QA pipeline (composer-dump, cs-check, static-analysis, rect
 	@$(MAKE) composer-dump
 	@$(MAKE) cs-check
 	@$(MAKE) static-analysis
-	@$(RECTOR) process --dry-run
+	@$(MAKE) rector-check
 	@$(MAKE) test

@@ -75,6 +75,7 @@ RUN sed -i 's|^DocumentRoot.*|DocumentRoot "/apps/monolith/web"|' /etc/apache2/h
 
 # Create startup script to run both PHP-FPM and Apache
 RUN echo '#!/bin/sh' > /start.sh \
+    && echo 'chmod -R o+rX /apps/monolith/vendor' >> /start.sh \
     && echo 'php-fpm -D' >> /start.sh \
     && echo 'exec httpd -D FOREGROUND' >> /start.sh \
     && chmod +x /start.sh

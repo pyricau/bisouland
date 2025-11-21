@@ -2,6 +2,9 @@
 <?php
 if (true === $_SESSION['logged']) {
 $pdo = bd_connect();
+$castToUnixTimestamp = cast_to_unix_timestamp();
+$castToPgTimestamptz = cast_to_pg_timestamptz();
+
 $production = calculerGenAmour(0, 3600, $nbE[0][0], $nbE[1][0], $nbE[1][1], $nbE[1][2]);
 
 $stmt = $pdo->prepare('SELECT score FROM membres WHERE id = :id');
@@ -33,7 +36,7 @@ Production : <strong><?php echo formaterNombre(floor($production)); ?></strong> 
 <?php
 
 // On récupère les infos sur le joueur que l'on attaque.
-$stmt = $pdo->prepare('SELECT cible, finaller, finretour, butin FROM attaque WHERE auteur = :auteur');
+$stmt = $pdo->prepare('SELECT cible, finaller, finretour, butin, etat FROM attaque WHERE auteur = :auteur');
 $stmt->execute(['auteur' => $id]);
 
 if ($donnees_info = $stmt->fetch()) {
@@ -43,20 +46,21 @@ if ($donnees_info = $stmt->fetch()) {
     $pseudoCible = $donnees_info2['pseudo'];
     $nuageCible = $donnees_info2['nuage'];
     $positionCible = $donnees_info2['position'];
-    $finAll = $donnees_info['finaller'];
-    $finRet = $donnees_info['finretour'];
+    $finAll = $castToUnixTimestamp->fromPgTimestamptz($donnees_info['finaller']);
+    $finRet = $castToUnixTimestamp->fromPgTimestamptz($donnees_info['finretour']);
     $butinPris = $donnees_info['butin'];
+    $etat = $donnees_info['etat'];
 
-    if (isset($_POST['cancelAttaque']) && 0 != $finAll) {
+    if (isset($_POST['cancelAttaque']) && 0 === $etat) {
         $finRet = (2 * time() + $finRet - 2 * $finAll);
-        $finAll = 0;
-        $stmt3 = $pdo->prepare('UPDATE attaque SET finaller = 0, finretour = :finretour WHERE auteur = :auteur');
-        $stmt3->execute(['finretour' => $finRet, 'auteur' => $id]);
+        $stmt3 = $pdo->prepare('UPDATE attaque SET etat = 2, finretour = :finretour WHERE auteur = :auteur');
+        $stmt3->execute(['finretour' => $castToPgTimestamptz->fromUnixTimestamp($finRet), 'auteur' => $id]);
         AdminMP($donnees_info['cible'], 'Attaque annulée', "{$pseudo} a annulé son attaque.
 			Tu n'es plus en danger.");
+        $etat = 2; // Update local variable to reflect the change
     }
 
-    if (0 != $finAll) {
+    if (0 === $etat) {
 ?>
 Tu vas tenter d'embrasser <strong><?php echo $pseudoCible; ?></strong> sur le nuage <strong><?php echo $nuageCible; ?></strong>
  &agrave; la position <strong><?php echo $positionCible; ?></strong>.<br /><br />
@@ -114,7 +118,7 @@ Ils ont pris &agrave; <strong><?php echo $pseudoCible; ?></strong> <strong><?php
     }
 }
 // Infos sur les joueurs qui nous attaquent.
-$stmt = $pdo->prepare('SELECT auteur, finaller FROM attaque WHERE cible = :cible AND finaller != 0 ORDER BY finaller');
+$stmt = $pdo->prepare('SELECT auteur, finaller FROM attaque WHERE cible = :cible AND etat = 0 ORDER BY finaller');
 $stmt->execute(['cible' => $id]);
 while ($donnees_info = $stmt->fetch()) {
     $stmt2 = $pdo->prepare('SELECT pseudo, nuage, position FROM membres WHERE id = :id');
@@ -123,7 +127,7 @@ while ($donnees_info = $stmt->fetch()) {
     $pseudoAuteur = $donnees_info2['pseudo'];
     $nuageAuteur = $donnees_info2['nuage'];
     $positionAuteur = $donnees_info2['position'];
-    $finAll = $donnees_info['finaller'];
+    $finAll = $castToUnixTimestamp->fromPgTimestamptz($donnees_info['finaller']);
 
 ?>
 Pr&eacute;pare toi : <strong><?php echo $pseudoAuteur; ?></strong> va essayer de t'embrasser

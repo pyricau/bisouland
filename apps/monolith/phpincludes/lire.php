@@ -2,6 +2,7 @@
 
 if (true === $_SESSION['logged']) {
     $pdo = bd_connect();
+    $castToUnixTimestamp = cast_to_unix_timestamp();
 
     if (isset($_GET['idmsg']) && !empty($_GET['idmsg'])) {
         $idmsg = htmlentities((string) $_GET['idmsg']);
@@ -20,7 +21,7 @@ if (true === $_SESSION['logged']) {
 
             $objet = $donnees['titre'];
             $message = $donnees['message'];
-            $dateEnvoie = $donnees['timestamp'];
+            $dateEnvoie = $castToUnixTimestamp->fromPgTimestamptz($donnees['timestamp']);
             ?>
 
 <a href="boite.html" title="Messages">Retour à la liste des messages</a>

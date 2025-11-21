@@ -2,6 +2,8 @@
 
 if (false === $_SESSION['logged']) {
     $pdo = bd_connect();
+    $castToUnixTimestamp = cast_to_unix_timestamp();
+    $castToPgTimestamptz = cast_to_pg_timestamptz();
     $send = 0;
     $pseudo = '';
     $mdp = '';
@@ -44,9 +46,9 @@ if (false === $_SESSION['logged']) {
 
                                     $stmt = $pdo->prepare(
                                         'INSERT INTO membres (pseudo, mdp, confirmation, timestamp, lastconnect, amour)'
-                                        .' VALUES (:pseudo, :mdp, :confirmation, :timestamp, :lastconnect, :amour)',
+                                        .' VALUES (:pseudo, :mdp, :confirmation, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, :amour)',
                                     );
-                                    $stmt->execute(['pseudo' => $pseudo, 'mdp' => $hmdp, 'confirmation' => $castBoolean->from(true), 'timestamp' => time(), 'lastconnect' => time(), 'amour' => 300]);
+                                    $stmt->execute(['pseudo' => $pseudo, 'mdp' => $hmdp, 'confirmation' => $castBoolean->from(true), 'amour' => 300]);
                                     $id = $pdo->lastInsertId();
 
                                     GiveNewPosition($id);

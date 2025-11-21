@@ -2,25 +2,26 @@
 
 if (isset($inMainPage) && true == $inMainPage) {
     $pdo = bd_connect();
+    $castToUnixTimestamp = cast_to_unix_timestamp();
+    $castToPgTimestamptz = cast_to_pg_timestamptz();
 
     // ***************************************************************************
     // Gestion des attaques.
     // Phase d'aller :
-    $sql_info = $pdo->query("SELECT finaller, auteur, cible FROM attaque WHERE finaller<='".time()."' AND finaller!=0");
+    $sql_info = $pdo->query('SELECT finaller, auteur, cible FROM attaque WHERE finaller <= CURRENT_TIMESTAMP AND etat = 0');
     while ($donnees_info = $sql_info->fetch()) {
         $idAuteur = $donnees_info['auteur'];
         $idCible = $donnees_info['cible'];
         $finaller = $donnees_info['finaller'];
-        $stmt = $pdo->prepare('UPDATE attaque SET finaller = 0 WHERE auteur = :auteur');
+        $stmt = $pdo->prepare('UPDATE attaque SET etat = 1 WHERE auteur = :auteur');
         $stmt->execute(['auteur' => $idAuteur]);
 
         // On indique que l'attaque a eu lieu.
         $stmt = $pdo->prepare('INSERT INTO logatt VALUES(:auteur, :cible, :timestamp)');
         $stmt->execute(['auteur' => $idAuteur, 'cible' => $idCible, 'timestamp' => $finaller]);
         // Supprimer ceux vieux de plus de 12 heures.
-        $timeAtt = time() - 43200;
-        $stmt = $pdo->prepare('DELETE FROM logatt WHERE timestamp < :timestamp');
-        $stmt->execute(['timestamp' => $timeAtt]);
+        $stmt = $pdo->prepare("DELETE FROM logatt WHERE timestamp < CURRENT_TIMESTAMP - INTERVAL '12 hours'");
+        $stmt->execute();
 
         /*
         Quelques notes :
@@ -176,7 +177,7 @@ if (isset($inMainPage) && true == $inMainPage) {
             if ($idCible == $id && true === $_SESSION['logged']) {
                 $DefAmour = $amour;
             } else {
-                $DefTimestamp = $donnees_info4['timestamp'];
+                $DefTimestamp = $castToUnixTimestamp->fromPgTimestamptz($donnees_info4['timestamp']);
                 $DefCoeur = $donnees_info4['coeur'];
                 $DefAmour = $donnees_info4['amour'];
                 $DefAmour = calculterAmour($DefAmour, time() - $DefTimestamp, $DefCoeur, $DefSmack, $DefBaiser, $DefPelle);
@@ -234,7 +235,7 @@ if (isset($inMainPage) && true == $inMainPage) {
     }
 
     // Phase retour
-    $sql_info = $pdo->query("SELECT auteur, butin FROM attaque WHERE finretour<='".time()."'");
+    $sql_info = $pdo->query('SELECT auteur, butin FROM attaque WHERE finretour <= CURRENT_TIMESTAMP AND etat IN (1, 2)');
     while ($donnees_info = $sql_info->fetch()) {
         $idAuteur = $donnees_info['auteur'];
         $butinAuteur = $donnees_info['butin'];

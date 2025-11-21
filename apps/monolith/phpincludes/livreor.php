@@ -5,6 +5,7 @@
 // -----------------------------------------
 
 $pdo = bd_connect();
+$castToUnixTimestamp = cast_to_unix_timestamp();
 
 if (isset($_POST['message'])) {
     if (true == $_SESSION['logged']) {
@@ -107,7 +108,7 @@ while ($donnees = $reponse->fetch()) {
     ?>
 <div class=livreor>
 <?php
-        echo '<p><strong>'.stripslashes((string) $donnees['pseudo']).'</strong> a &eacute;crit le '.date('d/m/Y à H\hi', $donnees['timestamp']).' :<br /><br />'.stripslashes((string) $donnees['message']).'</p>';
+        echo '<p><strong>'.stripslashes((string) $donnees['pseudo']).'</strong> a &eacute;crit le '.date('d/m/Y à H\hi', $castToUnixTimestamp->fromPgTimestamptz($donnees['timestamp'])).' :<br /><br />'.stripslashes((string) $donnees['message']).'</p>';
     ?>
 </div>
 <?php

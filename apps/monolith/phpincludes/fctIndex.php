@@ -123,6 +123,7 @@ function AdminMP($cible, $objet, $message, bool $lu = false): void
 {
     $pdo = bd_connect();
     $castBoolean = pg_cast_boolean();
+    $castToPgTimestamptz = cast_to_pg_timestamptz();
     $message = nl2br((string) $message);
 
     $stmt = $pdo->prepare('SELECT COUNT(*) AS nbmsg FROM messages WHERE destin = :destin');
@@ -131,9 +132,8 @@ function AdminMP($cible, $objet, $message, bool $lu = false): void
     $nbmsg = $stmt->fetchColumn();
     if ($nbmsg >= 20) {
         $Asuppr = $nbmsg - 19;
-        $date48 = time() - 172800;
-        $stmt = $pdo->prepare('DELETE FROM messages WHERE destin = :destin AND timestamp <= :timestamp ORDER BY id LIMIT :limit');
-        $stmt->execute(['destin' => $cible, 'timestamp' => $date48, 'limit' => $Asuppr]);
+        $stmt = $pdo->prepare("DELETE FROM messages WHERE destin = :destin AND timestamp <= CURRENT_TIMESTAMP - INTERVAL '48 hours' ORDER BY id LIMIT :limit");
+        $stmt->execute(['destin' => $cible, 'limit' => $Asuppr]);
     }
 
     $timestamp = time();
@@ -142,7 +142,7 @@ function AdminMP($cible, $objet, $message, bool $lu = false): void
         .' (posteur, destin, message, timestamp, statut, titre)'
         .' VALUES(1, :destin, :message, :timestamp, :statut, :titre)',
     );
-    $stmt->execute(['destin' => $cible, 'message' => $message, 'timestamp' => $timestamp, 'statut' => $castBoolean->from($lu), 'titre' => $objet]);
+    $stmt->execute(['destin' => $cible, 'message' => $message, 'timestamp' => $castToPgTimestamptz->fromUnixTimestamp($timestamp), 'statut' => $castBoolean->from($lu), 'titre' => $objet]);
 }
 
 function SupprimerCompte($idCompteSuppr): void

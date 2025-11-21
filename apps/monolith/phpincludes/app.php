@@ -17,6 +17,8 @@ session_start();
 ob_start();
 
 $pdo = bd_connect();
+$castToUnixTimestamp = cast_to_unix_timestamp();
+$castToPgTimestamptz = cast_to_pg_timestamptz();
 
 $inMainPage = true;
 
@@ -97,7 +99,7 @@ if ('logout' === $page) {
     if (isset($_SESSION['logged']) && true == $_SESSION['logged']) {
         $timeDeco = time() - 600;
         $stmt = $pdo->prepare('UPDATE membres SET lastconnect = :lastconnect WHERE id = :id');
-        $stmt->execute(['lastconnect' => $timeDeco, 'id' => $_SESSION['id']]);
+        $stmt->execute(['lastconnect' => $castToPgTimestamptz->fromUnixTimestamp($timeDeco), 'id' => $_SESSION['id']]);
         // On modifie la valeur de $_SESSION['logged'], qui devient false.
         $_SESSION['logged'] = false;
         $timestamp_expire = time() - 1000;
@@ -215,7 +217,7 @@ if (true == $_SESSION['logged']) {
     $stmt->execute(['id' => $id]);
     $donnees_info = $stmt->fetch();
     // Date du dernier calcul du nombre de points d'amour.
-    $lastTime = $donnees_info['timestamp'];
+    $lastTime = $castToUnixTimestamp->fromPgTimestamptz($donnees_info['timestamp']);
     // Temps écoulé depuis le dernier calcul.
     $timeDiff = time() - $lastTime;
 
@@ -423,8 +425,8 @@ $temps12 = microtime_float();
     Il permet de créer une sorte de boucle de calcul virtuelle, pour peu qu'il y ait suffisament de gens qui se connectent.
 */
 // On récupère les évolutions dont la date de création est atteinte ou dépassée.
-$stmt = $pdo->prepare('SELECT auteur, id, type, classe, cout FROM evolution WHERE timestamp <= :timestamp');
-$stmt->execute(['timestamp' => time()]);
+$stmt = $pdo->prepare('SELECT auteur, id, type, classe, cout FROM evolution WHERE timestamp <= CURRENT_TIMESTAMP');
+$stmt->execute();
 // Boucle qui permet de traiter construction par construction.
 while ($donnees_info = $stmt->fetch()) {
     // Id de l'auteur de la construction
@@ -462,7 +464,7 @@ while ($donnees_info = $stmt->fetch()) {
     if ($donnees_info = $stmt2->fetch()) {
         $timeFin2 = time() + $donnees_info['duree'];
         $stmt3 = $pdo->prepare('INSERT INTO evolution (timestamp, classe, type, auteur, cout) VALUES (:timestamp, :classe, :type, :auteur, :cout)');
-        $stmt3->execute(['timestamp' => $timeFin2, 'classe' => $classe, 'type' => $donnees_info['type'], 'auteur' => $id2, 'cout' => $donnees_info['cout']]);
+        $stmt3->execute(['timestamp' => $castToPgTimestamptz->fromUnixTimestamp($timeFin2), 'classe' => $classe, 'type' => $donnees_info['type'], 'auteur' => $id2, 'cout' => $donnees_info['cout']]);
         $stmt3 = $pdo->prepare('DELETE FROM liste WHERE id = :id');
         $stmt3->execute(['id' => $donnees_info['id']]);
         if ($id == $id2) {
@@ -510,27 +512,26 @@ if (false == $_SESSION['logged']) {
     $stmt->execute(['ip' => $_SERVER['REMOTE_ADDR']]);
     $donnees = $stmt->fetch();
     if (0 == $donnees['nbre_entrees']) { // L'ip ne se trouve pas dans la table, on va l'ajouter
-        $stmt = $pdo->prepare('INSERT INTO connectbisous VALUES(:ip, :timestamp, 2)');
-        $stmt->execute(['ip' => $_SERVER['REMOTE_ADDR'], 'timestamp' => time()]);
+        $stmt = $pdo->prepare('INSERT INTO connectbisous VALUES(:ip, CURRENT_TIMESTAMP, 2)');
+        $stmt->execute(['ip' => $_SERVER['REMOTE_ADDR']]);
     } else { // L'ip se trouve déjà dans la table, on met juste à jour le timestamp
-        $stmt = $pdo->prepare('UPDATE connectbisous SET timestamp = :timestamp WHERE ip = :ip');
-        $stmt->execute(['timestamp' => time(), 'ip' => $_SERVER['REMOTE_ADDR']]);
+        $stmt = $pdo->prepare('UPDATE connectbisous SET timestamp = CURRENT_TIMESTAMP WHERE ip = :ip');
+        $stmt->execute(['ip' => $_SERVER['REMOTE_ADDR']]);
     }
 }
 $temps32 = microtime_float();
 
 // ETAPE 2 : on supprime toutes les entrées dont le timestamp est plus vieux que 5 minutes
-$timestamp_5min = time() - 300;
-$stmt = $pdo->prepare('DELETE FROM connectbisous WHERE timestamp < :timestamp');
-$stmt->execute(['timestamp' => $timestamp_5min]);
+$stmt = $pdo->prepare("DELETE FROM connectbisous WHERE timestamp < CURRENT_TIMESTAMP - INTERVAL '5 minutes'");
+$stmt->execute();
 
 // Etape 3 : on demande maintenant le nombre de gens connectés.
 // Nombre de visiteurs
 $stmt = $pdo->query('SELECT COUNT(*) AS nbre_visit FROM connectbisous');
 $donnees = $stmt->fetch();
 $NbVisit = $donnees['nbre_visit'];
-$stmt = $pdo->prepare('SELECT COUNT(*) AS nb_membres FROM membres WHERE lastconnect >= :lastconnect');
-$stmt->execute(['lastconnect' => $timestamp_5min]);
+$stmt = $pdo->prepare("SELECT COUNT(*) AS nb_membres FROM membres WHERE lastconnect >= CURRENT_TIMESTAMP - INTERVAL '5 minutes'");
+$stmt->execute();
 $NbMemb = $stmt->fetchColumn();
 
 $temps14 = microtime_float();
@@ -649,8 +650,8 @@ $temps16 = microtime_float();
 
 <?php
     if (true == $_SESSION['logged']) {
-        $stmt = $pdo->prepare('UPDATE membres SET lastconnect = :lastconnect, timestamp = :timestamp, amour = :amour WHERE id = :id');
-        $stmt->execute(['lastconnect' => time(), 'timestamp' => time(), 'amour' => (int) $amour, 'id' => $id]);
+        $stmt = $pdo->prepare('UPDATE membres SET lastconnect = CURRENT_TIMESTAMP, timestamp = CURRENT_TIMESTAMP, amour = :amour WHERE id = :id');
+        $stmt->execute(['amour' => (int) $amour, 'id' => $id]);
     }
 ?>
 

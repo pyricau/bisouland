@@ -49,7 +49,16 @@ This means:
 * `Requests per second`: average total requests handled by the server per second
 * `Time per request`: average server response time
 
-## PDO benchmark (PHP 5.6)
+---
+
+## 1st benchmark: from PHP 5.6 to PHP 8.4
+
+Upgrading from PHP 5.6 to PHP 8.4, we observe the following performance improvments:
+
+* Homepage: +8.9% improvement
+* Brain Page: +30.2% improvement
+
+### PHP 5.6
 
 Homepage (Visitor - Not Logged In):
 
@@ -65,7 +74,7 @@ Brain Page (Logged In User):
 * Requests per second:    313.88 [#/sec] (mean)
 * Time per request:       3.186 [ms] (mean, across all concurrent requests)
 
-## PHP 8.4
+### PHP 8.4
 
 Homepage (Visitor - Not Logged In):
 
@@ -81,7 +90,46 @@ Brain Page (Logged In User):
 * Requests per second:    408.78 [#/sec] (mean)
 * Time per request:       2.446 [ms] (mean, across all concurrent requests)
 
-Compared to the PDO benchmark results:
+---
 
-* Homepage: +8.9% improvement
-* Brain Page: +30.2% improvement
+## 2nd benchmark: from MySQL to PostgreSQL
+
+Switching from MySQL to PostgreSQL, with persistent connections enabled,
+we observe the following performance improvements:
+
+* Homepage: +13.1% improvement
+* Brain Page: +39.6% improvement
+
+### MySQL with persistent connections
+
+Homepage (Visitor - Not Logged In):
+
+* Complete requests:      10000
+* Failed requests:        0
+* Requests per second:    1683.86 [#/sec] (mean)
+* Time per request:       0.594 [ms] (mean, across all concurrent requests)
+
+Brain Page (Logged In User):
+
+* Complete requests:      10000
+* Failed requests:        0
+* Requests per second:    1309.55 [#/sec] (mean)
+* Time per request:       0.764 [ms] (mean, across all concurrent requests)
+
+### PostgreSQL with persistent connections
+
+Homepage (Visitor - Not Logged In):
+
+* Complete requests:      10000
+* Failed requests:        0
+* Requests per second:    1905.43 [#/sec] (mean)
+* Time per request:       0.525 [ms] (mean, across all concurrent requests)
+
+Brain Page (Logged In User):
+
+* Complete requests:      10000
+* Failed requests:        0
+* Requests per second:    1828.19 [#/sec] (mean)
+* Time per request:       0.547 [ms] (mean, across all concurrent requests)
+
+---

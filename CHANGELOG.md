@@ -6,6 +6,7 @@ This file logs the changes between versions.
 
 v4: 2025 second v1 rollback, refactoring attempt.
 
+* `4.0.20`: migrated from PHP 8.4 to PHP 8.5
 * `4.0.19`: migrated to composer
 * `4.0.18`: created front controller
 * `4.0.17`: fixed PHP warning

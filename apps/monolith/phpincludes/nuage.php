@@ -51,7 +51,7 @@ if (true == $_SESSION['logged']) {
                                 if ($donnees_info = $stmt->fetch()) {
                                     $resultat = 'La position est déjà occupée';
                                 } elseif (0 == $joueurBloque) {
-                                    $stmt = $pdo->prepare('SELECT auteur FROM attaque WHERE cible = :cible AND etat = 0');
+                                    $stmt = $pdo->prepare("SELECT auteur FROM attaque WHERE cible = :cible AND state = 'EnRoute'");
                                     $stmt->execute(['cible' => $id]);
                                     if ($donnees_info = $stmt->fetch()) {
                                         $resultat = "Tu ne peux pas sauter car quelqu'un tente de t'embrasser";

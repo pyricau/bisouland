@@ -8,12 +8,12 @@ if (isset($inMainPage) && true == $inMainPage) {
     // ***************************************************************************
     // Gestion des attaques.
     // Phase d'aller :
-    $sql_info = $pdo->query('SELECT finaller, auteur, cible FROM attaque WHERE finaller <= CURRENT_TIMESTAMP AND etat = 0');
+    $sql_info = $pdo->query("SELECT finaller, auteur, cible FROM attaque WHERE finaller <= CURRENT_TIMESTAMP AND state = 'EnRoute'");
     while ($donnees_info = $sql_info->fetch()) {
         $idAuteur = $donnees_info['auteur'];
         $idCible = $donnees_info['cible'];
         $finaller = $donnees_info['finaller'];
-        $stmt = $pdo->prepare('UPDATE attaque SET etat = 1 WHERE auteur = :auteur');
+        $stmt = $pdo->prepare("UPDATE attaque SET state = 'ComingBack' WHERE auteur = :auteur");
         $stmt->execute(['auteur' => $idAuteur]);
 
         // On indique que l'attaque a eu lieu.
@@ -235,7 +235,7 @@ if (isset($inMainPage) && true == $inMainPage) {
     }
 
     // Phase retour
-    $sql_info = $pdo->query('SELECT auteur, butin FROM attaque WHERE finretour <= CURRENT_TIMESTAMP AND etat IN (1, 2)');
+    $sql_info = $pdo->query("SELECT auteur, butin FROM attaque WHERE finretour <= CURRENT_TIMESTAMP AND state IN ('ComingBack', 'CalledOff')");
     while ($donnees_info = $sql_info->fetch()) {
         $idAuteur = $donnees_info['auteur'];
         $butinAuteur = $donnees_info['butin'];

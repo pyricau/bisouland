@@ -121,6 +121,9 @@ CREATE TABLE IF NOT EXISTS logatt (
     timestamp TIMESTAMPTZ NOT NULL      -- Attack completion time, used for 12-hour limit check
 );
 
+-- Blown kiss state ENUM type
+CREATE TYPE blown_kiss_state AS ENUM ('EnRoute', 'ComingBack', 'CalledOff');
+
 -- Attack table
 -- Active attacks in progress, managed throughout attaque.php and action.php
 CREATE TABLE IF NOT EXISTS attaque (
@@ -128,7 +131,7 @@ CREATE TABLE IF NOT EXISTS attaque (
     cible INTEGER NOT NULL,             -- Target user ID
     finaller TIMESTAMPTZ NOT NULL,      -- Attack arrival timestamp (when units reach target)
     finretour TIMESTAMPTZ NOT NULL,     -- Return timestamp (when units return home)
-    etat SMALLINT NOT NULL DEFAULT 0,   -- Attack state: 0=going_to_target, 1=coming_back, 2=cancelled
+    state blown_kiss_state NOT NULL DEFAULT 'EnRoute',  -- Blown kiss state ENUM
     butin BIGINT DEFAULT 0              -- Loot gained from attack, set after battle
 );
 

@@ -64,7 +64,7 @@ if (true === $_SESSION['logged']) {
                                                 $duree = tempsAttaque($distance, $nbE[0][4]);
                                                 $stmt = $pdo->prepare('UPDATE membres SET bloque = TRUE WHERE id = :id');
                                                 $stmt->execute(['id' => $id]);
-                                                $stmt = $pdo->prepare('INSERT INTO attaque (auteur, cible, finaller, finretour, etat) VALUES (:auteur, :cible, :finaller, :finretour, 0)');
+                                                $stmt = $pdo->prepare("INSERT INTO attaque (auteur, cible, finaller, finretour, state) VALUES (:auteur, :cible, :finaller, :finretour, 'EnRoute')");
                                                 $stmt->execute(['auteur' => $id, 'cible' => $cible, 'finaller' => $castToPgTimestamptz->fromUnixTimestamp(time() + $duree), 'finretour' => $castToPgTimestamptz->fromUnixTimestamp(time() + 2 * $duree)]);
                                                 AdminMP($cible, $pseudo." veut t'embrasser", $pseudo." vient d'envoyer ses bisous dans ta direction, et va tenter de t'embrasser.
 						".$pseudo.' est situé sur le nuage '.$nuageSource.', à la position '.$positionSource.'.

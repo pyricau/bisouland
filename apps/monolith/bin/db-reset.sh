@@ -26,16 +26,40 @@ export PGPASSWORD="${DATABASE_PASSWORD}"
 # ──────────────────────────────────────────────────────────────────────────────
 # Reset the database, through Docker containers.
 # ──────────────────────────────────────────────────────────────────────────────
+echo '  // 🔌 Terminating active connections...'
+echo ''
+docker compose exec -e PGPASSWORD db psql \
+    -U ${DATABASE_USER} \
+    -d postgres \
+    -c "SELECT pg_terminate_backend(pid) FROM pg_stat_activity WHERE datname = '${DATABASE_NAME}' AND pid <> pg_backend_pid();" \
+    > /dev/null 2>&1
+
 echo '  // 🗑️ Dropping database...'
-docker compose exec -e PGPASSWORD db psql -U ${DATABASE_USER} -d postgres -c "DROP DATABASE IF EXISTS ${DATABASE_NAME};"
-
 echo ''
+docker compose exec -e PGPASSWORD db psql \
+    -U ${DATABASE_USER} \
+    -d postgres \
+    -c "DROP DATABASE IF EXISTS ${DATABASE_NAME};" \
+    > /dev/null 2>&1
+
 echo '  // 🆕 Creating database...'
-docker compose exec -e PGPASSWORD db psql -U ${DATABASE_USER} -d postgres -c "CREATE DATABASE ${DATABASE_NAME};"
-
 echo ''
+docker compose exec -e PGPASSWORD db psql \
+    -U ${DATABASE_USER} \
+    -d postgres \
+    -c "CREATE DATABASE ${DATABASE_NAME};" \
+    > /dev/null 2>&1
+
 echo '  // 📋 Loading schema.sql...'
-docker compose exec -T -e PGPASSWORD db psql -U ${DATABASE_USER} -d ${DATABASE_NAME} < schema.sql
-
 echo ''
+docker compose exec -T -e PGPASSWORD db psql \
+    -U ${DATABASE_USER} \
+    -d ${DATABASE_NAME} \
+    > /dev/null 2>&1 \
+    < schema.sql
+
+echo '  // 🔄 Restarting web container to clear connection pool...'
+echo ''
+docker compose restart web > /dev/null 2>&1
+
 echo '  [OK] Database reset'

@@ -1,5 +1,7 @@
 <?php
 
+use Symfony\Component\Uid\Uuid;
+
 // Fonction pour calculer un temps en millisecondes.
 function microtime_float(): int|float
 {
@@ -139,10 +141,10 @@ function AdminMP($cible, $objet, $message, bool $lu = false): void
     $timestamp = time();
     $stmt = $pdo->prepare(
         'INSERT INTO messages'
-        .' (posteur, destin, message, timestamp, statut, titre)'
-        .' VALUES(1, :destin, :message, :timestamp, :statut, :titre)',
+        .' (id, posteur, destin, message, timestamp, statut, titre)'
+        .' VALUES(:id, :posteur, :destin, :message, :timestamp, :statut, :titre)',
     );
-    $stmt->execute(['destin' => $cible, 'message' => $message, 'timestamp' => $castToPgTimestamptz->fromUnixTimestamp($timestamp), 'statut' => $castToPgBoolean->from($lu), 'titre' => $objet]);
+    $stmt->execute(['id' => Uuid::v7(), 'posteur' => '00000000-0000-0000-0000-000000000001', 'destin' => $cible, 'message' => $message, 'timestamp' => $castToPgTimestamptz->fromUnixTimestamp($timestamp), 'statut' => $castToPgBoolean->from($lu), 'titre' => $objet]);
 }
 
 function SupprimerCompte($idCompteSuppr): void
@@ -320,7 +322,7 @@ function coutAttaque($distance, $jambes): float
 function GiveNewPosition($idJoueur): void
 {
     $pdo = bd_connect();
-    $sql_info = $pdo->query('SELECT nombre FROM nuage WHERE id=1');
+    $sql_info = $pdo->query("SELECT nombre FROM nuage WHERE id='00000000-0000-0000-0000-000000000002'");
     $donnees_info = $sql_info->fetch();
     $NbNuages = $donnees_info['nombre'];
 
@@ -332,7 +334,7 @@ function GiveNewPosition($idJoueur): void
     // Neuf personnes par nuage max, lors de l'attribution.
     if ($nbPos > 8) {
         ++$NbNuages;
-        $stmt = $pdo->prepare('UPDATE nuage SET nombre = :nombre WHERE id = 1');
+        $stmt = $pdo->prepare("UPDATE nuage SET nombre = :nombre WHERE id = '00000000-0000-0000-0000-000000000002'");
         $stmt->execute(['nombre' => $NbNuages]);
         $nbPos = 0;
     }

@@ -38,6 +38,6 @@ while($donnees = $sql->fetch())
 
 }
 
-$stmt = $pdo->prepare("UPDATE nuage SET nombre = :nombre WHERE id = 1");
+$stmt = $pdo->prepare("UPDATE nuage SET nombre = :nombre WHERE id = '00000000-0000-0000-0000-000000000002'");
 $stmt->execute(['nombre' => $nbNuagesFinal]);
 // */

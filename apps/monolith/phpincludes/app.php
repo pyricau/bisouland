@@ -1,5 +1,7 @@
 <?php
 
+use Symfony\Component\Uid\Uuid;
+
 header('Content-type: text/html; charset=UTF-8');
 
 // Next step :
@@ -463,8 +465,8 @@ while ($donnees_info = $stmt->fetch()) {
     $stmt2->execute(['auteur' => $id2, 'classe' => $classe]);
     if ($donnees_info = $stmt2->fetch()) {
         $timeFin2 = time() + $donnees_info['duree'];
-        $stmt3 = $pdo->prepare('INSERT INTO evolution (timestamp, classe, type, auteur, cout) VALUES (:timestamp, :classe, :type, :auteur, :cout)');
-        $stmt3->execute(['timestamp' => $castToPgTimestamptz->fromUnixTimestamp($timeFin2), 'classe' => $classe, 'type' => $donnees_info['type'], 'auteur' => $id2, 'cout' => $donnees_info['cout']]);
+        $stmt3 = $pdo->prepare('INSERT INTO evolution (id, timestamp, classe, type, auteur, cout) VALUES (:id, :timestamp, :classe, :type, :auteur, :cout)');
+        $stmt3->execute(['id' => Uuid::v7(), 'timestamp' => $castToPgTimestamptz->fromUnixTimestamp($timeFin2), 'classe' => $classe, 'type' => $donnees_info['type'], 'auteur' => $id2, 'cout' => $donnees_info['cout']]);
         $stmt3 = $pdo->prepare('DELETE FROM liste WHERE id = :id');
         $stmt3->execute(['id' => $donnees_info['id']]);
         if ($id == $id2) {

@@ -1,4 +1,7 @@
 <?php
+
+use Symfony\Component\Uid\Uuid;
+
 header('Content-type: text/html; charset=UTF-8');
 
 ?>
@@ -47,8 +50,8 @@ if (isset($_POST['titre']) && isset($_POST['contenu'])) {
     // On verifie si c'est une modification de news ou pas
     if (-1 == $_POST['id_news']) {
         // Ce n'est pas une modification, on cree une nouvelle entree dans la table
-        $stmt = $pdo->prepare('INSERT INTO newsbisous (titre, contenu, timestamp) VALUES(:titre, :contenu, CURRENT_TIMESTAMP)');
-        $stmt->execute(['titre' => $titre, 'contenu' => $contenu]);
+        $stmt = $pdo->prepare('INSERT INTO newsbisous (id, titre, contenu, timestamp) VALUES(:id, :titre, :contenu, CURRENT_TIMESTAMP)');
+        $stmt->execute(['id' => Uuid::v7(), 'titre' => $titre, 'contenu' => $contenu]);
     } else {
         // C'est une modification, on met juste a jour le titre et le contenu
         $stmt = $pdo->prepare('UPDATE newsbisous SET titre = :titre, contenu = :contenu, timestamp_modification = CURRENT_TIMESTAMP WHERE id = :id');

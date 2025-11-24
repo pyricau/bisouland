@@ -1,5 +1,7 @@
 <?php
 
+use Symfony\Component\Uid\Uuid;
+
 if (isset($inMainPage) && true == $inMainPage) {
     $pdo = bd_connect();
     $castToUnixTimestamp = cast_to_unix_timestamp();
@@ -17,8 +19,8 @@ if (isset($inMainPage) && true == $inMainPage) {
         $stmt->execute(['auteur' => $idAuteur]);
 
         // On indique que l'attaque a eu lieu.
-        $stmt = $pdo->prepare('INSERT INTO logatt VALUES(:auteur, :cible, :timestamp)');
-        $stmt->execute(['auteur' => $idAuteur, 'cible' => $idCible, 'timestamp' => $finaller]);
+        $stmt = $pdo->prepare('INSERT INTO logatt (id, auteur, cible, timestamp) VALUES(:id, :auteur, :cible, :timestamp)');
+        $stmt->execute(['id' => Uuid::v7(), 'auteur' => $idAuteur, 'cible' => $idCible, 'timestamp' => $finaller]);
         // Supprimer ceux vieux de plus de 12 heures.
         $stmt = $pdo->prepare("DELETE FROM logatt WHERE timestamp < CURRENT_TIMESTAMP - INTERVAL '12 hours'");
         $stmt->execute();

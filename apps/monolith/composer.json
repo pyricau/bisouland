@@ -14,7 +14,8 @@
         }
     ],
     "require": {
-        "php": ">=8.5"
+        "php": ">=8.5",
+        "symfony/uid": "^8.0@rc"
     },
     "autoload": {
         "psr-4": {

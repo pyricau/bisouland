@@ -5,7 +5,7 @@
 -- Used throughout the application for user authentication and game state
 -- INSERT: inscription.php:62, UPDATE: multiple files (index.php:698, deconnexion.php:13, etc.)
 CREATE TABLE IF NOT EXISTS membres (
-    id SERIAL PRIMARY KEY,                 -- User ID, referenced in all other tables
+    id UUID PRIMARY KEY,                   -- User ID (UUIDv7), referenced in all other tables
     pseudo VARCHAR(50) NOT NULL UNIQUE,    -- Username, used in login (redirect.php:21, index.php:60)
     mdp VARCHAR(255) NOT NULL,             -- Password hash, checked in redirect.php:27
     confirmation BOOLEAN DEFAULT FALSE,    -- Account confirmed flag, checked in redirect.php:27
@@ -41,9 +41,9 @@ CREATE TABLE IF NOT EXISTS membres (
 -- Messages table
 -- Field order MUST match INSERT statements in fctIndex.php::AdminMP()
 CREATE TABLE IF NOT EXISTS messages (
-    id SERIAL PRIMARY KEY,              -- Auto-increment
-    posteur INTEGER NOT NULL,           -- Matches $source/$expediteur from INSERT
-    destin INTEGER NOT NULL,            -- Matches $cible from INSERT
+    id UUID PRIMARY KEY,                -- Message ID (UUIDv7)
+    posteur UUID NOT NULL,              -- Sender user ID (foreign key to membres.id)
+    destin UUID NOT NULL,               -- Recipient user ID (foreign key to membres.id)
     message TEXT NOT NULL,              -- Matches $message from INSERT
     timestamp TIMESTAMPTZ NOT NULL,     -- Matches $timer/time() from INSERT
     statut BOOLEAN DEFAULT FALSE,       -- Matches '0'/$lu from INSERT (FALSE=unread, TRUE=read)
@@ -62,19 +62,19 @@ CREATE TABLE IF NOT EXISTS connectbisous (
 -- Evolution/construction queue
 -- Active construction tasks, INSERT in index.php:427, SELECT/DELETE in index.php:392-409
 CREATE TABLE IF NOT EXISTS evolution (
-    id SERIAL PRIMARY KEY,              -- Task ID for deletion when complete
+    id UUID PRIMARY KEY,                -- Task ID (UUIDv7) for deletion when complete
     timestamp TIMESTAMPTZ NOT NULL,     -- Completion time, checked against time() in index.php:392
     classe INTEGER NOT NULL,            -- Object class/category for construction
     type INTEGER NOT NULL,              -- Specific object type within class
-    auteur INTEGER NOT NULL,            -- User ID who initiated construction, from $id2
+    auteur UUID NOT NULL,               -- User ID (foreign key to membres.id) who initiated construction
     cout BIGINT NOT NULL                -- Cost of the construction task
 );
 
 -- Construction queue list
 -- Pending construction tasks waiting to start, managed in index.php:423-428
 CREATE TABLE IF NOT EXISTS liste (
-    id SERIAL PRIMARY KEY,              -- Queue entry ID, used for ordering and deletion
-    auteur INTEGER NOT NULL,            -- User ID who queued the construction
+    id UUID PRIMARY KEY,                -- Queue entry ID (UUIDv7), used for ordering and deletion
+    auteur UUID NOT NULL,               -- User ID (foreign key to membres.id) who queued the construction
     classe INTEGER NOT NULL,            -- Object class/category, used to match with evolution
     type INTEGER NOT NULL,              -- Specific object type, used in bisous.php:37
     duree INTEGER NOT NULL,             -- Construction duration in seconds
@@ -84,7 +84,7 @@ CREATE TABLE IF NOT EXISTS liste (
 -- Guest book
 -- Public guest book entries (livreor = "livre d'or" = golden book)
 CREATE TABLE IF NOT EXISTS livreor (
-    id SERIAL PRIMARY KEY,              -- Entry ID for ordering and management
+    id UUID PRIMARY KEY,                -- Entry ID (UUIDv7) for ordering and management
     pseudo VARCHAR(50) NOT NULL,        -- Name of guest book signer
     message TEXT NOT NULL,              -- Guest book message content
     timestamp TIMESTAMPTZ NOT NULL,     -- Entry creation time
@@ -94,7 +94,7 @@ CREATE TABLE IF NOT EXISTS livreor (
 -- News (renamed from 'news' to 'newsbisous' to match PHP code)
 -- Site news and announcements, managed in news/liste_news.php, displayed in accueil.php:66
 CREATE TABLE IF NOT EXISTS newsbisous (
-    id SERIAL PRIMARY KEY,                 -- News article ID
+    id UUID PRIMARY KEY,                   -- News article ID (UUIDv7)
     titre VARCHAR(100) NOT NULL,           -- News title, from $titre in liste_news.php:51, 56
     contenu TEXT NOT NULL,                 -- News content, from $contenu in liste_news.php:51, 56
     timestamp TIMESTAMPTZ NOT NULL DEFAULT CURRENT_TIMESTAMP,  -- Creation time, set to time() in liste_news.php:51
@@ -105,7 +105,7 @@ CREATE TABLE IF NOT EXISTS newsbisous (
 -- Alternative guest book (orbisous table)
 -- Secondary guest book system, similar structure to livreor
 CREATE TABLE IF NOT EXISTS orbisous (
-    id SERIAL PRIMARY KEY,              -- Entry ID for ordering and management
+    id UUID PRIMARY KEY,                -- Entry ID (UUIDv7) for ordering and management
     pseudo VARCHAR(50) NOT NULL,        -- Name of guest book signer
     message TEXT NOT NULL,              -- Guest book message content
     timestamp TIMESTAMPTZ NOT NULL,     -- Entry creation time
@@ -115,9 +115,9 @@ CREATE TABLE IF NOT EXISTS orbisous (
 -- Attack log table
 -- Logs completed attacks for rate limiting, INSERT in attaque.php:16, checked in action.php:74
 CREATE TABLE IF NOT EXISTS logatt (
-    id SERIAL PRIMARY KEY,              -- Log entry ID
-    auteur INTEGER NOT NULL,            -- Attacker user ID, checked for rate limiting
-    cible INTEGER NOT NULL,             -- Target user ID
+    id UUID PRIMARY KEY,                -- Log entry ID (UUIDv7)
+    auteur UUID NOT NULL,               -- Attacker user ID (foreign key to membres.id), checked for rate limiting
+    cible UUID NOT NULL,                -- Target user ID (foreign key to membres.id)
     timestamp TIMESTAMPTZ NOT NULL      -- Attack completion time, used for 12-hour limit check
 );
 
@@ -127,25 +127,26 @@ CREATE TYPE blown_kiss_state AS ENUM ('EnRoute', 'ComingBack', 'CalledOff');
 -- Attack table
 -- Active attacks in progress, managed throughout attaque.php and action.php
 CREATE TABLE IF NOT EXISTS attaque (
-    auteur INTEGER NOT NULL,            -- Attacker user ID, set bloque=1 during attack
-    cible INTEGER NOT NULL,             -- Target user ID
+    auteur UUID NOT NULL,               -- Attacker user ID (foreign key to membres.id), set bloque=1 during attack
+    cible UUID NOT NULL,                -- Target user ID (foreign key to membres.id)
     finaller TIMESTAMPTZ NOT NULL,      -- Attack arrival timestamp (when units reach target)
     finretour TIMESTAMPTZ NOT NULL,     -- Return timestamp (when units return home)
     state blown_kiss_state NOT NULL DEFAULT 'EnRoute',  -- Blown kiss state ENUM
-    butin BIGINT DEFAULT 0              -- Loot gained from attack, set after battle
+    butin BIGINT DEFAULT 0,             -- Loot gained from attack, set after battle
+    PRIMARY KEY (auteur, cible)         -- Composite key: one active attack per attacker-target pair
 );
 
 -- Nuage (cloud) configuration table
 -- Stores the maximum number of clouds/servers, used in fctIndex.php::GiveNewPosition(), reductionNuages.php:40
 CREATE TABLE IF NOT EXISTS nuage (
-    id SERIAL PRIMARY KEY,              -- Config entry ID (always 1)
+    id UUID PRIMARY KEY,                -- Config entry ID (singleton)
     nombre INTEGER NOT NULL DEFAULT 0   -- Maximum number of clouds, updated in fctIndex.php::GiveNewPosition()
 );
 
 -- Insert default nuage configuration
-INSERT INTO nuage (id, nombre) VALUES (1, 1) ON CONFLICT (id) DO UPDATE SET nombre = nuage.nombre;
+INSERT INTO nuage (id, nombre) VALUES ('00000000-0000-0000-0000-000000000002'::UUID, 1) ON CONFLICT (id) DO UPDATE SET nombre = nuage.nombre;
 
 -- Insert a default admin user (password: admin, hashed with md5)
-INSERT INTO membres (pseudo, mdp, confirmation, timestamp, lastconnect)
-VALUES ('admin', '21232f297a57a5a743894a0e4a801fc3', TRUE, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP)
+INSERT INTO membres (id, pseudo, mdp, confirmation, timestamp, lastconnect)
+VALUES ('00000000-0000-0000-0000-000000000001'::UUID, 'admin', '21232f297a57a5a743894a0e4a801fc3', TRUE, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP)
 ON CONFLICT (pseudo) DO NOTHING;

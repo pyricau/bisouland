@@ -11,7 +11,7 @@ if (true == $_SESSION['logged']) {
     $positionSource = $donnees_info['position'];
     $scoreSource = floor($donnees_info['score'] / 1000.);
 
-    $sql_info = $pdo->query('SELECT nombre FROM nuage WHERE id=1');
+    $sql_info = $pdo->query("SELECT nombre FROM nuage WHERE id='00000000-0000-0000-0000-000000000002'");
     $donnees_info = $sql_info->fetch();
     $NbNuages = $donnees_info['nombre'];
 

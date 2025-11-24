@@ -1,7 +1,7 @@
 <h1>Liste des joueurs</h1>
 <?php
 $pdo = bd_connect();
-$sql = $pdo->query('SELECT COUNT(*) AS nb_pseudo FROM membres WHERE confirmation = 1');
+$sql = $pdo->query('SELECT COUNT(*) AS nb_pseudo FROM membres WHERE confirmation = TRUE');
 
 $total = $sql->fetchColumn();
 
@@ -26,7 +26,8 @@ if (isset($_GET['num'])) {
 // On calcule le numéro du premier message qu'on prend pour le LIMIT de MySQL
 $premier = ($num - 1) * $nombreParPage;
 
-$stmt = $pdo->query('SELECT id, pseudo, nuage, lastconnect FROM membres WHERE confirmation = 1 ORDER BY id DESC LIMIT '.(int) $premier.', '.$nombreParPage);
+$stmt = $pdo->prepare('SELECT id, pseudo, nuage, lastconnect FROM membres WHERE confirmation = TRUE ORDER BY id DESC LIMIT :limit OFFSET :offset');
+$stmt->execute(['limit' => $nombreParPage, 'offset' => (int) $premier]);
 
 if ($nombreDePages > 1) {
     echo '<center>Page :';
@@ -40,7 +41,7 @@ if ($nombreDePages > 1) {
     echo '</center><br />';
 }
 
-if (true == $_SESSION['logged']) {
+if (true === $_SESSION['logged']) {
     while ($donnees = $stmt->fetch()) {
         $donnees['pseudo'] = stripslashes((string) $donnees['pseudo']);
         if ($donnees['lastconnect'] > time() - 300) {

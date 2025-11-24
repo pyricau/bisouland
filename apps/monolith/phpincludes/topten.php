@@ -33,7 +33,8 @@ if (true == $_SESSION['logged'] && ($nbE[1][0] + $nbE[1][1] + $nbE[1][2]) > 0) {
     $positionSource = $donnees_info2['position'];
 }
 
-$sql_info = $pdo->query("SELECT id, pseudo, nuage, position, score, lastconnect FROM membres ORDER BY score DESC LIMIT 0,{$nbTop}");
+$sql_info = $pdo->prepare('SELECT id, pseudo, nuage, position, score, lastconnect FROM membres ORDER BY score DESC LIMIT :limit OFFSET 0');
+$sql_info->execute(['limit' => $nbTop]);
 $donnees_info = $sql_info->fetch();
 for ($i = 1; $i <= $nbTop; ++$i) {
     if (false === $donnees_info) {

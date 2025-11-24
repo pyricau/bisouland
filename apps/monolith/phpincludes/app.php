@@ -1,5 +1,7 @@
 <?php
 
+use Symfony\Component\Uid\Uuid;
+
 header('Content-type: text/html; charset=UTF-8');
 
 // Next step :
@@ -17,6 +19,8 @@ session_start();
 ob_start();
 
 $pdo = bd_connect();
+$castToUnixTimestamp = cast_to_unix_timestamp();
+$castToPgTimestamptz = cast_to_pg_timestamptz();
 
 $inMainPage = true;
 
@@ -46,7 +50,7 @@ if ('POST' === $_SERVER['REQUEST_METHOD'] && isset($_POST['connexion'])) {
             // Si le mot de passe est le même.
             if ($donnees_info['mdp'] == $mdp) {
                 // Si le compte est confirmé.
-                if (1 == $donnees_info['confirmation']) {
+                if (true === $donnees_info['confirmation']) {
                     // On modifie la variable qui nous indique que le membre est connecté.
                     $_SESSION['logged'] = true;
 
@@ -97,7 +101,7 @@ if ('logout' === $page) {
     if (isset($_SESSION['logged']) && true == $_SESSION['logged']) {
         $timeDeco = time() - 600;
         $stmt = $pdo->prepare('UPDATE membres SET lastconnect = :lastconnect WHERE id = :id');
-        $stmt->execute(['lastconnect' => $timeDeco, 'id' => $_SESSION['id']]);
+        $stmt->execute(['lastconnect' => $castToPgTimestamptz->fromUnixTimestamp($timeDeco), 'id' => $_SESSION['id']]);
         // On modifie la valeur de $_SESSION['logged'], qui devient false.
         $_SESSION['logged'] = false;
         $timestamp_expire = time() - 1000;
@@ -152,7 +156,7 @@ if (false == $_SESSION['logged']) {
 
             // Si le mot de passe est le même (le mot de passe est déjà crypté).
             // Si le compte est confirmé.
-            if ($donnees_info['mdp'] == $mdp && 1 == $donnees_info['confirmation']) {
+            if ($donnees_info['mdp'] == $mdp && true === $donnees_info['confirmation']) {
                 // On modifie la variable qui nous indique que le membre est connecté.
                 $_SESSION['logged'] = true;
                 // On créé les variables contenant des informations sur le membre.
@@ -215,7 +219,7 @@ if (true == $_SESSION['logged']) {
     $stmt->execute(['id' => $id]);
     $donnees_info = $stmt->fetch();
     // Date du dernier calcul du nombre de points d'amour.
-    $lastTime = $donnees_info['timestamp'];
+    $lastTime = $castToUnixTimestamp->fromPgTimestamptz($donnees_info['timestamp']);
     // Temps écoulé depuis le dernier calcul.
     $timeDiff = time() - $lastTime;
 
@@ -405,7 +409,7 @@ if (true == $_SESSION['logged']) {
     }
 
     // Récupération du nombre de messages non lus.
-    $stmt = $pdo->prepare('SELECT COUNT(*) AS nbMsg FROM messages WHERE destin = :destin AND statut = 0');
+    $stmt = $pdo->prepare('SELECT COUNT(*) AS nbMsg FROM messages WHERE destin = :destin AND statut = FALSE');
     $stmt->execute(['destin' => $id]);
     $nbNewMsg = $stmt->fetchColumn();
     if ($nbNewMsg > 0) {
@@ -423,8 +427,8 @@ $temps12 = microtime_float();
     Il permet de créer une sorte de boucle de calcul virtuelle, pour peu qu'il y ait suffisament de gens qui se connectent.
 */
 // On récupère les évolutions dont la date de création est atteinte ou dépassée.
-$stmt = $pdo->prepare('SELECT auteur, id, type, classe, cout FROM evolution WHERE timestamp <= :timestamp');
-$stmt->execute(['timestamp' => time()]);
+$stmt = $pdo->prepare('SELECT auteur, id, type, classe, cout FROM evolution WHERE timestamp <= CURRENT_TIMESTAMP');
+$stmt->execute();
 // Boucle qui permet de traiter construction par construction.
 while ($donnees_info = $stmt->fetch()) {
     // Id de l'auteur de la construction
@@ -457,12 +461,12 @@ while ($donnees_info = $stmt->fetch()) {
     // Si le visiteur est connecté et membre, et si la construction est la sienne, on met a jour les infos sur la page.
 
     // S'il ya des constructions sur la liste de construction, on relance une construction.
-    $stmt2 = $pdo->prepare('SELECT id, duree, type, cout FROM liste WHERE auteur = :auteur AND classe = :classe ORDER BY id LIMIT 0,1');
+    $stmt2 = $pdo->prepare('SELECT id, duree, type, cout FROM liste WHERE auteur = :auteur AND classe = :classe ORDER BY id LIMIT 1 OFFSET 0');
     $stmt2->execute(['auteur' => $id2, 'classe' => $classe]);
     if ($donnees_info = $stmt2->fetch()) {
         $timeFin2 = time() + $donnees_info['duree'];
-        $stmt3 = $pdo->prepare('INSERT INTO evolution (timestamp, classe, type, auteur, cout) VALUES (:timestamp, :classe, :type, :auteur, :cout)');
-        $stmt3->execute(['timestamp' => $timeFin2, 'classe' => $classe, 'type' => $donnees_info['type'], 'auteur' => $id2, 'cout' => $donnees_info['cout']]);
+        $stmt3 = $pdo->prepare('INSERT INTO evolution (id, timestamp, classe, type, auteur, cout) VALUES (:id, :timestamp, :classe, :type, :auteur, :cout)');
+        $stmt3->execute(['id' => Uuid::v7(), 'timestamp' => $castToPgTimestamptz->fromUnixTimestamp($timeFin2), 'classe' => $classe, 'type' => $donnees_info['type'], 'auteur' => $id2, 'cout' => $donnees_info['cout']]);
         $stmt3 = $pdo->prepare('DELETE FROM liste WHERE id = :id');
         $stmt3->execute(['id' => $donnees_info['id']]);
         if ($id == $id2) {
@@ -510,27 +514,26 @@ if (false == $_SESSION['logged']) {
     $stmt->execute(['ip' => $_SERVER['REMOTE_ADDR']]);
     $donnees = $stmt->fetch();
     if (0 == $donnees['nbre_entrees']) { // L'ip ne se trouve pas dans la table, on va l'ajouter
-        $stmt = $pdo->prepare('INSERT INTO connectbisous VALUES(:ip, :timestamp, 2)');
-        $stmt->execute(['ip' => $_SERVER['REMOTE_ADDR'], 'timestamp' => time()]);
+        $stmt = $pdo->prepare('INSERT INTO connectbisous VALUES(:ip, CURRENT_TIMESTAMP, 2)');
+        $stmt->execute(['ip' => $_SERVER['REMOTE_ADDR']]);
     } else { // L'ip se trouve déjà dans la table, on met juste à jour le timestamp
-        $stmt = $pdo->prepare('UPDATE connectbisous SET timestamp = :timestamp WHERE ip = :ip');
-        $stmt->execute(['timestamp' => time(), 'ip' => $_SERVER['REMOTE_ADDR']]);
+        $stmt = $pdo->prepare('UPDATE connectbisous SET timestamp = CURRENT_TIMESTAMP WHERE ip = :ip');
+        $stmt->execute(['ip' => $_SERVER['REMOTE_ADDR']]);
     }
 }
 $temps32 = microtime_float();
 
 // ETAPE 2 : on supprime toutes les entrées dont le timestamp est plus vieux que 5 minutes
-$timestamp_5min = time() - 300;
-$stmt = $pdo->prepare('DELETE FROM connectbisous WHERE timestamp < :timestamp');
-$stmt->execute(['timestamp' => $timestamp_5min]);
+$stmt = $pdo->prepare("DELETE FROM connectbisous WHERE timestamp < CURRENT_TIMESTAMP - INTERVAL '5 minutes'");
+$stmt->execute();
 
 // Etape 3 : on demande maintenant le nombre de gens connectés.
 // Nombre de visiteurs
 $stmt = $pdo->query('SELECT COUNT(*) AS nbre_visit FROM connectbisous');
 $donnees = $stmt->fetch();
 $NbVisit = $donnees['nbre_visit'];
-$stmt = $pdo->prepare('SELECT COUNT(*) AS nb_membres FROM membres WHERE lastconnect >= :lastconnect');
-$stmt->execute(['lastconnect' => $timestamp_5min]);
+$stmt = $pdo->prepare("SELECT COUNT(*) AS nb_membres FROM membres WHERE lastconnect >= CURRENT_TIMESTAMP - INTERVAL '5 minutes'");
+$stmt->execute();
 $NbMemb = $stmt->fetchColumn();
 
 $temps14 = microtime_float();
@@ -649,8 +652,8 @@ $temps16 = microtime_float();
 
 <?php
     if (true == $_SESSION['logged']) {
-        $stmt = $pdo->prepare('UPDATE membres SET lastconnect = :lastconnect, timestamp = :timestamp, amour = :amour WHERE id = :id');
-        $stmt->execute(['lastconnect' => time(), 'timestamp' => time(), 'amour' => $amour, 'id' => $id]);
+        $stmt = $pdo->prepare('UPDATE membres SET lastconnect = CURRENT_TIMESTAMP, timestamp = CURRENT_TIMESTAMP, amour = :amour WHERE id = :id');
+        $stmt->execute(['amour' => (int) $amour, 'id' => $id]);
     }
 ?>
 

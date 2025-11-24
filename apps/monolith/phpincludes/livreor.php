@@ -5,6 +5,7 @@
 // -----------------------------------------
 
 $pdo = bd_connect();
+$castToUnixTimestamp = cast_to_unix_timestamp();
 
 if (isset($_POST['message'])) {
     if (true == $_SESSION['logged']) {
@@ -83,7 +84,8 @@ if (isset($_GET['or'])) {
 // On calcule le numéro du premier message qu'on prend pour le LIMIT de MySQL
 $premierMessageAafficher = ($or - 1) * $nombreDeMessagesParPage;
 
-$reponse = $pdo->query('SELECT * FROM orbisous ORDER BY id DESC LIMIT '.(int) $premierMessageAafficher.', '.$nombreDeMessagesParPage);
+$reponse = $pdo->prepare('SELECT * FROM orbisous ORDER BY id DESC LIMIT :limit OFFSET :offset');
+$reponse->execute(['limit' => $nombreDeMessagesParPage, 'offset' => (int) $premierMessageAafficher]);
 
 if ($nombreDePages > 1) {
     echo '<center>Page :';
@@ -106,7 +108,7 @@ while ($donnees = $reponse->fetch()) {
     ?>
 <div class=livreor>
 <?php
-        echo '<p><strong>'.stripslashes((string) $donnees['pseudo']).'</strong> a &eacute;crit le '.date('d/m/Y à H\hi', $donnees['timestamp']).' :<br /><br />'.stripslashes((string) $donnees['message']).'</p>';
+        echo '<p><strong>'.stripslashes((string) $donnees['pseudo']).'</strong> a &eacute;crit le '.date('d/m/Y à H\hi', $castToUnixTimestamp->fromPgTimestamptz($donnees['timestamp'])).' :<br /><br />'.stripslashes((string) $donnees['message']).'</p>';
     ?>
 </div>
 <?php

@@ -1,7 +1,12 @@
 <?php
 
-if (false == $_SESSION['logged']) {
+use Symfony\Component\Uid\Uuid;
+
+if (false === $_SESSION['logged']) {
     $pdo = bd_connect();
+    $castToPgBoolean = cast_to_pg_boolean();
+    $castToUnixTimestamp = cast_to_unix_timestamp();
+    $castToPgTimestamptz = cast_to_pg_timestamptz();
     $send = 0;
     $pseudo = '';
     $mdp = '';
@@ -41,12 +46,12 @@ if (false == $_SESSION['logged']) {
                                     // Hashage du mot de passe avec md5().
                                     $hmdp = md5($mdp);
 
+                                    $id = Uuid::v7();
                                     $stmt = $pdo->prepare(
-                                        'INSERT INTO membres (pseudo, mdp, confirmation, timestamp, lastconnect, amour)'
-                                        .' VALUES (:pseudo, :mdp, :confirmation, :timestamp, :lastconnect, :amour)',
+                                        'INSERT INTO membres (id, pseudo, mdp, confirmation, timestamp, lastconnect, amour)'
+                                        .' VALUES (:id, :pseudo, :mdp, :confirmation, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, :amour)',
                                     );
-                                    $stmt->execute(['pseudo' => $pseudo, 'mdp' => $hmdp, 'confirmation' => 1, 'timestamp' => time(), 'lastconnect' => time(), 'amour' => 300]);
-                                    $id = $pdo->lastInsertId();
+                                    $stmt->execute(['id' => $id, 'pseudo' => $pseudo, 'mdp' => $hmdp, 'confirmation' => $castToPgBoolean->from(true), 'amour' => 300]);
 
                                     GiveNewPosition($id);
 

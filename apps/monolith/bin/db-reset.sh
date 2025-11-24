@@ -16,23 +16,50 @@ cd "${_ROOT_DIR}"
 # ──────────────────────────────────────────────────────────────────────────────
 # Loading database config through environment variables.
 # `set -a` enables exportation of env vars, while `set +a` disables it.
-# Passing MySQL password via command line arguments is insecure,
-# so using `MYSQL_PWD` instead.
+# Passing PostgreSQL password via command line arguments is insecure,
+# so using `PGPASSWORD` instead.
 # ──────────────────────────────────────────────────────────────────────────────
 set -a; source .env; set +a
 
-export MYSQL_PWD="${MYSQL_ROOT_PASSWORD}"
+export PGPASSWORD="${DATABASE_PASSWORD}"
 
 # ──────────────────────────────────────────────────────────────────────────────
 # Reset the database, through Docker containers.
 # ──────────────────────────────────────────────────────────────────────────────
-echo "// 🗑️ Dropping database..."
-docker compose exec -e MYSQL_PWD db mysql -u root -e "DROP DATABASE IF EXISTS ${DATABASE_NAME};"
+echo '  // 🔌 Terminating active connections...'
+echo ''
+docker compose exec -e PGPASSWORD db psql \
+    -U ${DATABASE_USER} \
+    -d postgres \
+    -c "SELECT pg_terminate_backend(pid) FROM pg_stat_activity WHERE datname = '${DATABASE_NAME}' AND pid <> pg_backend_pid();" \
+    > /dev/null 2>&1
 
-echo "// 🆕 Creating database..."
-docker compose exec -e MYSQL_PWD db mysql -u root -e "CREATE DATABASE ${DATABASE_NAME};"
+echo '  // 🗑️ Dropping database...'
+echo ''
+docker compose exec -e PGPASSWORD db psql \
+    -U ${DATABASE_USER} \
+    -d postgres \
+    -c "DROP DATABASE IF EXISTS ${DATABASE_NAME};" \
+    > /dev/null 2>&1
 
-echo "// 📋 Loading schema.sql..."
-docker compose exec -T -e MYSQL_PWD db mysql -u root $DATABASE_NAME < schema.sql
+echo '  // 🆕 Creating database...'
+echo ''
+docker compose exec -e PGPASSWORD db psql \
+    -U ${DATABASE_USER} \
+    -d postgres \
+    -c "CREATE DATABASE ${DATABASE_NAME};" \
+    > /dev/null 2>&1
 
-echo "   [OK] Database reset"
+echo '  // 📋 Loading schema.sql...'
+echo ''
+docker compose exec -T -e PGPASSWORD db psql \
+    -U ${DATABASE_USER} \
+    -d ${DATABASE_NAME} \
+    > /dev/null 2>&1 \
+    < schema.sql
+
+echo '  // 🔄 Restarting web container to clear connection pool...'
+echo ''
+docker compose restart web > /dev/null 2>&1
+
+echo '  [OK] Database reset'

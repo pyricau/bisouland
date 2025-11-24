@@ -1,4 +1,7 @@
 <?php
+
+use Symfony\Component\Uid\Uuid;
+
 header('Content-type: text/html; charset=UTF-8');
 
 ?>
@@ -34,6 +37,8 @@ header('Content-type: text/html; charset=UTF-8');
 <?php
     include __DIR__.'/../../phpincludes/bd.php';
 $pdo = bd_connect();
+$castToUnixTimestamp = cast_to_unix_timestamp();
+$castToPgTimestamptz = cast_to_pg_timestamptz();
 
 // -----------------------------------------------------
 // Verification 1 : est-ce qu'on veut poster une news ?
@@ -45,12 +50,12 @@ if (isset($_POST['titre']) && isset($_POST['contenu'])) {
     // On verifie si c'est une modification de news ou pas
     if (-1 == $_POST['id_news']) {
         // Ce n'est pas une modification, on cree une nouvelle entree dans la table
-        $stmt = $pdo->prepare('INSERT INTO newsbisous (titre, contenu, timestamp, timestamp_modification) VALUES(:titre, :contenu, :timestamp, 0)');
-        $stmt->execute(['titre' => $titre, 'contenu' => $contenu, 'timestamp' => time()]);
+        $stmt = $pdo->prepare('INSERT INTO newsbisous (id, titre, contenu, timestamp) VALUES(:id, :titre, :contenu, CURRENT_TIMESTAMP)');
+        $stmt->execute(['id' => Uuid::v7(), 'titre' => $titre, 'contenu' => $contenu]);
     } else {
         // C'est une modification, on met juste a jour le titre et le contenu
-        $stmt = $pdo->prepare('UPDATE newsbisous SET titre = :titre, contenu = :contenu, timestamp_modification = :timestamp_modification WHERE id = :id');
-        $stmt->execute(['titre' => $titre, 'contenu' => $contenu, 'timestamp_modification' => time(), 'id' => $_POST['id_news']]);
+        $stmt = $pdo->prepare('UPDATE newsbisous SET titre = :titre, contenu = :contenu, timestamp_modification = CURRENT_TIMESTAMP WHERE id = :id');
+        $stmt->execute(['titre' => $titre, 'contenu' => $contenu, 'id' => $_POST['id_news']]);
     }
 }
 
@@ -82,7 +87,7 @@ while ($donnees = $retour->fetch()) { // On fait une boucle pour lister les news
 <td><?php echo '<a href="rediger_news.php?modifier_news='.$donnees['id'].'">'; ?>Modifier</a></td>
 <td><?php echo '<a href="liste_news.php?supprimer_news='.$donnees['id'].'">'; ?>Supprimer</a></td>
 <td><?php echo stripslashes((string) $donnees['titre']); ?></td>
-<td><?php echo date('d/m/Y', $donnees['timestamp']); ?></td>
+<td><?php echo date('d/m/Y', $castToUnixTimestamp->fromPgTimestamptz($donnees['timestamp'])); ?></td>
 </tr>
 
 <?php

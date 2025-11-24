@@ -16,7 +16,7 @@ ENV COMPOSER_ALLOW_SUPERUSER=1 \
 # Install dependencies:
 # * apache for the web server
 # * bash for shell access and scripting
-# * PDO (MySQL) extension for database access
+# * PDO (PostgreSQL) extension for database access
 # * zip for composer packages that use ZIP archives
 # _Note (Alpine)_: `--no-cache` includes `--update` and keeps image size minimal
 #
@@ -30,12 +30,13 @@ RUN apk add --update --no-cache \
         apache2-ssl \
         bash \
         libzip-dev \
+        postgresql-dev \
         zip \
     && sed -i 's/^#LoadModule rewrite_module/LoadModule rewrite_module/' /etc/apache2/httpd.conf \
     && docker-php-ext-install \
         bcmath \
         pdo \
-        pdo_mysql \
+        pdo_pgsql \
         zip
 
 # Copy Composer binary from composer image
@@ -74,6 +75,7 @@ RUN sed -i 's|^DocumentRoot.*|DocumentRoot "/apps/monolith/web"|' /etc/apache2/h
 
 # Create startup script to run both PHP-FPM and Apache
 RUN echo '#!/bin/sh' > /start.sh \
+    && echo 'chmod -R o+rX /apps/monolith/vendor' >> /start.sh \
     && echo 'php-fpm -D' >> /start.sh \
     && echo 'exec httpd -D FOREGROUND' >> /start.sh \
     && chmod +x /start.sh

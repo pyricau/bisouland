@@ -11,7 +11,7 @@ if (true == $_SESSION['logged']) {
     $positionSource = $donnees_info['position'];
     $scoreSource = floor($donnees_info['score'] / 1000.);
 
-    $sql_info = $pdo->query('SELECT nombre FROM nuage WHERE id=1');
+    $sql_info = $pdo->query("SELECT nombre FROM nuage WHERE id='00000000-0000-0000-0000-000000000002'");
     $donnees_info = $sql_info->fetch();
     $NbNuages = $donnees_info['nombre'];
 
@@ -51,7 +51,7 @@ if (true == $_SESSION['logged']) {
                                 if ($donnees_info = $stmt->fetch()) {
                                     $resultat = 'La position est déjà occupée';
                                 } elseif (0 == $joueurBloque) {
-                                    $stmt = $pdo->prepare('SELECT auteur FROM attaque WHERE cible = :cible AND finaller != 0');
+                                    $stmt = $pdo->prepare("SELECT auteur FROM attaque WHERE cible = :cible AND state = 'EnRoute'");
                                     $stmt->execute(['cible' => $id]);
                                     if ($donnees_info = $stmt->fetch()) {
                                         $resultat = "Tu ne peux pas sauter car quelqu'un tente de t'embrasser";
@@ -171,7 +171,7 @@ if ($scoreSource < 50) {
         if (false !== $donnees_info && $donnees_info['position'] == $i) {
             $donnees_info['pseudo'] = stripslashes((string) $donnees_info['pseudo']);
             echo '<tr><td>',$i,'</td><td>';
-            if ($donnees_info['lastconnect'] > time() - 300) {
+            if ($castToUnixTimestamp->fromPgTimestamptz($donnees_info['lastconnect']) > time() - 300) {
                 echo '<a class="bulle" style="cursor: default;" onclick="return false;" href=""><img src="images/on.png" alt="Connect&eacute;" title=""/><span>'.$donnees_info['pseudo'].' est connect&eacute;</span></a> ';
             } else {
                 echo '<a class="bulle" style="cursor: default;" onclick="return false;" href=""><img src="images/off.png" alt="Non connect&eacute;" title="" /><span>'.$donnees_info['pseudo']." n'est pas connect&eacute;</span></a> ";

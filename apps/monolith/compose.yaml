@@ -19,19 +19,18 @@ services:
     restart: unless-stopped
 
   db:
-    image: mysql:5.7
+    image: postgres:17
     platform: linux/amd64
     environment:
-      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
-      MYSQL_DATABASE: ${DATABASE_NAME}
-      MYSQL_USER: ${DATABASE_USER}
-      MYSQL_PASSWORD: ${DATABASE_PASSWORD}
+      POSTGRES_PASSWORD: ${DATABASE_PASSWORD}
+      POSTGRES_DB: ${DATABASE_NAME}
+      POSTGRES_USER: ${DATABASE_USER}
     volumes:
-      - mysql_data:/var/lib/mysql
+      - postgres_data:/var/lib/postgresql/data
     ports:
-      - "127.0.0.1:43001:3306"
+      - "127.0.0.1:43001:5432"
     restart: unless-stopped
 
 volumes:
-  mysql_data:
+  postgres_data:
   vendor:

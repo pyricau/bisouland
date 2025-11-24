@@ -25,11 +25,12 @@ ENV COMPOSER_ALLOW_SUPERUSER=1 \
 RUN apk add --update --no-cache \
         bash \
         libzip-dev \
+        postgresql-dev \
         zip \
     && docker-php-ext-install \
         bcmath \
         pdo \
-        pdo_mysql \
+        pdo_pgsql \
         zip
 
 # Copy Composer binary from composer image

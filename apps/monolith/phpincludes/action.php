@@ -1,7 +1,9 @@
 <h1>Embrasser</h1>
 <?php
-if (true == $_SESSION['logged']) {
+if (true === $_SESSION['logged']) {
     $pdo = bd_connect();
+    $castToUnixTimestamp = cast_to_unix_timestamp();
+    $castToPgTimestamptz = cast_to_pg_timestamptz();
     if (isset($_POST['action'])) {
         $cout = 0;
         $nuageCible = htmlentities((string) $_POST['nuage']);
@@ -54,16 +56,16 @@ if (true == $_SESSION['logged']) {
                                     if ($distance <= $distMax) {
                                         $cout = coutAttaque($distance, $nbE[0][4]);
                                         if ($amour >= $cout) {
-                                            $stmt = $pdo->prepare('SELECT COUNT(*) AS nb_att FROM logatt WHERE auteur = :auteur AND cible = :cible AND timestamp >= :timestamp');
-                                            $stmt->execute(['auteur' => $id, 'cible' => $cible, 'timestamp' => time() - 43200]);
+                                            $stmt = $pdo->prepare("SELECT COUNT(*) AS nb_att FROM logatt WHERE auteur = :auteur AND cible = :cible AND timestamp >= CURRENT_TIMESTAMP - INTERVAL '12 hours'");
+                                            $stmt->execute(['auteur' => $id, 'cible' => $cible]);
                                             if ($stmt->fetchColumn() < 3) {
                                                 $amour -= $cout;
                                                 $joueurBloque = 1;
                                                 $duree = tempsAttaque($distance, $nbE[0][4]);
-                                                $stmt = $pdo->prepare('UPDATE membres SET bloque = 1 WHERE id = :id');
+                                                $stmt = $pdo->prepare('UPDATE membres SET bloque = TRUE WHERE id = :id');
                                                 $stmt->execute(['id' => $id]);
-                                                $stmt = $pdo->prepare('INSERT INTO attaque VALUES (:auteur, :cible, :finaller, :finretour, 0)');
-                                                $stmt->execute(['auteur' => $id, 'cible' => $cible, 'finaller' => time() + $duree, 'finretour' => time() + 2 * $duree]);
+                                                $stmt = $pdo->prepare("INSERT INTO attaque (auteur, cible, finaller, finretour, state) VALUES (:auteur, :cible, :finaller, :finretour, 'EnRoute')");
+                                                $stmt->execute(['auteur' => $id, 'cible' => $cible, 'finaller' => $castToPgTimestamptz->fromUnixTimestamp(time() + $duree), 'finretour' => $castToPgTimestamptz->fromUnixTimestamp(time() + 2 * $duree)]);
                                                 AdminMP($cible, $pseudo." veut t'embrasser", $pseudo." vient d'envoyer ses bisous dans ta direction, et va tenter de t'embrasser.
 						".$pseudo.' est situé sur le nuage '.$nuageSource.', à la position '.$positionSource.'.
 						Ses Bisous arrivent dans '.strTemps($duree).'.');

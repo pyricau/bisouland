@@ -61,8 +61,13 @@ db-reset: ## Reset the database by dropping and recreating it with schema.sql
 
 ## —— App 📱 ———————————————————————————————————————————————————————————————————
 app-init: ## First install / resetting (Docker build, up, etc)
+	@echo '  // Stopping docker services...'
 	@$(MAKE) docker-down
+	@echo ''
+	@echo '  // Starting docker services...'
 	@$(MAKE) docker-init
-	@sleep 2
+	@echo ''
+	@echo '  // Waiting for PostgreSQL to initialize...'
+	@sleep 3
 	@echo ''
 	@$(MAKE) db-reset

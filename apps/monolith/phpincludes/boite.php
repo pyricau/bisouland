@@ -91,8 +91,9 @@ function checkall()
 </SCRIPT>
 
 <?php
-if (true == $_SESSION['logged']) {
+if (true === $_SESSION['logged']) {
     $pdo = bd_connect();
+    $castToUnixTimestamp = cast_to_unix_timestamp();
 
     if (isset($_POST['supprimer'])) {
         $idmsg = htmlentities((string) $_POST['supprimer']);
@@ -143,11 +144,11 @@ if (true == $_SESSION['logged']) {
         ?>
 			<tr>
 				<td><input type="checkbox" name="supboite[<?php echo $donnees['id']; ?>]" onclick="checkone()" /></td>
-				<td><?php if (0 == $donnees['statut']) {
+				<td><?php if (false === $donnees['statut']) {
                     echo '<a class="bulle" style="cursor: default;" onclick="return false;" href=""><img src="images/newmess.png" alt="Message non lu" title="" /><span>Message non lu</span></a>';
                 }?></td>
 				<td> <?php echo stripslashes((string) $donnees2['pseudo']); ?> </td>
-				<td>le <?php echo date('d/m/Y à H\hi', $donnees['timestamp']); ?></td>
+				<td>le <?php echo date('d/m/Y à H\hi', $castToUnixTimestamp->fromPgTimestamptz($donnees['timestamp'])); ?></td>
 				<td><a href="<?php echo $donnees['id']; ?>.lire.html"><?php echo stripslashes((string) $donnees['titre']); ?></a></td>
 			</tr>
 <?php

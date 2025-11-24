@@ -1,26 +1,29 @@
 <?php
 
+use Symfony\Component\Uid\Uuid;
+
 if (isset($inMainPage) && true == $inMainPage) {
     $pdo = bd_connect();
+    $castToUnixTimestamp = cast_to_unix_timestamp();
+    $castToPgTimestamptz = cast_to_pg_timestamptz();
 
     // ***************************************************************************
     // Gestion des attaques.
     // Phase d'aller :
-    $sql_info = $pdo->query("SELECT finaller, auteur, cible FROM attaque WHERE finaller<='".time()."' AND finaller!=0");
+    $sql_info = $pdo->query("SELECT finaller, auteur, cible FROM attaque WHERE finaller <= CURRENT_TIMESTAMP AND state = 'EnRoute'");
     while ($donnees_info = $sql_info->fetch()) {
         $idAuteur = $donnees_info['auteur'];
         $idCible = $donnees_info['cible'];
         $finaller = $donnees_info['finaller'];
-        $stmt = $pdo->prepare('UPDATE attaque SET finaller = 0 WHERE auteur = :auteur');
+        $stmt = $pdo->prepare("UPDATE attaque SET state = 'ComingBack' WHERE auteur = :auteur");
         $stmt->execute(['auteur' => $idAuteur]);
 
         // On indique que l'attaque a eu lieu.
-        $stmt = $pdo->prepare('INSERT INTO logatt VALUES(:auteur, :cible, :timestamp)');
-        $stmt->execute(['auteur' => $idAuteur, 'cible' => $idCible, 'timestamp' => $finaller]);
+        $stmt = $pdo->prepare('INSERT INTO logatt (id, auteur, cible, timestamp) VALUES(:id, :auteur, :cible, :timestamp)');
+        $stmt->execute(['id' => Uuid::v7(), 'auteur' => $idAuteur, 'cible' => $idCible, 'timestamp' => $finaller]);
         // Supprimer ceux vieux de plus de 12 heures.
-        $timeAtt = time() - 43200;
-        $stmt = $pdo->prepare('DELETE FROM logatt WHERE timestamp < :timestamp');
-        $stmt->execute(['timestamp' => $timeAtt]);
+        $stmt = $pdo->prepare("DELETE FROM logatt WHERE timestamp < CURRENT_TIMESTAMP - INTERVAL '12 hours'");
+        $stmt->execute();
 
         /*
         Quelques notes :
@@ -93,7 +96,7 @@ if (isset($inMainPage) && true == $inMainPage) {
             $stmt->execute(['auteur' => $idAuteur]);
             // Envoyer un MP pour signifier les résultats.
             // On supprime les unités.
-            $stmt = $pdo->prepare('UPDATE membres SET smack = :smack, baiser = :baiser, pelle = :pelle, bloque = 0 WHERE id = :id');
+            $stmt = $pdo->prepare('UPDATE membres SET smack = :smack, baiser = :baiser, pelle = :pelle, bloque = FALSE WHERE id = :id');
             $stmt->execute(['smack' => $AttSmack, 'baiser' => $AttBaiser, 'pelle' => $AttPelle, 'id' => $idAuteur]);
             $stmt = $pdo->prepare('UPDATE membres SET smack = :smack, baiser = :baiser, pelle = :pelle WHERE id = :id');
             $stmt->execute(['smack' => $DefSmack, 'baiser' => $DefBaiser, 'pelle' => $DefPelle, 'id' => $idCible]);
@@ -173,10 +176,10 @@ if (isset($inMainPage) && true == $inMainPage) {
             // Faire retourner, Avec butin.
 
             // Gestion du butin
-            if ($idCible == $id && true == $_SESSION['logged']) {
+            if ($idCible == $id && true === $_SESSION['logged']) {
                 $DefAmour = $amour;
             } else {
-                $DefTimestamp = $donnees_info4['timestamp'];
+                $DefTimestamp = $castToUnixTimestamp->fromPgTimestamptz($donnees_info4['timestamp']);
                 $DefCoeur = $donnees_info4['coeur'];
                 $DefAmour = $donnees_info4['amour'];
                 $DefAmour = calculterAmour($DefAmour, time() - $DefTimestamp, $DefCoeur, $DefSmack, $DefBaiser, $DefPelle);
@@ -198,7 +201,7 @@ if (isset($inMainPage) && true == $inMainPage) {
 
             $DefAmour -= $butin;
 
-            if ($idCible == $id && true == $_SESSION['logged']) {
+            if ($idCible == $id && true === $_SESSION['logged']) {
                 $amour = $DefAmour;
             }
 
@@ -206,7 +209,7 @@ if (isset($inMainPage) && true == $inMainPage) {
             $stmt = $pdo->prepare('UPDATE membres SET smack = :smack, baiser = :baiser, pelle = :pelle WHERE id = :id');
             $stmt->execute(['smack' => $AttSmack, 'baiser' => $AttBaiser, 'pelle' => $AttPelle, 'id' => $idAuteur]);
             $stmt = $pdo->prepare('UPDATE membres SET amour = :amour, smack = :smack, baiser = :baiser, pelle = :pelle WHERE id = :id');
-            $stmt->execute(['amour' => $DefAmour, 'smack' => $DefSmack, 'baiser' => $DefBaiser, 'pelle' => $DefPelle, 'id' => $idCible]);
+            $stmt->execute(['amour' => (int) $DefAmour, 'smack' => $DefSmack, 'baiser' => $DefBaiser, 'pelle' => $DefPelle, 'id' => $idCible]);
 
             $stmt = $pdo->prepare('UPDATE attaque SET butin = :butin WHERE auteur = :auteur');
             $stmt->execute(['butin' => $butin, 'auteur' => $idAuteur]);
@@ -234,14 +237,14 @@ if (isset($inMainPage) && true == $inMainPage) {
     }
 
     // Phase retour
-    $sql_info = $pdo->query("SELECT auteur, butin FROM attaque WHERE finretour<='".time()."'");
+    $sql_info = $pdo->query("SELECT auteur, butin FROM attaque WHERE finretour <= CURRENT_TIMESTAMP AND state IN ('ComingBack', 'CalledOff')");
     while ($donnees_info = $sql_info->fetch()) {
         $idAuteur = $donnees_info['auteur'];
         $butinAuteur = $donnees_info['butin'];
         $stmt = $pdo->prepare('DELETE FROM attaque WHERE auteur = :auteur');
         $stmt->execute(['auteur' => $idAuteur]);
 
-        if ($idAuteur == $id && true == $_SESSION['logged']) {
+        if ($idAuteur == $id && true === $_SESSION['logged']) {
             $AttAmour = $amour;
         } else {
             $stmt = $pdo->prepare('SELECT amour FROM membres WHERE id = :id');
@@ -254,13 +257,13 @@ if (isset($inMainPage) && true == $inMainPage) {
         // Récupération des points d'amour.
         $AttAmour += $butinAuteur;
 
-        if ($idAuteur == $id && true == $_SESSION['logged']) {
+        if ($idAuteur == $id && true === $_SESSION['logged']) {
             $amour = $AttAmour;
             $joueurBloque = 0;
         }
 
         // Libérer l'auteur et ajouter butin
-        $stmt = $pdo->prepare('UPDATE membres SET bloque = 0, amour = :amour WHERE id = :id');
-        $stmt->execute(['amour' => $AttAmour, 'id' => $idAuteur]);
+        $stmt = $pdo->prepare('UPDATE membres SET bloque = FALSE, amour = :amour WHERE id = :id');
+        $stmt->execute(['amour' => (int) $AttAmour, 'id' => $idAuteur]);
     }
 }

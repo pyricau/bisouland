@@ -87,8 +87,13 @@ app-init: ## First install / resetting (Docker build, up, etc)
 	@echo ''
 	@echo 'ℹ️ This will fail if monolith is not running'
 	@echo ''
+	@echo '  // Stopping docker services...'
 	@$(MAKE) docker-down
+	@echo ''
+	@echo '  // Starting docker services...'
 	@$(MAKE) docker-init
+	@echo ''
+	@echo '  [OK] Done'
 
 app-qa: ## Runs full QA pipeline (composer-dump, cs-check, static-analysis, rector-process, test)
 	@$(MAKE) composer-dump

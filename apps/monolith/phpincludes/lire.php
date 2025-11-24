@@ -1,7 +1,8 @@
 <?php
 
-if (true == $_SESSION['logged']) {
+if (true === $_SESSION['logged']) {
     $pdo = bd_connect();
+    $castToUnixTimestamp = cast_to_unix_timestamp();
 
     if (isset($_GET['idmsg']) && !empty($_GET['idmsg'])) {
         $idmsg = htmlentities((string) $_GET['idmsg']);
@@ -9,8 +10,8 @@ if (true == $_SESSION['logged']) {
         $stmt->execute(['id' => $idmsg]);
         $donnees = $stmt->fetch();
         if ($donnees['destin'] == $_SESSION['id']) {
-            if (0 == $donnees['statut']) {
-                $stmt2 = $pdo->prepare('UPDATE messages SET statut = 1 WHERE id = :id');
+            if (false === $donnees['statut']) {
+                $stmt2 = $pdo->prepare('UPDATE messages SET statut = TRUE WHERE id = :id');
                 $stmt2->execute(['id' => $idmsg]);
             }
             $stmt = $pdo->prepare('SELECT pseudo FROM membres WHERE id = :id');
@@ -20,7 +21,7 @@ if (true == $_SESSION['logged']) {
 
             $objet = $donnees['titre'];
             $message = $donnees['message'];
-            $dateEnvoie = $donnees['timestamp'];
+            $dateEnvoie = $castToUnixTimestamp->fromPgTimestamptz($donnees['timestamp']);
             ?>
 
 <a href="boite.html" title="Messages">Retour à la liste des messages</a>

@@ -54,7 +54,8 @@ if (true == $_SESSION['logged'] && 'admin' == $pseudo) {
     }
 
 $pdo = bd_connect();
-$stmt = $pdo->query('SELECT * FROM newsbisous ORDER BY id DESC LIMIT 0, 5');
+$castToUnixTimestamp = cast_to_unix_timestamp();
+$stmt = $pdo->query('SELECT * FROM newsbisous ORDER BY id DESC LIMIT 5 OFFSET 0');
 
 while ($donnees = $stmt->fetch(PDO::FETCH_ASSOC)) {
     ?>
@@ -64,10 +65,10 @@ while ($donnees = $stmt->fetch(PDO::FETCH_ASSOC)) {
         <?php echo stripslashes((string) $donnees['titre']); ?>
 	</h3>
 	<em>
-        le <?php echo date('d/m/Y à H\hi', $donnees['timestamp']); ?></em>
-		<?php if (0 != $donnees['timestamp_modification']) { ?>
+        le <?php echo date('d/m/Y à H\hi', $castToUnixTimestamp->fromPgTimestamptz($donnees['timestamp'])); ?></em>
+		<?php if (null !== $donnees['timestamp_modification']) { ?>
 		<br />
-		<em>modifi&eacute;e le <?php echo date('d/m/Y à H\hi', $donnees['timestamp_modification']); ?></em>
+		<em>modifi&eacute;e le <?php echo date('d/m/Y à H\hi', $castToUnixTimestamp->fromPgTimestamptz($donnees['timestamp_modification'])); ?></em>
 		<?php }?>
 
 		<p>

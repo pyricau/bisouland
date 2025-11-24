@@ -8,19 +8,19 @@ if (isset($_POST['recherche'])) {
         $stmt->execute(['pseudo' => $pseudoCherche]);
         if ($donnees = $stmt->fetch()) {
             $pseudoCherche = $donnees['pseudo'];
-            if (1 == $donnees['confirmation']) {
+            if (true === $donnees['confirmation']) {
                 $resultat = "<h2>{$pseudoCherche} joue bien sur BisouLand</h2>";
                 if ($donnees['lastconnect'] > time() - 300) {
                     $resultat .= '<a class="bulle" style="cursor: default;" onclick="return false;" href=""><img src="images/on.png" alt="Connect&eacute;" title=""/><span>'.$pseudoCherche.' est connect&eacute;</span></a> ';
                 } else {
                     $resultat .= '<a class="bulle" style="cursor: default;" onclick="return false;" href=""><img src="images/off.png" alt="Non connect&eacute;" title="" /><span>'.$pseudoCherche." n'est pas connect&eacute;</span></a> ";
                 }
-                if (true == $_SESSION['logged']) {
+                if (true === $_SESSION['logged']) {
                     $resultat .= '<a class="bulle" href="'.$donnees['nuage'].'.nuage.html" >
 					<img src="images/nuage.png" title="" alt="" /><span>Nuage : '.$donnees['nuage'].'</span></a> ';
                 }
                 $resultat .= '<strong> '.$pseudoCherche.'</strong>';
-                if (false == $_SESSION['logged']) {
+                if (false === $_SESSION['logged']) {
                     $resultat .= '<br /><br />Toi aussi, n\'hesite pas a rejoindre la communaute BisouLand.<br />
 					Tu peux t\'inscrire en cliquant <a href="inscription.html" title="S\'inscrire sur BisouLand">ici</a>.';
                 }

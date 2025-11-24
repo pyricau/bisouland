@@ -1,55 +1,52 @@
 -- Basic database schema for Bisouland
 -- This creates the minimum tables needed based on the PHP code analysis
 
-USE bisouland;
-
 -- Members table (main user table)
 -- Used throughout the application for user authentication and game state
 -- INSERT: inscription.php:62, UPDATE: multiple files (index.php:698, deconnexion.php:13, etc.)
 CREATE TABLE IF NOT EXISTS membres (
-    id INT PRIMARY KEY AUTO_INCREMENT,     -- User ID, referenced in all other tables
+    id UUID PRIMARY KEY,                   -- User ID (UUIDv7), referenced in all other tables
     pseudo VARCHAR(50) NOT NULL UNIQUE,    -- Username, used in login (redirect.php:21, index.php:60)
     mdp VARCHAR(255) NOT NULL,             -- Password hash, checked in redirect.php:27
-    confirmation TINYINT(1) DEFAULT 0,     -- Account confirmed flag, checked in redirect.php:27
-    timestamp INT NOT NULL,                -- Account creation time, updated in confirmation.php:92
-    lastconnect INT DEFAULT 0,             -- Last connection time, updated in index.php:698, deconnexion.php:13
+    confirmation BOOLEAN DEFAULT FALSE,    -- Account confirmed flag, checked in redirect.php:27
+    timestamp TIMESTAMPTZ NOT NULL DEFAULT CURRENT_TIMESTAMP,  -- Account creation time, updated in confirmation.php:92
+    lastconnect TIMESTAMPTZ NOT NULL DEFAULT CURRENT_TIMESTAMP,        -- Last connection time, updated in index.php:698, deconnexion.php:13
     amour BIGINT DEFAULT 1000,             -- Game currency, updated throughout index.php
-    nuage INT DEFAULT 1,                   -- Cloud/server number, used in nuage positioning
-    position INT DEFAULT 1,                -- Position within cloud, used in action.php and nuage.php
-    bloque TINYINT(1) DEFAULT 0,           -- User blocked status, set in action.php:80
+    nuage INTEGER DEFAULT 1,               -- Cloud/server number, used in nuage positioning
+    position INTEGER DEFAULT 1,            -- Position within cloud, used in action.php and nuage.php
+    bloque BOOLEAN DEFAULT FALSE,          -- User blocked status, set in action.php:80
     -- Game objects/organs - used in game mechanics (index.php:138, 305)
-    coeur INT DEFAULT 1,                   -- Heart organ count
-    bouche INT DEFAULT 1,                  -- Mouth organ count, used in attacks (attaque.php:35, 46)
-    langue INT DEFAULT 0,                  -- Tongue organ count, used in attacks
-    dent INT DEFAULT 0,                    -- Teeth organ count, used in attacks
-    jambes INT DEFAULT 0,                  -- Legs organ count, used in game mechanics
-    oeil INT DEFAULT 0,                    -- Eyes organ count
+    coeur INTEGER DEFAULT 1,               -- Heart organ count
+    bouche INTEGER DEFAULT 1,              -- Mouth organ count, used in attacks (attaque.php:35, 46)
+    langue INTEGER DEFAULT 0,              -- Tongue organ count, used in attacks
+    dent INTEGER DEFAULT 0,                -- Teeth organ count, used in attacks
+    jambes INTEGER DEFAULT 0,              -- Legs organ count, used in game mechanics
+    oeil INTEGER DEFAULT 0,                -- Eyes organ count
     -- Kisses - combat stats used in attaque.php throughout
-    smack INT DEFAULT 0,                   -- Smack attack points, updated in attaque.php:89, 90
-    baiser INT DEFAULT 0,                  -- Kiss attack points, updated in attaque.php:89, 90
-    pelle INT DEFAULT 0,                   -- French kiss attack points, updated in attaque.php:89, 90
+    smack INTEGER DEFAULT 0,               -- Smack attack points, updated in attaque.php:89, 90
+    baiser INTEGER DEFAULT 0,              -- Kiss attack points, updated in attaque.php:89, 90
+    pelle INTEGER DEFAULT 0,               -- French kiss attack points, updated in attaque.php:89, 90
     -- Technologies - upgrades, referenced in index.php and attack calculations
-    tech1 INT DEFAULT 0,                   -- Technology level 1, used in attaque.php:35
-    tech2 INT DEFAULT 0,                   -- Technology level 2, used in attaque.php:35
-    tech3 INT DEFAULT 0,                   -- Technology level 3, used in attaque.php:46
-    tech4 INT DEFAULT 0,                   -- Technology level 4, used in index.php:138
-    soupe INT DEFAULT 0,                   -- Soup count, used in index.php:138
+    tech1 INTEGER DEFAULT 0,               -- Technology level 1, used in attaque.php:35
+    tech2 INTEGER DEFAULT 0,               -- Technology level 2, used in attaque.php:35
+    tech3 INTEGER DEFAULT 0,               -- Technology level 3, used in attaque.php:46
+    tech4 INTEGER DEFAULT 0,               -- Technology level 4, used in index.php:138
+    soupe INTEGER DEFAULT 0,               -- Soup count, used in index.php:138
     score BIGINT DEFAULT 0,                -- Player score for rankings, used in topten.php:37, makeBan.php
     -- Notification and admin fields
-    lastmsg INT DEFAULT 0,                 -- Last message timestamp (referenced in PHP)
-    espion TINYINT(1) DEFAULT 0,           -- Spy mode flag (referenced in PHP)
-    newpass VARCHAR(255) DEFAULT NULL     -- New password reset token, set in perdu.php:20
+    espion BOOLEAN DEFAULT FALSE,          -- Spy mode flag (referenced in PHP)
+    newpass VARCHAR(255) DEFAULT NULL      -- New password reset token, set in perdu.php:20
 );
 
 -- Messages table
 -- Field order MUST match INSERT statements in fctIndex.php::AdminMP()
 CREATE TABLE IF NOT EXISTS messages (
-    id INT PRIMARY KEY AUTO_INCREMENT,  -- Auto-increment
-    posteur INT NOT NULL,               -- Matches $source/$expediteur from INSERT
-    destin INT NOT NULL,                -- Matches $cible from INSERT
+    id UUID PRIMARY KEY,                -- Message ID (UUIDv7)
+    posteur UUID NOT NULL,              -- Sender user ID (foreign key to membres.id)
+    destin UUID NOT NULL,               -- Recipient user ID (foreign key to membres.id)
     message TEXT NOT NULL,              -- Matches $message from INSERT
-    timestamp INT NOT NULL,             -- Matches $timer/time() from INSERT
-    statut TINYINT(1) DEFAULT 0,        -- Matches '0'/$lu from INSERT
+    timestamp TIMESTAMPTZ NOT NULL,     -- Matches $timer/time() from INSERT
+    statut BOOLEAN DEFAULT FALSE,       -- Matches '0'/$lu from INSERT (FALSE=unread, TRUE=read)
     titre VARCHAR(100) NOT NULL         -- Matches $titre/$objet from INSERT
 );
 
@@ -57,96 +54,99 @@ CREATE TABLE IF NOT EXISTS messages (
 -- Online users tracking
 -- Tracks visitor IPs and connection times, managed in index.php:492-512
 CREATE TABLE IF NOT EXISTS connectbisous (
-    ip VARCHAR(15) PRIMARY KEY,         -- Visitor IP address, from $_SERVER['REMOTE_ADDR']
-    timestamp INT NOT NULL,             -- Last activity time, updated in index.php:500
-    type TINYINT(1) DEFAULT 1           -- Connection type (2 for new, 1 for existing)
+    ip INET PRIMARY KEY,                -- Visitor IP address, from $_SERVER['REMOTE_ADDR']
+    timestamp TIMESTAMPTZ NOT NULL,     -- Last activity time, updated in index.php:500
+    type SMALLINT DEFAULT 1             -- Connection type (2 for new, 1 for existing)
 );
 
 -- Evolution/construction queue
 -- Active construction tasks, INSERT in index.php:427, SELECT/DELETE in index.php:392-409
 CREATE TABLE IF NOT EXISTS evolution (
-    id INT PRIMARY KEY AUTO_INCREMENT,  -- Task ID for deletion when complete
-    timestamp INT NOT NULL,             -- Completion time, checked against time() in index.php:392
-    classe INT NOT NULL,                -- Object class/category for construction
-    type INT NOT NULL,                  -- Specific object type within class
-    auteur INT NOT NULL,                -- User ID who initiated construction, from $id2
-    cout BIGINT NOT NULL               -- Cost of the construction task
+    id UUID PRIMARY KEY,                -- Task ID (UUIDv7) for deletion when complete
+    timestamp TIMESTAMPTZ NOT NULL,     -- Completion time, checked against time() in index.php:392
+    classe INTEGER NOT NULL,            -- Object class/category for construction
+    type INTEGER NOT NULL,              -- Specific object type within class
+    auteur UUID NOT NULL,               -- User ID (foreign key to membres.id) who initiated construction
+    cout BIGINT NOT NULL                -- Cost of the construction task
 );
 
 -- Construction queue list
 -- Pending construction tasks waiting to start, managed in index.php:423-428
 CREATE TABLE IF NOT EXISTS liste (
-    id INT PRIMARY KEY AUTO_INCREMENT,  -- Queue entry ID, used for ordering and deletion
-    auteur INT NOT NULL,                -- User ID who queued the construction
-    classe INT NOT NULL,                -- Object class/category, used to match with evolution
-    type INT NOT NULL,                  -- Specific object type, used in bisous.php:37
-    duree INT NOT NULL,                 -- Construction duration in seconds
-    cout BIGINT NOT NULL               -- Construction cost, used in bisous.php:37
+    id UUID PRIMARY KEY,                -- Queue entry ID (UUIDv7), used for ordering and deletion
+    auteur UUID NOT NULL,               -- User ID (foreign key to membres.id) who queued the construction
+    classe INTEGER NOT NULL,            -- Object class/category, used to match with evolution
+    type INTEGER NOT NULL,              -- Specific object type, used in bisous.php:37
+    duree INTEGER NOT NULL,             -- Construction duration in seconds
+    cout BIGINT NOT NULL                -- Construction cost, used in bisous.php:37
 );
 
 -- Guest book
 -- Public guest book entries (livreor = "livre d'or" = golden book)
 CREATE TABLE IF NOT EXISTS livreor (
-    id INT PRIMARY KEY AUTO_INCREMENT,  -- Entry ID for ordering and management
+    id UUID PRIMARY KEY,                -- Entry ID (UUIDv7) for ordering and management
     pseudo VARCHAR(50) NOT NULL,        -- Name of guest book signer
     message TEXT NOT NULL,              -- Guest book message content
-    timestamp INT NOT NULL,             -- Entry creation time
-    ip VARCHAR(15) NOT NULL            -- IP address of the signer
+    timestamp TIMESTAMPTZ NOT NULL,     -- Entry creation time
+    ip INET NOT NULL                    -- IP address of the signer
 );
 
 -- News (renamed from 'news' to 'newsbisous' to match PHP code)
 -- Site news and announcements, managed in news/liste_news.php, displayed in accueil.php:66
 CREATE TABLE IF NOT EXISTS newsbisous (
-    id INT PRIMARY KEY AUTO_INCREMENT,     -- News article ID
+    id UUID PRIMARY KEY,                   -- News article ID (UUIDv7)
     titre VARCHAR(100) NOT NULL,           -- News title, from $titre in liste_news.php:51, 56
     contenu TEXT NOT NULL,                 -- News content, from $contenu in liste_news.php:51, 56
-    timestamp INT NOT NULL,                -- Creation time, set to time() in liste_news.php:51
-    timestamp_modification INT DEFAULT 0   -- Last modification time, set in liste_news.php:56
+    timestamp TIMESTAMPTZ NOT NULL DEFAULT CURRENT_TIMESTAMP,  -- Creation time, set to time() in liste_news.php:51
+    timestamp_modification TIMESTAMPTZ DEFAULT NULL            -- Last modification time, set in liste_news.php:56
 );
 
 -- Insert a default admin user (password: admin, hashed with md5)
 -- Alternative guest book (orbisous table)
 -- Secondary guest book system, similar structure to livreor
 CREATE TABLE IF NOT EXISTS orbisous (
-    id INT PRIMARY KEY AUTO_INCREMENT,  -- Entry ID for ordering and management
+    id UUID PRIMARY KEY,                -- Entry ID (UUIDv7) for ordering and management
     pseudo VARCHAR(50) NOT NULL,        -- Name of guest book signer
     message TEXT NOT NULL,              -- Guest book message content
-    timestamp INT NOT NULL,             -- Entry creation time
-    ip VARCHAR(15) NOT NULL            -- IP address of the signer
+    timestamp TIMESTAMPTZ NOT NULL,     -- Entry creation time
+    ip INET NOT NULL                    -- IP address of the signer
 );
 
 -- Attack log table
 -- Logs completed attacks for rate limiting, INSERT in attaque.php:16, checked in action.php:74
 CREATE TABLE IF NOT EXISTS logatt (
-    id INT PRIMARY KEY AUTO_INCREMENT,  -- Log entry ID
-    auteur INT NOT NULL,                -- Attacker user ID, checked for rate limiting
-    cible INT NOT NULL,                 -- Target user ID
-    timestamp INT NOT NULL              -- Attack completion time, used for 12-hour limit check
+    id UUID PRIMARY KEY,                -- Log entry ID (UUIDv7)
+    auteur UUID NOT NULL,               -- Attacker user ID (foreign key to membres.id), checked for rate limiting
+    cible UUID NOT NULL,                -- Target user ID (foreign key to membres.id)
+    timestamp TIMESTAMPTZ NOT NULL      -- Attack completion time, used for 12-hour limit check
 );
+
+-- Blown kiss state ENUM type
+CREATE TYPE blown_kiss_state AS ENUM ('EnRoute', 'ComingBack', 'CalledOff');
 
 -- Attack table
 -- Active attacks in progress, managed throughout attaque.php and action.php
 CREATE TABLE IF NOT EXISTS attaque (
-    auteur INT NOT NULL,                -- Attacker user ID, set bloque=1 during attack
-    cible INT NOT NULL,                 -- Target user ID
-    finaller INT NOT NULL,              -- Attack completion timestamp, checked in attaque.php:7
-    fin INT NOT NULL,                   -- Return journey completion timestamp
-    etat TINYINT(1) DEFAULT 0,         -- Attack state/phase
-    finretour INT DEFAULT 0,            -- Return completion time, checked in attaque.php:220
-    butin BIGINT DEFAULT 0             -- Loot gained from attack, set in attaque.php:193
+    auteur UUID NOT NULL,               -- Attacker user ID (foreign key to membres.id), set bloque=1 during attack
+    cible UUID NOT NULL,                -- Target user ID (foreign key to membres.id)
+    finaller TIMESTAMPTZ NOT NULL,      -- Attack arrival timestamp (when units reach target)
+    finretour TIMESTAMPTZ NOT NULL,     -- Return timestamp (when units return home)
+    state blown_kiss_state NOT NULL DEFAULT 'EnRoute',  -- Blown kiss state ENUM
+    butin BIGINT DEFAULT 0,             -- Loot gained from attack, set after battle
+    PRIMARY KEY (auteur, cible)         -- Composite key: one active attack per attacker-target pair
 );
 
 -- Nuage (cloud) configuration table
 -- Stores the maximum number of clouds/servers, used in fctIndex.php::GiveNewPosition(), reductionNuages.php:40
 CREATE TABLE IF NOT EXISTS nuage (
-    id INT PRIMARY KEY AUTO_INCREMENT,  -- Config entry ID (always 1)
-    nombre INT NOT NULL DEFAULT 0       -- Maximum number of clouds, updated in fctIndex.php::GiveNewPosition()
+    id UUID PRIMARY KEY,                -- Config entry ID (singleton)
+    nombre INTEGER NOT NULL DEFAULT 0   -- Maximum number of clouds, updated in fctIndex.php::GiveNewPosition()
 );
 
 -- Insert default nuage configuration
-INSERT INTO nuage (id, nombre) VALUES (1, 1) ON DUPLICATE KEY UPDATE nombre=nombre;
+INSERT INTO nuage (id, nombre) VALUES ('00000000-0000-0000-0000-000000000002'::UUID, 1) ON CONFLICT (id) DO UPDATE SET nombre = nuage.nombre;
 
 -- Insert a default admin user (password: admin, hashed with md5)
-INSERT INTO membres (pseudo, mdp, confirmation, timestamp, lastconnect) 
-VALUES ('admin', '21232f297a57a5a743894a0e4a801fc3', 1, UNIX_TIMESTAMP(), UNIX_TIMESTAMP())
-ON DUPLICATE KEY UPDATE pseudo=pseudo;
+INSERT INTO membres (id, pseudo, mdp, confirmation, timestamp, lastconnect)
+VALUES ('00000000-0000-0000-0000-000000000001'::UUID, 'admin', '21232f297a57a5a743894a0e4a801fc3', TRUE, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP)
+ON CONFLICT (pseudo) DO NOTHING;

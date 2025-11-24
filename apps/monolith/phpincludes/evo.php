@@ -1,5 +1,7 @@
 <?php
 
+use Symfony\Component\Uid\Uuid;
+
 function arbre($classe, $type, $nbE): bool
 {
     if (0 == $classe) {
@@ -85,6 +87,8 @@ function arbre($classe, $type, $nbE): bool
 
 if (isset($inMainPage) && true == $inMainPage) {
     $pdo = bd_connect();
+    $castToUnixTimestamp = cast_to_unix_timestamp();
+    $castToPgTimestamptz = cast_to_pg_timestamptz();
 
     // Nombre de type différents pour la classe concernée.
     $nbEvol = $nbType[$evolPage];
@@ -96,17 +100,17 @@ if (isset($inMainPage) && true == $inMainPage) {
         $stmt = $pdo->prepare('SELECT cout FROM evolution WHERE auteur = :auteur AND classe = :classe');
         $stmt->execute(['auteur' => $id, 'classe' => $classeCancel]);
         $donnees_info = $stmt->fetch();
-        $amour += ($donnees_info['cout'] / 2);
+        $amour += (int) ($donnees_info['cout'] / 2);
         $stmt = $pdo->prepare('DELETE FROM evolution WHERE auteur = :auteur AND classe = :classe');
         $stmt->execute(['auteur' => $id, 'classe' => $classeCancel]);
 
         // On passe à une nouvelle construction si disponible.
-        $stmt = $pdo->prepare('SELECT id, duree, type, cout FROM liste WHERE auteur = :auteur AND classe = :classe ORDER BY id LIMIT 0,1');
+        $stmt = $pdo->prepare('SELECT id, duree, type, cout FROM liste WHERE auteur = :auteur AND classe = :classe ORDER BY id LIMIT 1 OFFSET 0');
         $stmt->execute(['auteur' => $id, 'classe' => $classeCancel]);
         if ($donnees_info = $stmt->fetch()) {
             $timeFin2 = time() + $donnees_info['duree'];
-            $stmt2 = $pdo->prepare('INSERT INTO evolution (timestamp, classe, type, auteur, cout) VALUES (:timestamp, :classe, :type, :auteur, :cout)');
-            $stmt2->execute(['timestamp' => $timeFin2, 'classe' => $classeCancel, 'type' => $donnees_info['type'], 'auteur' => $id, 'cout' => $donnees_info['cout']]);
+            $stmt2 = $pdo->prepare('INSERT INTO evolution (id, timestamp, classe, type, auteur, cout) VALUES (:id, :timestamp, :classe, :type, :auteur, :cout)');
+            $stmt2->execute(['id' => Uuid::v7(), 'timestamp' => $castToPgTimestamptz->fromUnixTimestamp($timeFin2), 'classe' => $classeCancel, 'type' => $donnees_info['type'], 'auteur' => $id, 'cout' => $donnees_info['cout']]);
             $stmt2 = $pdo->prepare('DELETE FROM liste WHERE id = :id');
             $stmt2->execute(['id' => $donnees_info['id']]);
 
@@ -125,7 +129,7 @@ if (isset($inMainPage) && true == $inMainPage) {
         $stmt->execute(['auteur' => $id, 'classe' => $evolPage]);
         $donnees_info = $stmt->fetch();
         // Date a laquelle la construction sera terminée.
-        $timeFin = $donnees_info['timestamp'];
+        $timeFin = $castToUnixTimestamp->fromPgTimestamptz($donnees_info['timestamp']);
         // Type de la construction.
         $evolution = $donnees_info['type'];
 
@@ -145,8 +149,8 @@ if (isset($inMainPage) && true == $inMainPage) {
                     // Construction demandée, donc on arrete la boucle.
                     $stop = 1;
                     $dureeConst = $tempsE[$evolPage][$i];
-                    $stmt2 = $pdo->prepare('INSERT INTO liste (duree, classe, type, auteur, cout) VALUES (:duree, :classe, :type, :auteur, :cout)');
-                    $stmt2->execute(['duree' => $dureeConst, 'classe' => $evolPage, 'type' => $i, 'auteur' => $id, 'cout' => $amourE[$evolPage][$i]]);
+                    $stmt2 = $pdo->prepare('INSERT INTO liste (id, duree, classe, type, auteur, cout) VALUES (:id, :duree, :classe, :type, :auteur, :cout)');
+                    $stmt2->execute(['id' => Uuid::v7(), 'duree' => $dureeConst, 'classe' => $evolPage, 'type' => $i, 'auteur' => $id, 'cout' => $amourE[$evolPage][$i]]);
                     // On décrémente le nombre de points d'amour.
                     $amour -= $amourE[$evolPage][$i];
                 }
@@ -173,10 +177,9 @@ if (isset($inMainPage) && true == $inMainPage) {
                 $stop = 1;
                 // On calcule la date de fin du calcul (servira aussi pour l'affichage sur la page).
                 $timeFin = time() + $tempsE[$evolPage][$i];
-                // On met l'objet en construction. id non définie car auto incrémentée.
-                // Le champ id est peut etre a supprimer.
-                $stmt = $pdo->prepare('INSERT INTO evolution (timestamp, classe, type, auteur, cout) VALUES (:timestamp, :classe, :type, :auteur, :cout)');
-                $stmt->execute(['timestamp' => $timeFin, 'classe' => $evolPage, 'type' => $i, 'auteur' => $id, 'cout' => $amourE[$evolPage][$i]]);
+                // On met l'objet en construction.
+                $stmt = $pdo->prepare('INSERT INTO evolution (id, timestamp, classe, type, auteur, cout) VALUES (:id, :timestamp, :classe, :type, :auteur, :cout)');
+                $stmt->execute(['id' => Uuid::v7(), 'timestamp' => $castToPgTimestamptz->fromUnixTimestamp($timeFin), 'classe' => $evolPage, 'type' => $i, 'auteur' => $id, 'cout' => $amourE[$evolPage][$i]]);
                 // On décrémente le nombre de points d'amour.
                 $amour -= $amourE[$evolPage][$i];
                 // On indique le type du batiment en construction, pour l'affichage sur la page.

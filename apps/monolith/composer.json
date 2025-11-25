@@ -15,6 +15,7 @@
     ],
     "require": {
         "php": ">=8.5",
+        "ext-curl": "*",
         "symfony/uid": "^8.0@rc"
     },
     "autoload": {

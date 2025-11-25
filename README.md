@@ -23,6 +23,8 @@ git clone git://github.com/pyricau/bisouland.git bisouland
 cd bisouland
 ```
 
+Find general documentation here: [docs](./docs/).
+
 The `apps` folder contains the different applications:
 
 * [Monolith](./apps/monolith/README.md):

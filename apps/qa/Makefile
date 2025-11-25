@@ -87,17 +87,27 @@ app-init: ## First install / resetting (Docker build, up, etc)
 	@echo ''
 	@echo 'ℹ️ This will fail if monolith is not running'
 	@echo ''
-	@echo '  // Stopping docker services...'
+	@echo '  // Stopping QA docker services...'
 	@$(MAKE) docker-down
 	@echo ''
-	@echo '  // Starting docker services...'
+	@echo '  // Starting QA docker services...'
 	@$(MAKE) docker-init
 	@echo ''
-	@echo '  [OK] Done'
+	@echo '  [OK] QA initialized'
 
 app-qa: ## Runs full QA pipeline (composer-dump, cs-check, static-analysis, rector-process, test)
 	@$(MAKE) composer-dump
+	@echo ''
+	@echo '  // Running composer dump...'
 	@$(MAKE) cs-check
+	@echo ''
+	@echo '  // Running PHPStan...'
 	@$(MAKE) static-analysis
+	@echo ''
+	@echo '  // Running Rector...'
 	@$(MAKE) rector-check
+	@echo ''
+	@echo '  // Running PHPUnit...'
 	@$(MAKE) test
+	@echo ''
+	@echo '  [OK] QA done'

@@ -4,10 +4,10 @@ The main (original) BisouLand application.
 
 Requirements (LAMP stack):
 
-* **Linux**: any version will do. I think?
+* **Linux**
 * **Apache**: 2.0+ (full backward compatibility with .htaccess and htpasswd)
-* **MySQL**: 4.1 - 5.7 (MySQL 8.0+ breaks compatibility with old mysql extension)
-* **PHP**: 4.3 - 5.6 (uses deprecated `mysql_pconnect()`, `mysql_select_db()` functions)
+* **PostgreSQL**: 17
+* **PHP**: 8.5
 
 Use GNU Make to run the project's mundane commands:
 
@@ -51,11 +51,10 @@ For different environments, copy `.env` (eg into `.env.local`) and change its va
 ```bash
 # Database
 DATABASE_HOST=db
+DATABASE_PORT=5432
 DATABASE_USER=bisouland
 DATABASE_PASSWORD=bisouland_pass
 DATABASE_NAME=bisouland
-# MySQL root password (for Docker)
-MYSQL_ROOT_PASSWORD=root_password
 ```
 
 #### Administration access

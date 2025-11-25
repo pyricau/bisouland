@@ -14,8 +14,10 @@ ENV COMPOSER_ALLOW_SUPERUSER=1 \
     COMPOSER_CACHE_DIR=/tmp/.composer/cache
 
 # Install dependencies:
-# * bash for shell access and scripting
-# * zip for composer packages that use ZIP archives
+# * bash: for shell access and scripting
+# * curl: for Symfony's HTTP client
+# * postgresql: for PDO's SQL queries
+# * libzip-dev: for composer packages that use ZIP archives
 # _Note (Alpine)_: `--no-cache` includes `--update` and keeps image size minimal
 #
 # Then install PHP extensions
@@ -24,14 +26,12 @@ ENV COMPOSER_ALLOW_SUPERUSER=1 \
 # hadolint ignore=DL3018
 RUN apk add --update --no-cache \
         bash \
+        curl-dev \
         libzip-dev \
         postgresql-dev \
-        zip \
     && docker-php-ext-install \
-        bcmath \
-        pdo \
-        pdo_pgsql \
-        zip
+        curl \
+        pdo_pgsql
 
 # Copy Composer binary from composer image
 # _Note (Hadolint)_: False positive as `COPY` works with images too

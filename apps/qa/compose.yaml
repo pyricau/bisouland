@@ -12,7 +12,6 @@ services:
       - vendor:/apps/qa/vendor
       # Mount the monolith source code for analysis
       - ../monolith:/apps/monolith
-      - monolith_vendor:/apps/monolith/vendor
     networks:
       - default
       - bisouland-monolith_default
@@ -23,6 +22,3 @@ networks:
 
 volumes:
   vendor:
-  monolith_vendor:
-    external: true
-    name: bisouland-monolith_vendor

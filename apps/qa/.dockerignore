@@ -1,5 +1,5 @@
 # composer
-vendor
+vendor/
 
 # docker 
 Dockerfile

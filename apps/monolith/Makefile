@@ -61,13 +61,15 @@ db-reset: ## Reset the database by dropping and recreating it with schema.sql
 
 ## —— App 📱 ———————————————————————————————————————————————————————————————————
 app-init: ## First install / resetting (Docker build, up, etc)
-	@echo '  // Stopping docker services...'
+	@echo '  // Stopping Monolith docker services...'
 	@$(MAKE) docker-down
 	@echo ''
-	@echo '  // Starting docker services...'
+	@echo '  // Starting Monolith docker services...'
 	@$(MAKE) docker-init
 	@echo ''
 	@echo '  // Waiting for PostgreSQL to initialize...'
 	@sleep 3
 	@echo ''
 	@$(MAKE) db-reset
+	@echo ''
+	@echo '  [OK] Monolith initialized'

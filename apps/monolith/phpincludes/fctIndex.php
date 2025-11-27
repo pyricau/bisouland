@@ -202,7 +202,7 @@ function AjouterScore($idScore, $valeur): void
 
     $donnees_info = $stmt->fetch();
     $stmt = $pdo->prepare('UPDATE membres SET score = :score WHERE id = :id');
-    $stmt->execute(['score' => $donnees_info['score'] + $valeur, 'id' => $idScore]);
+    $stmt->execute(['score' => (int) ($donnees_info['score'] + $valeur), 'id' => $idScore]);
 }
 
 function formaterNombre($nombre): string

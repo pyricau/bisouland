@@ -190,13 +190,13 @@ if (isset($inMainPage) && true == $inMainPage) {
                 $coeffButin = -1;
             }
 
-            $butin = floor((1 + $coeffButin) * ($AttSmack * 100 + $AttBaiser * 1000 + $AttPelle * 10000));
+            $butin = (int) floor((1 + $coeffButin) * ($AttSmack * 100 + $AttBaiser * 1000 + $AttPelle * 10000));
             if ($butin < ($AttSmack + $AttBaiser * 10 + $AttPelle * 100)) {
-                $butin = ($AttSmack + $AttBaiser * 10 + $AttPelle * 100);
+                $butin = (int) ($AttSmack + $AttBaiser * 10 + $AttPelle * 100);
             }
 
             if ($butin > floor($DefAmour / 2)) {
-                $butin = floor($DefAmour / 2);
+                $butin = (int) floor($DefAmour / 2);
             }
 
             $DefAmour -= $butin;

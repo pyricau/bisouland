@@ -132,7 +132,7 @@ Lorsque tu annules une cr&eacute;ation, tu ne r&eacute;cup&eacute;res que la  mo
     $requis[2]['nomClasse'] = 'Techniques';
     $requis[2]['nom'] = [
         'Apn&eacute;e',
-        'Surprise',
+        'Flirt',
         'Crachat',
         'Saut',
         'Manger de la soupe',
@@ -152,7 +152,7 @@ Lorsque tu annules une cr&eacute;ation, tu ne r&eacute;cup&eacute;res que la  mo
         2,
     ];
 
-    // Surprise
+    // Flirt
     $requis[2][1]['Classe'] = [
         0, // Organes
         0, // Organes
@@ -175,7 +175,7 @@ Lorsque tu annules une cr&eacute;ation, tu ne r&eacute;cup&eacute;res que la  mo
     $requis[2][2]['Type'] = [
         2, // Langue
         0, // Apnée
-        1, // Surprise
+        1, // Flirt
     ];
     $requis[2][2]['Niveau'] = [
         3,

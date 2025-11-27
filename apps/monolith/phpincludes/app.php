@@ -381,7 +381,7 @@ if (true == $_SESSION['logged']) {
         // Nom de chaque objet d'un type différent.
         $evolNom = [
             'Apn&eacute;e',
-            'Surprise',
+            'Flirt',
             'Crachat',
             'Saut',
             'Manger de la soupe',

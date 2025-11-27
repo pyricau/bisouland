@@ -30,7 +30,7 @@ if (isset($inMainPage) && true == $inMainPage) {
         Avantages attaquant :
             Bouche : Plus de forces pour les baisers (coefficient global mais faible)
             Apnée : prend plus de points d'amour (pourcentage)
-            Surprise : attaque plus forte (coefficient global)
+            Flirt : attaque plus forte (coefficient global)
             Langue : baisers langoureux sont plus forts
         Avantages défenseur :
             Bouche : Plus de forces pour les baisers (coefficient global mais faible)
@@ -46,7 +46,7 @@ if (isset($inMainPage) && true == $inMainPage) {
         $AttBaiser = $donnees_info3['baiser'];
         $AttPelle = $donnees_info3['pelle'];
         $AttApnee = $donnees_info3['tech1'];
-        $AttSurprise = $donnees_info3['tech2'];
+        $AttFlirt = $donnees_info3['tech2'];
         $AttBouche = $donnees_info3['bouche'];
         $AttLangue = $donnees_info3['langue'];
         $AttScore = $donnees_info3['score'];
@@ -65,7 +65,7 @@ if (isset($inMainPage) && true == $inMainPage) {
         $DefScore = $donnees_info4['score'];
 
         // Gestion de l'attaque (coeff * bisous):
-        $AttForce = (1 + (0.1 * $AttBouche) + (0.5 * $AttSurprise)) * ($AttSmack + (2.1 * $AttBaiser) + ((3.5 + 0.2 * $AttLangue) * $AttPelle));
+        $AttForce = (1 + (0.1 * $AttBouche) + (0.5 * $AttFlirt)) * ($AttSmack + (2.1 * $AttBaiser) + ((3.5 + 0.2 * $AttLangue) * $AttPelle));
 
         $DefForce = (1 + (0.1 * $DefBouche) + (0.7 * $DefDent)) * ($DefSmack + (2.1 * $DefBaiser) + ((3.5 + 0.2 * $DefLangue) * $DefPelle));
         // Si on est déjà en attaque, on diminue considérablement la force de défense.

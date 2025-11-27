@@ -60,7 +60,7 @@ function arbre($classe, $type, $nbE): bool
                 return true;
             }
         } elseif (1 == $type) {
-            // Surprise
+            // Flirt
             if ($nbE[0][0] >= 5 && $nbE[0][1] >= 4) {
                 return true;
             }

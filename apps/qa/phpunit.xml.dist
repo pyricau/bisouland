@@ -21,16 +21,16 @@
         <env name="SHELL_VERBOSITY" value="-1" />
     </php>
     <testsuites>
-        <testsuite name="smoke">
-            <directory>tests/Smoke</directory>
+        <testsuite name="monolith-smoke">
+            <directory>tests/Monolith/Smoke</directory>
         </testsuite>
-        <testsuite name="end-to-end">
-            <directory>tests/EndToEnd</directory>
+        <testsuite name="monolith-end-to-end">
+            <directory>tests/Monolith/EndToEnd</directory>
         </testsuite>
     </testsuites>
 
     <extensions>
-        <bootstrap class="Bl\Qa\Tests\Infrastructure\Subscriber\TestCleanupExtension"/>
+        <bootstrap class="Bl\Qa\Tests\Monolith\Infrastructure\Subscriber\TestCleanupExtension"/>
     </extensions>
 
     <source ignoreIndirectDeprecations="true" restrictNotices="true" restrictWarnings="true">

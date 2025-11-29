@@ -2,9 +2,9 @@
 
 declare(strict_types=1);
 
-namespace Bl\Qa\Tests\Infrastructure\Scenario;
+namespace Bl\Qa\Tests\Monolith\Infrastructure\Scenario;
 
-use Bl\Qa\Tests\Infrastructure\TestKernelSingleton;
+use Bl\Qa\Tests\Monolith\Infrastructure\TestKernelSingleton;
 
 final readonly class DeleteAllTestPlayers
 {

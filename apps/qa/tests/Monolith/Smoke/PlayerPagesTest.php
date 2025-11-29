@@ -2,11 +2,11 @@
 
 declare(strict_types=1);
 
-namespace Bl\Qa\Tests\Smoke;
+namespace Bl\Qa\Tests\Monolith\Smoke;
 
-use Bl\Qa\Tests\Infrastructure\Scenario\GetLoggedInPlayer;
-use Bl\Qa\Tests\Infrastructure\TestKernelSingleton;
-use Bl\Qa\Tests\Smoke\Assertion\Assert;
+use Bl\Qa\Tests\Monolith\Infrastructure\Scenario\GetLoggedInPlayer;
+use Bl\Qa\Tests\Monolith\Infrastructure\TestKernelSingleton;
+use Bl\Qa\Tests\Monolith\Smoke\Assertion\Assert;
 use PHPUnit\Framework\Attributes\CoversNothing;
 use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\Attributes\Large;

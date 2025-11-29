@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Bl\Qa\Tests\Smoke\Assertion;
+namespace Bl\Qa\Tests\Monolith\Smoke\Assertion;
 
 use PHPUnit\Framework\Assert as PHPUnitAssert;
 use Symfony\Contracts\HttpClient\ResponseInterface;

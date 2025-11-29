@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Bl\Qa\Tests\Infrastructure\Subscriber;
+namespace Bl\Qa\Tests\Monolith\Infrastructure\Subscriber;
 
 use PHPUnit\Runner\Extension\Extension;
 use PHPUnit\Runner\Extension\Facade;

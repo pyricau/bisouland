@@ -2,11 +2,11 @@
 
 declare(strict_types=1);
 
-namespace Bl\Qa\Tests\EndToEnd\Assertion;
+namespace Bl\Qa\Tests\Monolith\EndToEnd\Assertion;
 
-use Bl\Qa\Tests\Infrastructure\Scenario\LoggedInPlayer;
-use Bl\Qa\Tests\Infrastructure\Scenario\Player;
-use Bl\Qa\Tests\Infrastructure\TestKernelSingleton;
+use Bl\Qa\Tests\Monolith\Infrastructure\Scenario\LoggedInPlayer;
+use Bl\Qa\Tests\Monolith\Infrastructure\Scenario\Player;
+use Bl\Qa\Tests\Monolith\Infrastructure\TestKernelSingleton;
 use PHPUnit\Framework\Assert as PHPUnitAssert;
 
 final readonly class Assert

@@ -2,12 +2,12 @@
 
 declare(strict_types=1);
 
-namespace Bl\Qa\Tests\EndToEnd\OnSignUp;
+namespace Bl\Qa\Tests\Monolith\EndToEnd\OnSignUp;
 
-use Bl\Qa\Tests\EndToEnd\Assertion\Assert;
-use Bl\Qa\Tests\Infrastructure\Scenario\LoggedInPlayer;
-use Bl\Qa\Tests\Infrastructure\Scenario\LogInPlayer;
-use Bl\Qa\Tests\Infrastructure\Scenario\SignUpNewPlayer;
+use Bl\Qa\Tests\Monolith\EndToEnd\Assertion\Assert;
+use Bl\Qa\Tests\Monolith\Infrastructure\Scenario\LoggedInPlayer;
+use Bl\Qa\Tests\Monolith\Infrastructure\Scenario\LogInPlayer;
+use Bl\Qa\Tests\Monolith\Infrastructure\Scenario\SignUpNewPlayer;
 use PHPUnit\Framework\Attributes\CoversNothing;
 use PHPUnit\Framework\Attributes\Large;
 use PHPUnit\Framework\TestCase;

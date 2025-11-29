@@ -2,14 +2,13 @@
 
 declare(strict_types=1);
 
-namespace Bl\Qa\Tests\Infrastructure\Scenario;
+namespace Bl\Qa\Tests\Monolith\Infrastructure\Scenario;
 
-final readonly class LoggedInPlayer
+final readonly class Player
 {
     public function __construct(
         public string $username,
         public string $password,
-        public string $sessionCookie,
     ) {
     }
 }

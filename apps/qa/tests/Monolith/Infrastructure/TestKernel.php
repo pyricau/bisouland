@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Bl\Qa\Tests\Infrastructure;
+namespace Bl\Qa\Tests\Monolith\Infrastructure;
 
 use Symfony\Component\Dotenv\Dotenv;
 use Symfony\Component\HttpClient\HttpClient;
@@ -12,7 +12,7 @@ final readonly class TestKernel
 {
     public static function make(): self
     {
-        new Dotenv()->load(__DIR__.'/../../../monolith/.env');
+        new Dotenv()->load(__DIR__.'/../../../../monolith/.env');
 
         $httpClient = HttpClient::createForBaseUri('http://web/');
 

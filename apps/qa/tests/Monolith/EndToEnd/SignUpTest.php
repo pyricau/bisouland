@@ -2,10 +2,10 @@
 
 declare(strict_types=1);
 
-namespace Bl\Qa\Tests\EndToEnd;
+namespace Bl\Qa\Tests\Monolith\EndToEnd;
 
-use Bl\Qa\Tests\EndToEnd\Assertion\Assert;
-use Bl\Qa\Tests\Infrastructure\Scenario\SignUpNewPlayer;
+use Bl\Qa\Tests\Monolith\EndToEnd\Assertion\Assert;
+use Bl\Qa\Tests\Monolith\Infrastructure\Scenario\SignUpNewPlayer;
 use PHPUnit\Framework\Attributes\CoversNothing;
 use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\Attributes\Large;

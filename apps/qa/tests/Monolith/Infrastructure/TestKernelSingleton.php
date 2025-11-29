@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Bl\Qa\Tests\Infrastructure;
+namespace Bl\Qa\Tests\Monolith\Infrastructure;
 
 final class TestKernelSingleton
 {

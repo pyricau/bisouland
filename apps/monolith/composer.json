@@ -16,7 +16,8 @@
     "require": {
         "php": ">=8.5",
         "ext-curl": "*",
-        "symfony/uid": "^8.0@rc"
+        "ext-pdo_pgsql": "*",
+        "symfony/uid": "^8.0"
     },
     "autoload": {
         "psr-4": {

@@ -43,15 +43,21 @@ if (false === $_SESSION['logged']) {
                                 if ($taille >= 5 && $taille <= 15) {
                                     // On execute la requete qui enregistre un nouveau membre.
 
-                                    // Hashage du mot de passe avec md5().
-                                    $hmdp = md5($mdp);
+                                    // Hashage du mot de passe avec Bcrypt ou Argon2.
+                                    $hmdp = password_hash($mdp, \PASSWORD_DEFAULT);
 
                                     $id = Uuid::v7();
                                     $stmt = $pdo->prepare(
                                         'INSERT INTO membres (id, pseudo, mdp, confirmation, timestamp, lastconnect, amour)'
                                         .' VALUES (:id, :pseudo, :mdp, :confirmation, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, :amour)',
                                     );
-                                    $stmt->execute(['id' => $id, 'pseudo' => $pseudo, 'mdp' => $hmdp, 'confirmation' => $castToPgBoolean->from(true), 'amour' => 300]);
+                                    $stmt->execute([
+                                        'id' => $id,
+                                        'pseudo' => $pseudo,
+                                        'mdp' => $hmdp,
+                                        'confirmation' => $castToPgBoolean->from(true),
+                                        'amour' => 300,
+                                    ]);
 
                                     GiveNewPosition($id);
 

@@ -101,7 +101,6 @@ CREATE TABLE IF NOT EXISTS newsbisous (
     timestamp_modification TIMESTAMPTZ DEFAULT NULL            -- Last modification time, set in liste_news.php:56
 );
 
--- Insert a default admin user (password: admin, hashed with md5)
 -- Alternative guest book (orbisous table)
 -- Secondary guest book system, similar structure to livreor
 CREATE TABLE IF NOT EXISTS orbisous (
@@ -146,7 +145,7 @@ CREATE TABLE IF NOT EXISTS nuage (
 -- Insert default nuage configuration
 INSERT INTO nuage (id, nombre) VALUES ('00000000-0000-0000-0000-000000000002'::UUID, 1) ON CONFLICT (id) DO UPDATE SET nombre = nuage.nombre;
 
--- Insert a default admin user (password: admin, hashed with md5)
+-- Insert a default admin user (password: admin, hashed with bcrypt)
 INSERT INTO membres (id, pseudo, mdp, confirmation, timestamp, lastconnect)
-VALUES ('00000000-0000-0000-0000-000000000001'::UUID, 'admin', '21232f297a57a5a743894a0e4a801fc3', TRUE, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP)
+VALUES ('00000000-0000-0000-0000-000000000001'::UUID, 'admin', '$2y$12$mdsYNRFVDcDCOjXXCfEWG.1jLajEJt/ldCo2kdGS5uBElgyIabRP.', TRUE, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP)
 ON CONFLICT (pseudo) DO NOTHING;

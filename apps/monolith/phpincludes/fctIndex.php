@@ -188,9 +188,12 @@ function SupprimerCompte($idCompteSuppr): void
 function ChangerMotPasse($idChange, $newMdp): void
 {
     $pdo = bd_connect();
-    $newMdp = md5((string) $newMdp);
+    $newMdp = password_hash($newMdp, \PASSWORD_DEFAULT);
     $stmt = $pdo->prepare('UPDATE membres SET mdp = :mdp WHERE id = :id');
-    $stmt->execute(['mdp' => $newMdp, 'id' => $idChange]);
+    $stmt->execute([
+        'mdp' => $newMdp,
+        'id' => $idChange,
+    ]);
 }
 
 // Presuppose que toutes les verifications ont ete faites.

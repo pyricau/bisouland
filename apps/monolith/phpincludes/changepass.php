@@ -11,13 +11,11 @@ Il est désormais possible de changer de mot de passe, si l'ancien ne vous convi
         if (isset($_POST['changepswd'])) {
             if (isset($_POST['oldpass']) && isset($_POST['newpass']) && isset($_POST['newpass2']) && !empty($_POST['oldpass']) && !empty($_POST['newpass']) && !empty($_POST['newpass2'])) {
                 $oldmdp = $_POST['oldpass'];
-                $oldmdp = md5((string) $oldmdp);
                 // Sélection des informations.
                 $stmt = $pdo->prepare('SELECT mdp FROM membres WHERE id = :id');
                 $stmt->execute(['id' => $id]);
                 $donnees_info = $stmt->fetch();
-                $oldmdp2 = $donnees_info['mdp'];
-                if ($oldmdp2 == $oldmdp) {
+                if (password_verify($oldmdp, $donnees_info['mdp'])) {
                     $newpass = $_POST['newpass'];
                     $newpass2 = $_POST['newpass2'];
                     if ($newpass == $newpass2) {

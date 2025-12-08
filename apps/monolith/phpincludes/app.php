@@ -33,8 +33,6 @@ if ('POST' === $_SERVER['REQUEST_METHOD'] && isset($_POST['connexion'])) {
         // Le htmlentities évitera de le passer par la suite.
         $pseudo = htmlentities((string) $_POST['pseudo']);
         $mdp = htmlentities((string) $_POST['mdp']);
-        // Hashage du mot de passe.
-        $mdp = md5($mdp);
 
         // La requête qui compte le nombre de pseudos
         $stmt = $pdo->prepare('SELECT COUNT(*) AS nb_pseudo FROM membres WHERE pseudo = :pseudo');
@@ -48,7 +46,7 @@ if ('POST' === $_SERVER['REQUEST_METHOD'] && isset($_POST['connexion'])) {
             $donnees_info = $stmt->fetch();
 
             // Si le mot de passe est le même.
-            if ($donnees_info['mdp'] == $mdp) {
+            if (password_verify($mdp, $donnees_info['mdp'])) {
                 // Si le compte est confirmé.
                 if (true === $donnees_info['confirmation']) {
                     // On modifie la variable qui nous indique que le membre est connecté.
@@ -154,9 +152,12 @@ if (false == $_SESSION['logged']) {
             $stmt->execute(['pseudo' => $pseudo]);
             $donnees_info = $stmt->fetch();
 
-            // Si le mot de passe est le même (le mot de passe est déjà crypté).
+            // Si le mot de passe est le même
             // Si le compte est confirmé.
-            if ($donnees_info['mdp'] == $mdp && true === $donnees_info['confirmation']) {
+            if (
+                password_verify($mdp, $donnees_info['mdp'])
+                && true === $donnees_info['confirmation']
+            ) {
                 // On modifie la variable qui nous indique que le membre est connecté.
                 $_SESSION['logged'] = true;
                 // On créé les variables contenant des informations sur le membre.

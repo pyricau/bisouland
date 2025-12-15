@@ -31,6 +31,15 @@
             "phpincludes/fctIndex.php"
         ]
     },
+    "require-dev": {
+        "phpspec/prophecy-phpunit": "^2.4",
+        "phpunit/phpunit": "^12.5.2"
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "Bl\\Tests\\": "tests/"
+        }
+    },
     "config": {
         "bump-after-update": true,
         "sort-packages": true

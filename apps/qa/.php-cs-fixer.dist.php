@@ -58,7 +58,10 @@ return (new PhpCsFixer\Config())
                 'match',
                 'parameters',
             ],
-        ] ,
+        ],
+
+        // [Symfony] add use statements instead of allowing FQCNs
+        'fully_qualified_strict_types' => ['import_symbols' => true],
 
         // —— Disabed rules due to breaking changes ————————————————————————————
 

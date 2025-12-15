@@ -10,7 +10,7 @@ QA_SERVICE = app
 # Executables
 COMPOSER = docker compose exec $(QA_SERVICE) composer
 PHP_CS_FIXER = docker compose exec $(QA_SERVICE) php vendor/bin/php-cs-fixer
-PHPSTAN = docker compose exec $(QA_SERVICE) php vendor/bin/phpstan
+PHPSTAN = docker compose exec $(QA_SERVICE) php vendor/bin/phpstan --memory-limit=256M
 PHPUNIT = docker compose exec $(QA_SERVICE) php vendor/bin/phpunit
 RECTOR = docker compose exec $(QA_SERVICE) php vendor/bin/rector
 SWISS_KNIFE = docker compose exec $(QA_SERVICE) php vendor/bin/swiss-knife
@@ -96,9 +96,11 @@ app-init: ## First install / resetting (Docker build, up, etc)
 	@echo '  [OK] QA initialized'
 
 app-qa: ## Runs full QA pipeline (composer-dump, cs-check, static-analysis, rector-process, test)
-	@$(MAKE) composer-dump
 	@echo ''
 	@echo '  // Running composer dump...'
+	@$(MAKE) composer-dump
+	@echo ''
+	@echo '  // Running PHP CS Fixer...'
 	@$(MAKE) cs-check
 	@echo ''
 	@echo '  // Running PHPStan...'

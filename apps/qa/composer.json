@@ -15,6 +15,7 @@
     },
     "require-dev": {
         "friendsofphp/php-cs-fixer": "^3.91.3",
+        "jangregor/phpstan-prophecy": "^2.2",
         "phpstan/phpstan": "^2.1.33",
         "phpunit/phpunit": "^12.5.2",
         "rector/rector": "^2.2.11",

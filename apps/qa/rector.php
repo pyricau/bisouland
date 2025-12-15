@@ -3,9 +3,14 @@
 declare(strict_types=1);
 
 use Rector\Caching\ValueObject\Storage\FileCacheStorage;
+use Rector\CodeQuality\Rector\Assign\CombinedAssignRector;
 use Rector\CodingStyle\Rector\Closure\StaticClosureRector;
+use Rector\CodingStyle\Rector\Encapsed\EncapsedStringsToSprintfRector;
 use Rector\CodingStyle\Rector\FuncCall\ArraySpreadInsteadOfArrayMergeRector;
 use Rector\Config\RectorConfig;
+use Rector\Naming\Rector\Assign\RenameVariableToMatchMethodCallReturnTypeRector;
+use Rector\Naming\Rector\Class_\RenamePropertyToMatchTypeRector;
+use Rector\Naming\Rector\ClassMethod\RenameParamToMatchTypeRector;
 use Rector\PHPUnit\Set\PHPUnitSetList;
 use Rector\Set\ValueObject\SetList;
 use Rector\TypeDeclarationDocblocks\Rector\Class_\AddReturnDocblockDataProviderRector;
@@ -44,9 +49,13 @@ return RectorConfig::configure()
 
         // —— Excluded rules ———————————————————————————————————————————————————
         // [CODE_QUALITY]
-        Rector\CodeQuality\Rector\Assign\CombinedAssignRector::class,
+        CombinedAssignRector::class,
         // [CODING_STYLE]
-        Rector\CodingStyle\Rector\Encapsed\EncapsedStringsToSprintfRector::class,
+        EncapsedStringsToSprintfRector::class,
+        // [NAMING]
+        RenameParamToMatchTypeRector::class,
+        RenamePropertyToMatchTypeRector::class,
+        RenameVariableToMatchMethodCallReturnTypeRector::class,
     ])
     ->withSets([
         // —— PHP ——————————————————————————————————————————————————————————————

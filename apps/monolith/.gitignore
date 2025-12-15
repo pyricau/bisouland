@@ -9,3 +9,7 @@ vendor/
 /.env.local
 /.env.local.php
 /.env.*.local
+
+# phpunit
+phpunit.xml
+.phpunit.cache/

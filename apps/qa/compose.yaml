@@ -12,6 +12,8 @@ services:
       - vendor:/apps/qa/vendor
       # Mount the monolith source code for analysis
       - ../monolith:/apps/monolith
+      # Mount the monolith's vendor volume for PHPStan analysis
+      - bisouland-monolith_vendor:/apps/monolith/vendor
     networks:
       - default
       - bisouland-monolith_default
@@ -22,3 +24,5 @@ networks:
 
 volumes:
   vendor:
+  bisouland-monolith_vendor:
+    external: true

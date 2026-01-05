@@ -234,7 +234,7 @@ Lorsque tu annules une cr&eacute;ation, tu ne r&eacute;cup&eacute;res que la  mo
                     if ($cond > 1) {
                         echo '<tr>';
                     }
-                    if ($nbE[$classe][$requis[$c][$i]['Type'][$cond]] < $requis[$c][$i]['Niveau'][$cond]) {
+                    if ($currentPlayerUpgradableLevels[$classe][$requis[$c][$i]['Type'][$cond]] < $requis[$c][$i]['Niveau'][$cond]) {
                         $color = 'black';
                         $reqTexte = "Tu n'as pas le niveau requis";
                     } else {

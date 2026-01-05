@@ -5,35 +5,72 @@ if (true === $blContext['is_signed_in']) {
     $castToUnixTimestamp = cast_to_unix_timestamp();
 
     if (isset($_GET['idmsg']) && !empty($_GET['idmsg'])) {
-        $idmsg = htmlentities((string) $_GET['idmsg']);
-        $stmt = $pdo->prepare('SELECT posteur, destin, message, timestamp, statut, titre FROM messages WHERE id = :id');
-        $stmt->execute(['id' => $idmsg]);
-        $donnees = $stmt->fetch();
-        if ($donnees['destin'] === $blContext['account']['id']) {
-            if (false === $donnees['statut']) {
-                $stmt2 = $pdo->prepare('UPDATE messages SET statut = TRUE WHERE id = :id');
-                $stmt2->execute(['id' => $idmsg]);
+        $stmt = $pdo->prepare(<<<'SQL'
+            SELECT
+                posteur AS sender_account_id,
+                destin AS receiver_account_id,
+                message AS content,
+                timestamp,
+                statut AS has_been_read,
+                titre
+            FROM messages
+            WHERE id = :message_id
+        SQL);
+        $stmt->execute([
+            'message_id' => $_GET['idmsg'],
+        ]);
+        /**
+         * @var array{
+         *     sender_account_id: string, // UUID
+         *     receiver_account_id: string, // UUID
+         *     content: string,
+         *     timestamp: string, // ISO 8601 timestamp string
+         *     has_been_read: bool,
+         *     titre: string,
+         * }|false $message
+         */
+        $message = $stmt->fetch();
+        if (
+            false !== $message
+            && $message['receiver_account_id'] === $blContext['account']['id']
+        ) {
+            if (false === $message['has_been_read']) {
+                $stmt = $pdo->prepare(<<<'SQL'
+                    UPDATE messages
+                    SET statut = TRUE
+                    WHERE id = :message_id
+                SQL);
+                $stmt->execute([
+                    'message_id' => $_GET['idmsg'],
+                ]);
             }
-            $stmt = $pdo->prepare('SELECT pseudo FROM membres WHERE id = :id');
-            $stmt->execute(['id' => $donnees['posteur']]);
-            $donnees2 = $stmt->fetch();
-            $from = $donnees2['pseudo'];
-
-            $objet = $donnees['titre'];
-            $message = $donnees['message'];
-            $dateEnvoie = $castToUnixTimestamp->fromPgTimestamptz($donnees['timestamp']);
+            $stmt = $pdo->prepare(<<<'SQL'
+                SELECT pseudo
+                FROM membres
+                WHERE id = :sender_account_id
+            SQL);
+            $stmt->execute([
+                'sender_account_id' => $message['sender_account_id'],
+            ]);
+            /**
+             * @var array{
+             *     pseudo: string,
+             * }|false $sender
+             */
+            $sender = $stmt->fetch();
+            $from = false !== $sender ? $sender['pseudo'] : '';
             ?>
 
 <a href="boite.html" title="Messages">Retour à la liste des messages</a>
 <br />
-<p>Auteur : <?php echo stripslashes((string) $from); ?></p>
-<p>Envoyé le <?php echo date('d/m/Y à H\hi', $dateEnvoie); ?></p>
-<p>Objet : <?php echo stripslashes((string) $objet); ?></p>
+<p>Auteur : <?php echo $from; ?></p>
+<p>Envoyé le <?php echo date('d/m/Y à H\hi', $castToUnixTimestamp->fromPgTimestamptz($message['timestamp'])); ?></p>
+<p>Objet : <?php echo stripslashes((string) $message['titre']); ?></p>
 Message :<br />
-<div class="message"><?php echo bbLow($message); ?></div>
+<div class="message"><?php echo bbLow($message['content']); ?></div>
 <form method="post" action="boite.html">
 	<input type="submit" tabindex="30" value="Supprimer" />
-	<input type="hidden" name="supprimer" value="<?php echo $idmsg; ?>" />
+	<input type="hidden" name="supprimer" value="<?php echo htmlentities($_GET['idmsg']); ?>" />
 </form>
 
 <?php

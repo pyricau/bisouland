@@ -10,20 +10,51 @@ if (isset($inMainPage) && true == $inMainPage) {
     // ***************************************************************************
     // Gestion des attaques.
     // Phase d'aller :
-    $sql_info = $pdo->query("SELECT finaller, auteur, cible FROM attaque WHERE finaller <= CURRENT_TIMESTAMP AND state = 'EnRoute'");
-    while ($donnees_info = $sql_info->fetch()) {
-        $idAuteur = $donnees_info['auteur'];
-        $idCible = $donnees_info['cible'];
-        $finaller = $donnees_info['finaller'];
-        $stmt = $pdo->prepare("UPDATE attaque SET state = 'ComingBack' WHERE auteur = :auteur");
-        $stmt->execute(['auteur' => $idAuteur]);
+    $stmt = $pdo->query(<<<'SQL'
+        SELECT
+            finaller,
+            auteur AS sender_account_id,
+            cible AS receiver_account_id
+        FROM attaque
+        WHERE (
+            finaller <= CURRENT_TIMESTAMP
+            AND state = 'EnRoute'
+        )
+    SQL);
+    /**
+     * @var array<int, array{
+     *      finaller: string, // ISO 8601 timestamp string
+     *      sender_account_id: string, // UUID
+     *      receiver_account_id: string, // UUID
+     * }> $blownKisses
+     */
+    $blownKisses = $stmt->fetchAll();
+    foreach ($blownKisses as $blownKiss) {
+        $stmt = $pdo->prepare(<<<'SQL'
+            UPDATE attaque
+            SET state = 'ComingBack'
+            WHERE auteur = :sender_account_id
+        SQL);
+        $stmt->execute([
+            'sender_account_id' => $blownKiss['sender_account_id'],
+        ]);
 
         // On indique que l'attaque a eu lieu.
-        $stmt = $pdo->prepare('INSERT INTO logatt (id, auteur, cible, timestamp) VALUES(:id, :auteur, :cible, :timestamp)');
-        $stmt->execute(['id' => Uuid::v7(), 'auteur' => $idAuteur, 'cible' => $idCible, 'timestamp' => $finaller]);
+        $stmt = $pdo->prepare(<<<'SQL'
+            INSERT INTO logatt (id, auteur, cible, timestamp)
+            VALUES (:id, :sender_account_id, :receiver_account_id, :timestamp)
+        SQL);
+        $stmt->execute([
+            'id' => Uuid::v7(),
+            'sender_account_id' => $blownKiss['sender_account_id'],
+            'receiver_account_id' => $blownKiss['receiver_account_id'],
+            'timestamp' => $blownKiss['finaller'],
+        ]);
         // Supprimer ceux vieux de plus de 12 heures.
-        $stmt = $pdo->prepare("DELETE FROM logatt WHERE timestamp < CURRENT_TIMESTAMP - INTERVAL '12 hours'");
-        $stmt->execute();
+        $stmt = $pdo->query(<<<'SQL'
+            DELETE FROM logatt
+            WHERE timestamp < CURRENT_TIMESTAMP - INTERVAL '12 hours'
+        SQL);
 
         /*
         Quelques notes :
@@ -39,37 +70,97 @@ if (isset($inMainPage) && true == $inMainPage) {
             Langue : baisers langoureux sont plus forts
         */
         // Infos attaquant :
-        $stmt = $pdo->prepare('SELECT bouche, smack, baiser, pelle, tech1, tech2, langue, score FROM membres WHERE id = :id');
-        $stmt->execute(['id' => $idAuteur]);
-        $donnees_info3 = $stmt->fetch();
-        $AttSmack = $donnees_info3['smack'];
-        $AttBaiser = $donnees_info3['baiser'];
-        $AttPelle = $donnees_info3['pelle'];
-        $AttApnee = $donnees_info3['tech1'];
-        $AttFlirt = $donnees_info3['tech2'];
-        $AttBouche = $donnees_info3['bouche'];
-        $AttLangue = $donnees_info3['langue'];
-        $AttScore = $donnees_info3['score'];
+        $stmt = $pdo->prepare(<<<'SQL'
+            SELECT
+                bouche,
+                smack,
+                baiser,
+                pelle,
+                tech1,
+                tech2,
+                langue,
+                score
+            FROM membres
+            WHERE id = :sender_account_id
+        SQL);
+        $stmt->execute([
+            'sender_account_id' => $blownKiss['sender_account_id'],
+        ]);
+        /**
+         * @var array{
+         *      bouche: int,
+         *      smack: int,
+         *      baiser: int,
+         *      pelle: int,
+         *      tech1: int,
+         *      tech2: int,
+         *      langue: int,
+         *      score: int,
+         * }|false $senderPlayer
+         */
+        $senderPlayer = $stmt->fetch();
+        $AttSmack = $senderPlayer['smack'];
+        $AttBaiser = $senderPlayer['baiser'];
+        $AttPelle = $senderPlayer['pelle'];
+        $AttApnee = $senderPlayer['tech1'];
+        $AttFlirt = $senderPlayer['tech2'];
+        $AttBouche = $senderPlayer['bouche'];
+        $AttLangue = $senderPlayer['langue'];
+        $AttScore = $senderPlayer['score'];
 
-        $stmt = $pdo->prepare('SELECT coeur, timestamp, bouche, amour, smack, baiser, pelle, tech3, dent, langue, bloque, score FROM membres WHERE id = :id');
-        $stmt->execute(['id' => $idCible]);
-        $donnees_info4 = $stmt->fetch();
-        $DefSmack = $donnees_info4['smack'];
-        $DefBaiser = $donnees_info4['baiser'];
-        $DefPelle = $donnees_info4['pelle'];
-        $DefCrachat = $donnees_info4['tech3'];
-        $DefBouche = $donnees_info4['bouche'];
-        $DefLangue = $donnees_info4['langue'];
-        $DefDent = $donnees_info4['dent'];
-        $DefBloque = $donnees_info4['bloque'];
-        $DefScore = $donnees_info4['score'];
+        $stmt = $pdo->prepare(<<<'SQL'
+            SELECT
+                coeur,
+                timestamp,
+                bouche,
+                amour,
+                smack,
+                baiser,
+                pelle,
+                tech3,
+                dent,
+                langue,
+                bloque,
+                score
+            FROM membres
+            WHERE id = :receiver_account_id
+        SQL);
+        $stmt->execute([
+            'receiver_account_id' => $blownKiss['receiver_account_id'],
+        ]);
+        /**
+         * @var array{
+         *      coeur: int,
+         *      timestamp: string, // ISO 8601 timestamp string
+         *      bouche: int,
+         *      amour: int,
+         *      smack: int,
+         *      baiser: int,
+         *      pelle: int,
+         *      tech3: int,
+         *      dent: int,
+         *      langue: int,
+         *      bloque: bool,
+         *      score: int,
+         * }|false $receiverPlayer
+         */
+        $receiverPlayer = $stmt->fetch();
+        $DefSmack = $receiverPlayer['smack'];
+        $DefBaiser = $receiverPlayer['baiser'];
+        $DefPelle = $receiverPlayer['pelle'];
+        $DefCrachat = $receiverPlayer['tech3'];
+        $DefBouche = $receiverPlayer['bouche'];
+        $DefLangue = $receiverPlayer['langue'];
+        $DefDent = $receiverPlayer['dent'];
+        $DefBloque = $receiverPlayer['bloque'];
+        $DefScore = $receiverPlayer['score'];
 
         // Gestion de l'attaque (coeff * bisous):
         $AttForce = (1 + (0.1 * $AttBouche) + (0.5 * $AttFlirt)) * ($AttSmack + (2.1 * $AttBaiser) + ((3.5 + 0.2 * $AttLangue) * $AttPelle));
 
         $DefForce = (1 + (0.1 * $DefBouche) + (0.7 * $DefDent)) * ($DefSmack + (2.1 * $DefBaiser) + ((3.5 + 0.2 * $DefLangue) * $DefPelle));
         // Si on est déjà en attaque, on diminue considérablement la force de défense.
-        if (1 == $DefBloque) {
+        if (true === $DefBloque) {
             $somme = ($DefSmack + $DefBaiser + $DefPelle);
             if (0 == $somme) {
                 $somme = 1;
@@ -85,40 +176,76 @@ if (isset($inMainPage) && true == $inMainPage) {
             $AttPelle = 0;
             $coeffBilan = $AttForce / $DefForce;
             // Si les bisous du défenseurs sont présent, donc qu'il n'attaque pas.
-            if (0 == $DefBloque) {
+            if (false === $DefBloque) {
                 $DefSmack = floor($DefSmack * (1 - $coeffBilan / random_int(2, 10)));
                 $DefBaiser = floor($DefBaiser * (1 - $coeffBilan / random_int(2, 10)));
                 $DefPelle = floor($DefPelle * (1 - $coeffBilan / random_int(2, 10)));
             }
 
             // Attaque terminée, plus rien à voir.
-            $stmt = $pdo->prepare('DELETE FROM attaque WHERE auteur = :auteur');
-            $stmt->execute(['auteur' => $idAuteur]);
+            $stmt = $pdo->prepare(<<<'SQL'
+                DELETE FROM attaque
+                WHERE auteur = :sender_account_id
+            SQL);
+            $stmt->execute([
+                'sender_account_id' => $blownKiss['sender_account_id'],
+            ]);
             // Envoyer un MP pour signifier les résultats.
             // On supprime les unités.
-            $stmt = $pdo->prepare('UPDATE membres SET smack = :smack, baiser = :baiser, pelle = :pelle, bloque = FALSE WHERE id = :id');
-            $stmt->execute(['smack' => $AttSmack, 'baiser' => $AttBaiser, 'pelle' => $AttPelle, 'id' => $idAuteur]);
-            $stmt = $pdo->prepare('UPDATE membres SET smack = :smack, baiser = :baiser, pelle = :pelle WHERE id = :id');
-            $stmt->execute(['smack' => $DefSmack, 'baiser' => $DefBaiser, 'pelle' => $DefPelle, 'id' => $idCible]);
+            $stmt = $pdo->prepare(<<<'SQL'
+                UPDATE membres
+                SET
+                    smack = :smack,
+                    baiser = :baiser,
+                    pelle = :pelle,
+                    bloque = FALSE
+                WHERE id = :sender_account_id
+            SQL);
+            $stmt->execute([
+                'smack' => $AttSmack,
+                'baiser' => $AttBaiser,
+                'pelle' => $AttPelle,
+                'sender_account_id' => $blownKiss['sender_account_id'],
+            ]);
+            $stmt = $pdo->prepare(<<<'SQL'
+                UPDATE membres
+                SET
+                    smack = :smack,
+                    baiser = :baiser,
+                    pelle = :pelle
+                WHERE id = :receiver_account_id
+            SQL);
+            $stmt->execute([
+                'smack' => $DefSmack,
+                'baiser' => $DefBaiser,
+                'pelle' => $DefPelle,
+                'receiver_account_id' => $blownKiss['receiver_account_id'],
+            ]);
 
-            AdminMP($idAuteur, 'Quel rateau !!', "Bouuhh, t'as perdu tout tes bisous !!
-			Tu n'as pas réussi à embrasser ton adversaire !!
-			Il te reste :
-			- 0 smacks
-			- 0 baisers
-			- 0 baisers langoureux
-			");
-            AdminMP($idCible, 'Bien esquivé !', "Bravo, tu ne t'es pas laissé faire !
-			Il te reste :
-			- ".$DefSmack.' smacks
-			- '.$DefBaiser.' baisers
-			- '.$DefPelle.' baisers langoureux
-			');
+            AdminMP(
+                $blownKiss['sender_account_id'],
+                'Quel rateau !!',
+                "Bouuhh, t'as perdu tout tes bisous !!\n"
+                ."Tu n'as pas réussi à embrasser ton adversaire !!\n"
+                ."Il te reste :\n"
+                ."- 0 smacks\n"
+                ."- 0 baisers\n"
+                .'- 0 baisers langoureux',
+            );
+            AdminMP(
+                $blownKiss['receiver_account_id'],
+                'Bien esquivé !',
+                "Bravo, tu ne t'es pas laissé faire !\n"
+                ."Il te reste :\n"
+                ."- {$DefSmack} smacks\n"
+                ."- {$DefBaiser} baisers\n"
+                ."- {$DefPelle} baisers langoureux",
+            );
 
             // Bien se défendre fait gagner des points.
             $addScore = 5000 * ($AttScore / $DefScore);
-            AjouterScore($idCible, $addScore);
-        } elseif (0 == $bilan) {
+            AjouterScore($blownKiss['receiver_account_id'], $addScore);
+        } elseif (0 === $bilan) {
             $AttSmack = floor($AttSmack * (1 - 1 / random_int(2, 10)));
             $AttBaiser = floor($AttBaiser * (1 - 1 / random_int(2, 10)));
             // Gestion des dents, ca fait plutot mal...
@@ -130,31 +257,61 @@ if (isset($inMainPage) && true == $inMainPage) {
             $AttPelle = floor($AttPelle * ((1 - 1 / random_int(2, 10)) * (1 - 0.1 * $dentsCoeff)));
 
             // Si les bisous du défenseurs sont présent, donc qu'il n'attaque pas.
-            if (0 == $DefBloque) {
+            if (false === $DefBloque) {
                 $DefSmack = floor($DefSmack * (1 - 1 / random_int(2, 10)));
                 $DefBaiser = floor($DefBaiser * (1 - 1 / random_int(2, 10)));
                 $DefPelle = floor($DefPelle * (1 - 1 / random_int(2, 10)));
             }
 
             // Ca retourne, pas de blocage
-            $stmt = $pdo->prepare('UPDATE membres SET smack = :smack, baiser = :baiser, pelle = :pelle WHERE id = :id');
-            $stmt->execute(['smack' => $AttSmack, 'baiser' => $AttBaiser, 'pelle' => $AttPelle, 'id' => $idAuteur]);
-            $stmt = $pdo->prepare('UPDATE membres SET smack = :smack, baiser = :baiser, pelle = :pelle WHERE id = :id');
-            $stmt->execute(['smack' => $DefSmack, 'baiser' => $DefBaiser, 'pelle' => $DefPelle, 'id' => $idCible]);
+            $stmt = $pdo->prepare(<<<'SQL'
+                UPDATE membres
+                SET
+                    smack = :smack,
+                    baiser = :baiser,
+                    pelle = :pelle
+                WHERE id = :sender_account_id
+            SQL);
+            $stmt->execute([
+                'smack' => $AttSmack,
+                'baiser' => $AttBaiser,
+                'pelle' => $AttPelle,
+                'sender_account_id' => $blownKiss['sender_account_id'],
+            ]);
+            $stmt = $pdo->prepare(<<<'SQL'
+                UPDATE membres
+                SET
+                    smack = :smack,
+                    baiser = :baiser,
+                    pelle = :pelle
+                WHERE id = :receiver_account_id
+            SQL);
+            $stmt->execute([
+                'smack' => $DefSmack,
+                'baiser' => $DefBaiser,
+                'pelle' => $DefPelle,
+                'receiver_account_id' => $blownKiss['receiver_account_id'],
+            ]);
 
-            AdminMP($idAuteur, 'Ex Aequo', "Egalité parfaite lors de ta dernière tentative.
-			Tu ne ramène pas de points d'amour !!
-			Il te reste :
-			- ".$AttSmack.' smacks
-			- '.$AttBaiser.' baisers
-			- '.$AttPelle.' baisers langoureux
-			');
-            AdminMP($idCible, 'Ex Aequo', "Egalité parfaite contre le joueur qui voulait t'embrasser.
-			Il te reste :
-			- ".$DefSmack.' smacks
-			- '.$DefBaiser.' baisers
-			- '.$DefPelle.' baisers langoureux
-			');
+            AdminMP(
+                $blownKiss['sender_account_id'],
+                'Ex Aequo',
+                "Egalité parfaite lors de ta dernière tentative.\n"
+                ."Tu ne ramène pas de points d'amour !!\n"
+                ."Il te reste :\n"
+                ."- {$AttSmack} smacks\n"
+                ."- {$AttBaiser} baisers\n"
+                ."- {$AttPelle} baisers langoureux",
+            );
+            AdminMP(
+                $blownKiss['receiver_account_id'],
+                'Ex Aequo',
+                "Egalité parfaite contre le joueur qui voulait t'embrasser.\n"
+                ."Il te reste :\n"
+                ."- {$DefSmack} smacks\n"
+                ."- {$DefBaiser} baisers\n"
+                ."- {$DefPelle} baisers langoureux",
+            );
         } elseif ($bilan > 0) {
             $coeffBilan = $DefForce / $AttForce;
             $AttSmack = floor($AttSmack * (1 - $coeffBilan / random_int(2, 10)));
@@ -167,7 +324,7 @@ if (isset($inMainPage) && true == $inMainPage) {
 
             $AttPelle = floor($AttPelle * ((1 - $coeffBilan / random_int(2, 10)) * (1 - 0.1 * $dentsCoeff)));
             // Si les bisous du défenseurs sont présent, donc qu'il n'attaque pas.
-            if (0 == $DefBloque) {
+            if (false === $DefBloque) {
                 $DefSmack = floor($DefSmack * ($coeffBilan / 2));
                 $DefBaiser = floor($DefBaiser * ($coeffBilan / 2));
                 $DefPelle = floor($DefPelle * ($coeffBilan / 2));
@@ -176,12 +333,15 @@ if (isset($inMainPage) && true == $inMainPage) {
             // Faire retourner, Avec butin.
 
             // Gestion du butin
-            if ($idCible == $id && true === $blContext['is_signed_in']) {
+            if (
+                $blownKiss['receiver_account_id'] === $blContext['account']['id']
+                && true === $blContext['is_signed_in']
+            ) {
                 $DefAmour = $amour;
             } else {
-                $DefTimestamp = $castToUnixTimestamp->fromPgTimestamptz($donnees_info4['timestamp']);
-                $DefCoeur = $donnees_info4['coeur'];
-                $DefAmour = $donnees_info4['amour'];
+                $DefTimestamp = $castToUnixTimestamp->fromPgTimestamptz($receiverPlayer['timestamp']);
+                $DefCoeur = $receiverPlayer['coeur'];
+                $DefAmour = $receiverPlayer['amour'];
                 $DefAmour = calculterAmour($DefAmour, time() - $DefTimestamp, $DefCoeur, $DefSmack, $DefBaiser, $DefPelle);
             }
 
@@ -201,69 +361,149 @@ if (isset($inMainPage) && true == $inMainPage) {
 
             $DefAmour -= $butin;
 
-            if ($idCible == $id && true === $blContext['is_signed_in']) {
+            if ($blownKiss['receiver_account_id'] === $id && true === $blContext['is_signed_in']) {
                 $amour = $DefAmour;
             }
 
             // Ca retourne, pas de blocage
-            $stmt = $pdo->prepare('UPDATE membres SET smack = :smack, baiser = :baiser, pelle = :pelle WHERE id = :id');
-            $stmt->execute(['smack' => $AttSmack, 'baiser' => $AttBaiser, 'pelle' => $AttPelle, 'id' => $idAuteur]);
-            $stmt = $pdo->prepare('UPDATE membres SET amour = :amour, smack = :smack, baiser = :baiser, pelle = :pelle WHERE id = :id');
-            $stmt->execute(['amour' => (int) $DefAmour, 'smack' => $DefSmack, 'baiser' => $DefBaiser, 'pelle' => $DefPelle, 'id' => $idCible]);
+            $stmt = $pdo->prepare(<<<'SQL'
+                UPDATE membres
+                SET
+                    smack = :smack,
+                    baiser = :baiser,
+                    pelle = :pelle
+                WHERE id = :sender_account_id
+            SQL);
+            $stmt->execute([
+                'smack' => $AttSmack,
+                'baiser' => $AttBaiser,
+                'pelle' => $AttPelle,
+                'sender_account_id' => $blownKiss['sender_account_id'],
+            ]);
+            $stmt = $pdo->prepare(<<<'SQL'
+                UPDATE membres
+                SET
+                    amour = :amour,
+                    smack = :smack,
+                    baiser = :baiser,
+                    pelle = :pelle
+                WHERE id = :receiver_account_id
+            SQL);
+            $stmt->execute([
+                'amour' => (int) $DefAmour,
+                'smack' => $DefSmack,
+                'baiser' => $DefBaiser,
+                'pelle' => $DefPelle,
+                'receiver_account_id' => $blownKiss['receiver_account_id'],
+            ]);
 
-            $stmt = $pdo->prepare('UPDATE attaque SET butin = :butin WHERE auteur = :auteur');
-            $stmt->execute(['butin' => $butin, 'auteur' => $idAuteur]);
+            $stmt = $pdo->prepare(<<<'SQL'
+                UPDATE attaque
+                SET butin = :butin
+                WHERE auteur = :sender_account_id
+            SQL);
+            $stmt->execute([
+                'butin' => $butin,
+                'sender_account_id' => $blownKiss['sender_account_id'],
+            ]);
 
-            AdminMP($idAuteur, "Tu l'as embrassé !!", 'Bravo, tu as réussi à embrasser ton adversaire.
-			Tes bisous seront bientôt revenus près de toi.
-			Tu as réussi à prendre '.$butin." Points d'Amour !!
-			Il te reste :
-			- ".$AttSmack.' smacks
-			- '.$AttBaiser." baisers
-			- {$AttPelle} baisers langoureux
-			");
-            AdminMP($idCible, "Tu t'es fait embrasser", "Tu n'as pas su résister à ses Bisous !!
-			Tu t'es fait prendre ".$butin." Points d'Amour !!
-			Il te reste :
-			- ".$DefSmack.' smacks
-			- '.$DefBaiser.' baisers
-			- '.$DefPelle.' baisers langoureux
-			');
+            AdminMP(
+                $blownKiss['sender_account_id'],
+                "Tu l'as embrassé !!",
+                "Bravo, tu as réussi à embrasser ton adversaire.\n"
+                ."Tes bisous seront bientôt revenus près de toi.\n"
+                ."Tu as réussi à prendre {$butin} Points d'Amour !!\n"
+                ."Il te reste :\n"
+                ."- {$AttSmack} smacks\n"
+                ."- {$AttBaiser} baisers\n"
+                ."- {$AttPelle} baisers langoureux",
+            );
+            AdminMP(
+                $blownKiss['receiver_account_id'],
+                "Tu t'es fait embrasser",
+                "Tu n'as pas su résister à ses Bisous !!\n"
+                ."Tu t'es fait prendre {$butin} Points d'Amour !!\n"
+                ."Il te reste :\n"
+                ."- {$DefSmack} smacks\n"
+                ."- {$DefBaiser} baisers\n"
+                ."- {$DefPelle} baisers langoureux",
+            );
 
             // Bien attaquer fait gagner des points.
             $addScore = 10000 * ($DefScore / $AttScore) + ($butin / 10);
-            AjouterScore($idAuteur, $addScore);
+            AjouterScore($blownKiss['sender_account_id'], $addScore);
         }
     }
 
     // Phase retour
-    $sql_info = $pdo->query("SELECT auteur, butin FROM attaque WHERE finretour <= CURRENT_TIMESTAMP AND state IN ('ComingBack', 'CalledOff')");
-    while ($donnees_info = $sql_info->fetch()) {
-        $idAuteur = $donnees_info['auteur'];
-        $butinAuteur = $donnees_info['butin'];
-        $stmt = $pdo->prepare('DELETE FROM attaque WHERE auteur = :auteur');
-        $stmt->execute(['auteur' => $idAuteur]);
+    $stmt = $pdo->query(<<<'SQL'
+        SELECT
+            auteur AS sender_account_id,
+            butin
+        FROM attaque
+        WHERE (
+            finretour <= CURRENT_TIMESTAMP
+            AND state IN ('ComingBack', 'CalledOff')
+        )
+    SQL);
+    /**
+     * @var array<int, array{
+     *      sender_account_id: string, // UUID
+     *      butin: int,
+     * }> $returningBlownKisses
+     */
+    $returningBlownKisses = $stmt->fetchAll();
+    foreach ($returningBlownKisses as $returningBlownKiss) {
+        $stmt = $pdo->prepare(<<<'SQL'
+            DELETE FROM attaque
+            WHERE auteur = :sender_account_id
+        SQL);
+        $stmt->execute([
+            'sender_account_id' => $returningBlownKiss['sender_account_id'],
+        ]);
 
-        if ($idAuteur == $id && true === $blContext['is_signed_in']) {
+        if (
+            $returningBlownKiss['sender_account_id'] === $blContext['account']['id']
+            && true === $blContext['is_signed_in']
+        ) {
             $AttAmour = $amour;
         } else {
-            $stmt = $pdo->prepare('SELECT amour FROM membres WHERE id = :id');
-            $stmt->execute(['id' => $idAuteur]);
-            $donnees_info3 = $stmt->fetch();
-            $AttAmour = $donnees_info3['amour'];
+            $stmt = $pdo->prepare(<<<'SQL'
+                SELECT amour
+                FROM membres
+                WHERE id = :sender_account_id
+            SQL);
+            $stmt->execute([
+                'sender_account_id' => $returningBlownKiss['sender_account_id'],
+            ]);
+            /** @var array{amour: int}|false $senderPlayer */
+            $senderPlayer = $stmt->fetch();
+            $AttAmour = $senderPlayer['amour'];
         }
 
         // On fais pas de mise à jour du nb de points d'amour, pas besoin.
         // Récupération des points d'amour.
-        $AttAmour += $butinAuteur;
+        $AttAmour += $returningBlownKiss['butin'];
 
-        if ($idAuteur == $id && true === $blContext['is_signed_in']) {
+        if (
+            $returningBlownKiss['sender_account_id'] === $blContext['account']['id']
+            && true === $blContext['is_signed_in']
+        ) {
             $amour = $AttAmour;
-            $joueurBloque = 0;
+            $joueurBloque = false;
         }
 
         // Libérer l'auteur et ajouter butin
-        $stmt = $pdo->prepare('UPDATE membres SET bloque = FALSE, amour = :amour WHERE id = :id');
-        $stmt->execute(['amour' => (int) $AttAmour, 'id' => $idAuteur]);
+        $stmt = $pdo->prepare(<<<'SQL'
+            UPDATE membres
+            SET
+                bloque = FALSE,
+                amour = :amour
+            WHERE id = :sender_account_id
+        SQL);
+        $stmt->execute([
+            'amour' => (int) $AttAmour,
+            'sender_account_id' => $returningBlownKiss['sender_account_id'],
+        ]);
     }
 }

@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 use Bl\Domain\Auth\Factory\AuthTokenIdFactory;
 use Bl\Infrastructure\Symfony\Auth\Factory\UuidAuthTokenIdFactory;
 

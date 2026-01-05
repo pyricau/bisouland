@@ -96,26 +96,75 @@ if (true === $blContext['is_signed_in']) {
     $castToUnixTimestamp = cast_to_unix_timestamp();
 
     if (isset($_POST['supprimer'])) {
-        $idmsg = htmlentities((string) $_POST['supprimer']);
-        $stmt = $pdo->prepare('DELETE FROM messages WHERE id = :id AND destin = :destin');
-        $stmt->execute(['id' => $idmsg, 'destin' => $id]);
-    } elseif (isset($_POST['supboite'])) {
-        foreach ($_POST['supboite'] as $key => $value) {
-            $key = htmlentities((string) $key);
-            $stmt = $pdo->prepare('DELETE FROM messages WHERE id = :id AND destin = :destin');
-            $stmt->execute(['id' => $key, 'destin' => $id]);
-        }
+        $messageId = (string) $_POST['supprimer'];
+        $stmt = $pdo->prepare(<<<'SQL'
+            DELETE FROM messages
+            WHERE (
+                id = :message_id
+                AND destin = :current_account_id
+            )
+        SQL);
+        $stmt->execute([
+            'message_id' => $messageId,
+            'current_account_id' => $blContext['account']['id'],
+        ]);
+    } elseif (isset($_POST['supboite']) && [] !== $_POST['supboite']) {
+        $messageIds = array_map('strval', array_keys($_POST['supboite']));
+
+        $inSize = count($messageIds);
+        $inValues = implode(', ', array_fill(0, $inSize, '?'));
+
+        $messageIdIn = "id IN ({$inValues})";
+        $stmt = $pdo->prepare(<<<SQL
+            DELETE FROM messages
+            WHERE (
+                {$messageIdIn}
+                AND destin = ?
+            )
+        SQL);
+        $stmt->execute([...$messageIds, $blContext['account']['id']]);
     }
 
-    $stmt = $pdo->prepare('SELECT COUNT(*) AS nbmsg FROM messages WHERE destin = :destin');
-    $stmt->execute(['destin' => $id]);
-    $nbmsg = $stmt->fetchColumn();
+    $stmt = $pdo->prepare(<<<'SQL'
+        SELECT COUNT(id) AS total_messages
+        FROM messages
+        WHERE destin = :current_account_id
+    SQL);
+    $stmt->execute([
+        'current_account_id' => $blContext['account']['id'],
+    ]);
+    /** @var array{total_messages: int}|false $result */
+    $result = $stmt->fetch();
+    $nbmsg = false !== $result ? $result['total_messages'] : 0;
     if ($nbmsg > 20) {
         $nbmsg = 20;
     }
 
-    $stmt = $pdo->prepare('SELECT id, posteur, timestamp, statut, titre FROM messages WHERE destin = :destin ORDER BY timestamp DESC LIMIT 20');
-    $stmt->execute(['destin' => $id]);
+    $stmt = $pdo->prepare(<<<'SQL'
+        SELECT
+            id,
+            posteur AS sender_account_id,
+            timestamp,
+            statut,
+            titre
+        FROM messages
+        WHERE destin = :current_account_id
+        ORDER BY timestamp DESC
+        LIMIT 20
+    SQL);
+    $stmt->execute([
+        'current_account_id' => $blContext['account']['id'],
+    ]);
+    /**
+     * @var array<int, array{
+     *      id: string, // UUID
+     *      sender_account_id: string, // UUID
+     *      timestamp: string, // ISO 8601 timestamp string
+     *      statut: bool,
+     *      titre: string,
+     * }> $messages
+     */
+    $messages = $stmt->fetchAll();
 
     ?>
 <h1>Messages</h1>
@@ -132,24 +181,30 @@ if (true === $blContext['is_signed_in']) {
 				<th style="width:35%;">Objet</th>
 			</tr>
 <?php
-        $i = 0;
-    while (($donnees = $stmt->fetch()) && $i < 20) {
-        ++$i;
+    foreach ($messages as $message) {
         // Suppression : bouton supprimer en bas, et checkbox //Ajouter bouton lu/non lu  //Max messages
-        $stmt2 = $pdo->prepare('SELECT pseudo FROM membres WHERE id = :id');
-        $stmt2->execute(['id' => $donnees['posteur']]);
-        if (!$donnees2 = $stmt2->fetch()) {
-            $donnees2['pseudo'] = 'Supprim&eacute;';
+        $stmt2 = $pdo->prepare(<<<'SQL'
+            SELECT pseudo
+            FROM membres
+            WHERE id = :sender_account_id
+        SQL);
+        $stmt2->execute([
+            'sender_account_id' => $message['sender_account_id'],
+        ]);
+        /** @var array{pseudo: string}|false $sender */
+        $sender = $stmt2->fetch();
+        if (false === $sender) {
+            $sender = ['pseudo' => 'Supprim&eacute;'];
         }
         ?>
 			<tr>
-				<td><input type="checkbox" name="supboite[<?php echo $donnees['id']; ?>]" onclick="checkone()" /></td>
-				<td><?php if (false === $donnees['statut']) {
-                    echo '<a class="bulle" style="cursor: default;" onclick="return false;" href=""><img src="images/newmess.png" alt="Message non lu" title="" /><span>Message non lu</span></a>';
-                }?></td>
-				<td> <?php echo stripslashes((string) $donnees2['pseudo']); ?> </td>
-				<td>le <?php echo date('d/m/Y à H\hi', $castToUnixTimestamp->fromPgTimestamptz($donnees['timestamp'])); ?></td>
-				<td><a href="<?php echo $donnees['id']; ?>.lire.html"><?php echo stripslashes((string) $donnees['titre']); ?></a></td>
+				<td><input type="checkbox" name="supboite[<?php echo $message['id']; ?>]" onclick="checkone()" /></td>
+				<td><?php if (false === $message['statut']) {
+				    echo '<a class="bulle" style="cursor: default;" onclick="return false;" href=""><img src="images/newmess.png" alt="Message non lu" title="" /><span>Message non lu</span></a>';
+				}?></td>
+				<td> <?php echo stripslashes((string) $sender['pseudo']); ?> </td>
+				<td>le <?php echo date('d/m/Y à H\hi', $castToUnixTimestamp->fromPgTimestamptz($message['timestamp'])); ?></td>
+				<td><a href="<?php echo $message['id']; ?>.lire.html"><?php echo stripslashes((string) $message['titre']); ?></a></td>
 			</tr>
 <?php
     }

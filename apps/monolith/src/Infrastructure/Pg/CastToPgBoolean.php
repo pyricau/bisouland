@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Bl\Infrastructure\Pg;
 
 class CastToPgBoolean

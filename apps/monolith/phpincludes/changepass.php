@@ -10,21 +10,31 @@ Il est désormais possible de changer de mot de passe, si l'ancien ne vous convi
 <?php
         if (isset($_POST['changepswd'])) {
             if (isset($_POST['oldpass']) && isset($_POST['newpass']) && isset($_POST['newpass2']) && !empty($_POST['oldpass']) && !empty($_POST['newpass']) && !empty($_POST['newpass2'])) {
-                $oldmdp = $_POST['oldpass'];
                 // Sélection des informations.
-                $stmt = $pdo->prepare('SELECT mdp FROM membres WHERE id = :id');
-                $stmt->execute(['id' => $id]);
-                $donnees_info = $stmt->fetch();
-                if (password_verify($oldmdp, $donnees_info['mdp'])) {
-                    $newpass = $_POST['newpass'];
-                    $newpass2 = $_POST['newpass2'];
-                    if ($newpass == $newpass2) {
-                        if (preg_match("!^\w+$!", $newpass)) {
-                            $newpass = htmlentities((string) $_POST['newpass']); // Normalement inutile.
-                            $taille = strlen(trim($newpass));
+                $stmt = $pdo->prepare(<<<'SQL'
+                    SELECT mdp
+                    FROM membres
+                    WHERE id = :current_account_id
+                SQL);
+                $stmt->execute([
+                    'current_account_id' => $blContext['account']['id'],
+                ]);
+                /**
+                 * @var array{
+                 *      mdp: string,
+                 * }|false $account
+                 */
+                $account = $stmt->fetch();
+                if (
+                    false !== $account
+                    && password_verify($_POST['oldpass'], $account['mdp'])
+                ) {
+                    if ($_POST['newpass'] == $_POST['newpass2']) {
+                        if (preg_match("!^\w+$!", $_POST['newpass'])) {
+                            $taille = strlen(trim($_POST['newpass']));
                             if ($taille >= 5 && $taille <= 15) {
                                 // On change le mot de passe.
-                                ChangerMotPasse($id, $newpass);
+                                ChangerMotPasse($blContext['account']['id'], $_POST['newpass']);
                                 $resultat = 'Le mot de passe a été changé.<br /><br />
 							Il vous sera demandé lors de votre prochaine visite sur BisouLand.';
                             } else {

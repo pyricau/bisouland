@@ -125,62 +125,141 @@ function AdminMP($cible, $objet, $message, bool $lu = false): void
 {
     $pdo = bd_connect();
     $castToPgBoolean = cast_to_pg_boolean();
-    $castToPgTimestamptz = cast_to_pg_timestamptz();
     $message = nl2br((string) $message);
 
-    $stmt = $pdo->prepare('SELECT COUNT(*) AS nbmsg FROM messages WHERE destin = :destin');
-    $stmt->execute(['destin' => $cible]);
+    $stmt = $pdo->prepare(<<<'SQL'
+        SELECT COUNT(id) AS nbmsg
+        FROM messages
+        WHERE destin = :destin
+    SQL);
+    $stmt->execute([
+        'destin' => $cible,
+    ]);
 
     $nbmsg = $stmt->fetchColumn();
     if ($nbmsg >= 20) {
         $Asuppr = $nbmsg - 19;
-        $stmt = $pdo->prepare("DELETE FROM messages WHERE destin = :destin AND timestamp <= CURRENT_TIMESTAMP - INTERVAL '48 hours' ORDER BY id LIMIT :limit");
-        $stmt->execute(['destin' => $cible, 'limit' => $Asuppr]);
+        $stmt = $pdo->prepare(<<<'SQL'
+            DELETE FROM messages
+            WHERE id IN (
+                SELECT id
+                FROM messages
+                WHERE destin = :destin
+                AND timestamp <= CURRENT_TIMESTAMP - INTERVAL '48 hours'
+                ORDER BY id
+                LIMIT :limit
+            )
+        SQL);
+        $stmt->execute([
+            'destin' => $cible,
+            'limit' => $Asuppr,
+        ]);
     }
 
-    $timestamp = time();
-    $stmt = $pdo->prepare(
-        'INSERT INTO messages'
-        .' (id, posteur, destin, message, timestamp, statut, titre)'
-        .' VALUES(:id, :posteur, :destin, :message, :timestamp, :statut, :titre)',
-    );
-    $stmt->execute(['id' => Uuid::v7(), 'posteur' => '00000000-0000-0000-0000-000000000001', 'destin' => $cible, 'message' => $message, 'timestamp' => $castToPgTimestamptz->fromUnixTimestamp($timestamp), 'statut' => $castToPgBoolean->from($lu), 'titre' => $objet]);
+    $stmt = $pdo->prepare(<<<'SQL'
+        INSERT INTO messages
+        (id, posteur, destin, message, timestamp, statut, titre)
+        VALUES (:id, :posteur, :destin, :message, CURRENT_TIMESTAMP, :statut, :titre)
+    SQL);
+    $stmt->execute([
+        'id' => Uuid::v7(),
+        'posteur' => '00000000-0000-0000-0000-000000000001',
+        'destin' => $cible,
+        'message' => $message,
+        'statut' => $castToPgBoolean->from($lu),
+        'titre' => $objet,
+    ]);
 }
 
-function SupprimerCompte($idCompteSuppr): void
+/**
+ * @param string $accountId an AccountId (UUID)
+ */
+function SupprimerCompte(string $accountId): void
 {
     $pdo = bd_connect();
-    $stmt = $pdo->prepare('DELETE FROM membres WHERE id = :id');
-    $stmt->execute(['id' => $idCompteSuppr]);
-    $stmt = $pdo->prepare('DELETE FROM messages WHERE destin = :destin');
-    $stmt->execute(['destin' => $idCompteSuppr]);
-    $stmt = $pdo->prepare('DELETE FROM messages WHERE auteur = :auteur');
-    $stmt->execute(['auteur' => $idCompteSuppr]);
-    $stmt = $pdo->prepare('DELETE FROM evolution WHERE auteur = :auteur');
-    $stmt->execute(['auteur' => $idCompteSuppr]);
-    $stmt = $pdo->prepare('DELETE FROM liste WHERE auteur = :auteur');
-    $stmt->execute(['auteur' => $idCompteSuppr]);
-    $stmt = $pdo->prepare('DELETE FROM logatt WHERE auteur = :auteur');
-    $stmt->execute(['auteur' => $idCompteSuppr]);
-    // Attaques a gerer.
-    $stmt = $pdo->prepare('SELECT auteur FROM attaque WHERE cible = :cible');
-    $stmt->execute(['cible' => $idCompteSuppr]);
-    while ($donnees_info = $stmt->fetch()) {
-        $stmt2 = $pdo->prepare('UPDATE membres SET bloque = FALSE WHERE id = :id');
-        $stmt2->execute(['id' => $donnees_info['auteur']]);
-        $stmt2 = $pdo->prepare('DELETE FROM attaque WHERE auteur = :auteur');
-        $stmt2->execute(['auteur' => $donnees_info['auteur']]);
-        AdminMP($donnees_info['auteur'], 'Pas de chance', 'Ta cible vient de supprimer son compte.
-			Une prochaine fois, peut-etre...');
+
+    $pdo->beginTransaction();
+
+    // First unblock and notify Players who sent BlownKisses to this AccountId
+    $stmt = $pdo->prepare(<<<'SQL'
+        SELECT auteur AS sender_id
+        FROM attaque
+        WHERE cible = :account_id
+    SQL);
+    $stmt->execute([
+        'account_id' => $accountId,
+    ]);
+    /**
+     * @var array<int, array{
+     *      sender_id: string, // UUID
+     * }> $incomingBlownKisses
+     */
+    $incomingBlownKisses = $stmt->fetchAll();
+    if ([] !== $incomingBlownKisses) {
+        // Unblock Players who sent BlownKisses to this AccountId
+        $senderIds = array_column($incomingBlownKisses, 'sender_id');
+
+        $inSize = count($incomingBlownKisses);
+        $inValues = implode(', ', array_fill(0, $inSize, '?'));
+
+        $accountIdIn = "id IN ({$inValues})";
+        $stmt = $pdo->prepare(<<<SQL
+            UPDATE membres
+            SET bloque = FALSE
+            WHERE {$accountIdIn}
+        SQL);
+        $stmt->execute($senderIds);
+
+        // Notify Players that their target deleted their account
+        foreach ($senderIds as $senderId) {
+            AdminMP(
+                $senderId,
+                'Pas de chance',
+                "Ta cible vient de supprimer son compte.\n"
+               .'Une prochaine fois, peut-etre...',
+            );
+        }
     }
 
-    $stmt = $pdo->prepare('SELECT cible FROM attaque WHERE auteur = :auteur');
-    $stmt->execute(['auteur' => $idCompteSuppr]);
-    if ($donnees_info = $stmt->fetch()) {
-        $stmt2 = $pdo->prepare('DELETE FROM attaque WHERE auteur = :auteur');
-        $stmt2->execute(['auteur' => $idCompteSuppr]);
-        AdminMP($donnees_info['cible'], 'Veinard !!', 'Tu as vraiment de la chance !!
-			Ton agresseur vient de supprimer son compte, tu peux donc dormir tranquille.');
+    // Next notify the Player who was going to receive BlownKiss from this AccountId
+    $stmt = $pdo->prepare(<<<'SQL'
+        SELECT cible AS receiver_id
+        FROM attaque
+        WHERE auteur = :account_id
+    SQL);
+    $stmt->execute([
+        'account_id' => $accountId,
+    ]);
+    /**
+     * @var array{
+     *      receiver_id: string, // UUID
+     * }|false $sentBlownKiss
+     */
+    $sentBlownKiss = $stmt->fetch();
+    if (false !== $sentBlownKiss) {
+        AdminMP(
+            $sentBlownKiss['receiver_id'],
+            'Veinard !!',
+            "Tu as vraiment de la chance !!\n"
+            .'Ton agresseur vient de supprimer son compte, tu peux donc dormir tranquille.',
+        );
+    }
+
+    // Finally delete the Account
+    $stmt = $pdo->prepare(<<<'SQL'
+        DELETE FROM membres
+        WHERE id = :account_id
+    SQL);
+    $stmt->execute([
+        'account_id' => $accountId,
+    ]);
+
+    try {
+        $pdo->commit();
+    } catch (PDOException $pdoException) {
+        $pdo->rollBack();
+
+        throw $pdoException;
     }
 }
 
@@ -189,10 +268,14 @@ function ChangerMotPasse($idChange, $newMdp): void
 {
     $pdo = bd_connect();
     $newMdp = password_hash($newMdp, \PASSWORD_DEFAULT);
-    $stmt = $pdo->prepare('UPDATE membres SET mdp = :mdp WHERE id = :id');
+    $stmt = $pdo->prepare(<<<'SQL'
+        UPDATE membres
+        SET mdp = :password_hash
+        WHERE id = :account_id
+    SQL);
     $stmt->execute([
-        'mdp' => $newMdp,
-        'id' => $idChange,
+        'password_hash' => $newMdp,
+        'account_id' => $idChange,
     ]);
 }
 
@@ -200,12 +283,31 @@ function ChangerMotPasse($idChange, $newMdp): void
 function AjouterScore($idScore, $valeur): void
 {
     $pdo = bd_connect();
-    $stmt = $pdo->prepare('SELECT score FROM membres WHERE id = :id');
-    $stmt->execute(['id' => $idScore]);
-
-    $donnees_info = $stmt->fetch();
-    $stmt = $pdo->prepare('UPDATE membres SET score = :score WHERE id = :id');
-    $stmt->execute(['score' => (int) ($donnees_info['score'] + $valeur), 'id' => $idScore]);
+    $stmt = $pdo->prepare(<<<'SQL'
+        SELECT score
+        FROM membres
+        WHERE id = :account_id
+    SQL);
+    $stmt->execute([
+        'account_id' => $idScore,
+    ]);
+    /**
+     * @var array{
+     *      score: int,
+     * }|false $account
+     */
+    $account = $stmt->fetch();
+    if (false !== $account) {
+        $stmt = $pdo->prepare(<<<'SQL'
+            UPDATE membres
+            SET score = :score
+            WHERE id = :account_id
+        SQL);
+        $stmt->execute([
+            'score' => (int) ($account['score'] + $valeur),
+            'account_id' => $idScore,
+        ]);
+    }
 }
 
 function formaterNombre($nombre): string
@@ -325,28 +427,64 @@ function coutAttaque($distance, $jambes): float
 function GiveNewPosition($idJoueur): void
 {
     $pdo = bd_connect();
-    $sql_info = $pdo->query("SELECT nombre FROM nuage WHERE id='00000000-0000-0000-0000-000000000002'");
-    $donnees_info = $sql_info->fetch();
-    $NbNuages = $donnees_info['nombre'];
+    $stmt = $pdo->prepare(<<<'SQL'
+        SELECT nombre
+        FROM nuage
+        WHERE id = :nuage_config_id
+    SQL);
+    $stmt->execute([
+        'nuage_config_id' => '00000000-0000-0000-0000-000000000002',
+    ]);
+    /**
+     * @var array{
+     *      nombre: int,
+     * }|false $nuageConfig
+     */
+    $nuageConfig = $stmt->fetch();
+    $NbNuages = $nuageConfig['nombre'];
 
-    $stmt = $pdo->prepare('SELECT COUNT(*) AS nb_pos FROM membres WHERE nuage = :nuage');
-    $stmt->execute(['nuage' => $NbNuages]);
-
-    $nbPos = $stmt->fetchColumn();
+    $stmt = $pdo->prepare(<<<'SQL'
+        SELECT COUNT(id) AS total_accounts_in_nuage
+        FROM membres
+        WHERE nuage = :nuage
+    SQL);
+    $stmt->execute([
+        'nuage' => $NbNuages,
+    ]);
+    /**
+     * @var array{
+     *      total_accounts_in_nuage: int,
+     * }|false $result
+     */
+    $result = $stmt->fetch();
+    $nbPos = (false !== $result) ? $result['total_accounts_in_nuage'] : 0;
 
     // Neuf personnes par nuage max, lors de l'attribution.
     if ($nbPos > 8) {
         ++$NbNuages;
-        $stmt = $pdo->prepare("UPDATE nuage SET nombre = :nombre WHERE id = '00000000-0000-0000-0000-000000000002'");
-        $stmt->execute(['nombre' => $NbNuages]);
+        $stmt = $pdo->prepare(<<<'SQL'
+            UPDATE nuage
+            SET nombre = :nombre
+            WHERE id = :nuage_config_id
+        SQL);
+        $stmt->execute([
+            'nombre' => $NbNuages,
+            'nuage_config_id' => '00000000-0000-0000-0000-000000000002',
+        ]);
         $nbPos = 0;
     }
 
     if ($nbPos > 0) {
         $OccPos = [];
 
-        $stmt = $pdo->prepare('SELECT position FROM membres WHERE nuage = :nuage');
-        $stmt->execute(['nuage' => $NbNuages]);
+        $stmt = $pdo->prepare(<<<'SQL'
+            SELECT position
+            FROM membres
+            WHERE nuage = :nuage
+        SQL);
+        $stmt->execute([
+            'nuage' => $NbNuages,
+        ]);
         $i = 0;
         // On récupère les positions occupées.
         while ($donnees_info = $stmt->fetch()) {
@@ -376,6 +514,14 @@ function GiveNewPosition($idJoueur): void
     }
 
     // On enregistre.
-    $stmt = $pdo->prepare('UPDATE membres SET nuage = :nuage, position = :position WHERE id = :id');
-    $stmt->execute(['nuage' => $NbNuages, 'position' => $FinalPos, 'id' => $idJoueur]);
+    $stmt = $pdo->prepare(<<<'SQL'
+        UPDATE membres
+        SET nuage = :nuage, position = :position
+        WHERE id = :account_id
+    SQL);
+    $stmt->execute([
+        'nuage' => $NbNuages,
+        'position' => $FinalPos,
+        'account_id' => $idJoueur,
+    ]);
 }

@@ -50,32 +50,43 @@
 
 $pdo = bd_connect();
 $castToUnixTimestamp = cast_to_unix_timestamp();
-$stmt = $pdo->query('SELECT * FROM newsbisous ORDER BY id DESC LIMIT 5 OFFSET 0');
+$stmt = $pdo->query(<<<'SQL'
+    SELECT
+        titre,
+        timestamp,
+        timestamp_modification,
+        contenu
+    FROM newsbisous
+    ORDER BY id DESC
+    LIMIT 5 OFFSET 0
+SQL);
 
-while ($donnees = $stmt->fetch(PDO::FETCH_ASSOC)) {
-    ?>
+/**
+ * @var array<int, array{
+ *      titre: string,
+ *      timestamp: string, // ISO 8601 timestamp string
+ *      timestamp_modification: string|null, // ISO 8601 timestamp string
+ *      contenu: string
+ * }> $articles
+ */
+$articles = $stmt->fetchAll();
+?>
 
+<?php foreach ($articles as $article) { ?>
 <div class="news">
     <h3>
-        <?php echo stripslashes((string) $donnees['titre']); ?>
+        <?php echo stripslashes((string) $article['titre']); ?>
 	</h3>
 	<em>
-        le <?php echo date('d/m/Y à H\hi', $castToUnixTimestamp->fromPgTimestamptz($donnees['timestamp'])); ?></em>
-		<?php if (null !== $donnees['timestamp_modification']) { ?>
+        le <?php echo date('d/m/Y à H\hi', $castToUnixTimestamp->fromPgTimestamptz($article['timestamp'])); ?></em>
+		<?php if (null !== $article['timestamp_modification']) { ?>
 		<br />
-		<em>modifi&eacute;e le <?php echo date('d/m/Y à H\hi', $castToUnixTimestamp->fromPgTimestamptz($donnees['timestamp_modification'])); ?></em>
-		<?php }?>
+		<em>modifi&eacute;e le <?php echo date('d/m/Y à H\hi', $castToUnixTimestamp->fromPgTimestamptz($article['timestamp_modification'])); ?></em>
+		<?php } ?>
 
 		<p>
-		<?php
-
-                $contenu = bb2html($donnees['contenu']);
-    echo $contenu;
-
-    ?>
+		<?php echo bb2html($article['contenu']); ?>
 		</p>
 </div>
-<?php
-}
-?>
+<?php } ?>
 

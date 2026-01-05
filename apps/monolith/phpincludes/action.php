@@ -1,6 +1,6 @@
 <h1>Embrasser</h1>
 <?php
-if (true === $_SESSION['logged']) {
+if (true === $blContext['is_signed_in']) {
     $pdo = bd_connect();
     $castToUnixTimestamp = cast_to_unix_timestamp();
     $castToPgTimestamptz = cast_to_pg_timestamptz();
@@ -35,7 +35,7 @@ if (true === $_SESSION['logged']) {
                                     $resultat = 'Action impossible car tu es en train de créer des Bisous';
                                 }
 
-                                $nuageSource = $_SESSION['nuage'];
+                                $nuageSource = $blContext['account']['nuage'];
 
                                 $stmt = $pdo->prepare('SELECT position, score FROM membres WHERE id = :id');
                                 $stmt->execute(['id' => $id]);
@@ -101,7 +101,7 @@ if (true === $_SESSION['logged']) {
         $nuageCible = htmlentities((string) $_GET['nuage']);
         $positionCible = htmlentities($_GET['position']);
 
-        $nuageSource = $_SESSION['nuage'];
+        $nuageSource = $blContext['account']['nuage'];
 
         $stmt = $pdo->prepare('SELECT position FROM membres WHERE id = :id');
         $stmt->execute(['id' => $id]);

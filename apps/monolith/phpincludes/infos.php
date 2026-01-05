@@ -1,6 +1,4 @@
-<?php
-if (true == $_SESSION['logged']) {
-    ?>
+<?php if (true === $blContext['is_signed_in']) { ?>
 <h1>Encyclop&eacute;die</h1>
 R&eacute;capitulatif te permettant d'orienter ton d&eacute;veloppement.<br />
 Attention : ces informations ne sont pas mises &agrave; jour en direct.<br />

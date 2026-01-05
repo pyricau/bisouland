@@ -5,7 +5,7 @@
    <tr>
 		<th width="10%">Position</th>
 <?php
-if (true == $_SESSION['logged']) {
+if (true === $blContext['is_signed_in']) {
     echo '
 		<th width="5%"><a class="bulle" style="cursor: default;" onclick="return false;" href=""><img src="images/onoff.png" alt="Statut" title="" /><span>Statut de connexion du joueur</span></a></th>
 		<th width="45%">Nom</th>
@@ -25,12 +25,18 @@ if (true == $_SESSION['logged']) {
 $pdo = bd_connect();
 
 // Si on est loggué (et qu'on peut attaquer, on calcule notre position
-if (true == $_SESSION['logged'] && ($nbE[1][0] + $nbE[1][1] + $nbE[1][2]) > 0) {
-    $nuageSource = $_SESSION['nuage'];
-    $stmt = $pdo->prepare('SELECT position FROM membres WHERE id = :id');
-    $stmt->execute(['id' => $id]);
-    $donnees_info2 = $stmt->fetch();
-    $positionSource = $donnees_info2['position'];
+if (true === $blContext['is_signed_in'] && ($nbE[1][0] + $nbE[1][1] + $nbE[1][2]) > 0) {
+    $stmt = $pdo->prepare(<<<SQL
+            SELECT position
+            FROM membres
+            WHERE id = :id
+        SQL);
+    $stmt->execute([
+        'id' => $id,
+    ]);
+    /** @var array{position: int} $results */
+    $results = $stmt->fetch();
+    $positionSource = $results['position'];
 }
 
 $sql_info = $pdo->prepare('SELECT id, pseudo, nuage, position, score, lastconnect FROM membres ORDER BY score DESC LIMIT :limit OFFSET 0');
@@ -57,7 +63,7 @@ for ($i = 1; $i <= $nbTop; ++$i) {
 				<td>'.formaterNombre(floor($donnees_info['score'] / 1000.)).'</td>
 				';
 
-    if (true == $_SESSION['logged']) {
+        if (true === $blContext['is_signed_in']) {
         echo '<td>';
         echo '<a class="bulle" href="',$donnees_info['nuage'],'.nuage.html" >
 			<img src="images/nuage.png" title="" alt="" /><span>Nuage : ',$donnees_info['nuage'],'</span></a></td>';

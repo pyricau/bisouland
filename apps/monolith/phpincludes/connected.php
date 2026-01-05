@@ -1,6 +1,5 @@
 <?php
-// Ce qu'on affiche si on est connecte
-if (true === $_SESSION['logged']) {
+if (true === $blContext['is_signed_in']) {
     $pdo = bd_connect();
     $castToPgBoolean = cast_to_pg_boolean();
     $stmt = $pdo->prepare('SELECT espion FROM membres WHERE id = :id');

@@ -28,7 +28,8 @@
             "phpincludes/cast_to_pg_boolean.php",
             "phpincludes/cast_to_unix_timestamp.php",
             "phpincludes/cast_to_pg_timestamptz.php",
-            "phpincludes/fctIndex.php"
+            "phpincludes/fctIndex.php",
+            "phpincludes/save_auth_token.php"
         ]
     },
     "require-dev": {

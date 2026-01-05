@@ -1,8 +1,3 @@
-<?php
-if (true == $_SESSION['logged'] && 'admin' == $pseudo) {
-    echo '<div class="cache" ><a href="news/liste_news.php">Admin</a></div>';
-}
-?>
 <h1>.:Accueil:.</h1>
 <h2>Bonjour et bienvenue &agrave; tous !!</h2>
 <p>

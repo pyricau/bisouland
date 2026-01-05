@@ -2,7 +2,7 @@
 
 use Symfony\Component\Uid\Uuid;
 
-if (false === $_SESSION['logged']) {
+if (false === $blContext['is_signed_in']) {
     $pdo = bd_connect();
     $castToPgBoolean = cast_to_pg_boolean();
     $castToUnixTimestamp = cast_to_unix_timestamp();

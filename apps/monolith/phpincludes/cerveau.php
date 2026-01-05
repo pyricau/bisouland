@@ -3,7 +3,7 @@
 
 use Bl\Domain\KissBlowing\BlownKissState;
 
-if (true === $_SESSION['logged']) {
+if (true === $blContext['is_signed_in']) {
 $pdo = bd_connect();
 $castToUnixTimestamp = cast_to_unix_timestamp();
 $castToPgTimestamptz = cast_to_pg_timestamptz();

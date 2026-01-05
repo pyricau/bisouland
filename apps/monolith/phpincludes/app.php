@@ -1,5 +1,7 @@
 <?php
 
+use Bl\Application\Auth\AuthToken\CreateAuthToken;
+use Bl\Application\Auth\AuthTokenCookie\CreateAuthTokenCookie;
 use Symfony\Component\Uid\Uuid;
 
 header('Content-type: text/html; charset=UTF-8');
@@ -21,8 +23,29 @@ ob_start();
 $pdo = bd_connect();
 $castToUnixTimestamp = cast_to_unix_timestamp();
 $castToPgTimestamptz = cast_to_pg_timestamptz();
+$saveAuthToken = save_auth_token($pdo);
 
 $inMainPage = true;
+
+/**
+ * @var array{
+ *      'is_signed_in': bool,
+ *      'account': array{
+ *          'id': string,
+ *          'pseudo': string,
+ *          'nuage': string,
+ *      },
+ * } $blContext
+ */
+$blContext = [
+    'is_signed_in' => false,
+    'account' => [
+        'id' => '00000000-0000-0000-0000-000000000000',
+        'pseudo' => 'Not Connected',
+        'nuage' => -1,
+    ],
+];
+$resetBlContext = $blContext;
 
 // Front Controller: Handle POST requests
 // Handle login
@@ -41,21 +64,76 @@ if ('POST' === $_SERVER['REQUEST_METHOD'] && isset($_POST['connexion'])) {
         // La on vérifie si le nombre est différent que zéro
         if (0 != $stmt->fetchColumn()) {
             // Sélection des informations.
-            $stmt = $pdo->prepare('SELECT id, confirmation, mdp, nuage FROM membres WHERE pseudo = :pseudo');
-            $stmt->execute(['pseudo' => $pseudo]);
-            $donnees_info = $stmt->fetch();
+            $stmt = $pdo->prepare(<<<SQL
+                    SELECT id, confirmation, mdp, nuage
+                    FROM membres
+                    WHERE pseudo = :pseudo
+                SQL);
+            $stmt->execute([
+                'pseudo' => $pseudo,
+            ]);
+            /**
+             * @var array{
+             *     id: string, // UUID
+             *     confirmation: bool,
+             *     mdp: string,
+             *     nuage: int,
+             * }|false $account
+             */
+            $account = $stmt->fetch();
 
             // Si le mot de passe est le même.
-            if (password_verify($mdp, $donnees_info['mdp'])) {
+            if (password_verify($mdp, $account['mdp'])) {
                 // Si le compte est confirmé.
-                if (true === $donnees_info['confirmation']) {
-                    // On modifie la variable qui nous indique que le membre est connecté.
-                    $_SESSION['logged'] = true;
+                if (true === $account['confirmation']) {
+                    // --- Persistent authentication
+                    $createAuthToken = CreateAuthToken::fromRawAccountId(
+                        $account['id'],
+                    );
+                    $saveAuthToken->save(
+                        $createAuthToken->authToken,
+                    );
 
-                    // On créé les variables contenant des informations sur le membre.
-                    $_SESSION['id'] = $donnees_info['id'];
-                    $_SESSION['pseudo'] = $pseudo;
-                    $_SESSION['nuage'] = $donnees_info['nuage'];
+                    $blContext = [
+                        'is_signed_in' => true,
+                        'account' => [
+                            'id' => $account['id'],
+                            'pseudo' => $pseudo,
+                            'nuage' => $account['nuage'],
+                        ],
+                    ];
+
+                    $createAuthTokenCookie = CreateAuthTokenCookie::fromCreateAuthToken(
+                        $createAuthToken,
+                    );
+                    setcookie(
+                        $createAuthTokenCookie->getName(),
+                        $createAuthTokenCookie->getValue(),
+                        $createAuthTokenCookie->getOptions(),
+                    );
+
+                    $token = $tokenFactory->make();
+                    $expiresAt = $expiresAtFactory->make('+15 days');
+                    $authToken = new AuthToken(
+                        $authTokenIdFactory->make(),
+                        $token,
+                        AccountId::fromString($account['id']),
+                        $expiresAt,
+                    );
+                    $saveAuthToken->save($authToken);
+
+                    $authTokenCookie = $authTokenCookieFactory->make(
+                        $authToken->accountId,
+                        $token,
+                        $authToken->expiresAt,
+                    );
+                    setcookie($authTokenCookie->getName(), $authTokenCookie->getValue(), [
+                        'expires' => $authTokenCookie->getExpires(),
+                        'httponly' => true,
+                        'secure' => true,
+                        'samesite' => 'Strict',
+                    ]);
+                    // ---
 
                     if (isset($_POST['auto'])) {
                         $timestamp_expire = time() + 30 * 24 * 3600;
@@ -72,22 +150,18 @@ if ('POST' === $_SERVER['REQUEST_METHOD'] && isset($_POST['connexion'])) {
                     exit;
                 }
                 $_SESSION['errCon'] = 'Erreur : le compte n\'est pas confirmé !';
-                $_SESSION['logged'] = false;
                 header('location: connexion.html');
                 exit;
             }
             $_SESSION['errCon'] = 'Erreur : le mot de passe est incorrect !';
-            $_SESSION['logged'] = false;
             header('location: connexion.html');
             exit;
         }
         $_SESSION['errCon'] = "Erreur : le pseudo n'existe pas !";
-        $_SESSION['logged'] = false;
         header('location: connexion.html');
         exit;
     }
     $_SESSION['errCon'] = 'Erreur : vous avez oublié de remplir un ou plusieurs champs !';
-    $_SESSION['logged'] = false;
     header('location: connexion.html');
     exit;
 }
@@ -95,13 +169,15 @@ if ('POST' === $_SERVER['REQUEST_METHOD'] && isset($_POST['connexion'])) {
 // Front Controller: Handle logout (via GET parameter)
 $page = (empty($_GET['page'])) ? 'accueil' : htmlentities((string) $_GET['page']);
 if ('logout' === $page) {
-    // Ensuite on vérifie que la variable $_SESSION['logged'] existe et vaut bien true.
-    if (isset($_SESSION['logged']) && true == $_SESSION['logged']) {
-        $timeDeco = time() - 600;
-        $stmt = $pdo->prepare('UPDATE membres SET lastconnect = :lastconnect WHERE id = :id');
-        $stmt->execute(['lastconnect' => $castToPgTimestamptz->fromUnixTimestamp($timeDeco), 'id' => $_SESSION['id']]);
-        // On modifie la valeur de $_SESSION['logged'], qui devient false.
-        $_SESSION['logged'] = false;
+    if (true === $blContext['is_signed_in']) {
+        $stmt = $pdo->prepare(<<<SQL
+                UPDATE membres
+                SET lastconnect = NOW() - INTERVAL '10 minutes'
+                WHERE id = :id
+            SQL);
+        $stmt->execute([
+            'id' => $blContext['account']['id'],
+        ]);
         $timestamp_expire = time() - 1000;
         setcookie('pseudo', '', ['expires' => $timestamp_expire]);
         setcookie('mdp', '', ['expires' => $timestamp_expire]);
@@ -111,7 +187,6 @@ if ('logout' === $page) {
         exit;
     }
     $_SESSION['errCon'] = 'Erreur : vous devez être connecté pour vous déconnecter !';
-    $_SESSION['logged'] = false;
     header('location: connexion.html');
     exit;
 }
@@ -119,57 +194,68 @@ if ('logout' === $page) {
 // Mesures de temps pour évaluer le temps que met la page a se créer.
 $temps_debut = microtime_float();
 
-// Si la variable $_SESSION['logged'] n'existe pas, on la créée, et on l'initialise a false
-if (!isset($_SESSION['logged'])) {
-    $_SESSION['logged'] = false;
-}
-
-// Note: $page is already set above in the logout handler (line 103)
-
 // Test en cas de suppression de compte
 // Il faudra a jouter ici une routine de suppression des messages dans la bdd.
 // Ainsi que des constructions en cours, etc..
-if (isset($_POST['suppr']) && true == $_SESSION['logged']) {
-    $_SESSION['pseudo'] = 'Not Connected';
-    $_SESSION['logged'] = false;
-    SupprimerCompte($_SESSION['id']);
+if (isset($_POST['suppr']) && true === $blContext['is_signed_in']) {
+    SupprimerCompte($blContext['account']['id']);
+    $blContext = $resetBlContext;
 }
 
 // Si on est pas connecté.
-if (false == $_SESSION['logged']) {
-    $id = 0;
+if (false === $blContext['is_signed_in']) {
     // On récupère les cookies enregistrés chez l'utilisateurs, s'ils sont la.
     if (isset($_COOKIE['pseudo']) && isset($_COOKIE['mdp'])) {
         $pseudo = htmlentities(addslashes((string) $_COOKIE['pseudo']));
         $mdp = htmlentities(addslashes($_COOKIE['mdp']));
         // La requête qui compte le nombre de pseudos
-        $stmt = $pdo->prepare('SELECT COUNT(*) AS nb_pseudo FROM membres WHERE pseudo = :pseudo');
-        $stmt->execute(['pseudo' => $pseudo]);
+        $stmt = $pdo->prepare(<<<SQL
+                SELECT COUNT(pseudo) AS total_results
+                FROM membres
+                WHERE pseudo = :pseudo
+            SQL);
+        $stmt->execute([
+            'pseudo' => $pseudo,
+        ]);
+        /** @var array{total_results: int}|false $results */
+        $results = $stmt->fetch();
+        if (1 === $results['total_results']) {
+            $stmt = $pdo->prepare(<<<SQL
+                    SELECT id, confirmation, mdp, nuage
+                    FROM membres
+                    WHERE pseudo = :pseudo
+                SQL);
+            $stmt->execute([
+                'pseudo' => $pseudo,
+            ]);
+            /**
+             * @var array{
+             *     id: string,
+             *     confirmation: bool,
+             *     mdp: string,
+             *     nuage: int,
+             * }|false $account
+             */
+            $account = $stmt->fetch();
 
-        if (0 != $stmt->fetchColumn()) {
-            // Sélection des informations.
-            $stmt = $pdo->prepare('SELECT id, confirmation, mdp, nuage FROM membres WHERE pseudo = :pseudo');
-            $stmt->execute(['pseudo' => $pseudo]);
-            $donnees_info = $stmt->fetch();
-
-            // Si le mot de passe est le même
-            // Si le compte est confirmé.
             if (
-                password_verify($mdp, $donnees_info['mdp'])
-                && true === $donnees_info['confirmation']
+                password_verify($mdp, $account['mdp'])
+                && true === $account['confirmation']
             ) {
-                // On modifie la variable qui nous indique que le membre est connecté.
-                $_SESSION['logged'] = true;
-                // On créé les variables contenant des informations sur le membre.
-                $_SESSION['id'] = $donnees_info['id'];
-                $_SESSION['pseudo'] = $pseudo;
-                $_SESSION['nuage'] = $donnees_info['nuage'];
+                $blContext = [
+                    'is_signed_in' => true,
+                    'account' => [
+                        'id' => $account['id'],
+                        'pseudo' => $pseudo,
+                        'nuage' => $account['nuage'],
+                    ],
+                ];
                 $page = 'cerveau';
             }
         }
     }
 } else {
-    $pseudo = $_SESSION['pseudo'];
+    $pseudo = $blContext['account']['pseudo'];
 }
 
 $temps11 = microtime_float();
@@ -207,27 +293,42 @@ $Obj[2] = [
 
 // ***************************************************************************
 // Si on est connecté
-if (true == $_SESSION['logged']) {
+if (true === $blContext['is_signed_in']) {
     // l'id du membre.
-    $id = $_SESSION['id'];
+    $id = $blContext['account']['id'];
 
-    // Fonction destinée à l'administration
-    if (isset($_POST['UnAct']) && 12 == $id) {
-        actionAdmin();
-    }
-
-    $stmt = $pdo->prepare('SELECT timestamp, coeur, bouche, amour, jambes, smack, baiser, pelle, tech1, tech2, tech3, tech4, dent, langue, bloque, soupe, oeil FROM membres WHERE id = :id');
-    $stmt->execute(['id' => $id]);
-    $donnees_info = $stmt->fetch();
+    $stmt = $pdo->prepare(<<<SQL
+            SELECT
+                amour, 
+                bouche, coeur, dent, jambes, langue, oeil,
+                baiser, pelle, smack, 
+                tech1, tech2, tech3, tech4, soupe,
+                timestamp, bloque,
+            FROM membres
+            WHERE id = :id
+        SQL);
+    $stmt->execute([
+        'id' => $id,
+    ]);
+    /**
+     * @var array{
+     *      amour: int,
+     *      bouche: int, coeur: int, dent: int, jambes: int, langue: int, oeil: int,
+     *      baiser: int, pelle: int, smack: int,
+     *      tech1: int, tech2: int, tech3: int, tech4: int, soupe: int,
+     *      timestamp: string, bloque: bool
+     * }|false $player
+     */
+    $player = $stmt->fetch();
     // Date du dernier calcul du nombre de points d'amour.
-    $lastTime = $castToUnixTimestamp->fromPgTimestamptz($donnees_info['timestamp']);
+    $lastTime = $castToUnixTimestamp->fromPgTimestamptz($player['timestamp']);
     // Temps écoulé depuis le dernier calcul.
     $timeDiff = time() - $lastTime;
 
     // On récupère le nombre de points d'amour.
-    $amour = $donnees_info['amour'];
+    $amour = $player['amour'];
 
-    $joueurBloque = $donnees_info['bloque'];
+    $joueurBloque = $player['bloque'];
 
     // Nombre d'objets d'un type donné.
     // Batiments
@@ -236,7 +337,7 @@ if (true == $_SESSION['logged']) {
 
     for ($i = 0; $i < 3; ++$i) {
         for ($j = 0; $j < $nbType[$i]; ++$j) {
-            $nbE[$i][$j] = $donnees_info[$Obj[$i][$j]];
+            $nbE[$i][$j] = $player[$Obj[$i][$j]];
         }
     }
 
@@ -361,7 +462,7 @@ if (true == $_SESSION['logged']) {
 				[ Protège-le contre les Dents en montant le niveau de Langue ]<br />
 				[ Le Baiser langoureux peut prendre 10 fois plus de points d\'amour que le Baiser ]</span><br />',
         ];
-        if (isset($_POST['suppr_bisous']) && 0 == $joueurBloque) {
+        if (isset($_POST['suppr_bisous']) && false === $joueurBloque) {
             $modif = false;
             for ($i = 0; $i != $nbType[1]; ++$i) {
                 if (isset($_POST['sp'.$Obj[1][$i]]) && $nbE[1][$i] > 0) {
@@ -510,17 +611,16 @@ if (isset($pages[$page])) {
 }
 $temps31 = microtime_float();
 
-if (false == $_SESSION['logged']) {
-    $stmt = $pdo->prepare('SELECT COUNT(*) AS nbre_entrees FROM connectbisous WHERE ip = :ip');
-    $stmt->execute(['ip' => $_SERVER['REMOTE_ADDR']]);
-    $donnees = $stmt->fetch();
-    if (0 == $donnees['nbre_entrees']) { // L'ip ne se trouve pas dans la table, on va l'ajouter
-        $stmt = $pdo->prepare('INSERT INTO connectbisous VALUES(:ip, CURRENT_TIMESTAMP, 2)');
-        $stmt->execute(['ip' => $_SERVER['REMOTE_ADDR']]);
-    } else { // L'ip se trouve déjà dans la table, on met juste à jour le timestamp
-        $stmt = $pdo->prepare('UPDATE connectbisous SET timestamp = CURRENT_TIMESTAMP WHERE ip = :ip');
-        $stmt->execute(['ip' => $_SERVER['REMOTE_ADDR']]);
-    }
+if (false === $blContext['is_signed_in']) {
+    $stmt = $pdo->prepare(<<<SQL
+            INSERT INTO connectbisous (ip, timestamp, type)
+            VALUES (:ip, CURRENT_TIMESTAMP, 2)
+            ON CONFLICT (ip) DO UPDATE
+            SET timestamp = CURRENT_TIMESTAMP
+        SQL);
+    $stmt->execute([
+        'ip' => $_SERVER['REMOTE_ADDR'],
+    ]);
 }
 $temps32 = microtime_float();
 
@@ -563,13 +663,13 @@ $temps14 = microtime_float();
 
 	<ul id="speedbarre">
 
-			<?php if (true == $_SESSION['logged']) {?>
+            <?php if (true === $blContext['is_signed_in']) { ?>
 				<li class="speedgauche">
 					<strong><?php echo formaterNombre(floor($amour)); ?></strong> <img src="images/puce.png" title = "Nombre de points d'amour" alt="Nombre de points d'amour" />
 				</li>
 				<li class="speedgauche">Adoptez la strat&eacute;gie BisouLand !!</li>
 				<li class="speeddroite">
-					<a href="logout.html" title="Vous avez termin&eacute; ? D&eacute;connectez-vous !">D&eacute;connexion (<?php echo $_SESSION['pseudo']; ?>)</a>
+                    <a href="logout.html" title="Vous avez termin&eacute; ? D&eacute;connectez-vous !">D&eacute;connexion (<?php echo $blContext['account']['pseudo']; ?>)</a>
 				</li>
 				<li class="speeddroite">
 					<a href="boite.html" title="<?php echo $NewMsgString; ?>"><?php echo $NewMsgString; ?></a>
@@ -591,12 +691,9 @@ $temps14 = microtime_float();
             <h3>G&eacute;n&eacute;ral</h3>
 			<ul>
 				<li><a href="accueil.html">Accueil</a></li>
-				<?php if (false == $_SESSION['logged']) {
-                    ?>
-				<li><a href="inscription.html">Inscription</a></li>
-				<?php
-                }
-?>
+                <?php if (false === $blContext['is_signed_in']) { ?>
+                    <li><a href="inscription.html">Inscription</a></li>
+				<?php } ?>
 				<li><a href="livreor.html">Livre d'or</a></li>
 				<li><a href="stats.html">Statistiques</a></li>
 				<li><a href="contact.html">Contact</a></li>
@@ -608,22 +705,18 @@ $temps14 = microtime_float();
 		<div class="sMenu">
             <h3>BisouLand</h3>
 			<ul>
-				<?php if (true == $_SESSION['logged']) {?>
-				<li><a href="cerveau.html">Cerveau</a></li>
-				<li><a href="construction.html">Organes</a></li>
-				<li><a href="techno.html">Techniques</a></li>
-				<li><a href="bisous.html">Bisous</a></li>
-				<li><a href="nuage.html">Nuages</a></li>
-				<li><a href="boite.html">Messages</a></li>
-				<li><a href="connected.html">Mon compte</a></li>
-				<?php
-                } else {
-                    ?>
-				<li>Tu n'es pas connect&eacute;.</li>
-				<li><a href="connexion.html">Connexion</a></li>
-				<?php
-                }
-?>
+                <?php if (true === $blContext['is_signed_in']) { ?>
+                    <li><a href="cerveau.html">Cerveau</a></li>
+                    <li><a href="construction.html">Organes</a></li>
+                    <li><a href="techno.html">Techniques</a></li>
+                    <li><a href="bisous.html">Bisous</a></li>
+                    <li><a href="nuage.html">Nuages</a></li>
+                    <li><a href="boite.html">Messages</a></li>
+                    <li><a href="connected.html">Mon compte</a></li>
+				<?php } else { ?>
+                    <li>Tu n'es pas connect&eacute;.</li>
+                    <li><a href="connexion.html">Connexion</a></li>
+				<?php } ?>
 			</ul>
 		</div>
 		<div class="sMenu">
@@ -631,11 +724,9 @@ $temps14 = microtime_float();
 			<ul>
 				<li><a href="faq.html">FAQ</a></li>
 				<li><a href="aide.html">Aide</a></li>
-				<?php if (true == $_SESSION['logged']) {?>
-				<li><a href="infos.html">Encyclop&eacute;die</a></li>
-				<?php
-                }
-?>
+                <?php if (true === $blContext['is_signed_in']) { ?>
+                    <li><a href="infos.html">Encyclop&eacute;die</a></li>
+				<?php } ?>
 				<li><a href="topten.html">Top 20</a></li>
 				<li><a href="recherche.html">Recherche</a></li>
 				<li><a href="membres.html">Joueurs</a></li>
@@ -652,9 +743,19 @@ $temps16 = microtime_float();
 	</div>
 
 <?php
-    if (true == $_SESSION['logged']) {
-        $stmt = $pdo->prepare('UPDATE membres SET lastconnect = CURRENT_TIMESTAMP, timestamp = CURRENT_TIMESTAMP, amour = :amour WHERE id = :id');
-        $stmt->execute(['amour' => (int) $amour, 'id' => $id]);
+    if (true === $blContext['is_signed_in']) {
+        $stmt = $pdo->prepare(<<<SQL
+                UPDATE membres
+                SET
+                    lastconnect = CURRENT_TIMESTAMP,
+                    timestamp = CURRENT_TIMESTAMP,
+                    amour = :amour
+                WHERE id = :id
+            SQL);
+        $stmt->execute([
+            'amour' => (int) $amour,
+            'id' => $id,
+        ]);
     }
 ?>
 
@@ -690,9 +791,6 @@ echo 'T4 (tete):          '.round($temps15 - $temps14, 4).'<br />';
 echo 'T5 (include):       '.round($temps16 - $temps15, 4).'<br />';
 echo 'T6 (pied):          '.round($temps17 - $temps16, 4).'<br />';
 */
-if (true == $_SESSION['logged'] && (12 == $id && 'cerveau' === $page)) {
-    echo '<form class="Tpetit" method="post" action="accueil.html"><input type="submit" name="UnAct" tabindex="100" value="Action Unique" /></form>';
-}
 ?>
 </p>
 		<p class="Tpetit">Tous droits r&eacute;serv&eacute;s &copy; BisouLand - Site respectant les r&egrave;gles de la CNIL</p>

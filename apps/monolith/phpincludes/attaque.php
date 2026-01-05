@@ -176,7 +176,7 @@ if (isset($inMainPage) && true == $inMainPage) {
             // Faire retourner, Avec butin.
 
             // Gestion du butin
-            if ($idCible == $id && true === $_SESSION['logged']) {
+            if ($idCible == $id && true === $blContext['is_signed_in']) {
                 $DefAmour = $amour;
             } else {
                 $DefTimestamp = $castToUnixTimestamp->fromPgTimestamptz($donnees_info4['timestamp']);
@@ -201,7 +201,7 @@ if (isset($inMainPage) && true == $inMainPage) {
 
             $DefAmour -= $butin;
 
-            if ($idCible == $id && true === $_SESSION['logged']) {
+            if ($idCible == $id && true === $blContext['is_signed_in']) {
                 $amour = $DefAmour;
             }
 
@@ -244,7 +244,7 @@ if (isset($inMainPage) && true == $inMainPage) {
         $stmt = $pdo->prepare('DELETE FROM attaque WHERE auteur = :auteur');
         $stmt->execute(['auteur' => $idAuteur]);
 
-        if ($idAuteur == $id && true === $_SESSION['logged']) {
+        if ($idAuteur == $id && true === $blContext['is_signed_in']) {
             $AttAmour = $amour;
         } else {
             $stmt = $pdo->prepare('SELECT amour FROM membres WHERE id = :id');
@@ -257,7 +257,7 @@ if (isset($inMainPage) && true == $inMainPage) {
         // Récupération des points d'amour.
         $AttAmour += $butinAuteur;
 
-        if ($idAuteur == $id && true === $_SESSION['logged']) {
+        if ($idAuteur == $id && true === $blContext['is_signed_in']) {
             $amour = $AttAmour;
             $joueurBloque = 0;
         }

@@ -1,6 +1,6 @@
 <h1>Connexion</h1>
 <?php
-if (false == $_SESSION['logged']) {
+if (false === $blContext['is_signed_in']) {
     if (isset($_SESSION['errCon'])) {
         echo '<br />',$_SESSION['errCon'],'<br /><br />';
         unset($_SESSION['errCon']);

@@ -1,7 +1,4 @@
-<?php
-// Ce qu'on affiche si on est connecté
-if (true == $_SESSION['logged']) {
-?>
+<?php if (true === $blContext['is_signed_in']) { ?>
 <h1>Bisous</h1>
 Les Bisous vous permettent d'obtenir de l'amour des autres joueurs<br />
 <span class="info">[ Les Bisous ont un coût d'entretien : 1 niveau de Coeur correspond à 3 Smacks, 2 Baisers, ou 1 Baiser langoureux ]</span><br />

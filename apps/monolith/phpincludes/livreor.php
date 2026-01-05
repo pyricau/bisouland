@@ -8,8 +8,8 @@ $pdo = bd_connect();
 $castToUnixTimestamp = cast_to_unix_timestamp();
 
 if (isset($_POST['message'])) {
-    if (true == $_SESSION['logged']) {
-        $psd = htmlentities((string) $_SESSION['pseudo']);
+    if (true === $blContext['is_signed_in']) {
+        $psd = htmlentities((string) $blContext['account']['pseudo']);
 
         $message = htmlentities((string) $_POST['message'], \ENT_QUOTES); // De même pour le message
         $message = nl2br($message); // Pour le message, comme on utilise un textarea, il faut remplacer les Entrées par des <br />
@@ -40,9 +40,7 @@ $nombreDePages = ceil($totalDesMessages / $nombreDeMessagesParPage);
 
 <h1>Livre d'or</h1>
 
-<?php
-    if (true == $_SESSION['logged']) {
-        ?>
+<?php if (true === $blContext['is_signed_in']) { ?>
 <div class=formul>
 <form method="post" action="livreor.html">
     <p>Le livre d'or a été désactivé, en vue du passage à la v2. Vous pourrez de nouveau poster des messages dans le livre d'or

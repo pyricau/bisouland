@@ -1,7 +1,4 @@
-<?php
-// Ce qu'on affiche si on est connecté
-if (true == $_SESSION['logged']) {
-    ?>
+<?php if (true === $blContext['is_signed_in']) { ?>
 <h1>Organes</h1>
 Les organes vous permettent de vivre votre amour<br />
 <?php

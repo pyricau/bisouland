@@ -1,10 +1,10 @@
 <h1>Nuages</h1>
 <?php
-if (true == $_SESSION['logged']) {
+if (true === $blContext['is_signed_in']) {
     $pdo = bd_connect();
 
     // Infos sur le joueur.
-    $nuageSource = $_SESSION['nuage'];
+    $nuageSource = $blContext['account']['nuage'];
     $stmt = $pdo->prepare('SELECT position, score FROM membres WHERE id = :id');
     $stmt->execute(['id' => $id]);
     $donnees_info = $stmt->fetch();
@@ -63,7 +63,7 @@ if (true == $_SESSION['logged']) {
                                             $amour -= $cout;
                                             $stmt = $pdo->prepare('UPDATE membres SET nuage = :nuage, position = :position WHERE id = :id');
                                             $stmt->execute(['nuage' => $nuageL, 'position' => $positionCible, 'id' => $id]);
-                                            $_SESSION['nuage'] = $nuageL;
+                                            $blContext['account']['nuage'] = $nuageL;
                                             $nuageSource = $nuageL;
                                             $positionSource = $positionCible;
                                             $resultat = 'Saut effectué, tu as utilisé '.ceil($cout)." Points d'Amour";
@@ -95,7 +95,7 @@ if (true == $_SESSION['logged']) {
             $resultat = 'Il n\'existe pas de nuage inférieur à 1';
         }
     } else {
-        $nuageL = $_SESSION['nuage'];
+        $nuageL = $blContext['account']['nuage'];
     }
 
     $Suivant = $nuageL + 1;

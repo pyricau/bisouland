@@ -41,7 +41,7 @@ if ($nombreDePages > 1) {
     echo '</center><br />';
 }
 
-if (true === $_SESSION['logged']) {
+if (true === $blContext['is_signed_in']) {
     while ($donnees = $stmt->fetch()) {
         $donnees['pseudo'] = stripslashes((string) $donnees['pseudo']);
         if ($donnees['lastconnect'] > time() - 300) {

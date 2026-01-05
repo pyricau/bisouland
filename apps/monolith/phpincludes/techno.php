@@ -1,7 +1,4 @@
-<?php
-// Ce qu'on affiche si on est connecté
-if (true == $_SESSION['logged']) {
-    ?>
+<?php if (true === $blContext['is_signed_in']) { ?>
 <h1>Techniques</h1>
 Les techniques vous permettent de mieux vous préparer à faire preuve d'amour.<br />
 <?php

@@ -1,7 +1,7 @@
 <?php
 
-use Bl\Domain\Auth\Service\SaveAuthToken;
-use Bl\Infrastructure\Pg\Auth\Service\PdoSaveAuthToken;
+use Bl\Domain\Auth\SaveAuthToken;
+use Bl\Infrastructure\Pg\Auth\PdoSaveAuthToken;
 
 /**
  * Returns a singleton SaveAuthToken instance.

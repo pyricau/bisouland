@@ -1,6 +1,6 @@
 <?php
 
-if (true === $_SESSION['logged']) {
+if (true === $blContext['is_signed_in']) {
     $pdo = bd_connect();
     $castToUnixTimestamp = cast_to_unix_timestamp();
 
@@ -9,7 +9,7 @@ if (true === $_SESSION['logged']) {
         $stmt = $pdo->prepare('SELECT posteur, destin, message, timestamp, statut, titre FROM messages WHERE id = :id');
         $stmt->execute(['id' => $idmsg]);
         $donnees = $stmt->fetch();
-        if ($donnees['destin'] == $_SESSION['id']) {
+        if ($donnees['destin'] === $blContext['account']['id']) {
             if (false === $donnees['statut']) {
                 $stmt2 = $pdo->prepare('UPDATE messages SET statut = TRUE WHERE id = :id');
                 $stmt2->execute(['id' => $idmsg]);

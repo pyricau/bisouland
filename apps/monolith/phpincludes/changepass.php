@@ -1,6 +1,6 @@
 <?php
 
-if (true == $_SESSION['logged']) {
+if (true === $blContext['is_signed_in']) {
     $pdo = bd_connect();
     ?>
 

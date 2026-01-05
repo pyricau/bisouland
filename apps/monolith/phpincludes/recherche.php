@@ -15,12 +15,12 @@ if (isset($_POST['recherche'])) {
                 } else {
                     $resultat .= '<a class="bulle" style="cursor: default;" onclick="return false;" href=""><img src="images/off.png" alt="Non connect&eacute;" title="" /><span>'.$pseudoCherche." n'est pas connect&eacute;</span></a> ";
                 }
-                if (true === $_SESSION['logged']) {
+                if (true === $blContext['is_signed_in']) {
                     $resultat .= '<a class="bulle" href="'.$donnees['nuage'].'.nuage.html" >
 					<img src="images/nuage.png" title="" alt="" /><span>Nuage : '.$donnees['nuage'].'</span></a> ';
                 }
                 $resultat .= '<strong> '.$pseudoCherche.'</strong>';
-                if (false === $_SESSION['logged']) {
+                if (false === $blContext['is_signed_in']) {
                     $resultat .= '<br /><br />Toi aussi, n\'hesite pas a rejoindre la communaute BisouLand.<br />
 					Tu peux t\'inscrire en cliquant <a href="inscription.html" title="S\'inscrire sur BisouLand">ici</a>.';
                 }

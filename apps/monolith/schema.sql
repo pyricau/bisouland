@@ -38,6 +38,18 @@ CREATE TABLE IF NOT EXISTS membres (
     newpass VARCHAR(255) DEFAULT NULL      -- New password reset token, set in perdu.php:20
 );
 
+--------------------------------------------------------------------------------
+-- Authentication Tokens
+-- Allows secure Authentication Persistence
+--------------------------------------------------------------------------------
+CREATE TABLE IF NOT EXISTS auth_tokens (
+    auth_token_id UUID PRIMARY KEY,
+    token_hash VARCHAR(64) NOT NULL,
+    account_id UUID NOT NULL REFERENCES membres(id) ON DELETE CASCADE,
+    created_at TIMESTAMPTZ NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    expires_at TIMESTAMPTZ NOT NULL DEFAULT CURRENT_TIMESTAMP + '15 days'
+);
+
 -- Messages table
 -- Field order MUST match INSERT statements in fctIndex.php::AdminMP()
 CREATE TABLE IF NOT EXISTS messages (

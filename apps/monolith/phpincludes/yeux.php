@@ -1,4 +1,6 @@
-<?php if (true === $_SESSION['logged']) {
+<?php
+
+if (true === $blContext['is_signed_in']) {
     $pdo = bd_connect();
     $castToUnixTimestamp = cast_to_unix_timestamp();
 

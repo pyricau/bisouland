@@ -9,6 +9,8 @@ use Symfony\Component\HttpClient\Exception\RedirectionException;
 
 final readonly class LogInPlayer
 {
+    private const string AUTH_TOKEN_COOKIE_NAME = 'bl_auth_token';
+
     public static function run(Player $player): string
     {
         $httpClient = TestKernelSingleton::get()->httpClient();
@@ -33,8 +35,9 @@ final readonly class LogInPlayer
 
         $headers = $response->getHeaders(false);
         $cookies = $headers['set-cookie'] ?? $headers['Set-Cookie'] ?? [];
+        $cookiePrefix = self::AUTH_TOKEN_COOKIE_NAME.'=';
         foreach ($cookies as $cookie) {
-            if (str_starts_with($cookie, 'PHPSESSID=')) {
+            if (str_starts_with($cookie, $cookiePrefix)) {
                 return $cookie;
             }
         }
@@ -42,6 +45,6 @@ final readonly class LogInPlayer
         $content = $response->getContent(false);
         $allCookies = implode(', ', $cookies);
 
-        throw new \RuntimeException("Login failed: PHPSESSID cookie not found. Cookies: [{$allCookies}], Content: {$content}");
+        throw new \RuntimeException("Login failed: {$cookiePrefix} cookie not found. Cookies: [{$allCookies}], Content: {$content}");
     }
 }

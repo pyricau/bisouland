@@ -15,13 +15,11 @@ final readonly class PdoSaveAuthToken implements SaveAuthToken
     public function __construct(
         private \PDO $pdo,
     ) {
-        $this->stmt = $this->pdo->prepare(
-            <<<'SQL'
+        $this->stmt = $this->pdo->prepare(<<<'SQL'
             INSERT INTO auth_tokens
             (auth_token_id, token_hash, account_id, expires_at)
             VALUES (:auth_token_id, :token_hash, :account_id, :expires_at)
-            SQL,
-        );
+        SQL);
     }
 
     /**

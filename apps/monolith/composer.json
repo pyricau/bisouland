@@ -29,6 +29,7 @@
             "phpincludes/cast_to_unix_timestamp.php",
             "phpincludes/cast_to_pg_timestamptz.php",
             "phpincludes/fctIndex.php",
+            "phpincludes/remove_auth_token.php",
             "phpincludes/save_auth_token.php"
         ]
     },

@@ -1,7 +1,12 @@
 <?php
 
 use Bl\Application\Auth\AuthToken\CreateAuthToken;
+use Bl\Application\Auth\AuthToken\RemoveAuthToken;
 use Bl\Application\Auth\AuthTokenCookie\CreateAuthTokenCookie;
+use Bl\Application\Auth\AuthTokenCookie\RemoveAuthTokenCookie;
+use Bl\Domain\Auth\AuthToken\TokenHash;
+use Bl\Domain\Auth\AuthTokenCookie\Credentials;
+use Bl\Domain\Exception\ValidationFailedException;
 use Bl\Domain\Upgradable\UpgradableBisou;
 use Bl\Domain\Upgradable\UpgradableCategory;
 use Bl\Domain\Upgradable\UpgradableOrgan;
@@ -27,6 +32,7 @@ ob_start();
 $pdo = bd_connect();
 $castToUnixTimestamp = cast_to_unix_timestamp();
 $castToPgTimestamptz = cast_to_pg_timestamptz();
+$deleteAuthToken = delete_auth_token($pdo);
 $saveAuthToken = save_auth_token($pdo);
 
 $inMainPage = true;
@@ -134,12 +140,6 @@ if ('POST' === $_SERVER['REQUEST_METHOD'] && isset($_POST['connexion'])) {
                     );
                     // ---
 
-                    if (isset($_POST['auto'])) {
-                        $timestamp_expire = time() + 30 * 24 * 3600;
-                        setcookie('pseudo', $pseudo, ['expires' => $timestamp_expire]);
-                        setcookie('mdp', $mdp, ['expires' => $timestamp_expire]);
-                    }
-
                     // On supprime le membre non connecté du nombre de visiteurs :
                     $stmt = $pdo->prepare(<<<'SQL'
                         DELETE FROM connectbisous
@@ -170,21 +170,71 @@ if ('POST' === $_SERVER['REQUEST_METHOD'] && isset($_POST['connexion'])) {
     exit;
 }
 
-// Front Controller: Handle logout (via GET parameter)
 $page = (empty($_GET['page'])) ? 'accueil' : htmlentities((string) $_GET['page']);
-if ('logout' === $page) {
-    if (true === $blContext['is_signed_in']) {
+
+// Mesures de temps pour évaluer le temps que met la page a se créer.
+$temps_debut = microtime_float();
+
+// Check for auth token cookie (persistent authentication)
+if (false === $blContext['is_signed_in'] && isset($_COOKIE[Credentials::NAME])) {
+    try {
+        $credentials = Credentials::fromCookie($_COOKIE[Credentials::NAME]);
         $stmt = $pdo->prepare(<<<'SQL'
-            UPDATE membres
-            SET lastconnect = NOW() - INTERVAL '10 minutes'
-            WHERE id = :current_account_id
+            SELECT token_hash, account_id
+            FROM auth_tokens
+            WHERE auth_token_id = :auth_token_id
+              AND expires_at > CURRENT_TIMESTAMP
         SQL);
         $stmt->execute([
-            'current_account_id' => $blContext['account']['id'],
+            'auth_token_id' => $credentials->authTokenId->toString(),
         ]);
-        $timestamp_expire = time() - 1000;
-        setcookie('pseudo', '', ['expires' => $timestamp_expire]);
-        setcookie('mdp', '', ['expires' => $timestamp_expire]);
+        /** @var array{token_hash: string, account_id: string}|false $authTokenRow */
+        $authTokenRow = $stmt->fetch();
+
+        if (false !== $authTokenRow) {
+            $tokenHash = TokenHash::fromTokenPlain($credentials->tokenPlain);
+            if (hash_equals($authTokenRow['token_hash'], $tokenHash->toString())) {
+                // Token is valid, get account details
+                $stmt = $pdo->prepare(<<<'SQL'
+                    SELECT id, pseudo, nuage
+                    FROM membres
+                    WHERE id = :account_id
+                SQL);
+                $stmt->execute([
+                    'account_id' => $authTokenRow['account_id'],
+                ]);
+                /** @var array{id: string, pseudo: string, nuage: int}|false $account */
+                $account = $stmt->fetch();
+
+                if (false !== $account) {
+                    $blContext = [
+                        'is_signed_in' => true,
+                        'account' => [
+                            'id' => $account['id'],
+                            'pseudo' => $account['pseudo'],
+                            'nuage' => $account['nuage'],
+                        ],
+                    ];
+                }
+            }
+        }
+    } catch (ValidationFailedException) {
+        // Invalid cookie format, ignore silently
+    }
+}
+
+// Front Controller: Handle logout (via GET parameter)
+if ('logout' === $page) {
+    if (true === $blContext['is_signed_in']) {
+        $removeAuthToken = RemoveAuthToken::fromRawAccountId($blContext['account']['id']);
+        $deleteAuthToken->delete($removeAuthToken->accountId);
+
+        $removeAuthTokenCookie = new RemoveAuthTokenCookie();
+        setcookie(
+            $removeAuthTokenCookie->getName(),
+            $removeAuthTokenCookie->getValue(),
+            $removeAuthTokenCookie->getOptions(),
+        );
 
         // Redirection.
         header('location: accueil.html');
@@ -195,75 +245,12 @@ if ('logout' === $page) {
     exit;
 }
 
-// Mesures de temps pour évaluer le temps que met la page a se créer.
-$temps_debut = microtime_float();
-
 // Test en cas de suppression de compte
 // Il faudra a jouter ici une routine de suppression des messages dans la bdd.
 // Ainsi que des constructions en cours, etc..
 if (isset($_POST['suppr']) && true === $blContext['is_signed_in']) {
     SupprimerCompte($blContext['account']['id']);
     $blContext = $resetBlContext;
-}
-
-// Si on est pas connecté.
-if (false === $blContext['is_signed_in']) {
-    // On récupère les cookies enregistrés chez l'utilisateurs, s'ils sont la.
-    if (isset($_COOKIE['pseudo']) && isset($_COOKIE['mdp'])) {
-        $pseudo = htmlentities(addslashes((string) $_COOKIE['pseudo']));
-        $mdp = htmlentities(addslashes($_COOKIE['mdp']));
-        // La requête qui compte le nombre de pseudos
-        $stmt = $pdo->prepare(<<<'SQL'
-            SELECT COUNT(pseudo) AS total_pseudo_matches
-            FROM membres
-            WHERE pseudo = :pseudo
-        SQL);
-        $stmt->execute([
-            'pseudo' => $pseudo,
-        ]);
-        /** @var array{total_pseudo_matches: int}|false $results */
-        $results = $stmt->fetch();
-        if (
-            false !== $results
-            && 1 === $results['total_pseudo_matches']
-        ) {
-            $stmt = $pdo->prepare(<<<'SQL'
-                SELECT id, pseudo, confirmation, mdp, nuage
-                FROM membres
-                WHERE pseudo = :pseudo
-            SQL);
-            $stmt->execute([
-                'pseudo' => $pseudo,
-            ]);
-            /**
-             * @var array{
-             *     id: string, // UUID
-             *     pseudo: string,
-             *     confirmation: bool,
-             *     mdp: string,
-             *     nuage: int,
-             * }|false $currentAccount
-             */
-            $currentAccount = $stmt->fetch();
-
-            if (
-                false !== $currentAccount
-                && password_verify($mdp, $currentAccount['mdp'])
-                && true === $currentAccount['confirmation']
-            ) {
-                $blContext = [
-                    'is_signed_in' => true,
-                    'account' => [
-                        'id' => $currentAccount['id'],
-                        'pseudo' => $currentAccount['pseudo'],
-                        'nuage' => $currentAccount['nuage'],
-                    ],
-                ];
-            }
-        }
-    }
-} else {
-    $pseudo = $blContext['account']['pseudo'];
 }
 
 $temps11 = microtime_float();

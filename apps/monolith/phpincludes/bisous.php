@@ -1,16 +1,18 @@
 <?php
-// Ce qu'on affiche si on est connecté
-if (true == $_SESSION['logged']) {
-?>
+
+use Bl\Domain\Upgradable\UpgradableBisou;
+use Bl\Domain\Upgradable\UpgradableCategory;
+
+if (true === $blContext['is_signed_in']) { ?>
 <h1>Bisous</h1>
 Les Bisous vous permettent d'obtenir de l'amour des autres joueurs<br />
 <span class="info">[ Les Bisous ont un coût d'entretien : 1 niveau de Coeur correspond à 3 Smacks, 2 Baisers, ou 1 Baiser langoureux ]</span><br />
 <?php
-if (1 == $joueurBloque) {
+if (true === $joueurBloque) {
     echo '<br /><span class="info">[ Une action est en cours, tu ne peux pas créer de nouveaux Bisous ]</span><br />';
 }
 
-if (-1 != $evolution) {
+if (-1 !== $evolution) {
     $pdo = bd_connect();
 ?>
 <br />
@@ -31,12 +33,32 @@ Liste des Bisous en cr&eacute;ation :<br />
     ];
     $nomActuel = $nom[$evolution];
     echo '<option>1) '.$nomActuel.' (en cours)</option>';
-    $stmt = $pdo->prepare('SELECT type,duree FROM liste WHERE auteur = :auteur AND classe = :classe ORDER BY id');
-    $stmt->execute(['auteur' => $id, 'classe' => $evolPage]);
+    $stmt = $pdo->prepare(<<<'SQL'
+        SELECT
+            type,
+            duree
+        FROM liste
+        WHERE (
+            auteur = :current_account_id
+            AND classe = :upgradable_category
+        )
+        ORDER BY id
+    SQL);
+    $stmt->execute([
+        'current_account_id' => $blContext['account']['id'],
+        'upgradable_category' => $evolPage,
+    ]);
+    /**
+     * @var array<int, array{
+     *      type: int,
+     *      duree: int,
+     * }> $plannedKisses
+     */
+    $plannedKisses = $stmt->fetchAll();
 
-    while ($donnees_info = $stmt->fetch()) {
-        $tempsRestant += $donnees_info['duree'];
-        $nomActuel = $nom[$donnees_info['type']];
+    foreach ($plannedKisses as $plannedKiss) {
+        $tempsRestant += $plannedKiss['duree'];
+        $nomActuel = $nom[$plannedKiss['type']];
         if ($nomActuel === $nomPrec) {
             ++$nbIdent;
         } elseif ('' !== $nomPrec) {
@@ -54,7 +76,7 @@ Liste des Bisous en cr&eacute;ation :<br />
         }
 
         $nomPrec = $nomActuel;
-        $typePrec = $donnees_info['type'];
+        $typePrec = $plannedKiss['type'];
     }
     if ('' !== $nomPrec) {
     ++$i;
@@ -76,13 +98,13 @@ Liste des Bisous en cr&eacute;ation :<br />
 echo 'Temps total restant : '.strTemps($tempsRestant).'<br />';
 }
 
-for ($i = 0; $i != $nbType[1]; ++$i) {
-if (arbre($evolPage, $i, $nbE)) {
-    echo '<div class="bisous"><h2>',$evolNom[$i],'<br /></h2>';
-    echo $evolDesc[$i],'<br />Nombre disponible : ';
-    echo $nbE[1][$i],'<br />';
+foreach (UpgradableBisou::cases() as $bisou) {
+if (arbre($evolPage, $bisou->value, $currentPlayerUpgradableLevels)) {
+    echo '<div class="bisous"><h2>',$evolNom[$bisou->value],'<br /></h2>';
+    echo $evolDesc[$bisou->value],'<br />Nombre disponible : ';
+    echo $currentPlayerUpgradableLevels[UpgradableCategory::Bisous->value][$bisou->value],'<br />';
 
-    if ($evolution == $i) {
+    if ($bisou->value === $evolution) {
     ?>
 	<span class="info">[ Ce Bisou est en cours de cr&eacute;ation ]<br /></span>
 	<script src="includes/compteur.js" type="text/javascript"></script>
@@ -99,14 +121,15 @@ if (arbre($evolPage, $i, $nbE)) {
 	</script>
 	<?php
     }
-    echo 'Nombre de points d\'amour requis pour en créer un : ',formaterNombre($amourE[1][$i]),'<br />';
-    echo 'Temps de création : ',strTemps($tempsE[1][$i]),'<br />';
-    if (0 == $joueurBloque) {
-        if ($amour >= $amourE[1][$i]) {
+    echo 'Nombre de points d\'amour requis pour en créer un : ',formaterNombre($amourE[UpgradableCategory::Bisous->value][$bisou->value]),'<br />';
+    echo 'Temps de création : ',strTemps($tempsE[UpgradableCategory::Bisous->value][$bisou->value]),'<br />';
+    if (false === $joueurBloque) {
+        if ($amour >= $amourE[UpgradableCategory::Bisous->value][$bisou->value]) {
+            $upgradableItem = $bisou->toString();
             echo '<form method="post" action="bisous.html"><input type="submit"
-			name="'.$Obj[1][$i].'" value="Cr&eacute;er" /></form>';
+			name="'.$upgradableItem.'" value="Cr&eacute;er" /></form>';
         } else {
-            echo '<span class="info">[ Il te manque '.formaterNombre(ceil($amourE[1][$i] - $amour)).' points d\'amour pour pouvoir créer ce bisou ]</span><br />';
+            echo '<span class="info">[ Il te manque '.formaterNombre(ceil($amourE[UpgradableCategory::Bisous->value][$bisou->value] - $amour)).' points d\'amour pour pouvoir créer ce bisou ]</span><br />';
         }
     }
 
@@ -114,14 +137,22 @@ if (arbre($evolPage, $i, $nbE)) {
 <?php
 echo '</div>';
 } else {
-    echo '<div class="bisous"><h2>',$evolNom[$i],'<br /></h2>';
-    echo $evolDesc[$i],'<span class="info">[ --Tu ne remplis pas les conditions requises --]</span><br />
+    echo '<div class="bisous"><h2>',$evolNom[$bisou->value],'<br /></h2>';
+    echo $evolDesc[$bisou->value],'<span class="info">[ --Tu ne remplis pas les conditions requises --]</span><br />
 
 	</div>';
 }
 }
 
-if (($nbE[1][0] + $nbE[1][1] + $nbE[1][2] > 0) && (0 == $joueurBloque)) {
+if (
+    (
+        $currentPlayerUpgradableLevels[UpgradableCategory::Bisous->value][UpgradableBisou::Peck->value]
+        + $currentPlayerUpgradableLevels[UpgradableCategory::Bisous->value][UpgradableBisou::Smooch->value]
+        + $currentPlayerUpgradableLevels[UpgradableCategory::Bisous->value][UpgradableBisou::FrenchKiss->value]
+        > 0
+    )
+    && (false === $joueurBloque)
+) {
 ?>
 <h2>Supprimer des bisous</h2>
 
@@ -129,10 +160,11 @@ if (($nbE[1][0] + $nbE[1][1] + $nbE[1][2] > 0) && (0 == $joueurBloque)) {
     <p>Liquidez vos bisous en trop !!</p>
     <p>
 <?php
-    for ($i = 0; $i != $nbType[1]; ++$i) {
+    foreach (UpgradableBisou::cases() as $bisou) {
         // Si on a des bisous dispo de ce type
-        if ($nbE[1][$i] > 0) {
-            echo '<label>',$evolNom[$i],' (max ',$nbE[1][$i],') :<br /><input name="sp',$Obj[1][$i],'" tabindex="',$i,'0" value="0" size="6" /><br />	';
+        if ($currentPlayerUpgradableLevels[UpgradableCategory::Bisous->value][$bisou->value] > 0) {
+            $upgradableItem = $bisou->toString();
+            echo '<label>',$evolNom[$bisou->value],' (max ',$currentPlayerUpgradableLevels[UpgradableCategory::Bisous->value][$bisou->value],') :<br /><input name="sp',$upgradableItem,'" tabindex="',$bisou->value,'0" value="0" size="6" /><br />	';
         }
     }
 ?>

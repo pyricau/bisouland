@@ -16,7 +16,8 @@
     "require": {
         "php": ">=8.5",
         "ext-curl": "*",
-        "symfony/uid": "^8.0@rc"
+        "ext-pdo_pgsql": "*",
+        "symfony/uid": "^8.0"
     },
     "autoload": {
         "psr-4": {
@@ -27,8 +28,19 @@
             "phpincludes/cast_to_pg_boolean.php",
             "phpincludes/cast_to_unix_timestamp.php",
             "phpincludes/cast_to_pg_timestamptz.php",
-            "phpincludes/fctIndex.php"
+            "phpincludes/fctIndex.php",
+            "phpincludes/remove_auth_token.php",
+            "phpincludes/save_auth_token.php"
         ]
+    },
+    "require-dev": {
+        "phpspec/prophecy-phpunit": "^2.4",
+        "phpunit/phpunit": "^12.5.2"
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "Bl\\Tests\\": "tests/"
+        }
     },
     "config": {
         "bump-after-update": true,

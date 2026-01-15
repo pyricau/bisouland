@@ -1,9 +1,14 @@
 <h1>Liste des joueurs</h1>
 <?php
 $pdo = bd_connect();
-$sql = $pdo->query('SELECT COUNT(*) AS nb_pseudo FROM membres WHERE confirmation = TRUE');
-
-$total = $sql->fetchColumn();
+$stmt = $pdo->query(<<<'SQL'
+    SELECT COUNT(id) AS total_confirmed_members
+    FROM membres
+    WHERE confirmation = TRUE
+SQL);
+/** @var array{total_confirmed_members: int}|false $result */
+$result = $stmt->fetch();
+$total = (false !== $result) ? $result['total_confirmed_members'] : 0;
 
 echo 'Nombre de membres : '.$total.'<br /><br />';
 
@@ -26,8 +31,22 @@ if (isset($_GET['num'])) {
 // On calcule le numéro du premier message qu'on prend pour le LIMIT de MySQL
 $premier = ($num - 1) * $nombreParPage;
 
-$stmt = $pdo->prepare('SELECT id, pseudo, nuage, lastconnect FROM membres WHERE confirmation = TRUE ORDER BY id DESC LIMIT :limit OFFSET :offset');
-$stmt->execute(['limit' => $nombreParPage, 'offset' => (int) $premier]);
+$stmt = $pdo->prepare(<<<'SQL'
+    SELECT
+        id,
+        pseudo,
+        nuage,
+        lastconnect
+    FROM membres
+    WHERE confirmation = TRUE
+    ORDER BY id DESC
+    LIMIT :results_per_page
+    OFFSET :results_offset
+SQL);
+$stmt->execute([
+    'results_per_page' => $nombreParPage,
+    'results_offset' => $premier,
+]);
 
 if ($nombreDePages > 1) {
     echo '<center>Page :';
@@ -41,28 +60,37 @@ if ($nombreDePages > 1) {
     echo '</center><br />';
 }
 
-if (true === $_SESSION['logged']) {
-    while ($donnees = $stmt->fetch()) {
-        $donnees['pseudo'] = stripslashes((string) $donnees['pseudo']);
-        if ($donnees['lastconnect'] > time() - 300) {
-            echo '<a class="bulle" style="cursor: default;" onclick="return false;" href=""><img src="images/on.png" alt="Connect&eacute;" title=""/><span>',$donnees['pseudo'],' est connect&eacute;</span></a> ';
+/**
+ * @var array<array{
+ *      id: string, // UUID
+ *      pseudo: string,
+ *      nuage: int,
+ *      lastconnect: string, // ISO 8601 timestamp string
+ * }> $members
+ */
+$members = $stmt->fetchAll();
+if (true === $blContext['is_signed_in']) {
+    foreach ($members as $member) {
+        $member['pseudo'] = stripslashes((string) $member['pseudo']);
+        if ($member['lastconnect'] > time() - 300) {
+            echo '<a class="bulle" style="cursor: default;" onclick="return false;" href=""><img src="images/on.png" alt="Connect&eacute;" title=""/><span>',$member['pseudo'],' est connect&eacute;</span></a> ';
         } else {
-            echo '<a class="bulle" style="cursor: default;" onclick="return false;" href=""><img src="images/off.png" alt="Non connect&eacute;" title="" /><span>',$donnees['pseudo']," n'est pas connect&eacute;</span></a> ";
+            echo '<a class="bulle" style="cursor: default;" onclick="return false;" href=""><img src="images/off.png" alt="Non connect&eacute;" title="" /><span>',$member['pseudo']," n'est pas connect&eacute;</span></a> ";
         }
-        echo '<a class="bulle" href="',$donnees['nuage'],'.nuage.html" >
-		<img src="images/nuage.png" title="" alt="" /><span>Nuage : ',$donnees['nuage'],'</span></a>
-		<strong> ',$donnees['pseudo'],'</strong>
+        echo '<a class="bulle" href="',$member['nuage'],'.nuage.html" >
+		<img src="images/nuage.png" title="" alt="" /><span>Nuage : ',$member['nuage'],'</span></a>
+		<strong> ',$member['pseudo'],'</strong>
 		<br />';
     }
 } else {
-    while ($donnees = $stmt->fetch()) {
-        $donnees['pseudo'] = stripslashes((string) $donnees['pseudo']);
-        if ($donnees['lastconnect'] > time() - 300) {
-            echo '<a class="bulle" style="cursor: default;" onclick="return false;" href=""><img src="images/on.png" alt="Connect&eacute;" title=""/><span>',$donnees['pseudo'],' est connect&eacute;</span></a> ';
+    foreach ($members as $member) {
+        $member['pseudo'] = stripslashes((string) $member['pseudo']);
+        if ($member['lastconnect'] > time() - 300) {
+            echo '<a class="bulle" style="cursor: default;" onclick="return false;" href=""><img src="images/on.png" alt="Connect&eacute;" title=""/><span>',$member['pseudo'],' est connect&eacute;</span></a> ';
         } else {
-            echo '<a class="bulle" style="cursor: default;" onclick="return false;" href=""><img src="images/off.png" alt="Non connect&eacute;" title="" /><span>',$donnees['pseudo']," n'est pas connect&eacute;</span></a> ";
+            echo '<a class="bulle" style="cursor: default;" onclick="return false;" href=""><img src="images/off.png" alt="Non connect&eacute;" title="" /><span>',$member['pseudo']," n'est pas connect&eacute;</span></a> ";
         }
-        echo '<strong>'.$donnees['pseudo'].'</strong><br />';
+        echo '<strong>'.$member['pseudo'].'</strong><br />';
     }
 }
 ?>

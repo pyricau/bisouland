@@ -18,12 +18,6 @@
  * evo.php // game logic @todo check
  * fctIndex.php // functions @todo check
  * pages.php // Router (this file)
- *
- * ## web
- * deconnexion.php // logic for logout @todo check
- * index.php // Front Controller / layout
- * redirect.php // logic for connexion.php form submission
- * reductionNuages.php // script for Clouds Removal @todo use on account removal
  */
 
 // Gestion des pages

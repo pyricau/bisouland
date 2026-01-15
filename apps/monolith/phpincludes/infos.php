@@ -1,6 +1,4 @@
-<?php
-if (true == $_SESSION['logged']) {
-    ?>
+<?php if (true === $blContext['is_signed_in']) { ?>
 <h1>Encyclop&eacute;die</h1>
 R&eacute;capitulatif te permettant d'orienter ton d&eacute;veloppement.<br />
 Attention : ces informations ne sont pas mises &agrave; jour en direct.<br />
@@ -236,7 +234,7 @@ Lorsque tu annules une cr&eacute;ation, tu ne r&eacute;cup&eacute;res que la  mo
                     if ($cond > 1) {
                         echo '<tr>';
                     }
-                    if ($nbE[$classe][$requis[$c][$i]['Type'][$cond]] < $requis[$c][$i]['Niveau'][$cond]) {
+                    if ($currentPlayerUpgradableLevels[$classe][$requis[$c][$i]['Type'][$cond]] < $requis[$c][$i]['Niveau'][$cond]) {
                         $color = 'black';
                         $reqTexte = "Tu n'as pas le niveau requis";
                     } else {

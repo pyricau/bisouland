@@ -1,75 +1,177 @@
+<?php
+
+use Bl\Domain\Upgradable\UpgradableBisou;
+use Bl\Domain\Upgradable\UpgradableCategory;
+use Bl\Domain\Upgradable\UpgradableOrgan;
+
+?>
 <h1>Embrasser</h1>
 <?php
-if (true === $_SESSION['logged']) {
+if (true === $blContext['is_signed_in']) {
     $pdo = bd_connect();
     $castToUnixTimestamp = cast_to_unix_timestamp();
     $castToPgTimestamptz = cast_to_pg_timestamptz();
     if (isset($_POST['action'])) {
         $cout = 0;
-        $nuageCible = htmlentities((string) $_POST['nuage']);
-        $positionCible = htmlentities((string) $_POST['position']);
+        $positionCible = $_POST['position'] ?? '0';
+        $nuageCible = is_numeric($nuageCible) ? (int) $nuageCible : 0;
+        $positionCible = $_POST['nuage'] ?? '0';
+        $positionCible = is_numeric($positionCible) ? (int) $positionCible : 0;
 
-        if (0 == $joueurBloque) {
-            if (($nbE[1][0] + $nbE[1][1] + $nbE[1][2]) > 0) {
-                if (0 == $nuageCible || 0 == $positionCible) {
+        if (false === $joueurBloque) {
+            if (($currentPlayerUpgradableLevels[UpgradableCategory::Bisous->value][UpgradableBisou::Peck->value] + $currentPlayerUpgradableLevels[UpgradableCategory::Bisous->value][UpgradableBisou::Smooch->value] + $currentPlayerUpgradableLevels[UpgradableCategory::Bisous->value][UpgradableBisou::FrenchKiss->value]) > 0) {
+                if (0 === $nuageCible || 0 === $positionCible) {
                     $resultat = 'Evite les valeurs nulles pour les deux champs';
                 } else {
-                    $stmt = $pdo->prepare('SELECT id, score FROM membres WHERE nuage = :nuage AND position = :position');
-                    $stmt->execute(['nuage' => $nuageCible, 'position' => $positionCible]);
-                    if ($donnees_info = $stmt->fetch()) {
-                        $cible = $donnees_info['id'];
-                        $score = $donnees_info['score'];
-
-                        if ($cible == $id) {
+                    $stmt = $pdo->prepare(<<<'SQL'
+                        SELECT
+                            id,
+                            nuage,
+                            position,
+                            score
+                        FROM membres
+                        WHERE (
+                            nuage = :destination_nuage
+                            AND position = :destination_position
+                    SQL);
+                    $stmt->execute([
+                        'destination_nuage' => $nuageCible,
+                        'destination_position' => $positionCible,
+                    ]);
+                    /**
+                     * @var array{
+                     *      id: string, // UUID
+                     *      nuage: int,
+                     *      position: int,
+                     *      score: int,
+                     * }|false $receiver
+                     */
+                    $receiver = $stmt->fetch();
+                    if (false !== $receiver) {
+                        if ($blContext['account']['id'] === $receiver['id']) {
                             $resultat = 'Il est impossible s\'attaquer soi même';
                         } else {
-                            $stmt = $pdo->prepare('SELECT COUNT(*) AS nb_id FROM evolution WHERE auteur = :auteur AND classe = 1');
-                            $stmt->execute(['auteur' => $id]);
-                            if (0 != $stmt->fetchColumn()) {
+                            $stmt = $pdo->prepare(<<<'SQL'
+                                SELECT
+                                    COUNT(id) AS total_kisses_being_built
+                                FROM evolution
+                                WHERE (
+                                    auteur = :current_account_id
+                                    AND classe = 1
+                            SQL);
+                            $stmt->execute([
+                                'current_account_id' => $blContext['account']['id'],
+                            ]);
+                            /** @var array{total_kisses_being_built: int}|false $result */
+                            $result = $stmt->fetch();
+
+                            // La on vérifie si le nombre est différent que zéro
+                            if (
+                                false !== $result
+                                && 0 < $result['total_kisses_being_built']
+                            ) {
                                 $resultat = 'Action impossible car tu es en train de créer des Bisous';
                             } else {
                                 // On détermine s'il y a une construction en cours.
-                                $stmt = $pdo->prepare('SELECT COUNT(*) AS nb_id FROM liste WHERE auteur = :auteur AND classe = 1');
-                                $stmt->execute(['auteur' => $id]);
-                                if (0 != $stmt->fetchColumn()) {
+                                $stmt = $pdo->prepare(<<<'SQL'
+                                    SELECT COUNT(id) AS total_kisses_planned_to_be_built
+                                    FROM liste
+                                    WHERE (
+                                        auteur = :current_account_id
+                                        AND classe = 1
+                                SQL);
+                                $stmt->execute([
+                                    'current_account_id' => $blContext['account']['id'],
+                                ]);
+                                /** @var array{total_kisses_planned_to_be_built: int}|false $result */
+                                $result = $stmt->fetch();
+                                if (
+                                    false !== $result
+                                    && 0 < $result['total_kisses_planned_to_be_built']
+                                ) {
                                     $resultat = 'Action impossible car tu es en train de créer des Bisous';
                                 }
 
-                                $nuageSource = $_SESSION['nuage'];
+                                $stmt = $pdo->prepare(<<<'SQL'
+                                    SELECT position, score
+                                    FROM membres
+                                    WHERE id = :current_account_id
+                                SQL);
+                                $stmt->execute([
+                                    'current_account_id' => $blContext['account']['id'],
+                                ]);
+                                /**
+                                 * @var array{
+                                 *      position: int,
+                                 *      score: int,
+                                 * }|false $sender
+                                 */
+                                $sender = $stmt->fetch();
 
-                                $stmt = $pdo->prepare('SELECT position, score FROM membres WHERE id = :id');
-                                $stmt->execute(['id' => $id]);
-                                $donnees_info = $stmt->fetch();
-
-                                $positionSource = $donnees_info['position'];
-                                $scoreSource = $donnees_info['score'];
-
-                                $score = floor($score / 1000.);
-                                $scoreSource = floor($scoreSource / 1000.);
-                                $Niveau = voirNiveau($scoreSource, $score);
+                                $receiver['score'] = floor($receiver['score'] / 1000.);
+                                $sender['score'] = floor($sender['score'] / 1000.);
+                                $Niveau = voirNiveau($sender['score'], $receiver['score']);
 
                                 if (0 === $Niveau) {
-                                    $distance = abs(16 * ($nuageCible - $nuageSource) + $positionCible - $positionSource);
+                                    $distance = abs(16 * ($receiver['nuage'] - $blContext['account']['nuage']) + $receiver['position'] - $sender['position']);
 
-                                    $distMax = distanceMax($nbE[0][0], $nbE[0][4]);
+                                    $distMax = distanceMax($currentPlayerUpgradableLevels[UpgradableCategory::Organs->value][UpgradableOrgan::Heart->value], $currentPlayerUpgradableLevels[UpgradableCategory::Organs->value][UpgradableOrgan::Legs->value]);
 
                                     if ($distance <= $distMax) {
-                                        $cout = coutAttaque($distance, $nbE[0][4]);
+                                        $cout = coutAttaque($distance, $currentPlayerUpgradableLevels[UpgradableCategory::Organs->value][UpgradableOrgan::Legs->value]);
                                         if ($amour >= $cout) {
-                                            $stmt = $pdo->prepare("SELECT COUNT(*) AS nb_att FROM logatt WHERE auteur = :auteur AND cible = :cible AND timestamp >= CURRENT_TIMESTAMP - INTERVAL '12 hours'");
-                                            $stmt->execute(['auteur' => $id, 'cible' => $cible]);
-                                            if ($stmt->fetchColumn() < 3) {
+                                            $stmt = $pdo->prepare(<<<'SQL'
+                                                SELECT COUNT(id) AS total_number_of_kisses_sent_recently
+                                                FROM logatt
+                                                WHERE (
+                                                    auteur = :current_account_id
+                                                    AND cible = :receiver_account_id
+                                                    AND timestamp >= CURRENT_TIMESTAMP - INTERVAL '12 hours'
+                                            SQL);
+                                            $stmt->execute([
+                                                'current_account_id' => $blContext['account']['id'],
+                                                'receiver_account_id' => $receiver['id'],
+                                            ]);
+                                            /** @var array{total_number_of_kisses_sent_recently: int}|false $result */
+                                            $result = $stmt->fetch();
+                                            if (
+                                                false !== $result
+                                                && 3 > $result['total_number_of_kisses_sent_recently']
+                                            ) {
                                                 $amour -= $cout;
-                                                $joueurBloque = 1;
-                                                $duree = tempsAttaque($distance, $nbE[0][4]);
-                                                $stmt = $pdo->prepare('UPDATE membres SET bloque = TRUE WHERE id = :id');
-                                                $stmt->execute(['id' => $id]);
-                                                $stmt = $pdo->prepare("INSERT INTO attaque (auteur, cible, finaller, finretour, state) VALUES (:auteur, :cible, :finaller, :finretour, 'EnRoute')");
-                                                $stmt->execute(['auteur' => $id, 'cible' => $cible, 'finaller' => $castToPgTimestamptz->fromUnixTimestamp(time() + $duree), 'finretour' => $castToPgTimestamptz->fromUnixTimestamp(time() + 2 * $duree)]);
-                                                AdminMP($cible, $pseudo." veut t'embrasser", $pseudo." vient d'envoyer ses bisous dans ta direction, et va tenter de t'embrasser.
-						".$pseudo.' est situé sur le nuage '.$nuageSource.', à la position '.$positionSource.'.
-						Ses Bisous arrivent dans '.strTemps($duree).'.');
-                                                $resultat = 'Tes Bisous sont en route vers la position '.$positionSource.' du nuage '.$nuageSource.', ils arriveront à destination dans '.strTemps($duree).'.';
+                                                $joueurBloque = true;
+                                                $duree = tempsAttaque($distance, $currentPlayerUpgradableLevels[UpgradableCategory::Organs->value][UpgradableOrgan::Legs->value]);
+                                                $stmt = $pdo->prepare(<<<'SQL'
+                                                    UPDATE membres
+                                                    SET bloque = TRUE
+                                                    WHERE id = :current_account_id
+                                                SQL);
+                                                $stmt->execute([
+                                                    'current_account_id' => $blContext['account']['id'],
+                                                ]);
+                                                $stmt = $pdo->prepare(<<<'SQL'
+                                                    INSERT INTO attaque (auteur, cible, finaller, finretour, state)
+                                                    VALUES (:current_account_id, :cible, :finaller, :finretour, 'EnRoute')
+                                                SQL);
+                                                $stmt->execute([
+                                                    'current_account_id' => $blContext['account']['id'],
+                                                    'cible' => $receiver['id'],
+                                                    'finaller' => $castToPgTimestamptz->fromUnixTimestamp(time() + $duree),
+                                                    'finretour' => $castToPgTimestamptz->fromUnixTimestamp(time() + 2 * $duree),
+                                                ]);
+                                                $estimatedTimeOfArrival = strTemps($duree);
+                                                AdminMP(
+                                                    $receiver['id'],
+                                                    "{$pseudo} veut t'embrasser",
+                                                    "{$pseudo} vient d'envoyer ses bisous dans ta direction,"
+                                                    ." et va tenter de t'embrasser.\n"
+                                                    ."{$pseudo} est situé sur le nuage {$blContext['account']['nuage']},"
+                                                    ." à la position {$sender['position']}.\n"
+                                                    ."Ses Bisous arrivent dans {$estimatedTimeOfArrival}.",
+                                                );
+                                                $resultat = 'Tes Bisous sont en route vers la position '
+                                                    ."{$sender['position']} du nuage {$blContext['account']['nuage']},"
+                                                    ." ils arriveront à destination dans {$estimatedTimeOfArrival}.";
                                             } else {
                                                 $resultat = "Il est impossible d'embrasser le même joueur plus de 3 fois toutes les 12 heures";
                                             }
@@ -98,19 +200,32 @@ if (true === $_SESSION['logged']) {
         }
     } elseif (isset($_GET['nuage']) && isset($_GET['position'])) {
         $pdo = bd_connect();
-        $nuageCible = htmlentities((string) $_GET['nuage']);
-        $positionCible = htmlentities($_GET['position']);
 
-        $nuageSource = $_SESSION['nuage'];
+        $nuageCible = $_GET['position'] ?? '0';
+        $nuageCible = is_numeric($nuageCible) ? (int) $nuageCible : 0;
+        $positionCible = $_GET['nuage'] ?? '0';
+        $positionCible = is_numeric($positionCible) ? (int) $positionCible : 0;
 
-        $stmt = $pdo->prepare('SELECT position FROM membres WHERE id = :id');
-        $stmt->execute(['id' => $id]);
-        $donnees_info = $stmt->fetch();
-        $positionSource = $donnees_info['position'];
+        $nuageSource = $blContext['account']['nuage'];
 
-        $distance = abs(16 * ($nuageCible - $nuageSource) + $positionCible - $positionSource);
+        $stmt = $pdo->prepare(<<<'SQL'
+            SELECT position
+            FROM membres
+            WHERE id = :current_account_id
+        SQL);
+        $stmt->execute([
+            'current_account_id' => $blContext['account']['id'],
+        ]);
+        /**
+         * @var array{
+         *      position: int,
+         * }|false $sender
+         */
+        $sender = $stmt->fetch();
 
-        $cout = coutAttaque($distance, $nbE[0][4]);
+        $distance = abs(16 * ($nuageCible - $blContext['account']['nuage']) + $positionCible - $sender['position']);
+
+        $cout = coutAttaque($distance, $currentPlayerUpgradableLevels[UpgradableCategory::Organs->value][UpgradableOrgan::Legs->value]);
     } else {
         $nuageCible = 0;
         $positionCible = 0;
@@ -119,52 +234,52 @@ if (true === $_SESSION['logged']) {
     if (isset($resultat)) {
         echo '<span class="info">[ '.$resultat.' ]</span><br /><br />';
     }
-    if (0 == $joueurBloque) {
-        ?>
-<center>
-<form method="post" action="action.html">
-<table>
-	<tbody>
-		<tr>
-			<th colspan="2">Cible</th>
-		</tr>
-		<tr>
-			<td>
-				Nuage
-			</td>
-			<td>
-				<input type="text" name="nuage" maxlength="3" value="<?php echo $nuageCible; ?>" tabindex="20" size="2"/>
-			</td>
-        </tr>
-		<tr>
-			<td>
-				Position
-			</td>
-			<td>
-				<input type="text" name="position" maxlength="2" value="<?php echo $positionCible; ?>" tabindex="20" size="2"/>
-			</td>
-		</tr>
-		<tr>
-			<td colspan="2">
-				Cette opération nécessite <?php echo $cout; ?> points d'amour.
-			</td>
-		</tr>
-		<tr>
-			<td colspan="2">
-				<input type="submit" name="action" value="Go !!" />
-			</td>
-		</tr>
-    </tbody>
-</table>
-</form>
-</center>
-<br />
+    ?>
 
-<?php
-    } else {
-        echo 'Tes Bisous sont en chemin.<br />';
-    }
-} else {
-    echo 'Tu n\'es pas connecté !!';
-}
-?>
+    <?php if (false === $joueurBloque) { ?>
+    <center>
+    <form method="post" action="action.html">
+    <table>
+        <tbody>
+            <tr>
+                <th colspan="2">Cible</th>
+            </tr>
+            <tr>
+                <td>
+                    Nuage
+                </td>
+                <td>
+                    <input type="text" name="nuage" maxlength="3" value="<?php echo $nuageCible; ?>" tabindex="20" size="2"/>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    Position
+                </td>
+                <td>
+                    <input type="text" name="position" maxlength="2" value="<?php echo $positionCible; ?>" tabindex="20" size="2"/>
+                </td>
+            </tr>
+            <tr>
+                <td colspan="2">
+                    Cette opération nécessite <?php echo $cout; ?> points d'amour.
+                </td>
+            </tr>
+            <tr>
+                <td colspan="2">
+                    <input type="submit" name="action" value="Go !!" />
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    </form>
+    </center>
+    <br />
+
+    <?php } else { ?>
+    Tes Bisous sont en chemin.<br />
+    <?php } ?>
+
+<?php } else { ?>
+    Tu n'es pas connecté !!
+<?php } ?>

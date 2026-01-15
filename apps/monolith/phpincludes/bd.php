@@ -1,8 +1,10 @@
 <?php
 
+declare(strict_types=1);
+
 include __DIR__.'/../config/parameters.php';
 
-function bd_connect()
+function bd_connect(): PDO
 {
     static $pdo = null;
 

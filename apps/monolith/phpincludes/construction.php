@@ -1,28 +1,31 @@
 <?php
-// Ce qu'on affiche si on est connecté
-if (true == $_SESSION['logged']) {
-    ?>
+
+use Bl\Domain\Upgradable\UpgradableCategory;
+use Bl\Domain\Upgradable\UpgradableOrgan;
+
+if (true === $blContext['is_signed_in']) { ?>
 <h1>Organes</h1>
 Les organes vous permettent de vivre votre amour<br />
 <?php
 
-    for ($i = 0; $i != $nbType[0]; ++$i) {
-        if (arbre($evolPage, $i, $nbE)) {
-            echo '<div class="batiment"><h2>',$evolNom[$i],'<br /></h2>';
-            echo $evolDesc[$i],'<br />Niveau actuel : ';
-            echo $nbE[0][$i],'<br />';
-            if ($evolution != $i) {
-                echo 'Niveau suivant : coute ',formaterNombre($amourE[0][$i]), " points d'amour<br />";
-                echo 'Temps de construction : ',strTemps($tempsE[0][$i]),'<br />';
+    foreach (UpgradableOrgan::cases() as $organ) {
+        if (arbre($evolPage, $organ->value, $currentPlayerUpgradableLevels)) {
+            echo '<div class="batiment"><h2>',$evolNom[$organ->value],'<br /></h2>';
+            echo $evolDesc[$organ->value],'<br />Niveau actuel : ';
+            echo $currentPlayerUpgradableLevels[UpgradableCategory::Organs->value][$organ->value],'<br />';
+            if ($organ->value !== $evolution) {
+                echo 'Niveau suivant : coute ',formaterNombre($amourE[UpgradableCategory::Organs->value][$organ->value]), " points d'amour<br />";
+                echo 'Temps de construction : ',strTemps($tempsE[UpgradableCategory::Organs->value][$organ->value]),'<br />';
             }
-            if (-1 == $evolution) {
-                if ($amour >= $amourE[0][$i]) {
+            if (-1 === $evolution) {
+                if ($amour >= $amourE[UpgradableCategory::Organs->value][$organ->value]) {
+                    $upgradableItem = $organ->toString();
                     echo '<form method="post" action="construction.html"><input type="submit"
-		name="'.$Obj[0][$i].'" value="Passer au niveau suivant" /></form>';
+		name="'.$upgradableItem.'" value="Passer au niveau suivant" /></form>';
                 } else {
-                    echo '<span class="info">[ Il te manque '.formaterNombre(ceil($amourE[0][$i] - $amour))." points d'amour pour pouvoir passer au niveau suivant ]</span><br />";
+                    echo '<span class="info">[ Il te manque '.formaterNombre(ceil($amourE[UpgradableCategory::Organs->value][$organ->value] - $amour))." points d'amour pour pouvoir passer au niveau suivant ]</span><br />";
                 }
-            } elseif ($evolution == $i) {
+            } elseif ($organ->value === $evolution) {
                 ?>
 	<script src="includes/compteur.js" type="text/javascript"></script>
 	<div id="compteur"><?php echo strTemps($timeFin - time()); ?></div>
@@ -38,7 +41,7 @@ Les organes vous permettent de vivre votre amour<br />
 	</script>
 	<form method="post" action="construction.html">
 		<input type="submit" name="cancel" value="Annuler" />
-		<input type="hidden" name="classe" value="0" />
+		<input type="hidden" name="classe" value="<?php echo UpgradableCategory::Organs->value; ?>" />
 	</form>
 	<?php
             }
@@ -46,8 +49,8 @@ Les organes vous permettent de vivre votre amour<br />
 </div>
 <?php
         } else {
-            echo '<div class="batiment"><h2>',$evolNom[$i],'<br /></h2>';
-            echo $evolDesc[$i],'<span class="info">[ --Tu ne remplis pas les conditions requises --]</span><br />
+            echo '<div class="batiment"><h2>',$evolNom[$organ->value],'<br /></h2>';
+            echo $evolDesc[$organ->value],'<span class="info">[ --Tu ne remplis pas les conditions requises --]</span><br />
 	</div>';
         }
     }

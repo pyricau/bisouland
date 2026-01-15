@@ -1,5 +1,16 @@
 <?php
 
+use Bl\Application\Auth\AuthToken\CreateAuthToken;
+use Bl\Application\Auth\AuthToken\RemoveAuthToken;
+use Bl\Application\Auth\AuthTokenCookie\CreateAuthTokenCookie;
+use Bl\Application\Auth\AuthTokenCookie\RemoveAuthTokenCookie;
+use Bl\Domain\Auth\AuthToken\TokenHash;
+use Bl\Domain\Auth\AuthTokenCookie\Credentials;
+use Bl\Domain\Exception\ValidationFailedException;
+use Bl\Domain\Upgradable\UpgradableBisou;
+use Bl\Domain\Upgradable\UpgradableCategory;
+use Bl\Domain\Upgradable\UpgradableOrgan;
+use Bl\Domain\Upgradable\UpgradableTechnique;
 use Symfony\Component\Uid\Uuid;
 
 header('Content-type: text/html; charset=UTF-8');
@@ -21,8 +32,30 @@ ob_start();
 $pdo = bd_connect();
 $castToUnixTimestamp = cast_to_unix_timestamp();
 $castToPgTimestamptz = cast_to_pg_timestamptz();
+$deleteAuthToken = delete_auth_token($pdo);
+$saveAuthToken = save_auth_token($pdo);
 
 $inMainPage = true;
+
+/**
+ * @var array{
+ *      is_signed_in: bool,
+ *      account: array{
+ *          id: string, // UUID
+ *          pseudo: string,
+ *          nuage: string,
+ *      },
+ * } $blContext
+ */
+$blContext = [
+    'is_signed_in' => false,
+    'account' => [
+        'id' => '00000000-0000-0000-0000-000000000000',
+        'pseudo' => 'Not Connected',
+        'nuage' => -1,
+    ],
+];
+$resetBlContext = $blContext;
 
 // Front Controller: Handle POST requests
 // Handle login
@@ -33,267 +66,327 @@ if ('POST' === $_SERVER['REQUEST_METHOD'] && isset($_POST['connexion'])) {
         // Le htmlentities évitera de le passer par la suite.
         $pseudo = htmlentities((string) $_POST['pseudo']);
         $mdp = htmlentities((string) $_POST['mdp']);
-        // Hashage du mot de passe.
-        $mdp = md5($mdp);
 
         // La requête qui compte le nombre de pseudos
-        $stmt = $pdo->prepare('SELECT COUNT(*) AS nb_pseudo FROM membres WHERE pseudo = :pseudo');
-        $stmt->execute(['pseudo' => $pseudo]);
+        $stmt = $pdo->prepare(<<<'SQL'
+            SELECT COUNT(pseudo) AS total_pseudo_matches
+            FROM membres
+            WHERE pseudo = :pseudo
+        SQL);
+        $stmt->execute([
+            'pseudo' => $pseudo,
+        ]);
+        /** @var array{
+         *       total_pseudo_matches: int,
+         *  }|false $result
+         */
+        $result = $stmt->fetch();
 
         // La on vérifie si le nombre est différent que zéro
-        if (0 != $stmt->fetchColumn()) {
+        if (
+            false !== $result
+            && 1 === $result['total_pseudo_matches']
+        ) {
             // Sélection des informations.
-            $stmt = $pdo->prepare('SELECT id, confirmation, mdp, nuage FROM membres WHERE pseudo = :pseudo');
-            $stmt->execute(['pseudo' => $pseudo]);
-            $donnees_info = $stmt->fetch();
+            $stmt = $pdo->prepare(<<<'SQL'
+                SELECT id, confirmation, mdp, nuage
+                FROM membres
+                WHERE pseudo = :pseudo
+            SQL);
+            $stmt->execute([
+                'pseudo' => $pseudo,
+            ]);
+            /**
+             * @var array{
+             *     id: string, // UUID
+             *     confirmation: bool,
+             *     mdp: string,
+             *     nuage: int,
+             * }|false $currentAccount
+             */
+            $currentAccount = $stmt->fetch();
 
             // Si le mot de passe est le même.
-            if ($donnees_info['mdp'] == $mdp) {
+            if (
+                false !== $currentAccount
+                && password_verify($mdp, $currentAccount['mdp'])
+            ) {
                 // Si le compte est confirmé.
-                if (true === $donnees_info['confirmation']) {
-                    // On modifie la variable qui nous indique que le membre est connecté.
-                    $_SESSION['logged'] = true;
+                if (true === $currentAccount['confirmation']) {
+                    // --- Persistent authentication
+                    $createAuthToken = CreateAuthToken::fromRawAccountId(
+                        $currentAccount['id'],
+                    );
+                    $saveAuthToken->save(
+                        $createAuthToken->authToken,
+                    );
 
-                    // On créé les variables contenant des informations sur le membre.
-                    $_SESSION['id'] = $donnees_info['id'];
-                    $_SESSION['pseudo'] = $pseudo;
-                    $_SESSION['nuage'] = $donnees_info['nuage'];
+                    $blContext = [
+                        'is_signed_in' => true,
+                        'account' => [
+                            'id' => $currentAccount['id'],
+                            'pseudo' => $pseudo,
+                            'nuage' => $currentAccount['nuage'],
+                        ],
+                    ];
 
-                    if (isset($_POST['auto'])) {
-                        $timestamp_expire = time() + 30 * 24 * 3600;
-                        setcookie('pseudo', $pseudo, ['expires' => $timestamp_expire]);
-                        setcookie('mdp', $mdp, ['expires' => $timestamp_expire]);
-                    }
+                    $createAuthTokenCookie = CreateAuthTokenCookie::fromCreateAuthToken(
+                        $createAuthToken,
+                    );
+                    setcookie(
+                        $createAuthTokenCookie->getName(),
+                        $createAuthTokenCookie->getValue(),
+                        $createAuthTokenCookie->getOptions(),
+                    );
+                    // ---
 
                     // On supprime le membre non connecté du nombre de visiteurs :
-                    $stmt = $pdo->prepare('DELETE FROM connectbisous WHERE ip = :ip');
-                    $stmt->execute(['ip' => $_SERVER['REMOTE_ADDR']]);
+                    $stmt = $pdo->prepare(<<<'SQL'
+                        DELETE FROM connectbisous
+                        WHERE ip = :ip
+                    SQL);
+                    $stmt->execute([
+                        'ip' => $_SERVER['REMOTE_ADDR'],
+                    ]);
 
                     // On redirige le membre.
                     header('location: cerveau.html');
                     exit;
                 }
                 $_SESSION['errCon'] = 'Erreur : le compte n\'est pas confirmé !';
-                $_SESSION['logged'] = false;
                 header('location: connexion.html');
                 exit;
             }
             $_SESSION['errCon'] = 'Erreur : le mot de passe est incorrect !';
-            $_SESSION['logged'] = false;
             header('location: connexion.html');
             exit;
         }
         $_SESSION['errCon'] = "Erreur : le pseudo n'existe pas !";
-        $_SESSION['logged'] = false;
         header('location: connexion.html');
         exit;
     }
     $_SESSION['errCon'] = 'Erreur : vous avez oublié de remplir un ou plusieurs champs !';
-    $_SESSION['logged'] = false;
     header('location: connexion.html');
     exit;
 }
 
-// Front Controller: Handle logout (via GET parameter)
 $page = (empty($_GET['page'])) ? 'accueil' : htmlentities((string) $_GET['page']);
+
+// Mesures de temps pour évaluer le temps que met la page a se créer.
+$temps_debut = microtime_float();
+
+// Check for auth token cookie (persistent authentication)
+if (false === $blContext['is_signed_in'] && isset($_COOKIE[Credentials::NAME])) {
+    try {
+        $credentials = Credentials::fromCookie($_COOKIE[Credentials::NAME]);
+        $stmt = $pdo->prepare(<<<'SQL'
+            SELECT token_hash, account_id
+            FROM auth_tokens
+            WHERE auth_token_id = :auth_token_id
+              AND expires_at > CURRENT_TIMESTAMP
+        SQL);
+        $stmt->execute([
+            'auth_token_id' => $credentials->authTokenId->toString(),
+        ]);
+        /** @var array{token_hash: string, account_id: string}|false $authTokenRow */
+        $authTokenRow = $stmt->fetch();
+
+        if (false !== $authTokenRow) {
+            $tokenHash = TokenHash::fromTokenPlain($credentials->tokenPlain);
+            if (hash_equals($authTokenRow['token_hash'], $tokenHash->toString())) {
+                // Token is valid, get account details
+                $stmt = $pdo->prepare(<<<'SQL'
+                    SELECT id, pseudo, nuage
+                    FROM membres
+                    WHERE id = :account_id
+                SQL);
+                $stmt->execute([
+                    'account_id' => $authTokenRow['account_id'],
+                ]);
+                /** @var array{id: string, pseudo: string, nuage: int}|false $account */
+                $account = $stmt->fetch();
+
+                if (false !== $account) {
+                    $blContext = [
+                        'is_signed_in' => true,
+                        'account' => [
+                            'id' => $account['id'],
+                            'pseudo' => $account['pseudo'],
+                            'nuage' => $account['nuage'],
+                        ],
+                    ];
+                }
+            }
+        }
+    } catch (ValidationFailedException) {
+        // Invalid cookie format, ignore silently
+    }
+}
+
+// Front Controller: Handle logout (via GET parameter)
 if ('logout' === $page) {
-    // Ensuite on vérifie que la variable $_SESSION['logged'] existe et vaut bien true.
-    if (isset($_SESSION['logged']) && true == $_SESSION['logged']) {
-        $timeDeco = time() - 600;
-        $stmt = $pdo->prepare('UPDATE membres SET lastconnect = :lastconnect WHERE id = :id');
-        $stmt->execute(['lastconnect' => $castToPgTimestamptz->fromUnixTimestamp($timeDeco), 'id' => $_SESSION['id']]);
-        // On modifie la valeur de $_SESSION['logged'], qui devient false.
-        $_SESSION['logged'] = false;
-        $timestamp_expire = time() - 1000;
-        setcookie('pseudo', '', ['expires' => $timestamp_expire]);
-        setcookie('mdp', '', ['expires' => $timestamp_expire]);
+    if (true === $blContext['is_signed_in']) {
+        $removeAuthToken = RemoveAuthToken::fromRawAccountId($blContext['account']['id']);
+        $deleteAuthToken->delete($removeAuthToken->accountId);
+
+        $removeAuthTokenCookie = new RemoveAuthTokenCookie();
+        setcookie(
+            $removeAuthTokenCookie->getName(),
+            $removeAuthTokenCookie->getValue(),
+            $removeAuthTokenCookie->getOptions(),
+        );
 
         // Redirection.
         header('location: accueil.html');
         exit;
     }
     $_SESSION['errCon'] = 'Erreur : vous devez être connecté pour vous déconnecter !';
-    $_SESSION['logged'] = false;
     header('location: connexion.html');
     exit;
 }
 
-// Mesures de temps pour évaluer le temps que met la page a se créer.
-$temps_debut = microtime_float();
-
-// Si la variable $_SESSION['logged'] n'existe pas, on la créée, et on l'initialise a false
-if (!isset($_SESSION['logged'])) {
-    $_SESSION['logged'] = false;
-}
-
-// Note: $page is already set above in the logout handler (line 103)
-
 // Test en cas de suppression de compte
 // Il faudra a jouter ici une routine de suppression des messages dans la bdd.
 // Ainsi que des constructions en cours, etc..
-if (isset($_POST['suppr']) && true == $_SESSION['logged']) {
-    $_SESSION['pseudo'] = 'Not Connected';
-    $_SESSION['logged'] = false;
-    SupprimerCompte($_SESSION['id']);
-}
-
-// Si on est pas connecté.
-if (false == $_SESSION['logged']) {
-    $id = 0;
-    // On récupère les cookies enregistrés chez l'utilisateurs, s'ils sont la.
-    if (isset($_COOKIE['pseudo']) && isset($_COOKIE['mdp'])) {
-        $pseudo = htmlentities(addslashes((string) $_COOKIE['pseudo']));
-        $mdp = htmlentities(addslashes($_COOKIE['mdp']));
-        // La requête qui compte le nombre de pseudos
-        $stmt = $pdo->prepare('SELECT COUNT(*) AS nb_pseudo FROM membres WHERE pseudo = :pseudo');
-        $stmt->execute(['pseudo' => $pseudo]);
-
-        if (0 != $stmt->fetchColumn()) {
-            // Sélection des informations.
-            $stmt = $pdo->prepare('SELECT id, confirmation, mdp, nuage FROM membres WHERE pseudo = :pseudo');
-            $stmt->execute(['pseudo' => $pseudo]);
-            $donnees_info = $stmt->fetch();
-
-            // Si le mot de passe est le même (le mot de passe est déjà crypté).
-            // Si le compte est confirmé.
-            if ($donnees_info['mdp'] == $mdp && true === $donnees_info['confirmation']) {
-                // On modifie la variable qui nous indique que le membre est connecté.
-                $_SESSION['logged'] = true;
-                // On créé les variables contenant des informations sur le membre.
-                $_SESSION['id'] = $donnees_info['id'];
-                $_SESSION['pseudo'] = $pseudo;
-                $_SESSION['nuage'] = $donnees_info['nuage'];
-                $page = 'cerveau';
-            }
-        }
-    }
-} else {
-    $pseudo = $_SESSION['pseudo'];
+if (isset($_POST['suppr']) && true === $blContext['is_signed_in']) {
+    SupprimerCompte($blContext['account']['id']);
+    $blContext = $resetBlContext;
 }
 
 $temps11 = microtime_float();
 
-// Informations nécessaires au fonctionnement du jeu.
-
-$nbType = [
-    6,
-    3,
-    5,
-];
-
-$Obj[0] = [
-    'coeur',
-    'bouche',
-    'langue',
-    'dent',
-    'jambes',
-    'oeil',
-];
-
-$Obj[1] = [
-    'smack',
-    'baiser',
-    'pelle',
-];
-
-$Obj[2] = [
-    'tech1',
-    'tech2',
-    'tech3',
-    'tech4',
-    'soupe',
-];
-
 // ***************************************************************************
 // Si on est connecté
-if (true == $_SESSION['logged']) {
-    // l'id du membre.
-    $id = $_SESSION['id'];
+if (true === $blContext['is_signed_in']) {
+    $stmt = $pdo->prepare(<<<'SQL'
+        SELECT
+            amour,
+            bouche, coeur, dent, jambes, langue, oeil,
+            baiser, pelle, smack,
+            tech1, tech2, tech3, tech4, soupe,
+            timestamp, bloque
+        FROM membres
+        WHERE id = :current_account_id
+    SQL);
+    $stmt->execute([
+        'current_account_id' => $blContext['account']['id'],
+    ]);
+    /**
+     * @var array{
+     *      amour: int,
+     *      bouche: int, coeur: int, dent: int, jambes: int, langue: int, oeil: int,
+     *      baiser: int, pelle: int, smack: int,
+     *      tech1: int, tech2: int, tech3: int, tech4: int, soupe: int,
+     *      timestamp: string, // ISO 8601 timestamp string
+     *      bloque: bool,
+     * }|false $currentPlayer
+     */
+    $currentPlayer = $stmt->fetch();
 
-    // Fonction destinée à l'administration
-    if (isset($_POST['UnAct']) && 12 == $id) {
-        actionAdmin();
-    }
-
-    $stmt = $pdo->prepare('SELECT timestamp, coeur, bouche, amour, jambes, smack, baiser, pelle, tech1, tech2, tech3, tech4, dent, langue, bloque, soupe, oeil FROM membres WHERE id = :id');
-    $stmt->execute(['id' => $id]);
-    $donnees_info = $stmt->fetch();
     // Date du dernier calcul du nombre de points d'amour.
-    $lastTime = $castToUnixTimestamp->fromPgTimestamptz($donnees_info['timestamp']);
+    $lastTime = $castToUnixTimestamp->fromPgTimestamptz($currentPlayer['timestamp']);
     // Temps écoulé depuis le dernier calcul.
     $timeDiff = time() - $lastTime;
 
     // On récupère le nombre de points d'amour.
-    $amour = $donnees_info['amour'];
+    $amour = $currentPlayer['amour'];
 
-    $joueurBloque = $donnees_info['bloque'];
+    $joueurBloque = $currentPlayer['bloque'];
 
-    // Nombre d'objets d'un type donné.
-    // Batiments
-
-    $nbE = [];
-
-    for ($i = 0; $i < 3; ++$i) {
-        for ($j = 0; $j < $nbType[$i]; ++$j) {
-            $nbE[$i][$j] = $donnees_info[$Obj[$i][$j]];
+    $currentPlayerUpgradableLevels = [];
+    foreach (UpgradableCategory::cases() as $category) {
+        foreach ($category->getCases() as $type) {
+            $columnName = $type->toString();
+            $currentPlayerUpgradableLevels[$category->value][$type->value] = $currentPlayer[$columnName];
         }
     }
 
     // Cout en point d'amour pour la construction d'un objet
     // Organes
-    $amourE[0] = [
-        expo(100, 0.4, $nbE[0][0], 1),
-        expo(200, 0.4, $nbE[0][1], 1),
-        expo(250, 0.4, $nbE[0][2], 1),
-        expo(500, 0.4, $nbE[0][3], 1),
-        expo(1000, 0.6, $nbE[0][4], 1),
-        expo(1000, 0.4, $nbE[0][5], 1),
+    $amourE = [];
+    $amourE[UpgradableCategory::Organs->value] = [
+        expo(
+            100,
+            0.4,
+            $currentPlayerUpgradableLevels[UpgradableCategory::Organs->value][UpgradableOrgan::Heart->value],
+            1,
+        ),
+        expo(
+            200,
+            0.4,
+            $currentPlayerUpgradableLevels[UpgradableCategory::Organs->value][UpgradableOrgan::Mouth->value],
+            1,
+        ),
+        expo(
+            250,
+            0.4,
+            $currentPlayerUpgradableLevels[UpgradableCategory::Organs->value][UpgradableOrgan::Tongue->value],
+            1,
+        ),
+        expo(
+            500,
+            0.4,
+            $currentPlayerUpgradableLevels[UpgradableCategory::Organs->value][UpgradableOrgan::Teeth->value],
+            1,
+        ),
+        expo(
+            1000,
+            0.6,
+            $currentPlayerUpgradableLevels[UpgradableCategory::Organs->value][UpgradableOrgan::Legs->value],
+            1,
+        ),
+        expo(
+            1000,
+            0.4,
+            $currentPlayerUpgradableLevels[UpgradableCategory::Organs->value][UpgradableOrgan::Eyes->value],
+            1,
+        ),
     ];
 
     // Bisous
-    $amourE[1] = [
+    $amourE[UpgradableCategory::Bisous->value] = [
         800,
         3500,
         10000,
     ];
 
     // Technos
-    $amourE[2] = [
-        expo(1000, 0.4, $nbE[2][0], 1),
-        expo(2000, 0.4, $nbE[2][1], 1),
-        expo(3000, 0.4, $nbE[2][2], 1),
-        expo(10000, 0.6, $nbE[2][3], 1),
-        expo(5000, 0.4, $nbE[2][4], 1),
+    $amourE[UpgradableCategory::Techniques->value] = [
+        expo(1000, 0.4, $currentPlayerUpgradableLevels[UpgradableCategory::Techniques->value][UpgradableTechnique::HoldBreath->value], 1),
+        expo(2000, 0.4, $currentPlayerUpgradableLevels[UpgradableCategory::Techniques->value][UpgradableTechnique::Flirt->value], 1),
+        expo(3000, 0.4, $currentPlayerUpgradableLevels[UpgradableCategory::Techniques->value][UpgradableTechnique::Spit->value], 1),
+        expo(10000, 0.6, $currentPlayerUpgradableLevels[UpgradableCategory::Techniques->value][UpgradableTechnique::Leap->value], 1),
+        expo(5000, 0.4, $currentPlayerUpgradableLevels[UpgradableCategory::Techniques->value][UpgradableTechnique::Soup->value], 1),
     ];
 
     // Temps pour la construction de l'objet.
     // Organes
-    $tempsE[0] = [
-        ExpoSeuil(235000, 20, $nbE[0][0] - $nbE[2][4], 1),
-        ExpoSeuil(200000, 25, $nbE[0][1] - $nbE[2][4], 1),
-        ExpoSeuil(220000, 22, $nbE[0][2] - $nbE[2][4], 1),
-        ExpoSeuil(210000, 17, $nbE[0][3] - $nbE[2][4], 1),
-        ExpoSeuil(1000000, 5, $nbE[0][4] - $nbE[2][4], 1),
-        ExpoSeuil(500000, 5, $nbE[0][5] - $nbE[2][4], 1),
+    $tempsE[UpgradableCategory::Organs->value] = [
+        ExpoSeuil(235000, 20, $currentPlayerUpgradableLevels[UpgradableCategory::Organs->value][UpgradableOrgan::Heart->value] - $currentPlayerUpgradableLevels[UpgradableCategory::Techniques->value][UpgradableTechnique::Soup->value], 1),
+        ExpoSeuil(200000, 25, $currentPlayerUpgradableLevels[UpgradableCategory::Organs->value][UpgradableOrgan::Mouth->value] - $currentPlayerUpgradableLevels[UpgradableCategory::Techniques->value][UpgradableTechnique::Soup->value], 1),
+        ExpoSeuil(220000, 22, $currentPlayerUpgradableLevels[UpgradableCategory::Organs->value][UpgradableOrgan::Tongue->value] - $currentPlayerUpgradableLevels[UpgradableCategory::Techniques->value][UpgradableTechnique::Soup->value], 1),
+        ExpoSeuil(210000, 17, $currentPlayerUpgradableLevels[UpgradableCategory::Organs->value][UpgradableOrgan::Teeth->value] - $currentPlayerUpgradableLevels[UpgradableCategory::Techniques->value][UpgradableTechnique::Soup->value], 1),
+        ExpoSeuil(1000000, 5, $currentPlayerUpgradableLevels[UpgradableCategory::Organs->value][UpgradableOrgan::Legs->value] - $currentPlayerUpgradableLevels[UpgradableCategory::Techniques->value][UpgradableTechnique::Soup->value], 1),
+        ExpoSeuil(500000, 5, $currentPlayerUpgradableLevels[UpgradableCategory::Organs->value][UpgradableOrgan::Eyes->value] - $currentPlayerUpgradableLevels[UpgradableCategory::Techniques->value][UpgradableTechnique::Soup->value], 1),
     ];
 
     // Bisous
-    $tempsE[1] = [
-        InvExpo(100, 1.5, $nbE[0][1], 1),
-        InvExpo(250, 1.7, $nbE[0][1], 1),
-        InvExpo(500, 2, $nbE[0][1], 1),
+    $tempsE[UpgradableCategory::Bisous->value] = [
+        InvExpo(100, 1.5, $currentPlayerUpgradableLevels[UpgradableCategory::Organs->value][UpgradableOrgan::Mouth->value], 1),
+        InvExpo(250, 1.7, $currentPlayerUpgradableLevels[UpgradableCategory::Organs->value][UpgradableOrgan::Mouth->value], 1),
+        InvExpo(500, 2, $currentPlayerUpgradableLevels[UpgradableCategory::Organs->value][UpgradableOrgan::Mouth->value], 1),
     ];
 
     // Tech
-    $tempsE[2] = [
-        expo(50, 0.4, $nbE[2][0] - $nbE[2][4], 1),
-        expo(1000, 0.4, $nbE[2][1] - $nbE[2][4], 1),
-        expo(3000, 0.4, $nbE[2][2] - $nbE[2][4], 1),
-        expo(15000, 0.6, $nbE[2][3] - $nbE[2][4], 1),
-        expo(5000, 0.3, $nbE[2][4], 1),
+    $tempsE[UpgradableCategory::Techniques->value] = [
+        expo(50, 0.4, $currentPlayerUpgradableLevels[UpgradableCategory::Techniques->value][UpgradableTechnique::HoldBreath->value] - $currentPlayerUpgradableLevels[UpgradableCategory::Techniques->value][UpgradableTechnique::Soup->value], 1),
+        expo(1000, 0.4, $currentPlayerUpgradableLevels[UpgradableCategory::Techniques->value][UpgradableTechnique::Flirt->value] - $currentPlayerUpgradableLevels[UpgradableCategory::Techniques->value][UpgradableTechnique::Soup->value], 1),
+        expo(3000, 0.4, $currentPlayerUpgradableLevels[UpgradableCategory::Techniques->value][UpgradableTechnique::Spit->value] - $currentPlayerUpgradableLevels[UpgradableCategory::Techniques->value][UpgradableTechnique::Soup->value], 1),
+        expo(15000, 0.6, $currentPlayerUpgradableLevels[UpgradableCategory::Techniques->value][UpgradableTechnique::Leap->value] - $currentPlayerUpgradableLevels[UpgradableCategory::Techniques->value][UpgradableTechnique::Soup->value], 1),
+        expo(5000, 0.3, $currentPlayerUpgradableLevels[UpgradableCategory::Techniques->value][UpgradableTechnique::Soup->value], 1),
     ];
 
-    $amour = calculterAmour($amour, $timeDiff, $nbE[0][0], $nbE[1][0], $nbE[1][1], $nbE[1][2]);
+    $amour = calculterAmour($amour, $timeDiff, $currentPlayerUpgradableLevels[UpgradableCategory::Organs->value][UpgradableOrgan::Heart->value], $currentPlayerUpgradableLevels[UpgradableCategory::Bisous->value][UpgradableBisou::Peck->value], $currentPlayerUpgradableLevels[UpgradableCategory::Bisous->value][UpgradableBisou::Smooch->value], $currentPlayerUpgradableLevels[UpgradableCategory::Bisous->value][UpgradableBisou::FrenchKiss->value]);
     // Mise a jour du nombre de points d'amour, par rapport au temps écoulé.
 
     // Gestion des pages d'évolution (constructions).
@@ -360,20 +453,33 @@ if (true == $_SESSION['logged']) {
 				[ Protège-le contre les Dents en montant le niveau de Langue ]<br />
 				[ Le Baiser langoureux peut prendre 10 fois plus de points d\'amour que le Baiser ]</span><br />',
         ];
-        if (isset($_POST['suppr_bisous']) && 0 == $joueurBloque) {
+        if (isset($_POST['suppr_bisous']) && false === $currentPlayer['bloque']) {
             $modif = false;
-            for ($i = 0; $i != $nbType[1]; ++$i) {
-                if (isset($_POST['sp'.$Obj[1][$i]]) && $nbE[1][$i] > 0) {
-                    $nbSupp = $_POST['sp'.$Obj[1][$i]];
-                    if ($nbSupp > 0 && $nbSupp <= $nbE[1][$i]) {
-                        $nbE[1][$i] -= $nbSupp;
+            foreach (UpgradableBisou::cases() as $bisou) {
+                $upgradableItem = $bisou->toString();
+                if (isset($_POST['sp'.$upgradableItem]) && $currentPlayerUpgradableLevels[UpgradableCategory::Bisous->value][$bisou->value] > 0) {
+                    $nbSupp = $_POST['sp'.$upgradableItem];
+                    if ($nbSupp > 0 && $nbSupp <= $currentPlayerUpgradableLevels[UpgradableCategory::Bisous->value][$bisou->value]) {
+                        $currentPlayerUpgradableLevels[UpgradableCategory::Bisous->value][$bisou->value] -= $nbSupp;
                         $modif = true;
                     }
                 }
             }
             if ($modif) {
-                $stmt = $pdo->prepare('UPDATE membres SET '.$Obj[1][0].' = :smack, '.$Obj[1][1].' = :baiser, '.$Obj[1][2].' = :pelle WHERE id = :id');
-                $stmt->execute(['smack' => $nbE[1][0], 'baiser' => $nbE[1][1], 'pelle' => $nbE[1][2], 'id' => $id]);
+                $stmt = $pdo->prepare(<<<'SQL'
+                    UPDATE membres
+                    SET
+                        smack = :peck,
+                        baiser = :smooch,
+                        pelle = :french_kiss
+                    WHERE id = :current_account_id
+                SQL);
+                $stmt->execute([
+                    'peck' => $currentPlayerUpgradableLevels[UpgradableCategory::Bisous->value][UpgradableBisou::Peck->value],
+                    'smooch' => $currentPlayerUpgradableLevels[UpgradableCategory::Bisous->value][UpgradableBisou::Smooch->value],
+                    'french_kiss' => $currentPlayerUpgradableLevels[UpgradableCategory::Bisous->value][UpgradableBisou::FrenchKiss->value],
+                    'current_account_id' => $blContext['account']['id'],
+                ]);
             }
         }
     } elseif ('techno' === $page) {
@@ -408,12 +514,26 @@ if (true == $_SESSION['logged']) {
         include __DIR__.'/evo.php';
     }
 
-    // Récupération du nombre de messages non lus.
-    $stmt = $pdo->prepare('SELECT COUNT(*) AS nbMsg FROM messages WHERE destin = :destin AND statut = FALSE');
-    $stmt->execute(['destin' => $id]);
-    $nbNewMsg = $stmt->fetchColumn();
-    if ($nbNewMsg > 0) {
-        $NewMsgString = $nbNewMsg.' nouveau'.pluriel($nbNewMsg, 'x').' message'.pluriel($nbNewMsg);
+    $stmt = $pdo->prepare(<<<'SQL'
+        SELECT COUNT(destin) AS total_unread
+        FROM messages
+        WHERE (
+            destin = :current_account_id
+            AND statut = FALSE
+        )
+    SQL);
+    $stmt->execute([
+        'current_account_id' => $blContext['account']['id'],
+    ]);
+    /** @var array{total_unread: int}|false $results */
+    $results = $stmt->fetch();
+    if (
+        false !== $results
+        && $results['total_unread'] > 0
+    ) {
+        $NewMsgString = $results['total_unread'];
+        $NewMsgString .= ' nouveau'.pluriel($results['total_unread'], 'x');
+        $NewMsgString .= ' message'.pluriel($results['total_unread']);
     } else {
         $NewMsgString = 'Pas de nouveau message';
     }
@@ -427,64 +547,138 @@ $temps12 = microtime_float();
     Il permet de créer une sorte de boucle de calcul virtuelle, pour peu qu'il y ait suffisament de gens qui se connectent.
 */
 // On récupère les évolutions dont la date de création est atteinte ou dépassée.
-$stmt = $pdo->prepare('SELECT auteur, id, type, classe, cout FROM evolution WHERE timestamp <= CURRENT_TIMESTAMP');
+$stmt = $pdo->prepare(<<<'SQL'
+    SELECT
+        id,
+        auteur AS account_id,
+        classe,
+        type,
+        cout
+    FROM evolution
+    WHERE timestamp <= CURRENT_TIMESTAMP
+SQL);
 $stmt->execute();
+/**
+ * @var array<int, array{
+ *      id: string, // UUID
+ *      account_id: string, // UUID
+ *      classe: int,
+ *      type: int,
+ *      cout: int,
+ * }> $upgrades
+ */
+$upgrades = $stmt->fetchAll();
 // Boucle qui permet de traiter construction par construction.
-while ($donnees_info = $stmt->fetch()) {
-    // Id de l'auteur de la construction
-    $id2 = $donnees_info['auteur'];
-    // Id de la tache en question dans la base de donnée. (permet de la supprimer plus rapidement de la bdd)
-    $idtache = $donnees_info['id'];
-    // Classe de l'objet (exemple : batiment, bisou...)
-    $classe = $donnees_info['classe'];
-    // Type de l'objet
-    $type = $donnees_info['type'];
-    // Cout : pour déterminer le score.
-    $coutObjet = $donnees_info['cout'];
+foreach ($upgrades as $upgrade) {
+    // classe: category of upgradable (organ, technique, bisous)
+    // type: category of specific upgradable:
+    // * organ: heart, mouth, tongue, etc
+    // * technique: spit, jump, etc
+    // * bisous: smack, french kiss, etc
+    $upgradableCategory = UpgradableCategory::from($upgrade['classe']);
+    $upgradableItem = $upgradableCategory->getType($upgrade['type'])->toString();
     // On ajoute le nombre de points d'amour dépensés au score :
-    AjouterScore($id2, $coutObjet);
+    AjouterScore($upgrade['account_id'], $upgrade['cout']);
+
     // On supprime la construction de la liste des taches.
-    $stmt2 = $pdo->prepare('DELETE FROM evolution WHERE id = :id');
-    $stmt2->execute(['id' => $idtache]);
+    $stmt = $pdo->prepare(<<<'SQL'
+        DELETE FROM evolution
+        WHERE id = :upgrade_id
+    SQL);
+    $stmt->execute([
+        'upgrade_id' => $upgrade['id'],
+    ]);
+
     // On effectue la tache dans la table membre.
-    $stmt2 = $pdo->prepare('SELECT '.$Obj[$classe][$type].', amour FROM membres WHERE id = :id');
-    $stmt2->execute(['id' => $id2]);
-    $donnees_info = $stmt2->fetch();
-    $amourConstructeur = $donnees_info['amour'];
+    $stmt = $pdo->prepare(<<<SQL
+        UPDATE membres
+        SET {$upgradableItem} = {$upgradableItem} + 1
+        WHERE id = :account_id
+        RETURNING amour, {$upgradableItem}
+    SQL);
+    $stmt->execute([
+        'account_id' => $upgrade['account_id'],
+    ]);
+    /** @var array<string, int>|false $player */
+    $player = $stmt->fetch();
+    $amourConstructeur = $player['amour'];
     // On récupère l'ancienne valeur.
-    $nbObjEvol = $donnees_info[$Obj[$classe][$type]];
-    // On augmente d'un.
-    ++$nbObjEvol;
-    // On met a jour la table.
-    $stmt2 = $pdo->prepare('UPDATE membres SET '.$Obj[$classe][$type].' = :nb WHERE id = :id');
-    $stmt2->execute(['nb' => $nbObjEvol, 'id' => $id2]);
+    $nbObjEvol = $player[$upgradableItem];
+
     // Si le visiteur est connecté et membre, et si la construction est la sienne, on met a jour les infos sur la page.
 
     // S'il ya des constructions sur la liste de construction, on relance une construction.
-    $stmt2 = $pdo->prepare('SELECT id, duree, type, cout FROM liste WHERE auteur = :auteur AND classe = :classe ORDER BY id LIMIT 1 OFFSET 0');
-    $stmt2->execute(['auteur' => $id2, 'classe' => $classe]);
-    if ($donnees_info = $stmt2->fetch()) {
-        $timeFin2 = time() + $donnees_info['duree'];
-        $stmt3 = $pdo->prepare('INSERT INTO evolution (id, timestamp, classe, type, auteur, cout) VALUES (:id, :timestamp, :classe, :type, :auteur, :cout)');
-        $stmt3->execute(['id' => Uuid::v7(), 'timestamp' => $castToPgTimestamptz->fromUnixTimestamp($timeFin2), 'classe' => $classe, 'type' => $donnees_info['type'], 'auteur' => $id2, 'cout' => $donnees_info['cout']]);
-        $stmt3 = $pdo->prepare('DELETE FROM liste WHERE id = :id');
-        $stmt3->execute(['id' => $donnees_info['id']]);
-        if ($id == $id2) {
-            $nbE[$classe][$type] = $nbObjEvol;
-            if (1 == $classe) {
-                // $amour -= $donnees_info['cout'];
+    $stmt = $pdo->prepare(<<<'SQL'
+        SELECT
+            id AS queued_upgrade_id,
+            duree,
+            type,
+            cout
+        FROM liste
+        WHERE (
+            auteur = :account_id
+            AND classe = :classe
+        )
+        ORDER BY id
+        LIMIT 1 OFFSET 0
+    SQL);
+    $stmt->execute([
+        'account_id' => $upgrade['account_id'],
+        'classe' => $upgrade['classe'],
+    ]);
+    /**
+     * @var array{
+     *      queued_upgrade_id: string, // UUID
+     *      duree: int, // in seconds
+     *      type: int,
+     *      cout: int,
+     * }|false $queuedEvolution
+     */
+    $queuedEvolution = $stmt->fetch();
+    if (false !== $queuedEvolution) {
+        $timeFin2 = time() + $queuedEvolution['duree'];
+        $stmt = $pdo->prepare(<<<'SQL'
+            INSERT INTO evolution (id, timestamp, classe, type, auteur, cout)
+            VALUES (:upgrade_id, :timestamp, :classe, :type, :account_id, :cout)
+        SQL);
+        $stmt->execute([
+            'upgrade_id' => Uuid::v7(),
+            'timestamp' => $castToPgTimestamptz->fromUnixTimestamp($timeFin2),
+            'classe' => $upgrade['classe'],
+            'type' => $queuedEvolution['type'],
+            'account_id' => $upgrade['account_id'],
+            'cout' => $queuedEvolution['cout'],
+        ]);
+
+        $stmt = $pdo->prepare(<<<'SQL'
+            DELETE FROM liste
+            WHERE id = :queued_upgrade_id
+        SQL);
+        $stmt->execute([
+            'queued_upgrade_id' => $queuedEvolution['queued_upgrade_id'],
+        ]);
+
+        if ($blContext['account']['id'] === $upgrade['account_id']) {
+            $currentPlayerUpgradableLevels[$upgrade['classe']][$upgrade['type']] = $nbObjEvol;
+            if (1 === $upgrade['classe']) {
+                // Bisous: classe = 1
+                // $amour -= $queuedEvolution['cout'];
             }
             // Pour l'affichage sur la page en cours.
-            if ($evolPage == $classe) {
+            if ($evolPage === $upgrade['classe']) {
                 $timeFin = $timeFin2;
-                $evolution = $donnees_info['type'];
+                $evolution = $upgrade['type'];
             }
-        } elseif (1 == $classe) {
-            // $amourConstructeur -= $donnees_info['cout'];
-            // mysql_query("UPDATE membres SET amour=$amourConstructeur WHERE id=$id2");
+        } elseif (1 === $upgrade['classe']) {
+            // Bisous: classe = 1
+            // $amourConstructeur -= $queuedEvolution['cout'];
+            // mysql_query("UPDATE membres SET amour=$amourConstructeur WHERE id={$upgrade['account_id']}");
         }
-    } elseif ($id == $id2 && $evolPage == $classe) {
-        $nbE[$classe][$type] = $nbObjEvol;
+    } elseif (
+        $blContext['account']['id'] === $upgrade['account_id']
+        && $evolPage === $upgrade['classe']
+    ) {
+        $currentPlayerUpgradableLevels[$upgrade['classe']][$upgrade['type']] = $nbObjEvol;
         // Permet a la page de savoir qu'il n'y a plus de construction en cours (pour l'affichage).
         $evolution = -1;
     }
@@ -509,32 +703,45 @@ if (isset($pages[$page])) {
 }
 $temps31 = microtime_float();
 
-if (false == $_SESSION['logged']) {
-    $stmt = $pdo->prepare('SELECT COUNT(*) AS nbre_entrees FROM connectbisous WHERE ip = :ip');
-    $stmt->execute(['ip' => $_SERVER['REMOTE_ADDR']]);
-    $donnees = $stmt->fetch();
-    if (0 == $donnees['nbre_entrees']) { // L'ip ne se trouve pas dans la table, on va l'ajouter
-        $stmt = $pdo->prepare('INSERT INTO connectbisous VALUES(:ip, CURRENT_TIMESTAMP, 2)');
-        $stmt->execute(['ip' => $_SERVER['REMOTE_ADDR']]);
-    } else { // L'ip se trouve déjà dans la table, on met juste à jour le timestamp
-        $stmt = $pdo->prepare('UPDATE connectbisous SET timestamp = CURRENT_TIMESTAMP WHERE ip = :ip');
-        $stmt->execute(['ip' => $_SERVER['REMOTE_ADDR']]);
-    }
+if (false === $blContext['is_signed_in']) {
+    $stmt = $pdo->prepare(<<<'SQL'
+        INSERT INTO connectbisous (ip, timestamp, type)
+        VALUES (:ip, CURRENT_TIMESTAMP, 2)
+        ON CONFLICT (ip) DO UPDATE
+        SET timestamp = CURRENT_TIMESTAMP
+    SQL);
+    $stmt->execute([
+        'ip' => $_SERVER['REMOTE_ADDR'],
+    ]);
 }
 $temps32 = microtime_float();
 
 // ETAPE 2 : on supprime toutes les entrées dont le timestamp est plus vieux que 5 minutes
-$stmt = $pdo->prepare("DELETE FROM connectbisous WHERE timestamp < CURRENT_TIMESTAMP - INTERVAL '5 minutes'");
+$stmt = $pdo->prepare(<<<'SQL'
+    DELETE FROM connectbisous
+    WHERE timestamp < CURRENT_TIMESTAMP - INTERVAL '5 minutes'
+SQL);
 $stmt->execute();
 
 // Etape 3 : on demande maintenant le nombre de gens connectés.
 // Nombre de visiteurs
-$stmt = $pdo->query('SELECT COUNT(*) AS nbre_visit FROM connectbisous');
-$donnees = $stmt->fetch();
-$NbVisit = $donnees['nbre_visit'];
-$stmt = $pdo->prepare("SELECT COUNT(*) AS nb_membres FROM membres WHERE lastconnect >= CURRENT_TIMESTAMP - INTERVAL '5 minutes'");
+$stmt = $pdo->query(<<<'SQL'
+    SELECT COUNT(ip) AS total_connections
+    FROM connectbisous
+SQL);
+/** @var array{total_connections: int} $result */
+$result = $stmt->fetch();
+$NbVisit = $result['total_connections'];
+
+$stmt = $pdo->prepare(<<<'SQL'
+    SELECT COUNT(lastconnect) AS total_recent_players
+    FROM membres
+    WHERE lastconnect >= CURRENT_TIMESTAMP - INTERVAL '5 minutes'
+SQL);
 $stmt->execute();
-$NbMemb = $stmt->fetchColumn();
+/** @var array{total_recent_players: int} $results */
+$results = $stmt->fetch();
+$NbMemb = $results['total_recent_players'];
 
 $temps14 = microtime_float();
 
@@ -544,9 +751,7 @@ $temps14 = microtime_float();
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="fr" lang="fr">
     <head>
         <title>
-			<?php
-                echo $title;
-?>
+			<?php echo $title; ?>
 		</title>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
 		<link rel="stylesheet" media="screen" type="text/css" title="bisouStyle2" href="includes/bisouStyle2.css" />
@@ -562,23 +767,20 @@ $temps14 = microtime_float();
 
 	<ul id="speedbarre">
 
-			<?php if (true == $_SESSION['logged']) {?>
+            <?php if (true === $blContext['is_signed_in']) { ?>
 				<li class="speedgauche">
 					<strong><?php echo formaterNombre(floor($amour)); ?></strong> <img src="images/puce.png" title = "Nombre de points d'amour" alt="Nombre de points d'amour" />
 				</li>
 				<li class="speedgauche">Adoptez la strat&eacute;gie BisouLand !!</li>
 				<li class="speeddroite">
-					<a href="logout.html" title="Vous avez termin&eacute; ? D&eacute;connectez-vous !">D&eacute;connexion (<?php echo $_SESSION['pseudo']; ?>)</a>
+                    <a href="logout.html" title="Vous avez termin&eacute; ? D&eacute;connectez-vous !">D&eacute;connexion (<?php echo $blContext['account']['pseudo']; ?>)</a>
 				</li>
 				<li class="speeddroite">
 					<a href="boite.html" title="<?php echo $NewMsgString; ?>"><?php echo $NewMsgString; ?></a>
 				</li>
-			<?php
-            } else {
-                ?>
-
-			<li class="speedgauche"><a href="connexion.html">Connexion</a></li>
-			<li class="speeddroite">Adoptez la strat&eacute;gie BisouLand !! : <a href="inscription.html">Inscription</a></li>
+			<?php } else { ?>
+                <li class="speedgauche"><a href="connexion.html">Connexion</a></li>
+                <li class="speeddroite">Adoptez la strat&eacute;gie BisouLand !! : <a href="inscription.html">Inscription</a></li>
 			<?php } ?>
 
 	</ul>
@@ -590,12 +792,9 @@ $temps14 = microtime_float();
             <h3>G&eacute;n&eacute;ral</h3>
 			<ul>
 				<li><a href="accueil.html">Accueil</a></li>
-				<?php if (false == $_SESSION['logged']) {
-                    ?>
-				<li><a href="inscription.html">Inscription</a></li>
-				<?php
-                }
-?>
+                <?php if (false === $blContext['is_signed_in']) { ?>
+                    <li><a href="inscription.html">Inscription</a></li>
+				<?php } ?>
 				<li><a href="livreor.html">Livre d'or</a></li>
 				<li><a href="stats.html">Statistiques</a></li>
 				<li><a href="contact.html">Contact</a></li>
@@ -607,22 +806,18 @@ $temps14 = microtime_float();
 		<div class="sMenu">
             <h3>BisouLand</h3>
 			<ul>
-				<?php if (true == $_SESSION['logged']) {?>
-				<li><a href="cerveau.html">Cerveau</a></li>
-				<li><a href="construction.html">Organes</a></li>
-				<li><a href="techno.html">Techniques</a></li>
-				<li><a href="bisous.html">Bisous</a></li>
-				<li><a href="nuage.html">Nuages</a></li>
-				<li><a href="boite.html">Messages</a></li>
-				<li><a href="connected.html">Mon compte</a></li>
-				<?php
-                } else {
-                    ?>
-				<li>Tu n'es pas connect&eacute;.</li>
-				<li><a href="connexion.html">Connexion</a></li>
-				<?php
-                }
-?>
+                <?php if (true === $blContext['is_signed_in']) { ?>
+                    <li><a href="cerveau.html">Cerveau</a></li>
+                    <li><a href="construction.html">Organes</a></li>
+                    <li><a href="techno.html">Techniques</a></li>
+                    <li><a href="bisous.html">Bisous</a></li>
+                    <li><a href="nuage.html">Nuages</a></li>
+                    <li><a href="boite.html">Messages</a></li>
+                    <li><a href="connected.html">Mon compte</a></li>
+				<?php } else { ?>
+                    <li>Tu n'es pas connect&eacute;.</li>
+                    <li><a href="connexion.html">Connexion</a></li>
+				<?php } ?>
 			</ul>
 		</div>
 		<div class="sMenu">
@@ -630,11 +825,9 @@ $temps14 = microtime_float();
 			<ul>
 				<li><a href="faq.html">FAQ</a></li>
 				<li><a href="aide.html">Aide</a></li>
-				<?php if (true == $_SESSION['logged']) {?>
-				<li><a href="infos.html">Encyclop&eacute;die</a></li>
-				<?php
-                }
-?>
+                <?php if (true === $blContext['is_signed_in']) { ?>
+                    <li><a href="infos.html">Encyclop&eacute;die</a></li>
+				<?php } ?>
 				<li><a href="topten.html">Top 20</a></li>
 				<li><a href="recherche.html">Recherche</a></li>
 				<li><a href="membres.html">Joueurs</a></li>
@@ -651,9 +844,19 @@ $temps16 = microtime_float();
 	</div>
 
 <?php
-    if (true == $_SESSION['logged']) {
-        $stmt = $pdo->prepare('UPDATE membres SET lastconnect = CURRENT_TIMESTAMP, timestamp = CURRENT_TIMESTAMP, amour = :amour WHERE id = :id');
-        $stmt->execute(['amour' => (int) $amour, 'id' => $id]);
+    if (true === $blContext['is_signed_in']) {
+        $stmt = $pdo->prepare(<<<'SQL'
+            UPDATE membres
+            SET
+                lastconnect = CURRENT_TIMESTAMP,
+                timestamp = CURRENT_TIMESTAMP,
+                amour = :amour
+            WHERE id = :current_account_id
+        SQL);
+        $stmt->execute([
+            'amour' => (int) $amour,
+            'current_account_id' => $blContext['account']['id'],
+        ]);
     }
 ?>
 
@@ -689,9 +892,6 @@ echo 'T4 (tete):          '.round($temps15 - $temps14, 4).'<br />';
 echo 'T5 (include):       '.round($temps16 - $temps15, 4).'<br />';
 echo 'T6 (pied):          '.round($temps17 - $temps16, 4).'<br />';
 */
-if (true == $_SESSION['logged'] && (12 == $id && 'cerveau' === $page)) {
-    echo '<form class="Tpetit" method="post" action="accueil.html"><input type="submit" name="UnAct" tabindex="100" value="Action Unique" /></form>';
-}
 ?>
 </p>
 		<p class="Tpetit">Tous droits r&eacute;serv&eacute;s &copy; BisouLand - Site respectant les r&egrave;gles de la CNIL</p>

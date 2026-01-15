@@ -1,82 +1,109 @@
 <?php
 
+use Bl\Domain\Upgradable\UpgradableBisou;
+use Bl\Domain\Upgradable\UpgradableCategory;
+use Bl\Domain\Upgradable\UpgradableOrgan;
+use Bl\Domain\Upgradable\UpgradableTechnique;
 use Symfony\Component\Uid\Uuid;
 
-function arbre($classe, $type, $nbE): bool
+/**
+ * @param array<int, mixed> $currentPlayerUpgradableLevels
+ */
+function arbre(int $classe, int $type, array $currentPlayerUpgradableLevels): bool
 {
-    if (0 == $classe) {
-        if (0 == $type) {
+    if (UpgradableCategory::Organs->value === $classe) {
+        if (UpgradableOrgan::Heart->value === $type) {
             // coeur
             return true;
         }
 
-        if (1 == $type) {
+        if (UpgradableOrgan::Mouth->value === $type) {
             // bouche
-            if ($nbE[0][0] >= 2) {
+            if ($currentPlayerUpgradableLevels[UpgradableCategory::Organs->value][UpgradableOrgan::Heart->value] >= 2) {
                 return true;
             }
-        } elseif (2 == $type) {
+        } elseif (UpgradableOrgan::Tongue->value === $type) {
             // langue
-            if ($nbE[0][1] >= 2 && $nbE[0][0] >= 5) {
+            if (
+                $currentPlayerUpgradableLevels[UpgradableCategory::Organs->value][UpgradableOrgan::Mouth->value] >= 2
+                && $currentPlayerUpgradableLevels[UpgradableCategory::Organs->value][UpgradableOrgan::Heart->value] >= 5
+            ) {
                 return true;
             }
-        } elseif (3 == $type) {
+        } elseif (UpgradableOrgan::Teeth->value === $type) {
             // dent
-            if ($nbE[0][1] >= 2) {
+            if ($currentPlayerUpgradableLevels[UpgradableCategory::Organs->value][UpgradableOrgan::Mouth->value] >= 2) {
                 return true;
             }
-        } elseif (4 == $type) {
+        } elseif (UpgradableOrgan::Legs->value === $type) {
             // jambes
-            if ($nbE[0][0] >= 15) {
+            if ($currentPlayerUpgradableLevels[UpgradableCategory::Organs->value][UpgradableOrgan::Heart->value] >= 15) {
                 return true;
             }
-        } elseif (5 == $type) {
+        } elseif (UpgradableOrgan::Eyes->value === $type) {
             // oeil
-            if ($nbE[0][0] >= 10) {
+            if ($currentPlayerUpgradableLevels[UpgradableCategory::Organs->value][UpgradableOrgan::Heart->value] >= 10) {
                 return true;
             }
         }
-    } elseif (1 == $classe) {
-        if (0 == $type) {
+    } elseif (UpgradableCategory::Bisous->value === $classe) {
+        if (UpgradableBisou::Peck->value === $type) {
             // smack
-            if ($nbE[0][1] >= 2) {
+            if ($currentPlayerUpgradableLevels[UpgradableCategory::Organs->value][UpgradableOrgan::Mouth->value] >= 2) {
                 return true;
             }
-        } elseif (1 == $type) {
+        } elseif (UpgradableBisou::Smooch->value === $type) {
             // baiser
-            if ($nbE[0][1] >= 6) {
+            if ($currentPlayerUpgradableLevels[UpgradableCategory::Organs->value][UpgradableOrgan::Mouth->value] >= 6) {
                 return true;
             }
-        } elseif (2 == $type) {
+        } elseif (UpgradableBisou::FrenchKiss->value === $type) {
             // baiser langoureux
-            if ($nbE[0][2] >= 5 && $nbE[0][1] >= 10) {
+            if (
+                $currentPlayerUpgradableLevels[UpgradableCategory::Organs->value][UpgradableOrgan::Tongue->value] >= 5
+                && $currentPlayerUpgradableLevels[UpgradableCategory::Organs->value][UpgradableOrgan::Mouth->value] >= 10
+            ) {
                 return true;
             }
         }
-    } elseif (2 == $classe) {
-        if (0 == $type) {
+    } elseif (UpgradableCategory::Techniques->value === $classe) {
+        if (UpgradableTechnique::HoldBreath->value === $type) {
             // Apnée
-            if ($nbE[0][0] >= 3 && $nbE[0][1] >= 2) {
+            if (
+                $currentPlayerUpgradableLevels[UpgradableCategory::Organs->value][UpgradableOrgan::Heart->value] >= 3
+                && $currentPlayerUpgradableLevels[UpgradableCategory::Organs->value][UpgradableOrgan::Mouth->value] >= 2
+            ) {
                 return true;
             }
-        } elseif (1 == $type) {
+        } elseif (UpgradableTechnique::Flirt->value === $type) {
             // Flirt
-            if ($nbE[0][0] >= 5 && $nbE[0][1] >= 4) {
+            if (
+                $currentPlayerUpgradableLevels[UpgradableCategory::Organs->value][UpgradableOrgan::Heart->value] >= 5
+                && $currentPlayerUpgradableLevels[UpgradableCategory::Organs->value][UpgradableOrgan::Mouth->value] >= 4
+            ) {
                 return true;
             }
-        } elseif (2 == $type) {
+        } elseif (UpgradableTechnique::Spit->value === $type) {
             // Crachat
-            if ($nbE[2][0] >= 1 && $nbE[2][1] >= 3 && $nbE[0][2] >= 3) {
+            if (
+                $currentPlayerUpgradableLevels[UpgradableCategory::Techniques->value][UpgradableTechnique::HoldBreath->value] >= 1
+                && $currentPlayerUpgradableLevels[UpgradableCategory::Techniques->value][UpgradableTechnique::Flirt->value] >= 3
+                && $currentPlayerUpgradableLevels[UpgradableCategory::Organs->value][UpgradableOrgan::Tongue->value] >= 3
+            ) {
                 return true;
             }
-        } elseif (3 == $type) {
+        } elseif (UpgradableTechnique::Leap->value === $type) {
             // Saut
-            if ($nbE[0][4] >= 2) {
+            if ($currentPlayerUpgradableLevels[UpgradableCategory::Organs->value][UpgradableOrgan::Legs->value] >= 2) {
                 return true;
             }
-        } elseif (4 == $type) {
+        } elseif (UpgradableTechnique::Soup->value === $type) {
             // Soupe
-            if ($nbE[0][0] >= 15 && $nbE[0][1] >= 8 && $nbE[0][2] >= 4) {
+            if (
+                $currentPlayerUpgradableLevels[UpgradableCategory::Organs->value][UpgradableOrgan::Heart->value] >= 15
+                && $currentPlayerUpgradableLevels[UpgradableCategory::Organs->value][UpgradableOrgan::Mouth->value] >= 8
+                && $currentPlayerUpgradableLevels[UpgradableCategory::Organs->value][UpgradableOrgan::Tongue->value] >= 4
+            ) {
                 return true;
             }
         }
@@ -85,72 +112,206 @@ function arbre($classe, $type, $nbE): bool
     return false;
 }
 
-if (isset($inMainPage) && true == $inMainPage) {
+if (isset($inMainPage) && true === $inMainPage) {
     $pdo = bd_connect();
     $castToUnixTimestamp = cast_to_unix_timestamp();
     $castToPgTimestamptz = cast_to_pg_timestamptz();
 
     // Nombre de type différents pour la classe concernée.
-    $nbEvol = $nbType[$evolPage];
+    $upgradableTypeCount = count(UpgradableCategory::from($evolPage)->getCases());
     $evolution = -1; // Valeur par défaut ( = aucune construction en cours).
 
     // Annuler une construction ne permet pas de récupérer les points.
     if (isset($_POST['cancel']) || isset($_GET['cancel'])) {
         $classeCancel = $evolPage;
-        $stmt = $pdo->prepare('SELECT cout FROM evolution WHERE auteur = :auteur AND classe = :classe');
-        $stmt->execute(['auteur' => $id, 'classe' => $classeCancel]);
-        $donnees_info = $stmt->fetch();
-        $amour += (int) ($donnees_info['cout'] / 2);
-        $stmt = $pdo->prepare('DELETE FROM evolution WHERE auteur = :auteur AND classe = :classe');
-        $stmt->execute(['auteur' => $id, 'classe' => $classeCancel]);
+        $stmt = $pdo->prepare(<<<'SQL'
+            SELECT cout
+            FROM evolution
+            WHERE (
+                auteur = :current_account_id
+                AND classe = :classe
+            )
+        SQL);
+        $stmt->execute([
+            'current_account_id' => $blContext['account']['id'],
+            'classe' => $classeCancel,
+        ]);
+        /**
+         * @var array{
+         *     cout: int,
+         * }|false $cancelledEvolution
+         */
+        $cancelledEvolution = $stmt->fetch();
+        if (false !== $cancelledEvolution) {
+            $amour += (int) ($cancelledEvolution['cout'] / 2);
+        }
+
+        $stmt = $pdo->prepare(<<<'SQL'
+            DELETE FROM evolution
+            WHERE (
+                auteur = :current_account_id
+                AND classe = :classe
+            )
+        SQL);
+        $stmt->execute([
+            'current_account_id' => $blContext['account']['id'],
+            'classe' => $classeCancel,
+        ]);
 
         // On passe à une nouvelle construction si disponible.
-        $stmt = $pdo->prepare('SELECT id, duree, type, cout FROM liste WHERE auteur = :auteur AND classe = :classe ORDER BY id LIMIT 1 OFFSET 0');
-        $stmt->execute(['auteur' => $id, 'classe' => $classeCancel]);
-        if ($donnees_info = $stmt->fetch()) {
-            $timeFin2 = time() + $donnees_info['duree'];
-            $stmt2 = $pdo->prepare('INSERT INTO evolution (id, timestamp, classe, type, auteur, cout) VALUES (:id, :timestamp, :classe, :type, :auteur, :cout)');
-            $stmt2->execute(['id' => Uuid::v7(), 'timestamp' => $castToPgTimestamptz->fromUnixTimestamp($timeFin2), 'classe' => $classeCancel, 'type' => $donnees_info['type'], 'auteur' => $id, 'cout' => $donnees_info['cout']]);
-            $stmt2 = $pdo->prepare('DELETE FROM liste WHERE id = :id');
-            $stmt2->execute(['id' => $donnees_info['id']]);
+        $stmt = $pdo->prepare(<<<'SQL'
+            SELECT
+                id,
+                duree,
+                type,
+                cout
+            FROM liste
+            WHERE (
+                auteur = :current_account_id
+                AND classe = :classe
+            )
+            ORDER BY id
+            LIMIT 1 OFFSET 0
+        SQL);
+        $stmt->execute([
+            'current_account_id' => $blContext['account']['id'],
+            'classe' => $classeCancel,
+        ]);
+        /**
+         * @var array{
+         *     id: string, // UUID
+         *     duree: int,
+         *     type: int,
+         *     cout: int,
+         * }|false $nextQueuedItem
+         */
+        $nextQueuedItem = $stmt->fetch();
+        if (false !== $nextQueuedItem) {
+            $timeFin2 = time() + $nextQueuedItem['duree'];
+            $stmt2 = $pdo->prepare(<<<'SQL'
+                INSERT INTO evolution (id, timestamp, classe, type, auteur, cout)
+                VALUES (:id, :timestamp, :classe, :type, :current_account_id, :cout)
+            SQL);
+            $stmt2->execute([
+                'id' => Uuid::v7(),
+                'timestamp' => $castToPgTimestamptz->fromUnixTimestamp($timeFin2),
+                'classe' => $classeCancel,
+                'type' => $nextQueuedItem['type'],
+                'current_account_id' => $blContext['account']['id'],
+                'cout' => $nextQueuedItem['cout'],
+            ]);
+            $stmt2 = $pdo->prepare(<<<'SQL'
+                DELETE FROM liste
+                WHERE id = :queued_item_id
+            SQL);
+            $stmt2->execute([
+                'queued_item_id' => $nextQueuedItem['id'],
+            ]);
 
-            if (1 == $classeCancel) {
-                // $amour -= $donnees_info['cout'];
+            if (UpgradableCategory::Bisous->value === $classeCancel) {
+                // $amour -= $nextQueuedItem['cout'];
             }
         }
     }
 
     // On détermine s'il y a une construction en cours.
-    $stmt = $pdo->prepare('SELECT COUNT(*) AS nb_id FROM evolution WHERE auteur = :auteur AND classe = :classe');
-    $stmt->execute(['auteur' => $id, 'classe' => $evolPage]);
-    if (0 != $stmt->fetchColumn()) {
+    $stmt = $pdo->prepare(<<<'SQL'
+        SELECT COUNT(id) AS total_evolutions_in_progress
+        FROM evolution
+        WHERE (
+            auteur = :current_account_id
+            AND classe = :classe
+        )
+    SQL);
+    $stmt->execute([
+        'current_account_id' => $blContext['account']['id'],
+        'classe' => $evolPage,
+    ]);
+    /** @var array{total_evolutions_in_progress: int}|false $countResult */
+    $countResult = $stmt->fetch();
+    if (
+        false !== $countResult
+        && 0 < $countResult['total_evolutions_in_progress']
+    ) {
         // Si oui, on récupère les infos sur la construction.
-        $stmt = $pdo->prepare('SELECT timestamp, type FROM evolution WHERE auteur = :auteur AND classe = :classe');
-        $stmt->execute(['auteur' => $id, 'classe' => $evolPage]);
-        $donnees_info = $stmt->fetch();
-        // Date a laquelle la construction sera terminée.
-        $timeFin = $castToUnixTimestamp->fromPgTimestamptz($donnees_info['timestamp']);
-        // Type de la construction.
-        $evolution = $donnees_info['type'];
+        $stmt = $pdo->prepare(<<<'SQL'
+            SELECT
+                timestamp,
+                type
+            FROM evolution
+            WHERE (
+                auteur = :current_account_id
+                AND classe = :classe
+            )
+        SQL);
+        $stmt->execute([
+            'current_account_id' => $blContext['account']['id'],
+            'classe' => $evolPage,
+        ]);
+        /**
+         * @var array{
+         *     timestamp: string, // ISO 8601 timestamp string
+         *     type: int,
+         * }|false $currentEvolution
+         */
+        $currentEvolution = $stmt->fetch();
+        if (false !== $currentEvolution) {
+            // Date a laquelle la construction sera terminée.
+            $timeFin = $castToUnixTimestamp->fromPgTimestamptz($currentEvolution['timestamp']);
+            // Type de la construction.
+            $evolution = $currentEvolution['type'];
+        }
 
         // partie qui permet d'ajouter des constructions si il ya déjà des constructions en cours.
         $i = 0;
         $stop = 0;
-        if (1 == $joueurBloque && 1 == $evolPage) {
+        if (true === $joueurBloque && UpgradableCategory::Bisous->value === $evolPage) {
             $stop = 1;
         }
 
-        while ($i != $nbEvol && 0 === $stop) {
+        while ($i !== $upgradableTypeCount && 0 === $stop) {
             // Pour l'instant, on gère ca que pour les bisous.
-            if (isset($_POST[$Obj[$evolPage][$i]]) && 1 == $evolPage && ($amour >= $amourE[$evolPage][$i] && arbre($evolPage, $i, $nbE))) {
-                $stmt = $pdo->prepare('SELECT COUNT(*) AS nb_id FROM liste WHERE auteur = :auteur AND classe = 1');
-                $stmt->execute(['auteur' => $id]);
-                if ($stmt->fetchColumn() < 9) {
+            $upgradableItem = UpgradableCategory::from($evolPage)->getType($i)->toString();
+            if (
+                isset($_POST[$upgradableItem])
+                && UpgradableCategory::Bisous->value === $evolPage
+                && (
+                    $amour >= $amourE[$evolPage][$i]
+                    && arbre($evolPage, $i, $currentPlayerUpgradableLevels)
+                )
+            ) {
+                $stmt = $pdo->prepare(<<<'SQL'
+                    SELECT COUNT(id) AS total_queued_items
+                    FROM liste
+                    WHERE (
+                        auteur = :current_account_id
+                        AND classe = 1
+                    )
+                SQL);
+                $stmt->execute([
+                    'current_account_id' => $blContext['account']['id'],
+                ]);
+                /** @var array{total_queued_items: int}|false $queueCountResult */
+                $queueCountResult = $stmt->fetch();
+                if (
+                    false !== $queueCountResult
+                    && 9 > $queueCountResult['total_queued_items']
+                ) {
                     // Construction demandée, donc on arrete la boucle.
                     $stop = 1;
                     $dureeConst = $tempsE[$evolPage][$i];
-                    $stmt2 = $pdo->prepare('INSERT INTO liste (id, duree, classe, type, auteur, cout) VALUES (:id, :duree, :classe, :type, :auteur, :cout)');
-                    $stmt2->execute(['id' => Uuid::v7(), 'duree' => $dureeConst, 'classe' => $evolPage, 'type' => $i, 'auteur' => $id, 'cout' => $amourE[$evolPage][$i]]);
+                    $stmt2 = $pdo->prepare(<<<'SQL'
+                        INSERT INTO liste (id, duree, classe, type, auteur, cout)
+                        VALUES (:id, :duree, :classe, :type, :current_account_id, :cout)
+                    SQL);
+                    $stmt2->execute([
+                        'id' => Uuid::v7(),
+                        'duree' => $dureeConst,
+                        'classe' => $evolPage,
+                        'type' => $i,
+                        'current_account_id' => $blContext['account']['id'],
+                        'cout' => $amourE[$evolPage][$i],
+                    ]);
                     // On décrémente le nombre de points d'amour.
                     $amour -= $amourE[$evolPage][$i];
                 }
@@ -165,21 +326,36 @@ if (isset($inMainPage) && true == $inMainPage) {
         // On va vérifier pour chaque type d'objet si il ya une demande de construction.
         // Une fois une demande trouvée, on arrete la boucle.
         // Si on est sur la page de construction des Bisous et on attaque, pas de construction possible.
-        if (1 == $joueurBloque && 1 == $evolPage) {
+        if (true === $joueurBloque && UpgradableCategory::Bisous->value === $evolPage) {
             $stop = 1;
         }
 
-        while ($i != $nbEvol && 0 === $stop) {
+        while ($i !== $upgradableTypeCount && 0 === $stop) {
             // On regarde si on a demandé la construction, et si on a le nombre de points d'amour nécessaire.
             // (La vérification du nombre de points d'amour permet d'éviter les tricheurs --> sécurité)
-            if (isset($_POST[$Obj[$evolPage][$i]]) && $amour >= $amourE[$evolPage][$i] && arbre($evolPage, $i, $nbE)) {
+            $upgradableItem = UpgradableCategory::from($evolPage)->getType($i)->toString();
+            if (
+                isset($_POST[$upgradableItem])
+                && $amour >= $amourE[$evolPage][$i]
+                && arbre($evolPage, $i, $currentPlayerUpgradableLevels)
+            ) {
                 // Construction demandée, donc on arrete la boucle.
                 $stop = 1;
                 // On calcule la date de fin du calcul (servira aussi pour l'affichage sur la page).
                 $timeFin = time() + $tempsE[$evolPage][$i];
                 // On met l'objet en construction.
-                $stmt = $pdo->prepare('INSERT INTO evolution (id, timestamp, classe, type, auteur, cout) VALUES (:id, :timestamp, :classe, :type, :auteur, :cout)');
-                $stmt->execute(['id' => Uuid::v7(), 'timestamp' => $castToPgTimestamptz->fromUnixTimestamp($timeFin), 'classe' => $evolPage, 'type' => $i, 'auteur' => $id, 'cout' => $amourE[$evolPage][$i]]);
+                $stmt = $pdo->prepare(<<<'SQL'
+                    INSERT INTO evolution (id, timestamp, classe, type, auteur, cout)
+                    VALUES (:id, :timestamp, :classe, :type, :current_account_id, :cout)
+                SQL);
+                $stmt->execute([
+                    'id' => Uuid::v7(),
+                    'timestamp' => $castToPgTimestamptz->fromUnixTimestamp($timeFin),
+                    'classe' => $evolPage,
+                    'type' => $i,
+                    'current_account_id' => $blContext['account']['id'],
+                    'cout' => $amourE[$evolPage][$i],
+                ]);
                 // On décrémente le nombre de points d'amour.
                 $amour -= $amourE[$evolPage][$i];
                 // On indique le type du batiment en construction, pour l'affichage sur la page.

@@ -31,6 +31,26 @@ final readonly class Assert
         PHPUnitAssert::fail("Failed asserting that Player is logged in. Content: {$content}");
     }
 
+    public static function playerIsLoggedOut(LoggedInPlayer $loggedInPlayer): void
+    {
+        $httpClient = TestKernelSingleton::get()->httpClient();
+
+        $response = $httpClient->request('GET', '/cerveau.html', [
+            'headers' => [
+                'Cookie' => $loggedInPlayer->sessionCookie,
+            ],
+        ]);
+        $content = $response->getContent();
+
+        if (str_contains($content, "Tu n'es pas connect&eacute;.")) {
+            PHPUnitAssert::assertSame(200, $response->getStatusCode(), $content);
+
+            return;
+        }
+
+        PHPUnitAssert::fail("Failed asserting that Player is logged out. Content: {$content}");
+    }
+
     public static function playerLovePoints(Player $player, int $expectedLovePoints): void
     {
         $pdo = TestKernelSingleton::get()->pdo();
@@ -74,13 +94,13 @@ final readonly class Assert
         $pdo = TestKernelSingleton::get()->pdo();
 
         $stmt = $pdo->prepare(<<<'SQL'
-                SELECT messages.titre
-                FROM messages
-                INNER JOIN membres ON messages.destin = membres.id
-                WHERE membres.pseudo = :username
-                ORDER BY messages.timestamp DESC
-                LIMIT 1
-            SQL);
+            SELECT messages.titre
+            FROM messages
+            INNER JOIN membres ON messages.destin = membres.id
+            WHERE membres.pseudo = :username
+            ORDER BY messages.timestamp DESC
+            LIMIT 1
+        SQL);
         $stmt->execute([
             'username' => $player->username,
         ]);

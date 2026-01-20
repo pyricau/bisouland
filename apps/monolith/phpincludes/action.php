@@ -13,13 +13,19 @@ if (true === $blContext['is_signed_in']) {
     $castToPgTimestamptz = cast_to_pg_timestamptz();
     if (isset($_POST['action'])) {
         $cout = 0;
-        $positionCible = $_POST['position'] ?? '0';
+        $nuageCible = $_POST['nuage'] ?? '0';
         $nuageCible = is_numeric($nuageCible) ? (int) $nuageCible : 0;
-        $positionCible = $_POST['nuage'] ?? '0';
+        $positionCible = $_POST['position'] ?? '0';
         $positionCible = is_numeric($positionCible) ? (int) $positionCible : 0;
 
         if (false === $joueurBloque) {
-            if (($currentPlayerUpgradableLevels[UpgradableCategory::Bisous->value][UpgradableBisou::Peck->value] + $currentPlayerUpgradableLevels[UpgradableCategory::Bisous->value][UpgradableBisou::Smooch->value] + $currentPlayerUpgradableLevels[UpgradableCategory::Bisous->value][UpgradableBisou::FrenchKiss->value]) > 0) {
+            if (
+                (
+                    $currentPlayerUpgradableLevels[UpgradableCategory::Bisous->value][UpgradableBisou::Peck->value]
+                    + $currentPlayerUpgradableLevels[UpgradableCategory::Bisous->value][UpgradableBisou::Smooch->value]
+                    + $currentPlayerUpgradableLevels[UpgradableCategory::Bisous->value][UpgradableBisou::FrenchKiss->value]
+                ) > 0
+            ) {
                 if (0 === $nuageCible || 0 === $positionCible) {
                     $resultat = 'Evite les valeurs nulles pour les deux champs';
                 } else {
@@ -33,6 +39,7 @@ if (true === $blContext['is_signed_in']) {
                         WHERE (
                             nuage = :destination_nuage
                             AND position = :destination_position
+                        )
                     SQL);
                     $stmt->execute([
                         'destination_nuage' => $nuageCible,
@@ -58,6 +65,7 @@ if (true === $blContext['is_signed_in']) {
                                 WHERE (
                                     auteur = :current_account_id
                                     AND classe = 1
+                                )
                             SQL);
                             $stmt->execute([
                                 'current_account_id' => $blContext['account']['id'],
@@ -79,6 +87,7 @@ if (true === $blContext['is_signed_in']) {
                                     WHERE (
                                         auteur = :current_account_id
                                         AND classe = 1
+                                    )
                                 SQL);
                                 $stmt->execute([
                                     'current_account_id' => $blContext['account']['id'],
@@ -127,6 +136,7 @@ if (true === $blContext['is_signed_in']) {
                                                     auteur = :current_account_id
                                                     AND cible = :receiver_account_id
                                                     AND timestamp >= CURRENT_TIMESTAMP - INTERVAL '12 hours'
+                                                )
                                             SQL);
                                             $stmt->execute([
                                                 'current_account_id' => $blContext['account']['id'],
@@ -201,9 +211,9 @@ if (true === $blContext['is_signed_in']) {
     } elseif (isset($_GET['nuage']) && isset($_GET['position'])) {
         $pdo = bd_connect();
 
-        $nuageCible = $_GET['position'] ?? '0';
+        $nuageCible = $_GET['nuage'] ?? '0';
         $nuageCible = is_numeric($nuageCible) ? (int) $nuageCible : 0;
-        $positionCible = $_GET['nuage'] ?? '0';
+        $positionCible = $_GET['position'] ?? '0';
         $positionCible = is_numeric($positionCible) ? (int) $positionCible : 0;
 
         $nuageSource = $blContext['account']['nuage'];

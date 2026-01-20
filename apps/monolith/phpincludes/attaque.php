@@ -7,6 +7,9 @@ if (isset($inMainPage) && true == $inMainPage) {
     $castToUnixTimestamp = cast_to_unix_timestamp();
     $castToPgTimestamptz = cast_to_pg_timestamptz();
 
+    // Ensure $amour is initialized (should be set by app.php when signed in)
+    $amour ??= 0;
+
     // ***************************************************************************
     // Gestion des attaques.
     // Phase d'aller :

@@ -361,7 +361,10 @@ if (isset($inMainPage) && true == $inMainPage) {
 
             $DefAmour -= $butin;
 
-            if ($blownKiss['receiver_account_id'] === $id && true === $blContext['is_signed_in']) {
+            if (
+                $blownKiss['receiver_account_id'] === $blContext['account']['id']
+                && true === $blContext['is_signed_in']
+            ) {
                 $amour = $DefAmour;
             }
 

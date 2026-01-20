@@ -97,7 +97,11 @@ if (true === $blContext['is_signed_in']) {
                         }
                         $lvlInfo = random_int(0, $max);
 
-                        AdminMP($receiver['id'], "{$pseudo} t'a dévisagé", $pseudo." vient de te dévisager, et cherche peut-être à t'embrasser.");
+                        AdminMP(
+                            $receiver['id'],
+                            "{$blContext['account']['pseudo']} t'a dévisagé",
+                            "{$blContext['account']['pseudo']} vient de te dévisager, et cherche peut-être à t'embrasser.",
+                        );
 
                         $resultat = "Tu as dévisagé {$receiver['pseudo']}";
 

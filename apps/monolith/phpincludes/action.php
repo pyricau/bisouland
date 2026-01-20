@@ -162,10 +162,10 @@ if (true === $blContext['is_signed_in']) {
                                                 $estimatedTimeOfArrival = strTemps($duree);
                                                 AdminMP(
                                                     $receiver['id'],
-                                                    "{$pseudo} veut t'embrasser",
-                                                    "{$pseudo} vient d'envoyer ses bisous dans ta direction,"
+                                                    "{$blContext['account']['pseudo']} veut t'embrasser",
+                                                    "{$blContext['account']['pseudo']} vient d'envoyer ses bisous dans ta direction,"
                                                     ." et va tenter de t'embrasser.\n"
-                                                    ."{$pseudo} est situé sur le nuage {$blContext['account']['nuage']},"
+                                                    ."{$blContext['account']['pseudo']} est situé sur le nuage {$blContext['account']['nuage']},"
                                                     ." à la position {$sender['position']}.\n"
                                                     ."Ses Bisous arrivent dans {$estimatedTimeOfArrival}.",
                                                 );

@@ -139,7 +139,7 @@ if (false !== $blownKiss) {
         AdminMP(
             $blownKiss['receiver_account_id'],
             'Attaque annulée',
-            "{$pseudo} a annulé son attaque.\n"
+            "{$blContext['account']['pseudo']} a annulé son attaque.\n"
             ."Tu n'es plus en danger.",
         );
         $state = BlownKissState::CalledOff; // Update local variable to reflect the change

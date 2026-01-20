@@ -62,11 +62,6 @@ $resetBlContext = $blContext;
 if ('POST' === $_SERVER['REQUEST_METHOD'] && isset($_POST['connexion'])) {
     // Ensuite on vérifie que les variables existent et contiennent quelque chose :)
     if (isset($_POST['pseudo'], $_POST['mdp']) && !empty($_POST['pseudo']) && !empty($_POST['mdp'])) {
-        // Mesure de sécurité, notamment pour éviter les injections sql.
-        // Le htmlentities évitera de le passer par la suite.
-        $pseudo = htmlentities((string) $_POST['pseudo']);
-        $mdp = htmlentities((string) $_POST['mdp']);
-
         // La requête qui compte le nombre de pseudos
         $stmt = $pdo->prepare(<<<'SQL'
             SELECT COUNT(pseudo) AS total_pseudo_matches
@@ -74,7 +69,7 @@ if ('POST' === $_SERVER['REQUEST_METHOD'] && isset($_POST['connexion'])) {
             WHERE pseudo = :pseudo
         SQL);
         $stmt->execute([
-            'pseudo' => $pseudo,
+            'pseudo' => $_POST['pseudo'],
         ]);
         /** @var array{
          *       total_pseudo_matches: int,
@@ -89,16 +84,17 @@ if ('POST' === $_SERVER['REQUEST_METHOD'] && isset($_POST['connexion'])) {
         ) {
             // Sélection des informations.
             $stmt = $pdo->prepare(<<<'SQL'
-                SELECT id, confirmation, mdp, nuage
+                SELECT id, pseudo, confirmation, mdp, nuage
                 FROM membres
                 WHERE pseudo = :pseudo
             SQL);
             $stmt->execute([
-                'pseudo' => $pseudo,
+                'pseudo' => $_POST['pseudo'],
             ]);
             /**
              * @var array{
              *     id: string, // UUID
+             *     pseudo: string,
              *     confirmation: bool,
              *     mdp: string,
              *     nuage: int,
@@ -109,7 +105,7 @@ if ('POST' === $_SERVER['REQUEST_METHOD'] && isset($_POST['connexion'])) {
             // Si le mot de passe est le même.
             if (
                 false !== $currentAccount
-                && password_verify($mdp, $currentAccount['mdp'])
+                && password_verify($_POST['mdp'], $currentAccount['mdp'])
             ) {
                 // Si le compte est confirmé.
                 if (true === $currentAccount['confirmation']) {
@@ -125,7 +121,7 @@ if ('POST' === $_SERVER['REQUEST_METHOD'] && isset($_POST['connexion'])) {
                         'is_signed_in' => true,
                         'account' => [
                             'id' => $currentAccount['id'],
-                            'pseudo' => $pseudo,
+                            'pseudo' => $currentAccount['pseudo'],
                             'nuage' => $currentAccount['nuage'],
                         ],
                     ];

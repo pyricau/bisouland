@@ -7,6 +7,9 @@ if (isset($inMainPage) && true == $inMainPage) {
     $castToUnixTimestamp = cast_to_unix_timestamp();
     $castToPgTimestamptz = cast_to_pg_timestamptz();
 
+    // Ensure $amour is initialized (should be set by app.php when signed in)
+    $amour ??= 0;
+
     // ***************************************************************************
     // Gestion des attaques.
     // Phase d'aller :
@@ -361,7 +364,10 @@ if (isset($inMainPage) && true == $inMainPage) {
 
             $DefAmour -= $butin;
 
-            if ($blownKiss['receiver_account_id'] === $id && true === $blContext['is_signed_in']) {
+            if (
+                $blownKiss['receiver_account_id'] === $blContext['account']['id']
+                && true === $blContext['is_signed_in']
+            ) {
                 $amour = $DefAmour;
             }
 

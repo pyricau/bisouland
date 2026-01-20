@@ -14,14 +14,14 @@
         "ext-pdo_pgsql": "*"
     },
     "require-dev": {
-        "friendsofphp/php-cs-fixer": "^3.91.3",
+        "friendsofphp/php-cs-fixer": "^3.92.5",
         "jangregor/phpstan-prophecy": "^2.2",
-        "phpstan/phpstan": "^2.1.33",
-        "phpunit/phpunit": "^12.5.2",
-        "rector/rector": "^2.2.11",
-        "rector/swiss-knife": "^2.3.3",
+        "phpstan/phpstan": "^2.1.34",
+        "phpunit/phpunit": "^12.5.6",
+        "rector/rector": "^2.3.2",
+        "rector/swiss-knife": "^2.3.5",
         "symfony/dotenv": "^8.0",
-        "symfony/http-client": "^8.0.1"
+        "symfony/http-client": "^8.0.3"
     },
     "config": {
         "bump-after-update": true,

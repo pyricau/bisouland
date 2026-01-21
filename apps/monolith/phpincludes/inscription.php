@@ -4,9 +4,6 @@ use Symfony\Component\Uid\Uuid;
 
 if (false === $blContext['is_signed_in']) {
     $pdo = bd_connect();
-    $castToPgBoolean = cast_to_pg_boolean();
-    $castToUnixTimestamp = cast_to_unix_timestamp();
-    $castToPgTimestamptz = cast_to_pg_timestamptz();
     $send = 0;
     $pseudo = '';
     $mdp = '';
@@ -47,14 +44,13 @@ if (false === $blContext['is_signed_in']) {
 
                                     $id = Uuid::v7();
                                     $stmt = $pdo->prepare(
-                                        'INSERT INTO membres (id, pseudo, mdp, confirmation, timestamp, lastconnect, amour)'
-                                        .' VALUES (:id, :pseudo, :mdp, :confirmation, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, :amour)',
+                                        'INSERT INTO membres (id, pseudo, mdp, timestamp, lastconnect, amour)'
+                                        .' VALUES (:id, :pseudo, :mdp, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, :amour)',
                                     );
                                     $stmt->execute([
                                         'id' => $id,
                                         'pseudo' => $pseudo,
                                         'mdp' => $hmdp,
-                                        'confirmation' => $castToPgBoolean->from(true),
                                         'amour' => 300,
                                     ]);
 

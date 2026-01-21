@@ -14,7 +14,6 @@ $stmt = $pdo->query(<<<'SQL'
         COUNT(*) FILTER (WHERE lastconnect >= CURRENT_TIMESTAMP - INTERVAL '30 days') AS last_month,
         COUNT(*) FILTER (WHERE lastconnect >= CURRENT_TIMESTAMP - INTERVAL '1 year') AS last_year
     FROM membres
-    WHERE confirmation = TRUE
 SQL);
 /**
  * @var array{

@@ -2,13 +2,12 @@
 <?php
 $pdo = bd_connect();
 $stmt = $pdo->query(<<<'SQL'
-    SELECT COUNT(*) AS total_confirmed_members
+    SELECT COUNT(*) AS total_members
     FROM membres
-    WHERE confirmation = TRUE
 SQL);
-/** @var array{total_confirmed_members: int}|false $result */
+/** @var array{total_members: int}|false $result */
 $result = $stmt->fetch();
-$total = (false !== $result) ? $result['total_confirmed_members'] : 0;
+$total = (false !== $result) ? $result['total_members'] : 0;
 
 echo 'Nombre de membres : '.$total.'<br /><br />';
 
@@ -38,7 +37,6 @@ $stmt = $pdo->prepare(<<<'SQL'
         nuage,
         lastconnect
     FROM membres
-    WHERE confirmation = TRUE
     ORDER BY id DESC
     LIMIT :results_per_page
     OFFSET :results_offset

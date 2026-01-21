@@ -64,7 +64,7 @@ if ('POST' === $_SERVER['REQUEST_METHOD'] && isset($_POST['connexion'])) {
     if (isset($_POST['pseudo'], $_POST['mdp']) && !empty($_POST['pseudo']) && !empty($_POST['mdp'])) {
         // Sélection des informations.
         $stmt = $pdo->prepare(<<<'SQL'
-            SELECT id, pseudo, confirmation, mdp, nuage
+            SELECT id, pseudo, mdp, nuage
             FROM membres
             WHERE pseudo = :pseudo
         SQL);
@@ -75,7 +75,6 @@ if ('POST' === $_SERVER['REQUEST_METHOD'] && isset($_POST['connexion'])) {
          * @var array{
          *     id: string, // UUID
          *     pseudo: string,
-         *     confirmation: bool,
          *     mdp: string,
          *     nuage: int,
          * }|false $currentAccount
@@ -86,50 +85,44 @@ if ('POST' === $_SERVER['REQUEST_METHOD'] && isset($_POST['connexion'])) {
         if (false !== $currentAccount) {
             // Si le mot de passe est le même.
             if (password_verify($_POST['mdp'], $currentAccount['mdp'])) {
-                // Si le compte est confirmé.
-                if (true === $currentAccount['confirmation']) {
-                    // --- Persistent authentication
-                    $createAuthToken = CreateAuthToken::fromRawAccountId(
-                        $currentAccount['id'],
-                    );
-                    $saveAuthToken->save(
-                        $createAuthToken->authToken,
-                    );
+                // --- Persistent authentication
+                $createAuthToken = CreateAuthToken::fromRawAccountId(
+                    $currentAccount['id'],
+                );
+                $saveAuthToken->save(
+                    $createAuthToken->authToken,
+                );
 
-                    $blContext = [
-                        'is_signed_in' => true,
-                        'account' => [
-                            'id' => $currentAccount['id'],
-                            'pseudo' => $currentAccount['pseudo'],
-                            'nuage' => $currentAccount['nuage'],
-                        ],
-                    ];
+                $blContext = [
+                    'is_signed_in' => true,
+                    'account' => [
+                        'id' => $currentAccount['id'],
+                        'pseudo' => $currentAccount['pseudo'],
+                        'nuage' => $currentAccount['nuage'],
+                    ],
+                ];
 
-                    $createAuthTokenCookie = CreateAuthTokenCookie::fromCreateAuthToken(
-                        $createAuthToken,
-                    );
-                    setcookie(
-                        $createAuthTokenCookie->getName(),
-                        $createAuthTokenCookie->getValue(),
-                        $createAuthTokenCookie->getOptions(),
-                    );
-                    // ---
+                $createAuthTokenCookie = CreateAuthTokenCookie::fromCreateAuthToken(
+                    $createAuthToken,
+                );
+                setcookie(
+                    $createAuthTokenCookie->getName(),
+                    $createAuthTokenCookie->getValue(),
+                    $createAuthTokenCookie->getOptions(),
+                );
+                // ---
 
-                    // On supprime le membre non connecté du nombre de visiteurs :
-                    $stmt = $pdo->prepare(<<<'SQL'
-                        DELETE FROM connectbisous
-                        WHERE ip = :ip
-                    SQL);
-                    $stmt->execute([
-                        'ip' => $_SERVER['REMOTE_ADDR'],
-                    ]);
+                // On supprime le membre non connecté du nombre de visiteurs :
+                $stmt = $pdo->prepare(<<<'SQL'
+                    DELETE FROM connectbisous
+                    WHERE ip = :ip
+                SQL);
+                $stmt->execute([
+                    'ip' => $_SERVER['REMOTE_ADDR'],
+                ]);
 
-                    // On redirige le membre.
-                    header('location: cerveau.html');
-                    exit;
-                }
-                $_SESSION['errCon'] = 'Erreur : le compte n\'est pas confirmé !';
-                header('location: connexion.html');
+                // On redirige le membre.
+                header('location: cerveau.html');
                 exit;
             }
             $_SESSION['errCon'] = 'Erreur : le mot de passe est incorrect !';

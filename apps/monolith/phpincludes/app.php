@@ -25,8 +25,6 @@ header('Content-type: text/html; charset=UTF-8');
 // Attaque : mettre en place la possibilité d'attaquer, avec choix etc..
 // Créer système de MP automatique pour avertir.
 
-// Démarrage de la session
-session_start();
 ob_start();
 
 $pdo = bd_connect();
@@ -125,16 +123,13 @@ if ('POST' === $_SERVER['REQUEST_METHOD'] && isset($_POST['connexion'])) {
                 header('location: cerveau.html');
                 exit;
             }
-            $_SESSION['errCon'] = 'Erreur : le mot de passe est incorrect !';
-            header('location: connexion.html');
+            header('location: connexion.html?e=1');
             exit;
         }
-        $_SESSION['errCon'] = "Erreur : le pseudo n'existe pas !";
-        header('location: connexion.html');
+        header('location: connexion.html?e=2');
         exit;
     }
-    $_SESSION['errCon'] = 'Erreur : vous avez oublié de remplir un ou plusieurs champs !';
-    header('location: connexion.html');
+    header('location: connexion.html?e=3');
     exit;
 }
 
@@ -208,8 +203,7 @@ if ('logout' === $page) {
         header('location: accueil.html');
         exit;
     }
-    $_SESSION['errCon'] = 'Erreur : vous devez être connecté pour vous déconnecter !';
-    header('location: connexion.html');
+    header('location: connexion.html?e=4');
     exit;
 }
 

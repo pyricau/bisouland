@@ -26,13 +26,12 @@ if (false === $blContext['is_signed_in']) {
                     $pseudo = htmlentities(addslashes($_POST['pseudo']));
                     $mdp = htmlentities(addslashes($_POST['mdp']));*/
 
-                    // La requete qui compte le nombre de pseudos
-                    $stmt = $pdo->prepare('SELECT COUNT(*) AS nb_pseudo FROM membres WHERE pseudo = :pseudo');
+                    // Verifie si le pseudo n'est pas deje pris.
+                    $stmt = $pdo->prepare('SELECT id FROM membres WHERE pseudo = :pseudo LIMIT 1');
                     $stmt->execute(['pseudo' => $pseudo]);
 
-                    // Verifie si le pseudo n'est pas deje pris.
                     if (
-                        0 == $stmt->fetchColumn()
+                        false === $stmt->fetch()
                         && 'BisouLand' !== $pseudo
                     ) {
                         // Verifie que le pseudo est correct.

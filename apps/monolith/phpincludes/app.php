@@ -62,51 +62,30 @@ $resetBlContext = $blContext;
 if ('POST' === $_SERVER['REQUEST_METHOD'] && isset($_POST['connexion'])) {
     // Ensuite on vérifie que les variables existent et contiennent quelque chose :)
     if (isset($_POST['pseudo'], $_POST['mdp']) && !empty($_POST['pseudo']) && !empty($_POST['mdp'])) {
-        // La requête qui compte le nombre de pseudos
+        // Sélection des informations.
         $stmt = $pdo->prepare(<<<'SQL'
-            SELECT COUNT(*) AS total_pseudo_matches
+            SELECT id, pseudo, confirmation, mdp, nuage
             FROM membres
             WHERE pseudo = :pseudo
         SQL);
         $stmt->execute([
             'pseudo' => $_POST['pseudo'],
         ]);
-        /** @var array{
-         *       total_pseudo_matches: int,
-         *  }|false $result
+        /**
+         * @var array{
+         *     id: string, // UUID
+         *     pseudo: string,
+         *     confirmation: bool,
+         *     mdp: string,
+         *     nuage: int,
+         * }|false $currentAccount
          */
-        $result = $stmt->fetch();
+        $currentAccount = $stmt->fetch();
 
-        // La on vérifie si le nombre est différent que zéro
-        if (
-            false !== $result
-            && 1 === $result['total_pseudo_matches']
-        ) {
-            // Sélection des informations.
-            $stmt = $pdo->prepare(<<<'SQL'
-                SELECT id, pseudo, confirmation, mdp, nuage
-                FROM membres
-                WHERE pseudo = :pseudo
-            SQL);
-            $stmt->execute([
-                'pseudo' => $_POST['pseudo'],
-            ]);
-            /**
-             * @var array{
-             *     id: string, // UUID
-             *     pseudo: string,
-             *     confirmation: bool,
-             *     mdp: string,
-             *     nuage: int,
-             * }|false $currentAccount
-             */
-            $currentAccount = $stmt->fetch();
-
+        // Vérifie si le pseudo existe
+        if (false !== $currentAccount) {
             // Si le mot de passe est le même.
-            if (
-                false !== $currentAccount
-                && password_verify($_POST['mdp'], $currentAccount['mdp'])
-            ) {
+            if (password_verify($_POST['mdp'], $currentAccount['mdp'])) {
                 // Si le compte est confirmé.
                 if (true === $currentAccount['confirmation']) {
                     // --- Persistent authentication

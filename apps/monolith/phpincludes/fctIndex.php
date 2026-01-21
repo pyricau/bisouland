@@ -128,7 +128,7 @@ function AdminMP($cible, $objet, $message, bool $lu = false): void
     $message = nl2br((string) $message);
 
     $stmt = $pdo->prepare(<<<'SQL'
-        SELECT COUNT(id) AS nbmsg
+        SELECT COUNT(*) AS nbmsg
         FROM messages
         WHERE destin = :destin
     SQL);
@@ -444,7 +444,7 @@ function GiveNewPosition($idJoueur): void
     $NbNuages = $nuageConfig['nombre'];
 
     $stmt = $pdo->prepare(<<<'SQL'
-        SELECT COUNT(id) AS total_accounts_in_nuage
+        SELECT COUNT(*) AS total_accounts_in_nuage
         FROM membres
         WHERE nuage = :nuage
     SQL);

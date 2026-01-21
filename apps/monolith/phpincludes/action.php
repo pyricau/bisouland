@@ -60,7 +60,7 @@ if (true === $blContext['is_signed_in']) {
                         } else {
                             $stmt = $pdo->prepare(<<<'SQL'
                                 SELECT
-                                    COUNT(id) AS total_kisses_being_built
+                                    COUNT(*) AS total_kisses_being_built
                                 FROM evolution
                                 WHERE (
                                     auteur = :current_account_id
@@ -82,7 +82,7 @@ if (true === $blContext['is_signed_in']) {
                             } else {
                                 // On détermine s'il y a une construction en cours.
                                 $stmt = $pdo->prepare(<<<'SQL'
-                                    SELECT COUNT(id) AS total_kisses_planned_to_be_built
+                                    SELECT COUNT(*) AS total_kisses_planned_to_be_built
                                     FROM liste
                                     WHERE (
                                         auteur = :current_account_id
@@ -130,7 +130,7 @@ if (true === $blContext['is_signed_in']) {
                                         $cout = coutAttaque($distance, $currentPlayerUpgradableLevels[UpgradableCategory::Organs->value][UpgradableOrgan::Legs->value]);
                                         if ($amour >= $cout) {
                                             $stmt = $pdo->prepare(<<<'SQL'
-                                                SELECT COUNT(id) AS total_number_of_kisses_sent_recently
+                                                SELECT COUNT(*) AS total_number_of_kisses_sent_recently
                                                 FROM logatt
                                                 WHERE (
                                                     auteur = :current_account_id

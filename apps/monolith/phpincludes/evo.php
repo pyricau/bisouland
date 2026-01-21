@@ -216,7 +216,9 @@ if (isset($inMainPage) && true === $inMainPage) {
 
     // On détermine s'il y a une construction en cours.
     $stmt = $pdo->prepare(<<<'SQL'
-        SELECT COUNT(id) AS total_evolutions_in_progress
+        SELECT
+            timestamp,
+            type
         FROM evolution
         WHERE (
             auteur = :current_account_id
@@ -227,40 +229,18 @@ if (isset($inMainPage) && true === $inMainPage) {
         'current_account_id' => $blContext['account']['id'],
         'classe' => $evolPage,
     ]);
-    /** @var array{total_evolutions_in_progress: int}|false $countResult */
-    $countResult = $stmt->fetch();
-    if (
-        false !== $countResult
-        && 0 < $countResult['total_evolutions_in_progress']
-    ) {
-        // Si oui, on récupère les infos sur la construction.
-        $stmt = $pdo->prepare(<<<'SQL'
-            SELECT
-                timestamp,
-                type
-            FROM evolution
-            WHERE (
-                auteur = :current_account_id
-                AND classe = :classe
-            )
-        SQL);
-        $stmt->execute([
-            'current_account_id' => $blContext['account']['id'],
-            'classe' => $evolPage,
-        ]);
-        /**
-         * @var array{
-         *     timestamp: string, // ISO 8601 timestamp string
-         *     type: int,
-         * }|false $currentEvolution
-         */
-        $currentEvolution = $stmt->fetch();
-        if (false !== $currentEvolution) {
-            // Date a laquelle la construction sera terminée.
-            $timeFin = $castToUnixTimestamp->fromPgTimestamptz($currentEvolution['timestamp']);
-            // Type de la construction.
-            $evolution = $currentEvolution['type'];
-        }
+    /**
+     * @var array{
+     *     timestamp: string, // ISO 8601 timestamp string
+     *     type: int,
+     * }|false $currentEvolution
+     */
+    $currentEvolution = $stmt->fetch();
+    if (false !== $currentEvolution) {
+        // Date a laquelle la construction sera terminée.
+        $timeFin = $castToUnixTimestamp->fromPgTimestamptz($currentEvolution['timestamp']);
+        // Type de la construction.
+        $evolution = $currentEvolution['type'];
 
         // partie qui permet d'ajouter des constructions si il ya déjà des constructions en cours.
         $i = 0;
@@ -281,7 +261,7 @@ if (isset($inMainPage) && true === $inMainPage) {
                 )
             ) {
                 $stmt = $pdo->prepare(<<<'SQL'
-                    SELECT COUNT(id) AS total_queued_items
+                    SELECT COUNT(*) AS total_queued_items
                     FROM liste
                     WHERE (
                         auteur = :current_account_id

@@ -126,7 +126,7 @@ if (true === $blContext['is_signed_in']) {
     }
 
     $stmt = $pdo->prepare(<<<'SQL'
-        SELECT COUNT(id) AS total_messages
+        SELECT COUNT(*) AS total_messages
         FROM messages
         WHERE destin = :current_account_id
     SQL);

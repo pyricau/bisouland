@@ -2,7 +2,7 @@
 <?php
 $pdo = bd_connect();
 $stmt = $pdo->query(<<<'SQL'
-    SELECT COUNT(id) AS total_confirmed_members
+    SELECT COUNT(*) AS total_confirmed_members
     FROM membres
     WHERE confirmation = TRUE
 SQL);

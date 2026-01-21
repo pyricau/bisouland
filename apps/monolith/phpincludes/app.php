@@ -64,7 +64,7 @@ if ('POST' === $_SERVER['REQUEST_METHOD'] && isset($_POST['connexion'])) {
     if (isset($_POST['pseudo'], $_POST['mdp']) && !empty($_POST['pseudo']) && !empty($_POST['mdp'])) {
         // La requête qui compte le nombre de pseudos
         $stmt = $pdo->prepare(<<<'SQL'
-            SELECT COUNT(pseudo) AS total_pseudo_matches
+            SELECT COUNT(*) AS total_pseudo_matches
             FROM membres
             WHERE pseudo = :pseudo
         SQL);
@@ -511,7 +511,7 @@ if (true === $blContext['is_signed_in']) {
     }
 
     $stmt = $pdo->prepare(<<<'SQL'
-        SELECT COUNT(destin) AS total_unread
+        SELECT COUNT(*) AS total_unread
         FROM messages
         WHERE (
             destin = :current_account_id
@@ -722,7 +722,7 @@ $stmt->execute();
 // Etape 3 : on demande maintenant le nombre de gens connectés.
 // Nombre de visiteurs
 $stmt = $pdo->query(<<<'SQL'
-    SELECT COUNT(ip) AS total_connections
+    SELECT COUNT(*) AS total_connections
     FROM connectbisous
 SQL);
 /** @var array{total_connections: int} $result */
@@ -730,7 +730,7 @@ $result = $stmt->fetch();
 $NbVisit = $result['total_connections'];
 
 $stmt = $pdo->prepare(<<<'SQL'
-    SELECT COUNT(lastconnect) AS total_recent_players
+    SELECT COUNT(*) AS total_recent_players
     FROM membres
     WHERE lastconnect >= CURRENT_TIMESTAMP - INTERVAL '5 minutes'
 SQL);

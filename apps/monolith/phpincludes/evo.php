@@ -216,7 +216,7 @@ if (isset($inMainPage) && true === $inMainPage) {
 
     // On détermine s'il y a une construction en cours.
     $stmt = $pdo->prepare(<<<'SQL'
-        SELECT COUNT(id) AS total_evolutions_in_progress
+        SELECT COUNT(*) AS total_evolutions_in_progress
         FROM evolution
         WHERE (
             auteur = :current_account_id
@@ -281,7 +281,7 @@ if (isset($inMainPage) && true === $inMainPage) {
                 )
             ) {
                 $stmt = $pdo->prepare(<<<'SQL'
-                    SELECT COUNT(id) AS total_queued_items
+                    SELECT COUNT(*) AS total_queued_items
                     FROM liste
                     WHERE (
                         auteur = :current_account_id

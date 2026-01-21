@@ -29,7 +29,7 @@ $nombreDeMessagesParPage = 5; // Essayez de changer ce nombre pour voir :o)
 
 // On récupère le nombre total de messages
 $stmt = $pdo->query(<<<'SQL'
-    SELECT COUNT(id) AS total_messages
+    SELECT COUNT(*) AS total_messages
     FROM orbisous
 SQL);
 /** @var array{total_messages: int}|false $result */

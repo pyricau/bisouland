@@ -40,7 +40,7 @@ $currentPlayer = $stmt->fetch();
 $score = false !== $currentPlayer ? floor($currentPlayer['score'] / 1000.) : 0;
 
 $stmt = $pdo->prepare(<<<'SQL'
-    SELECT COUNT(id) AS players_with_higher_score
+    SELECT COUNT(*) AS players_with_higher_score
     FROM membres
     WHERE score > :current_player_score
 SQL);
@@ -52,7 +52,7 @@ $result = $stmt->fetch();
 $position = false !== $result ? $result['players_with_higher_score'] + 1 : 1;
 
 $stmt = $pdo->query(<<<'SQL'
-    SELECT COUNT(id) AS total_players
+    SELECT COUNT(*) AS total_players
     FROM membres
     WHERE confirmation = TRUE
 SQL);

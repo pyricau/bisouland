@@ -8,7 +8,6 @@ if (isset($_POST['recherche'])) {
             SELECT
                 id,
                 pseudo,
-                confirmation,
                 nuage,
                 lastconnect
             FROM membres
@@ -21,14 +20,15 @@ if (isset($_POST['recherche'])) {
          * @var array{
          *      id: string, // UUID
          *      pseudo: string,
-         *      confirmation: bool,
          *      nuage: int,
          *      lastconnect: string, // ISO 8601 timestamp string
          * }|false $account
          */
         $account = $stmt->fetch();
         if (false !== $account) {
-            if (true === $account['confirmation']) {
+            if ('bisouland' === strtolower((string) $account['pseudo'])) {
+                $resultat = 'BisouLand est notre maitre a tous';
+            } else {
                 $resultat = "<h2>{$account['pseudo']} joue bien sur BisouLand</h2>";
                 if ($castToUnixTimestamp->fromPgTimestamptz($account['lastconnect']) > time() - 300) {
                     $resultat .= '<a class="bulle" style="cursor: default;" onclick="return false;" href=""><img src="images/on.png" alt="Connect&eacute;" title=""/><span>'.$account['pseudo'].' est connect&eacute;</span></a> ';
@@ -44,10 +44,6 @@ if (isset($_POST['recherche'])) {
                     $resultat .= '<br /><br />Toi aussi, n\'hesite pas a rejoindre la communaute BisouLand.<br />
 					Tu peux t\'inscrire en cliquant <a href="inscription.html" title="S\'inscrire sur BisouLand">ici</a>.';
                 }
-            } elseif ('bisouland' === strtolower((string) $account['pseudo'])) {
-                $resultat = 'BisouLand est notre maitre a tous';
-            } else {
-                $resultat = "Ce compte existe mais le joueur n'a pas confirme son inscription";
             }
         } else {
             $resultat = "Ce joueur n'existe pas";

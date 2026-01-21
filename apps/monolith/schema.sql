@@ -7,7 +7,6 @@ CREATE TABLE IF NOT EXISTS membres (
     pseudo VARCHAR(50) NOT NULL UNIQUE, -- aka pseudonym
     mdp VARCHAR(255) NOT NULL,          -- aka password_hash
     newpass VARCHAR(255) DEFAULT NULL,  -- For lost password @TODO remove
-    confirmation BOOLEAN DEFAULT FALSE, -- TRUE = can start playing, FALSE = cannot yet @TODO remove
     -- Player
     timestamp TIMESTAMPTZ NOT NULL DEFAULT CURRENT_TIMESTAMP, -- aka created_at
     lastconnect TIMESTAMPTZ NOT NULL DEFAULT CURRENT_TIMESTAMP, -- aka last_connected_at
@@ -145,12 +144,11 @@ VALUES ('00000000-0000-0000-0000-000000000002'::UUID, 1)
 ON CONFLICT (id) DO UPDATE SET nombre = nuage.nombre;
 
 -- Insert a default admin user (password: admin, hashed with bcrypt)
-INSERT INTO membres (id, pseudo, mdp, confirmation, timestamp, lastconnect)
+INSERT INTO membres (id, pseudo, mdp, timestamp, lastconnect)
 VALUES (
     '00000000-0000-0000-0000-000000000001'::UUID,
     'admin',
     '$2y$12$mdsYNRFVDcDCOjXXCfEWG.1jLajEJt/ldCo2kdGS5uBElgyIabRP.',
-    TRUE,
     CURRENT_TIMESTAMP,
     CURRENT_TIMESTAMP
 )

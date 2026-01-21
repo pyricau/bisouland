@@ -10,7 +10,7 @@ include __DIR__.'/../phpincludes/bd.php';
 
 $pdo = bd_connect();
 
-$retour = $pdo->query("SELECT COUNT(*) AS nb FROM membres WHERE confirmation=TRUE");
+$retour = $pdo->query("SELECT COUNT(*) AS nb FROM membres");
 $nbMembres = $retour->fetchColumn();
 
 $nbMembresParNuage = 4;
@@ -19,7 +19,7 @@ $espacement = 16 / $nbMembresParNuage;
 
 $nbNuagesFinal = ceil($nbMembres/$nbMembresParNuage);
 
-$sql = $pdo->query("SELECT id FROM membres WHERE confirmation=TRUE");
+$sql = $pdo->query("SELECT id FROM membres");
 $membre = 0;
 $nuage = 1;
 while($donnees = $sql->fetch())

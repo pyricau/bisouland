@@ -54,7 +54,6 @@ $position = false !== $result ? $result['players_with_higher_score'] + 1 : 1;
 $stmt = $pdo->query(<<<'SQL'
     SELECT COUNT(*) AS total_players
     FROM membres
-    WHERE confirmation = TRUE
 SQL);
 /** @var array{total_players: int}|false $result */
 $result = $stmt->fetch();

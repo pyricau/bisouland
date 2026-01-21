@@ -143,7 +143,6 @@ if (true === $blContext['is_signed_in']) {
     $stmt = $pdo->prepare(<<<'SQL'
         SELECT
             id,
-            posteur AS sender_account_id,
             timestamp,
             statut,
             titre
@@ -158,7 +157,6 @@ if (true === $blContext['is_signed_in']) {
     /**
      * @var array<int, array{
      *      id: string, // UUID
-     *      sender_account_id: string, // UUID
      *      timestamp: string, // ISO 8601 timestamp string
      *      statut: bool,
      *      titre: string,
@@ -176,33 +174,17 @@ if (true === $blContext['is_signed_in']) {
 			<tr>
 				<th style="width:5%;"><input type="checkbox" name="supboite[0]" title="Selectionner tous les messages" alt="Selectionner tous les messages" onclick="checkall()"/></th>
 				<th style="width:5%;"><a class="bulle" style="cursor: default;" onclick="return false;" href=""><img src="images/newmess.png" alt="Messages non lus" title="" /><span>Messages non lus</span></a></th>
-				<th style="width:20%;">Exp&eacute;diteur</th>
-				<th style="width:35%;">Date</th>
-				<th style="width:35%;">Objet</th>
+				<th style="width:45%;">Date</th>
+				<th style="width:45%;">Objet</th>
 			</tr>
 <?php
     foreach ($messages as $message) {
-        // Suppression : bouton supprimer en bas, et checkbox //Ajouter bouton lu/non lu  //Max messages
-        $stmt2 = $pdo->prepare(<<<'SQL'
-            SELECT pseudo
-            FROM membres
-            WHERE id = :sender_account_id
-        SQL);
-        $stmt2->execute([
-            'sender_account_id' => $message['sender_account_id'],
-        ]);
-        /** @var array{pseudo: string}|false $sender */
-        $sender = $stmt2->fetch();
-        if (false === $sender) {
-            $sender = ['pseudo' => 'Supprim&eacute;'];
-        }
         ?>
 			<tr>
 				<td><input type="checkbox" name="supboite[<?php echo $message['id']; ?>]" onclick="checkone()" /></td>
 				<td><?php if (false === $message['statut']) {
 				    echo '<a class="bulle" style="cursor: default;" onclick="return false;" href=""><img src="images/newmess.png" alt="Message non lu" title="" /><span>Message non lu</span></a>';
 				}?></td>
-				<td> <?php echo stripslashes((string) $sender['pseudo']); ?> </td>
 				<td>le <?php echo date('d/m/Y à H\hi', $castToUnixTimestamp->fromPgTimestamptz($message['timestamp'])); ?></td>
 				<td><a href="<?php echo $message['id']; ?>.lire.html"><?php echo stripslashes((string) $message['titre']); ?></a></td>
 			</tr>

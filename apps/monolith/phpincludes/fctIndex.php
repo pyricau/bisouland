@@ -158,12 +158,11 @@ function AdminMP($cible, $objet, $message, bool $lu = false): void
 
     $stmt = $pdo->prepare(<<<'SQL'
         INSERT INTO messages
-        (id, posteur, destin, message, timestamp, statut, titre)
-        VALUES (:id, :posteur, :destin, :message, CURRENT_TIMESTAMP, :statut, :titre)
+        (id, destin, message, timestamp, statut, titre)
+        VALUES (:id, :destin, :message, CURRENT_TIMESTAMP, :statut, :titre)
     SQL);
     $stmt->execute([
         'id' => Uuid::v7(),
-        'posteur' => '00000000-0000-0000-0000-000000000001',
         'destin' => $cible,
         'message' => $message,
         'statut' => $castToPgBoolean->from($lu),

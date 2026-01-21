@@ -7,7 +7,6 @@ if (true === $blContext['is_signed_in']) {
     if (isset($_GET['idmsg']) && !empty($_GET['idmsg'])) {
         $stmt = $pdo->prepare(<<<'SQL'
             SELECT
-                posteur AS sender_account_id,
                 destin AS receiver_account_id,
                 message AS content,
                 timestamp,
@@ -21,7 +20,6 @@ if (true === $blContext['is_signed_in']) {
         ]);
         /**
          * @var array{
-         *     sender_account_id: string, // UUID
          *     receiver_account_id: string, // UUID
          *     content: string,
          *     timestamp: string, // ISO 8601 timestamp string
@@ -44,26 +42,10 @@ if (true === $blContext['is_signed_in']) {
                     'message_id' => $_GET['idmsg'],
                 ]);
             }
-            $stmt = $pdo->prepare(<<<'SQL'
-                SELECT pseudo
-                FROM membres
-                WHERE id = :sender_account_id
-            SQL);
-            $stmt->execute([
-                'sender_account_id' => $message['sender_account_id'],
-            ]);
-            /**
-             * @var array{
-             *     pseudo: string,
-             * }|false $sender
-             */
-            $sender = $stmt->fetch();
-            $from = false !== $sender ? $sender['pseudo'] : '';
             ?>
 
 <a href="boite.html" title="Messages">Retour à la liste des messages</a>
 <br />
-<p>Auteur : <?php echo $from; ?></p>
 <p>Envoyé le <?php echo date('d/m/Y à H\hi', $castToUnixTimestamp->fromPgTimestamptz($message['timestamp'])); ?></p>
 <p>Objet : <?php echo stripslashes((string) $message['titre']); ?></p>
 Message :<br />

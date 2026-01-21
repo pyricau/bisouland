@@ -57,7 +57,6 @@ CREATE TABLE IF NOT EXISTS auth_tokens (
 -- Messages table
 CREATE TABLE IF NOT EXISTS messages (
     id UUID PRIMARY KEY,
-    posteur UUID NOT NULL REFERENCES membres(id) ON DELETE CASCADE,
     destin UUID NOT NULL REFERENCES membres(id) ON DELETE CASCADE,
     message TEXT NOT NULL,           -- aka content
     timestamp TIMESTAMPTZ NOT NULL,

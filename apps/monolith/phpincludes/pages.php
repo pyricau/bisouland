@@ -99,7 +99,7 @@ $pages = [
     ],
     'boite' => [ // Inbox
         'file' => 'boite.php',
-        'title' => 'Messages priv&eacute;s',
+        'title' => 'Notifications',
     ],
     'infos' => [ // Reference
         'file' => 'infos.php',
@@ -111,7 +111,7 @@ $pages = [
     ],
     'lire' => [ // ViewMessage
         'file' => 'lire.php',
-        'title' => 'Lire un message',
+        'title' => 'Lire une notification',
     ],
     'yeux' => [ // Eyes
         'file' => 'yeux.php',

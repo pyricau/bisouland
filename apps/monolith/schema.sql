@@ -54,15 +54,27 @@ CREATE TABLE IF NOT EXISTS auth_tokens (
     expires_at TIMESTAMPTZ NOT NULL DEFAULT CURRENT_TIMESTAMP + '15 days'
 );
 
--- Messages table
-CREATE TABLE IF NOT EXISTS messages (
-    id UUID PRIMARY KEY,
-    destin UUID NOT NULL REFERENCES membres(id) ON DELETE CASCADE,
-    message TEXT NOT NULL,           -- aka content
-    timestamp TIMESTAMPTZ NOT NULL,
-    statut BOOLEAN DEFAULT FALSE,    -- aka has_been_read
-    titre VARCHAR(100) NOT NULL
+--------------------------------------------------------------------------------
+-- Notifications
+-- System-generated messages to inform players about important events
+--------------------------------------------------------------------------------
+CREATE TABLE IF NOT EXISTS notifications (
+    notification_id UUID PRIMARY KEY,
+    account_id UUID NOT NULL REFERENCES membres(id) ON DELETE CASCADE,
+    title TEXT NOT NULL,
+    message TEXT NOT NULL,
+    received_at TIMESTAMPTZ NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    has_been_read BOOLEAN DEFAULT FALSE
 );
+
+-- Covers:
+-- `WHERE account_id = ? `
+-- `WHERE account_id = ? AND notification_id = ?`
+-- `WHERE account_id = ? ORDER BY notification_id DESC`
+CREATE INDEX idx_notifications_account_id ON notifications(account_id, notification_id DESC);
+-- Covers:
+-- `WHERE account_id = ? AND has_been_read = ?`
+CREATE INDEX idx_notifications_account_read ON notifications(account_id, has_been_read);
 
 -- Visitors tracking via IPs, for stats
 CREATE TABLE IF NOT EXISTS connectbisous (

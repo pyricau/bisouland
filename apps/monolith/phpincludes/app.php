@@ -478,10 +478,10 @@ if (true === $blContext['is_signed_in']) {
 
     $stmt = $pdo->prepare(<<<'SQL'
         SELECT COUNT(*) AS total_unread
-        FROM messages
+        FROM notifications
         WHERE (
-            destin = :current_account_id
-            AND statut = FALSE
+            account_id = :current_account_id
+            AND has_been_read = FALSE
         )
     SQL);
     $stmt->execute([
@@ -494,10 +494,10 @@ if (true === $blContext['is_signed_in']) {
         && $results['total_unread'] > 0
     ) {
         $NewMsgString = $results['total_unread'];
-        $NewMsgString .= ' nouveau'.pluriel($results['total_unread'], 'x');
-        $NewMsgString .= ' message'.pluriel($results['total_unread']);
+        $NewMsgString .= ' nouvelle'.pluriel($results['total_unread']);
+        $NewMsgString .= ' notification'.pluriel($results['total_unread']);
     } else {
-        $NewMsgString = 'Pas de nouveau message';
+        $NewMsgString = 'Pas de nouvelle notification';
     }
 }// Fin de partie pour gens connectés.
 
@@ -774,7 +774,7 @@ $temps14 = microtime_float();
                     <li><a href="techno.html">Techniques</a></li>
                     <li><a href="bisous.html">Bisous</a></li>
                     <li><a href="nuage.html">Nuages</a></li>
-                    <li><a href="boite.html">Messages</a></li>
+                    <li><a href="boite.html">Notifications</a></li>
                     <li><a href="connected.html">Mon compte</a></li>
 				<?php } else { ?>
                     <li>Tu n'es pas connect&eacute;.</li>

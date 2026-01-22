@@ -6,7 +6,7 @@ RewriteRule (.+)\.nuage\.html$ /index.php?page=nuage&nuage=$1
 RewriteRule (.+)\.(.+)\.action\.html$ /index.php?page=action&nuage=$1&position=$2
 RewriteRule (.+)\.(.+)\.yeux\.html$ /index.php?page=yeux&Dnuage=$1&Dpos=$2
 RewriteRule (.+)\.(.+)\.newpass\.html$ /index.php?page=newpass&Cid=$1&Ccle=$2
-RewriteRule (.+)\.lire\.html$ /index.php?page=lire&idmsg=$1
+RewriteRule (.+)\.lire\.html$ /index.php?page=lire&notification_id=$1
 RewriteRule livreor\.(.+)\.html$ /index.php?page=livreor&or=$1
 RewriteRule membres\.(.+)\.html$ /index.php?page=membres&num=$1
 RewriteRule (.+)\.html$ /index.php?page=$1

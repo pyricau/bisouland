@@ -121,52 +121,37 @@ function ExpoSeuil($a, $b, $val, $int = 0): float
     return $ret;
 }
 
-function AdminMP($cible, $objet, $message, bool $lu = false): void
+function sendNotification(string $accountId, string $title, string $message): void
 {
     $pdo = bd_connect();
-    $castToPgBoolean = cast_to_pg_boolean();
-    $message = nl2br((string) $message);
 
     $stmt = $pdo->prepare(<<<'SQL'
-        SELECT COUNT(*) AS nbmsg
-        FROM messages
-        WHERE destin = :destin
+        INSERT INTO notifications
+        (notification_id, account_id, title, message)
+        VALUES (:notification_id, :account_id, :title, :message)
     SQL);
     $stmt->execute([
-        'destin' => $cible,
+        'notification_id' => Uuid::v7(),
+        'account_id' => $accountId,
+        'title' => $title,
+        'message' => $message,
     ]);
 
-    $nbmsg = $stmt->fetchColumn();
-    if ($nbmsg >= 20) {
-        $Asuppr = $nbmsg - 19;
-        $stmt = $pdo->prepare(<<<'SQL'
-            DELETE FROM messages
-            WHERE id IN (
-                SELECT id
-                FROM messages
-                WHERE destin = :destin
-                AND timestamp <= CURRENT_TIMESTAMP - INTERVAL '48 hours'
-                ORDER BY id
-                LIMIT :limit
-            )
-        SQL);
-        $stmt->execute([
-            'destin' => $cible,
-            'limit' => $Asuppr,
-        ]);
-    }
-
+    // Only keep the last 20 notifications, remove older ones
     $stmt = $pdo->prepare(<<<'SQL'
-        INSERT INTO messages
-        (id, destin, message, timestamp, statut, titre)
-        VALUES (:id, :destin, :message, CURRENT_TIMESTAMP, :statut, :titre)
+        DELETE FROM notifications
+        WHERE account_id = :account_id
+        AND notification_id NOT IN (
+            SELECT notification_id
+            FROM notifications
+            WHERE account_id = :account_id_in
+            ORDER BY notification_id DESC
+            LIMIT 20
+        )
     SQL);
     $stmt->execute([
-        'id' => Uuid::v7(),
-        'destin' => $cible,
-        'message' => $message,
-        'statut' => $castToPgBoolean->from($lu),
-        'titre' => $objet,
+        'account_id' => $accountId,
+        'account_id_in' => $accountId,
     ]);
 }
 

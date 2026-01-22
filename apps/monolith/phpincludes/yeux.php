@@ -97,10 +97,12 @@ if (true === $blContext['is_signed_in']) {
                         }
                         $lvlInfo = random_int(0, $max);
 
-                        AdminMP(
+                        sendNotification(
                             $receiver['id'],
-                            "{$blContext['account']['pseudo']} t'a dévisagé",
-                            "{$blContext['account']['pseudo']} vient de te dévisager, et cherche peut-être à t'embrasser.",
+                            'Tu as été dévisagé',
+                            <<<TXT
+                            {$blContext['account']['pseudo']} vient de te dévisager, et cherche peut-être à t'embrasser.
+                            TXT,
                         );
 
                         $resultat = "Tu as dévisagé {$receiver['pseudo']}";
@@ -110,53 +112,51 @@ if (true === $blContext['is_signed_in']) {
                         // Note :
                         // coeur, bouche, amour, jambes, smack, baiser, pelle, tech1, tech2, tech3, tech4, dent, langue, bloque, soupe, oeil
                         if (0 === $lvlInfo) {
-                            $resDev = 'Degré d\'information : '.$lvlInfo.'/'.$max.'
+                            $resDev = <<<TXT
+                            Degré d'information : {$lvlInfo}/{$max}
 
-							Malheureusement, tu n\'as pu obtenir aucune information sur '.$receiver['pseudo'].'
-							';
+                            Malheureusement, tu n'as pu obtenir aucune information sur {$receiver['pseudo']}
+                            TXT;
                         }
                         if (1 <= $lvlInfo) {
-                            $DefAmour = calculterAmour(
+                            $DefAmour = formaterNombre(floor(calculterAmour(
                                 $receiver['amour'],
                                 time() - $castToUnixTimestamp->fromPgTimestamptz($receiver['timestamp']),
                                 $receiver['coeur'],
                                 $receiver['smack'],
                                 $receiver['baiser'],
                                 $receiver['pelle'],
-                            );
+                            )));
 
-                            $resDev = 'Degré d\'information : '.$lvlInfo.'/'.$max.'
+                            $resDev = <<<TXT
+                            Degré d'information : {$lvlInfo}/{$max}
 
-							'.$receiver['pseudo'].' dispose de :
+                            {$receiver['pseudo']} dispose de :
 
-							'.formaterNombre(floor($DefAmour)).' Points d\'Amour
+                            {$DefAmour} Points d'Amour
 
-							';
+                            TXT;
                         }
                         if (2 <= $lvlInfo) {
-                            $resDev .= 'Un oeil niveau '.$receiver['oeil'].'
-
-							';
+                            $resDev .= "Un oeil niveau {$receiver['oeil']}\n\n";
                         }
                         if (3 <= $lvlInfo) {
-                            $resDev .= $receiver['smack'].' Smack'.pluriel($receiver['smack']).'
-
-							';
+                            $resDev .= "Smacks : {$receiver['smack']}\n\n";
                         }
                         if (4 <= $lvlInfo) {
-                            $resDev .= $receiver['baiser'].' Baiser'.pluriel($receiver['baiser']).'
-
-							';
+                            $resDev .= "Baisers : {$receiver['baiser']}\n\n";
                         }
                         if (5 <= $lvlInfo) {
-                            $resDev .= $receiver['pelle'].' Baiser'.pluriel($receiver['pelle']).' langoureux
-
-							';
+                            $resDev .= "Baisers Langoureux : {$receiver['pelle']}\n\n";
                         }
 
                         // Envoyer un MP si le user le désire.
                         if (true === $currentPlayer['espion'] && 0 !== $lvlInfo) {
-                            AdminMP($blContext['account']['id'], "Tu as dévisagé {$receiver['pseudo']}", $resDev, true);
+                            sendNotification(
+                                $blContext['account']['id'],
+                                'Tu as dévisagé ton crush !',
+                                $resDev,
+                            );
                         }
                     } else {
                         $resultat = "Tu n'as pas assez de Points d'Amour";

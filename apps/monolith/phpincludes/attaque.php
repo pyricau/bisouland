@@ -225,24 +225,28 @@ if (isset($inMainPage) && true == $inMainPage) {
                 'receiver_account_id' => $blownKiss['receiver_account_id'],
             ]);
 
-            AdminMP(
+            sendNotification(
                 $blownKiss['sender_account_id'],
-                'Quel rateau !!',
-                "Bouuhh, t'as perdu tout tes bisous !!\n"
-                ."Tu n'as pas réussi à embrasser ton adversaire !!\n"
-                ."Il te reste :\n"
-                ."- 0 smacks\n"
-                ."- 0 baisers\n"
-                .'- 0 baisers langoureux',
+                "Tu t'es pris un rateau !",
+                <<<'TXT'
+                Bouuhh, t'as perdu tout tes bisous !!
+                Tu n'as pas réussi à embrasser ton adversaire !!
+                Il te reste :
+                - 0 smacks
+                - 0 baisers
+                - 0 baisers langoureux
+                TXT,
             );
-            AdminMP(
+            sendNotification(
                 $blownKiss['receiver_account_id'],
-                'Bien esquivé !',
-                "Bravo, tu ne t'es pas laissé faire !\n"
-                ."Il te reste :\n"
-                ."- {$DefSmack} smacks\n"
-                ."- {$DefBaiser} baisers\n"
-                ."- {$DefPelle} baisers langoureux",
+                'Tu as esquivé les bisous !',
+                <<<TXT
+                Bravo, tu ne t'es pas laissé faire !
+                Il te reste :
+                - {$DefSmack} smacks
+                - {$DefBaiser} baisers
+                - {$DefPelle} baisers langoureux
+                TXT,
             );
 
             // Bien se défendre fait gagner des points.
@@ -296,24 +300,28 @@ if (isset($inMainPage) && true == $inMainPage) {
                 'receiver_account_id' => $blownKiss['receiver_account_id'],
             ]);
 
-            AdminMP(
+            sendNotification(
                 $blownKiss['sender_account_id'],
                 'Ex Aequo',
-                "Egalité parfaite lors de ta dernière tentative.\n"
-                ."Tu ne ramène pas de points d'amour !!\n"
-                ."Il te reste :\n"
-                ."- {$AttSmack} smacks\n"
-                ."- {$AttBaiser} baisers\n"
-                ."- {$AttPelle} baisers langoureux",
+                <<<TXT
+                Egalité parfaite lors de ta dernière tentative.
+                Tu ne ramène pas de points d'amour !!
+                Il te reste :
+                - {$AttSmack} smacks
+                - {$AttBaiser} baisers
+                - {$AttPelle} baisers langoureux
+                TXT,
             );
-            AdminMP(
+            sendNotification(
                 $blownKiss['receiver_account_id'],
                 'Ex Aequo',
-                "Egalité parfaite contre le joueur qui voulait t'embrasser.\n"
-                ."Il te reste :\n"
-                ."- {$DefSmack} smacks\n"
-                ."- {$DefBaiser} baisers\n"
-                ."- {$DefPelle} baisers langoureux",
+                <<<TXT
+                Egalité parfaite contre le joueur qui voulait t'embrasser.
+                Il te reste :
+                - {$DefSmack} smacks
+                - {$DefBaiser} baisers
+                - {$DefPelle} baisers langoureux
+                TXT,
             );
         } elseif ($bilan > 0) {
             $coeffBilan = $DefForce / $AttForce;
@@ -413,26 +421,30 @@ if (isset($inMainPage) && true == $inMainPage) {
                 'sender_account_id' => $blownKiss['sender_account_id'],
             ]);
 
-            AdminMP(
+            sendNotification(
                 $blownKiss['sender_account_id'],
                 "Tu l'as embrassé !!",
-                "Bravo, tu as réussi à embrasser ton adversaire.\n"
-                ."Tes bisous seront bientôt revenus près de toi.\n"
-                ."Tu as réussi à prendre {$butin} Points d'Amour !!\n"
-                ."Il te reste :\n"
-                ."- {$AttSmack} smacks\n"
-                ."- {$AttBaiser} baisers\n"
-                ."- {$AttPelle} baisers langoureux",
+                <<<TXT
+                Bravo, tu as réussi à embrasser ton adversaire.
+                Tes bisous seront bientôt revenus près de toi.
+                Tu as réussi à prendre {$butin} Points d'Amour !!
+                Il te reste :
+                - {$AttSmack} smacks
+                - {$AttBaiser} baisers
+                - {$AttPelle} baisers langoureux
+                TXT,
             );
-            AdminMP(
+            sendNotification(
                 $blownKiss['receiver_account_id'],
                 "Tu t'es fait embrasser",
-                "Tu n'as pas su résister à ses Bisous !!\n"
-                ."Tu t'es fait prendre {$butin} Points d'Amour !!\n"
-                ."Il te reste :\n"
-                ."- {$DefSmack} smacks\n"
-                ."- {$DefBaiser} baisers\n"
-                ."- {$DefPelle} baisers langoureux",
+                <<<TXT
+                Tu n'as pas su résister à ses Bisous !!
+                Tu t'es fait prendre {$butin} Points d'Amour !!
+                Il te reste :
+                - {$DefSmack} smacks
+                - {$DefBaiser} baisers
+                - {$DefPelle} baisers langoureux
+                TXT,
             );
 
             // Bien attaquer fait gagner des points.

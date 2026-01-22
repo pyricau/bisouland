@@ -94,11 +94,11 @@ final readonly class Assert
         $pdo = TestKernelSingleton::get()->pdo();
 
         $stmt = $pdo->prepare(<<<'SQL'
-            SELECT messages.titre
-            FROM messages
-            INNER JOIN membres ON messages.destin = membres.id
+            SELECT notifications.title
+            FROM notifications
+            INNER JOIN membres ON notifications.account_id = membres.id
             WHERE membres.pseudo = :username
-            ORDER BY messages.timestamp DESC
+            ORDER BY notifications.notification_id DESC
             LIMIT 1
         SQL);
         $stmt->execute([

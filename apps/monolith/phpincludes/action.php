@@ -170,14 +170,14 @@ if (true === $blContext['is_signed_in']) {
                                                     'finretour' => $castToPgTimestamptz->fromUnixTimestamp(time() + 2 * $duree),
                                                 ]);
                                                 $estimatedTimeOfArrival = strTemps($duree);
-                                                AdminMP(
+                                                sendNotification(
                                                     $receiver['id'],
-                                                    "{$blContext['account']['pseudo']} veut t'embrasser",
-                                                    "{$blContext['account']['pseudo']} vient d'envoyer ses bisous dans ta direction,"
-                                                    ." et va tenter de t'embrasser.\n"
-                                                    ."{$blContext['account']['pseudo']} est situé sur le nuage {$blContext['account']['nuage']},"
-                                                    ." à la position {$sender['position']}.\n"
-                                                    ."Ses Bisous arrivent dans {$estimatedTimeOfArrival}.",
+                                                    "On tente de t'embrasser",
+                                                    <<<TXT
+                                                    {$blContext['account']['pseudo']} vient d'envoyer ses bisous dans ta direction et va tenter de t'embrasser.
+                                                    {$blContext['account']['pseudo']} est situé sur le nuage {$blContext['account']['nuage']} à la position {$sender['position']}.
+                                                    Ses Bisous arrivent dans {$estimatedTimeOfArrival}.
+                                                    TXT,
                                                 );
                                                 $resultat = 'Tes Bisous sont en route vers la position '
                                                     ."{$sender['position']} du nuage {$blContext['account']['nuage']},"

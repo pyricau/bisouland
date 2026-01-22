@@ -4,65 +4,48 @@ if (true === $blContext['is_signed_in']) {
     $pdo = bd_connect();
     $castToUnixTimestamp = cast_to_unix_timestamp();
 
-    if (isset($_GET['idmsg']) && !empty($_GET['idmsg'])) {
+    if (isset($_GET['notification_id']) && !empty($_GET['notification_id'])) {
         $stmt = $pdo->prepare(<<<'SQL'
-            SELECT
-                destin AS receiver_account_id,
-                message AS content,
-                timestamp,
-                statut AS has_been_read,
-                titre
-            FROM messages
-            WHERE id = :message_id
+            UPDATE notifications
+            SET has_been_read = TRUE
+            WHERE (
+                notification_id = :notification_id
+                AND account_id = :account_id
+            )
+            RETURNING notification_id, title, message, received_at
         SQL);
         $stmt->execute([
-            'message_id' => $_GET['idmsg'],
+            'notification_id' => $_GET['notification_id'],
+            'account_id' => $blContext['account']['id'],
         ]);
         /**
          * @var array{
-         *     receiver_account_id: string, // UUID
-         *     content: string,
-         *     timestamp: string, // ISO 8601 timestamp string
-         *     has_been_read: bool,
-         *     titre: string,
-         * }|false $message
+         *     notification_id: string, // UUID
+         *     title: string,
+         *     message: string,
+         *     received_at: string, // ISO 8601 timestamp string
+         * }|false $notification
          */
-        $message = $stmt->fetch();
-        if (
-            false !== $message
-            && $message['receiver_account_id'] === $blContext['account']['id']
-        ) {
-            if (false === $message['has_been_read']) {
-                $stmt = $pdo->prepare(<<<'SQL'
-                    UPDATE messages
-                    SET statut = TRUE
-                    WHERE id = :message_id
-                SQL);
-                $stmt->execute([
-                    'message_id' => $_GET['idmsg'],
-                ]);
-            }
+        $notification = $stmt->fetch();
+        if (false !== $notification) {
             ?>
 
-<a href="boite.html" title="Messages">Retour à la liste des messages</a>
+<a href="boite.html" title="Notifications">Retour à la liste des notifications</a>
 <br />
-<p>Envoyé le <?php echo date('d/m/Y à H\hi', $castToUnixTimestamp->fromPgTimestamptz($message['timestamp'])); ?></p>
-<p>Objet : <?php echo stripslashes((string) $message['titre']); ?></p>
-Message :<br />
-<div class="message"><?php echo bbLow($message['content']); ?></div>
+<h2><?php echo htmlspecialchars($notification['title']); ?></h2>
+<p>Envoyé le <?php echo date('d/m/Y à H\hi', $castToUnixTimestamp->fromPgTimestamptz($notification['received_at'])); ?></p>
+<div class="message"><?php echo nl2br(htmlspecialchars($notification['message'])); ?></div>
 <form method="post" action="boite.html">
 	<input type="submit" tabindex="30" value="Supprimer" />
-	<input type="hidden" name="supprimer" value="<?php echo htmlentities($_GET['idmsg']); ?>" />
+	<input type="hidden" name="supprimer" value="<?php echo $notification['notification_id']; ?>" />
 </form>
 
-<?php
-        } else {
-            echo "Tu n'as pas le droit de visionner ce message !!";
-        }
-    } else {
-        echo 'Pas d\'id message spécifiée !!';
-    }
-} else {
-    echo 'Tu n\'es pas connecté !!';
-}
-?>
+        <?php } else { ?>
+            Tu n'as pas le droit de visionner cette notification !!
+        <?php } ?>
+    <?php } else { ?>
+        Pas d'id notification spécifiée !!
+    <?php } ?>
+<?php } else { ?>
+    Tu n'es pas connecté !!
+<?php } ?>

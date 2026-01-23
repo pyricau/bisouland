@@ -6,7 +6,6 @@ CREATE TABLE IF NOT EXISTS membres (
     -- Account
     pseudo VARCHAR(50) NOT NULL UNIQUE, -- aka pseudonym
     mdp VARCHAR(255) NOT NULL,          -- aka password_hash
-    newpass VARCHAR(255) DEFAULT NULL,  -- For lost password @TODO remove
     -- Player
     timestamp TIMESTAMPTZ NOT NULL DEFAULT CURRENT_TIMESTAMP, -- aka created_at
     lastconnect TIMESTAMPTZ NOT NULL DEFAULT CURRENT_TIMESTAMP, -- aka last_connected_at
@@ -17,8 +16,6 @@ CREATE TABLE IF NOT EXISTS membres (
     position INTEGER DEFAULT 1,         -- aka cloud_coordinates_y
     bloque BOOLEAN DEFAULT FALSE,       -- aka can_leap
                                         -- (Game Mechanics: Players cannot leap if they are blowing kisses)
-    espion BOOLEAN DEFAULT FALSE,       -- aka keep_gaze_journal
-                                        -- (Game Mechanics: Players can get spy reports on other Players)
     -- Upgradables
     ---- Organs
     coeur INTEGER DEFAULT 1,            -- aka heart_level
@@ -54,22 +51,32 @@ CREATE TABLE IF NOT EXISTS auth_tokens (
     expires_at TIMESTAMPTZ NOT NULL DEFAULT CURRENT_TIMESTAMP + '15 days'
 );
 
--- Messages table
-CREATE TABLE IF NOT EXISTS messages (
-    id UUID PRIMARY KEY,
-    posteur UUID NOT NULL REFERENCES membres(id) ON DELETE CASCADE,
-    destin UUID NOT NULL REFERENCES membres(id) ON DELETE CASCADE,
-    message TEXT NOT NULL,           -- aka content
-    timestamp TIMESTAMPTZ NOT NULL,
-    statut BOOLEAN DEFAULT FALSE,    -- aka has_been_read
-    titre VARCHAR(100) NOT NULL
+--------------------------------------------------------------------------------
+-- Notifications
+-- System-generated messages to inform players about important events
+--------------------------------------------------------------------------------
+CREATE TABLE IF NOT EXISTS notifications (
+    notification_id UUID PRIMARY KEY,
+    account_id UUID NOT NULL REFERENCES membres(id) ON DELETE CASCADE,
+    title TEXT NOT NULL,
+    message TEXT NOT NULL,
+    received_at TIMESTAMPTZ NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    has_been_read BOOLEAN DEFAULT FALSE
 );
+
+-- Covers:
+-- `WHERE account_id = ? `
+-- `WHERE account_id = ? AND notification_id = ?`
+-- `WHERE account_id = ? ORDER BY notification_id DESC`
+CREATE INDEX idx_notifications_account_id ON notifications(account_id, notification_id DESC);
+-- Covers:
+-- `WHERE account_id = ? AND has_been_read = ?`
+CREATE INDEX idx_notifications_account_read ON notifications(account_id, has_been_read);
 
 -- Visitors tracking via IPs, for stats
 CREATE TABLE IF NOT EXISTS connectbisous (
     ip INET PRIMARY KEY,
-    timestamp TIMESTAMPTZ NOT NULL,  -- Last connection time
-    type SMALLINT DEFAULT 1          -- Connection type (2 for new, 1 for existing) @TODO remove
+    timestamp TIMESTAMPTZ NOT NULL   -- Last connection time
 );
 
 -- Upgrades currently in progress
@@ -142,14 +149,3 @@ CREATE TABLE IF NOT EXISTS nuage (
 INSERT INTO nuage (id, nombre)
 VALUES ('00000000-0000-0000-0000-000000000002'::UUID, 1)
 ON CONFLICT (id) DO UPDATE SET nombre = nuage.nombre;
-
--- Insert a default admin user (password: admin, hashed with bcrypt)
-INSERT INTO membres (id, pseudo, mdp, timestamp, lastconnect)
-VALUES (
-    '00000000-0000-0000-0000-000000000001'::UUID,
-    'admin',
-    '$2y$12$mdsYNRFVDcDCOjXXCfEWG.1jLajEJt/ldCo2kdGS5uBElgyIabRP.',
-    CURRENT_TIMESTAMP,
-    CURRENT_TIMESTAMP
-)
-ON CONFLICT (pseudo) DO NOTHING;

@@ -5,11 +5,6 @@
  * ## config
  * parameters.php // Config.
  *
- * ## news
- * chemin.php // @todo check
- * liste_news.php // @todo check
- * rediger_news.php // @todo check
- *
  * ## phpincludes
  * attaque.php // game logic @todo check
  * bd.php // logic for database connection
@@ -99,7 +94,7 @@ $pages = [
     ],
     'boite' => [ // Inbox
         'file' => 'boite.php',
-        'title' => 'Messages priv&eacute;s',
+        'title' => 'Notifications',
     ],
     'infos' => [ // Reference
         'file' => 'infos.php',
@@ -109,9 +104,9 @@ $pages = [
         'file' => 'techno.php',
         'title' => 'Techniques diverses et vari&eacute;es',
     ],
-    'lire' => [ // ViewMessage
+    'lire' => [ // ViewNotification
         'file' => 'lire.php',
-        'title' => 'Lire un message',
+        'title' => 'Lire une notification',
     ],
     'yeux' => [ // Eyes
         'file' => 'yeux.php',

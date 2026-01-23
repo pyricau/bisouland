@@ -20,12 +20,12 @@ $question[0] = [
 
 $rep[0] = [
     "BisouLand est un jeu de strategie multijoueurs. De nombreux joueurs se rencontrent en meme temps en ligne. Pour jouer, il suffit de disposer d'un simple navigateur.",
-    'Le createur de BisouLand est Pierre-Yves Ricau, connu sous le pseudo Piwai alias admin sur BisouLand.',
+    'Le createur de BisouLand est Pierre-Yves Ricau, connu sous le pseudo Piwai sur BisouLand.',
     'BisouLand est totalement gratuit.',
     "Pour s'inscrire, il suffit d'aller sur la page Inscription et de remplir les champs appropries.<br />
 		Ton compte sera automatiquement confirme a l'inscription.",
     "Il te suffit de te connecter, puis de lire les pages Aide et Encyclopedie,
-		n'hesite pas a poser des questions en envoyant un message privé à l'admin.",
+		n'hesite pas a consulter la FAQ si tu as des questions.",
     "Merci de rapporter toute erreur, que ce soit un probleme technique ou une faute d'orthographe.<br />
 		Vous pouvez pour cela creer un ticket sur https://github.com/pyricau/bisouland",
 ];

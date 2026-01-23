@@ -135,11 +135,13 @@ if (false !== $blownKiss) {
             'finretour' => $castToPgTimestamptz->fromUnixTimestamp($finRet),
             'current_account_id' => $blContext['account']['id'],
         ]);
-        AdminMP(
+        sendNotification(
             $blownKiss['receiver_account_id'],
-            'Attaque annulée',
-            "{$blContext['account']['pseudo']} a annulé son attaque.\n"
-            ."Tu n'es plus en danger.",
+            'Bisous annulés',
+            <<<TXT
+            {$blContext['account']['pseudo']} s'est ravisé
+            Tu n'es plus en danger.
+            TXT,
         );
         $state = BlownKissState::CalledOff; // Update local variable to reflect the change
     }

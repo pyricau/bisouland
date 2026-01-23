@@ -23,7 +23,7 @@ header('Content-type: text/html; charset=UTF-8');
 // Permettre de se déplacer, moyennant des points.
 
 // Attaque : mettre en place la possibilité d'attaquer, avec choix etc..
-// Créer système de MP automatique pour avertir.
+// Créer système de notification automatique pour avertir.
 
 ob_start();
 
@@ -208,8 +208,7 @@ if ('logout' === $page) {
 }
 
 // Test en cas de suppression de compte
-// Il faudra a jouter ici une routine de suppression des messages dans la bdd.
-// Ainsi que des constructions en cours, etc..
+// @todo ajouter ici une routine de suppression des constructions en cours.
 if (isset($_POST['suppr']) && true === $blContext['is_signed_in']) {
     SupprimerCompte($blContext['account']['id']);
     $blContext = $resetBlContext;
@@ -478,10 +477,10 @@ if (true === $blContext['is_signed_in']) {
 
     $stmt = $pdo->prepare(<<<'SQL'
         SELECT COUNT(*) AS total_unread
-        FROM messages
+        FROM notifications
         WHERE (
-            destin = :current_account_id
-            AND statut = FALSE
+            account_id = :current_account_id
+            AND has_been_read = FALSE
         )
     SQL);
     $stmt->execute([
@@ -494,10 +493,10 @@ if (true === $blContext['is_signed_in']) {
         && $results['total_unread'] > 0
     ) {
         $NewMsgString = $results['total_unread'];
-        $NewMsgString .= ' nouveau'.pluriel($results['total_unread'], 'x');
-        $NewMsgString .= ' message'.pluriel($results['total_unread']);
+        $NewMsgString .= ' nouvelle'.pluriel($results['total_unread']);
+        $NewMsgString .= ' notification'.pluriel($results['total_unread']);
     } else {
-        $NewMsgString = 'Pas de nouveau message';
+        $NewMsgString = 'Pas de nouvelle notification';
     }
 }// Fin de partie pour gens connectés.
 
@@ -667,8 +666,8 @@ $temps31 = microtime_float();
 
 if (false === $blContext['is_signed_in']) {
     $stmt = $pdo->prepare(<<<'SQL'
-        INSERT INTO connectbisous (ip, timestamp, type)
-        VALUES (:ip, CURRENT_TIMESTAMP, 2)
+        INSERT INTO connectbisous (ip, timestamp)
+        VALUES (:ip, CURRENT_TIMESTAMP)
         ON CONFLICT (ip) DO UPDATE
         SET timestamp = CURRENT_TIMESTAMP
     SQL);
@@ -774,7 +773,7 @@ $temps14 = microtime_float();
                     <li><a href="techno.html">Techniques</a></li>
                     <li><a href="bisous.html">Bisous</a></li>
                     <li><a href="nuage.html">Nuages</a></li>
-                    <li><a href="boite.html">Messages</a></li>
+                    <li><a href="boite.html">Notifications</a></li>
                     <li><a href="connected.html">Mon compte</a></li>
 				<?php } else { ?>
                     <li>Tu n'es pas connect&eacute;.</li>

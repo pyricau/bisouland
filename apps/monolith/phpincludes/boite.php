@@ -72,7 +72,7 @@ function checkall()
     }
     if (n != 0)
     {
-       if (confirm("Êtes-vous sûr de vouloir supprimer ce(s) messages(s)?"))
+       if (confirm("Êtes-vous sûr de vouloir supprimer cette/ces notification(s)?"))
        {
 			return true;
        }
@@ -83,7 +83,7 @@ function checkall()
     }
     else
    {
-       alert("Veuillez sélectionner au moins un message !");
+       alert("Veuillez sélectionner au moins une notification !");
 	  return false;
     }
  }
@@ -96,60 +96,46 @@ if (true === $blContext['is_signed_in']) {
     $castToUnixTimestamp = cast_to_unix_timestamp();
 
     if (isset($_POST['supprimer'])) {
-        $messageId = (string) $_POST['supprimer'];
         $stmt = $pdo->prepare(<<<'SQL'
-            DELETE FROM messages
+            DELETE FROM notifications
             WHERE (
-                id = :message_id
-                AND destin = :current_account_id
+                notification_id = :notification_id
+                AND account_id = :current_account_id
             )
         SQL);
         $stmt->execute([
-            'message_id' => $messageId,
+            'notification_id' => $_POST['supprimer'],
             'current_account_id' => $blContext['account']['id'],
         ]);
     } elseif (isset($_POST['supboite']) && [] !== $_POST['supboite']) {
-        $messageIds = array_map('strval', array_keys($_POST['supboite']));
+        $notificationIds = array_map('strval', array_keys($_POST['supboite']));
 
-        $inSize = count($messageIds);
+        $inSize = count($notificationIds);
         $inValues = implode(', ', array_fill(0, $inSize, '?'));
 
-        $messageIdIn = "id IN ({$inValues})";
+        $notificationIdIn = "notification_id IN ({$inValues})";
         $stmt = $pdo->prepare(<<<SQL
-            DELETE FROM messages
+            DELETE FROM notifications
             WHERE (
-                {$messageIdIn}
-                AND destin = ?
+                {$notificationIdIn}
+                AND account_id = ?
             )
         SQL);
-        $stmt->execute([...$messageIds, $blContext['account']['id']]);
-    }
-
-    $stmt = $pdo->prepare(<<<'SQL'
-        SELECT COUNT(*) AS total_messages
-        FROM messages
-        WHERE destin = :current_account_id
-    SQL);
-    $stmt->execute([
-        'current_account_id' => $blContext['account']['id'],
-    ]);
-    /** @var array{total_messages: int}|false $result */
-    $result = $stmt->fetch();
-    $nbmsg = false !== $result ? $result['total_messages'] : 0;
-    if ($nbmsg > 20) {
-        $nbmsg = 20;
+        $stmt->execute([
+            ...$notificationIds,
+            $blContext['account']['id'],
+        ]);
     }
 
     $stmt = $pdo->prepare(<<<'SQL'
         SELECT
-            id,
-            posteur AS sender_account_id,
-            timestamp,
-            statut,
-            titre
-        FROM messages
-        WHERE destin = :current_account_id
-        ORDER BY timestamp DESC
+            notification_id,
+            title,
+            received_at,
+            has_been_read
+        FROM notifications
+        WHERE account_id = :current_account_id
+        ORDER BY notification_id DESC
         LIMIT 20
     SQL);
     $stmt->execute([
@@ -157,65 +143,50 @@ if (true === $blContext['is_signed_in']) {
     ]);
     /**
      * @var array<int, array{
-     *      id: string, // UUID
-     *      sender_account_id: string, // UUID
-     *      timestamp: string, // ISO 8601 timestamp string
-     *      statut: bool,
-     *      titre: string,
-     * }> $messages
+     *      notification_id: string, // UUID
+     *      title: string,
+     *      received_at: string, // ISO 8601 timestamp string
+     *      has_been_read: bool,
+     * }> $notifications
      */
-    $messages = $stmt->fetchAll();
-
+    $notifications = $stmt->fetchAll();
+    $totalNotifications = count($notifications);
     ?>
-<h1>Messages</h1>
+<h1>Notifications</h1>
 <form name="main" method="post" action="boite.html" onSubmit="return verifselection()">
 	<center>
-		<h2>Vous avez <?php echo $nbmsg,'/20 message',pluriel($nbmsg); ?></h2>
+        <h2>Vous avez <?php echo $totalNotifications; ?>/20 notifications</h2>
 
 		<table>
 			<tr>
-				<th style="width:5%;"><input type="checkbox" name="supboite[0]" title="Selectionner tous les messages" alt="Selectionner tous les messages" onclick="checkall()"/></th>
-				<th style="width:5%;"><a class="bulle" style="cursor: default;" onclick="return false;" href=""><img src="images/newmess.png" alt="Messages non lus" title="" /><span>Messages non lus</span></a></th>
-				<th style="width:20%;">Exp&eacute;diteur</th>
-				<th style="width:35%;">Date</th>
-				<th style="width:35%;">Objet</th>
+				<th style="width:5%;"><input type="checkbox" name="supboite[0]" title="Selectionner toutes les notifications" alt="Selectionner toutes les notifications" onclick="checkall()"/></th>
+				<th style="width:5%;"><a class="bulle" style="cursor: default;" onclick="return false;" href=""><img src="images/newmess.png" alt="Notifications non lues" title="" /><span>Notifications non lues</span></a></th>
+				<th style="width:45%;">Notification</th>
+				<th style="width:45%;">Date</th>
 			</tr>
-<?php
-    foreach ($messages as $message) {
-        // Suppression : bouton supprimer en bas, et checkbox //Ajouter bouton lu/non lu  //Max messages
-        $stmt2 = $pdo->prepare(<<<'SQL'
-            SELECT pseudo
-            FROM membres
-            WHERE id = :sender_account_id
-        SQL);
-        $stmt2->execute([
-            'sender_account_id' => $message['sender_account_id'],
-        ]);
-        /** @var array{pseudo: string}|false $sender */
-        $sender = $stmt2->fetch();
-        if (false === $sender) {
-            $sender = ['pseudo' => 'Supprim&eacute;'];
-        }
-        ?>
-			<tr>
-				<td><input type="checkbox" name="supboite[<?php echo $message['id']; ?>]" onclick="checkone()" /></td>
-				<td><?php if (false === $message['statut']) {
-				    echo '<a class="bulle" style="cursor: default;" onclick="return false;" href=""><img src="images/newmess.png" alt="Message non lu" title="" /><span>Message non lu</span></a>';
-				}?></td>
-				<td> <?php echo stripslashes((string) $sender['pseudo']); ?> </td>
-				<td>le <?php echo date('d/m/Y à H\hi', $castToUnixTimestamp->fromPgTimestamptz($message['timestamp'])); ?></td>
-				<td><a href="<?php echo $message['id']; ?>.lire.html"><?php echo stripslashes((string) $message['titre']); ?></a></td>
-			</tr>
-<?php
-    }
-    ?>
+            <?php foreach ($notifications as $notification) { ?>
+                <tr>
+                    <td>
+                        <input type="checkbox" name="supboite[<?php echo $notification['notification_id']; ?>]" onclick="checkone()" />
+                    </td>
+                    <td>
+                        <?php if (false === $notification['has_been_read']) { ?>
+                        <a class="bulle" style="cursor: default;" onclick="return false;" href=""><img src="images/newmess.png" alt="Notification non lue" title="" /><span>Notification non lue</span></a>
+                        <?php } ?>
+                    </td>
+                    <td>
+                        <a href="<?php echo $notification['notification_id']; ?>.lire.html"><?php echo htmlspecialchars($notification['title']); ?></a>
+                    </td>
+                    <td>
+                        le <?php echo date('d/m/Y à H\hi', $castToUnixTimestamp->fromPgTimestamptz($notification['received_at'])); ?>
+                    </td>
+                </tr>
+            <?php } ?>
 		</table>
 		<input type="submit" tabindex="20" value="Supprimer" />
 	<center>
 </form>
 
-<?php
-} else {
-    echo "Tu n'es pas connect&eacute; !!";
-}
-?>
+<?php } else { ?>
+    Tu n'es pas connect&eacute; !!
+<?php } ?>

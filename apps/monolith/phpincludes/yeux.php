@@ -56,7 +56,6 @@ if (true === $blContext['is_signed_in']) {
                         score,
                         position,
                         nuage,
-                        espion,
                         oeil
                     FROM membres
                     WHERE id = :current_account_id
@@ -69,7 +68,6 @@ if (true === $blContext['is_signed_in']) {
                  *     score: int,
                  *     position: int,
                  *     nuage: int,
-                 *     espion: bool,
                  *     oeil: int,
                  * }|false $currentPlayer
                  */
@@ -151,7 +149,7 @@ if (true === $blContext['is_signed_in']) {
                         }
 
                         // Envoyer un MP si le user le désire.
-                        if (true === $currentPlayer['espion'] && 0 !== $lvlInfo) {
+                        if (0 !== $lvlInfo) {
                             sendNotification(
                                 $blContext['account']['id'],
                                 'Tu as dévisagé ton crush !',
@@ -180,11 +178,7 @@ if (true === $blContext['is_signed_in']) {
         if (isset($resDev)) {
             echo nl2br(htmlentities($resDev));
             if (0 != $lvlInfo) {
-                if (true === $currentPlayer['espion']) {
-                    echo "Un message t'a été envoyé pour enregistrer ces informations.<br />";
-                } else {
-                    echo 'Va dans Mon compte si tu désires sauvegarder ces informations dans des messages.<br />';
-                }
+                echo "Un message t'a été envoyé pour enregistrer ces informations.<br />";
             }
             if ($cout <= $amour) {
                 echo '<a href="'.$receiver['nuage'].'.'.$receiver['position'].'.yeux.html">Dévisager '.$receiver['pseudo'].' de nouveau (nécessite '.$cout." Points d'Amour)</a>";

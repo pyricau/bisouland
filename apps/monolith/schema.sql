@@ -17,8 +17,6 @@ CREATE TABLE IF NOT EXISTS membres (
     position INTEGER DEFAULT 1,         -- aka cloud_coordinates_y
     bloque BOOLEAN DEFAULT FALSE,       -- aka can_leap
                                         -- (Game Mechanics: Players cannot leap if they are blowing kisses)
-    espion BOOLEAN DEFAULT FALSE,       -- aka keep_gaze_journal
-                                        -- (Game Mechanics: Players can get spy reports on other Players)
     -- Upgradables
     ---- Organs
     coeur INTEGER DEFAULT 1,            -- aka heart_level

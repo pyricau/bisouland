@@ -9,7 +9,7 @@
 	Ce site est en perp&eacute;tuelle &eacute;volution, n'h&eacute;site donc pas &agrave; me signaler tout bug.<br />
 	<span class="info">[ Ce site est optimis&eacute; pour <a href="http://www.mozilla-europe.org/fr/products/firefox/">Mozilla Firefox</a> ]</span><br />
 	<br />
-	Piwaï (admin)
+	Piwaï
 </p>
 <h1>.:Les News:.</h1>
 

@@ -151,14 +151,3 @@ CREATE TABLE IF NOT EXISTS nuage (
 INSERT INTO nuage (id, nombre)
 VALUES ('00000000-0000-0000-0000-000000000002'::UUID, 1)
 ON CONFLICT (id) DO UPDATE SET nombre = nuage.nombre;
-
--- Insert a default admin user (password: admin, hashed with bcrypt)
-INSERT INTO membres (id, pseudo, mdp, timestamp, lastconnect)
-VALUES (
-    '00000000-0000-0000-0000-000000000001'::UUID,
-    'admin',
-    '$2y$12$mdsYNRFVDcDCOjXXCfEWG.1jLajEJt/ldCo2kdGS5uBElgyIabRP.',
-    CURRENT_TIMESTAMP,
-    CURRENT_TIMESTAMP
-)
-ON CONFLICT (pseudo) DO NOTHING;

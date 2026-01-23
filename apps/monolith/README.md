@@ -57,23 +57,6 @@ DATABASE_PASSWORD=bisouland_pass
 DATABASE_NAME=bisouland
 ```
 
-#### Administration access
-
-The administration area is protected using
-[`.htaccess` and `.htpasswd` files](http://weavervsworld.com/docs/other/passprotect.html).
-
-First of all, create them:
-
-```console
-cp web/news/.htaccess.dist web/news/.htaccess
-touch web/news/.htpasswd
-```
-
-Then simply set the absolute path of the project in the `web/news/.htaccess`
-file, and put a
-[generated password](http://www.htaccesstools.com/htpasswd-generator/) in the
-`web/news/.htpasswd` file.
-
 ## Structure
 
 ### eXtreme Legacy

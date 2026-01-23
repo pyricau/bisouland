@@ -196,7 +196,7 @@ function SupprimerCompte(string $accountId): void
 
         // Notify Players that their target deleted their account
         foreach ($senderIds as $senderId) {
-            AdminMP(
+            sendNotification(
                 $senderId,
                 'Pas de chance',
                 "Ta cible vient de supprimer son compte.\n"
@@ -221,7 +221,7 @@ function SupprimerCompte(string $accountId): void
      */
     $sentBlownKiss = $stmt->fetch();
     if (false !== $sentBlownKiss) {
-        AdminMP(
+        sendNotification(
             $sentBlownKiss['receiver_id'],
             'Veinard !!',
             "Tu as vraiment de la chance !!\n"

@@ -6,7 +6,6 @@ CREATE TABLE IF NOT EXISTS membres (
     -- Account
     pseudo VARCHAR(50) NOT NULL UNIQUE, -- aka pseudonym
     mdp VARCHAR(255) NOT NULL,          -- aka password_hash
-    newpass VARCHAR(255) DEFAULT NULL,  -- For lost password @TODO remove
     -- Player
     timestamp TIMESTAMPTZ NOT NULL DEFAULT CURRENT_TIMESTAMP, -- aka created_at
     lastconnect TIMESTAMPTZ NOT NULL DEFAULT CURRENT_TIMESTAMP, -- aka last_connected_at
@@ -77,8 +76,7 @@ CREATE INDEX idx_notifications_account_read ON notifications(account_id, has_bee
 -- Visitors tracking via IPs, for stats
 CREATE TABLE IF NOT EXISTS connectbisous (
     ip INET PRIMARY KEY,
-    timestamp TIMESTAMPTZ NOT NULL,  -- Last connection time
-    type SMALLINT DEFAULT 1          -- Connection type (2 for new, 1 for existing) @TODO remove
+    timestamp TIMESTAMPTZ NOT NULL   -- Last connection time
 );
 
 -- Upgrades currently in progress

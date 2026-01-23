@@ -5,11 +5,6 @@
  * ## config
  * parameters.php // Config.
  *
- * ## news
- * chemin.php // @todo check
- * liste_news.php // @todo check
- * rediger_news.php // @todo check
- *
  * ## phpincludes
  * attaque.php // game logic @todo check
  * bd.php // logic for database connection
@@ -109,7 +104,7 @@ $pages = [
         'file' => 'techno.php',
         'title' => 'Techniques diverses et vari&eacute;es',
     ],
-    'lire' => [ // ViewMessage
+    'lire' => [ // ViewNotification
         'file' => 'lire.php',
         'title' => 'Lire une notification',
     ],

@@ -1,5 +1,4 @@
 RewriteEngine on
-RewriteRule (.+)\.envoi\.html$ /index.php?page=envoi&destinataire=$1
 RewriteRule (.+)\.bisous\.html$ /index.php?page=bisous&cancel=$1
 RewriteRule (.+)\.(.+)\.nuage\.html$ /index.php?page=nuage&saut=1&sautnuage=$1&sautposition=$2
 RewriteRule (.+)\.nuage\.html$ /index.php?page=nuage&nuage=$1

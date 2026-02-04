@@ -5,8 +5,10 @@ includes:
 parameters:
   level: 10
   paths:
+    - src/
     - tests/
     - ../monolith/tests/
     - ../monolith/src/
-  scanDirectories:
-    - ../monolith/vendor/
+  bootstrapFiles:
+    - vendor/autoload.php
+    - ../monolith/vendor/autoload.php

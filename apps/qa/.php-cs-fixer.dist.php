@@ -35,6 +35,9 @@ $finder = (new PhpCsFixer\Finder())
         __DIR__,
         __DIR__.'/../monolith',
     ])
+    ->exclude([
+        'var',
+    ])
     ->notPath([
         // Note: `notPath()` expect paths relatives to the ones provided in `in()`
         // The rule's fixes from `[PSR-2] statement_indentation` break the following files, so excluding them:

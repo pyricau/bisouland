@@ -120,6 +120,8 @@ app-qa: ## Runs full QA pipeline (composer-dump, cs-check, phpstan-analyze, rect
 	@echo '  // Running Rector...'
 	@$(MAKE) rector-check
 	@echo ''
+	@docker compose exec $(QA_SERVICE) sh bin/sfcc-if-stale.sh test
+	@echo ''
 	@echo '  // Running PHPUnit...'
 	@$(MAKE) phpunit
 	@echo ''

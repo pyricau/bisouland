@@ -1,6 +1,11 @@
 # composer
 vendor/
 
+# symfony
+config/reference.php
+config/secrets/prod/prod.decrypt.private.php
+var/
+
 # environment variables
 .env.local
 .env.local.php

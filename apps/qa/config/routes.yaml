@@ -1,0 +1,11 @@
+web:
+    resource:
+        path: ../src/UserInterface/Web/
+        namespace: Bl\Qa\UserInterface\Web
+    type: attribute
+
+api:
+    resource:
+        path: ../src/UserInterface/Api/
+        namespace: Bl\Qa\UserInterface\Api
+    type: attribute

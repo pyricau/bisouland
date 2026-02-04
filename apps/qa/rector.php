@@ -43,6 +43,7 @@ return RectorConfig::configure()
         // —— Excluded paths ———————————————————————————————————————————————————
         // Excluded folders
         // [qa]
+        __DIR__.'/var',
         __DIR__.'/vendor',
         // [monolith]
         __DIR__.'/../monolith/vendor',

@@ -19,7 +19,7 @@ enum UpgradableOrgan: int
     public static function toArray(): array
     {
         return array_map(
-            fn (self $organ): string => $organ->toString(),
+            static fn (self $organ): string => $organ->toString(),
             self::cases(),
         );
     }

@@ -16,7 +16,7 @@ enum UpgradableBisou: int
     public static function toArray(): array
     {
         return array_map(
-            fn (self $bisou): string => $bisou->toString(),
+            static fn (self $bisou): string => $bisou->toString(),
             self::cases(),
         );
     }

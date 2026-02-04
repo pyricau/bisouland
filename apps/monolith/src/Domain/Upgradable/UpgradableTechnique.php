@@ -18,7 +18,7 @@ enum UpgradableTechnique: int
     public static function toArray(): array
     {
         return array_map(
-            fn (self $technique): string => $technique->toString(),
+            static fn (self $technique): string => $technique->toString(),
             self::cases(),
         );
     }

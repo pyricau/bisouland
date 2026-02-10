@@ -27,7 +27,9 @@ final readonly class TokenHash
     public static function fromString(string $value): self
     {
         if (1 !== preg_match('/^[0-9a-f]{64}$/i', $value)) {
-            throw ValidationFailedException::make("Invalid \"TokenHash\" parameter: it should be a sha256, i.e. 64 hexadecimal characters (`{$value}` given)");
+            throw ValidationFailedException::make(
+                "Invalid \"TokenHash\" parameter: it should be a sha256, i.e. 64 hexadecimal characters (`{$value}` given)",
+            );
         }
 
         return new self($value);

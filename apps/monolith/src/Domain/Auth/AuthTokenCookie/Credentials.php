@@ -27,7 +27,9 @@ final readonly class Credentials
     {
         if (1 !== substr_count($cookie, ':')) {
             // Don't include $cookie value in message to avoid leaking credentials
-            throw ValidationFailedException::make('Invalid "cookie" parameter: it should follow the `auth_token_id:token_plain` format');
+            throw ValidationFailedException::make(
+                'Invalid "cookie" parameter: it should follow the `auth_token_id:token_plain` format',
+            );
         }
 
         [$stringAuthTokenId, $stringToken] = explode(':', $cookie, 2);

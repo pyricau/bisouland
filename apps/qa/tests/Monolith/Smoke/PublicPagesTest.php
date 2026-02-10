@@ -16,7 +16,7 @@ use PHPUnit\Framework\TestCase;
 #[Large]
 final class PublicPagesTest extends TestCase
 {
-    #[TestDox('it loads $pageName page (`$url`)')]
+    #[TestDox('It loads $pageName page (`$url`)')]
     #[DataProvider('publicPagesProvider')]
     public function test_it_loads_public_page(string $url, string $pageName): void
     {
@@ -29,20 +29,23 @@ final class PublicPagesTest extends TestCase
     }
 
     /**
-     * @return \Iterator<(int | string), array{string, string}>
+     * @return \Iterator<array{
+     *      url: string,
+     *      pageName: string,
+     *  }>
      */
     public static function publicPagesProvider(): \Iterator
     {
-        yield ['/', 'homepage'];
-        yield ['/contact.html', 'contact'];
-        yield ['/faq.html', 'FAQ'];
-        yield ['/livreor.html', 'guestbook'];
-        yield ['/aide.html', 'help'];
-        yield ['/connexion.html', 'login'];
-        yield ['/membres.html', 'players'];
-        yield ['/topten.html', 'ranking'];
-        yield ['/recherche.html', 'search'];
-        yield ['/inscription.html', 'signup'];
-        yield ['/stats.html', 'statistics'];
+        yield ['url' => '/', 'pageName' => 'homepage'];
+        yield ['url' => '/contact.html', 'pageName' => 'contact'];
+        yield ['url' => '/faq.html', 'pageName' => 'FAQ'];
+        yield ['url' => '/livreor.html', 'pageName' => 'guestbook'];
+        yield ['url' => '/aide.html', 'pageName' => 'help'];
+        yield ['url' => '/connexion.html', 'pageName' => 'login'];
+        yield ['url' => '/membres.html', 'pageName' => 'players'];
+        yield ['url' => '/topten.html', 'pageName' => 'ranking'];
+        yield ['url' => '/recherche.html', 'pageName' => 'search'];
+        yield ['url' => '/inscription.html', 'pageName' => 'signup'];
+        yield ['url' => '/stats.html', 'pageName' => 'statistics'];
     }
 }

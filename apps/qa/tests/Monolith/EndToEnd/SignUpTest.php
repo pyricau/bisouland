@@ -28,8 +28,8 @@ final class SignUpTest extends TestCase
     }
 
     #[DataProvider('invalidCredentialsProvider')]
-    #[TestDox('It prevents invalid credentials: $description')]
-    public function test_it_prevents_invalid_credentials(string $username, string $password, string $description): void
+    #[TestDox('It prevents invalid credentials: $scenario')]
+    public function test_it_prevents_invalid_credentials(string $scenario, string $username, string $password): void
     {
         SignUpNewPlayer::run(
             $username,
@@ -41,19 +41,21 @@ final class SignUpTest extends TestCase
     }
 
     /**
-     * [string $username, string $password, string $description][].
-     *
-     * @return \Iterator<(int | string), array{string, string, string}>
+     * @return \Iterator<array{
+     *      scenario: string,
+     *      username: string,
+     *      password: string,
+     *  }>
      */
     public static function invalidCredentialsProvider(): \Iterator
     {
-        yield ['usr', 'password', 'username too short (< 4 characters)'];
-        yield ['test_sign_up02__', 'password', 'username too long (> 15 characters)'];
-        yield ['test_sign_up03!', 'password', 'username contains special characters (non alpha-numerical, not an underscore (`_`))'];
-        yield ['test_sign_up05', 'pass', 'password too short (< 5 characters)'];
-        yield ['test_sign_up06', 'passwordthatistoolong', 'password too long (> 15 characters)'];
-        yield ['test_sign_up07', 'password!', 'password contains special characters (non alpha-numerical, not an underscore (`_`))'];
-        yield ['BisouLand', 'password', 'system account, for notifications'];
+        yield ['scenario' => 'username too short (< 4 characters)', 'username' => 'usr', 'password' => 'password'];
+        yield ['scenario' => 'username too long (> 15 characters)', 'username' => 'test_sign_up02__', 'password' => 'password'];
+        yield ['scenario' => 'username contains special characters (non alpha-numerical, not an underscore (`_`))', 'username' => 'test_sign_up03!', 'password' => 'password'];
+        yield ['scenario' => 'password too short (< 5 characters)', 'username' => 'test_sign_up05', 'password' => 'pass'];
+        yield ['scenario' => 'password too long (> 15 characters)', 'username' => 'test_sign_up06', 'password' => 'passwordthatistoolong'];
+        yield ['scenario' => 'password contains special characters (non alpha-numerical, not an underscore (`_`))', 'username' => 'test_sign_up07', 'password' => 'password!'];
+        yield ['scenario' => 'system account, for notifications', 'username' => 'BisouLand', 'password' => 'password'];
     }
 
     #[TestDox('It prevents usernames that are already used')]

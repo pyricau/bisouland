@@ -90,21 +90,24 @@ final class ExpiresAtTest extends TestCase
     }
 
     /**
-     * @return \Iterator<int|string, array{string, string}>
+     * @return \Iterator<array{
+     *      scenario: string,
+     *      invalidDate: string,
+     *  }>
      */
     public static function invalidIso8601Provider(): \Iterator
     {
-        yield ['is invalid date', 'invalid-date'];
-        yield ['has invalid month', '2025-13-17T13:00:00'];
-        yield ['has invalid day', '2025-06-32T13:00:00'];
-        yield ['has invalid hour', '2025-06-17T25:00:00'];
-        yield ['has invalid minute', '2025-06-17T13:61:00'];
-        yield ['has invalid second', '2025-06-17T13:00:61'];
-        yield ['has wrong format', '2025/06/17 13:00:00'];
-        yield ['has wrong date order', '17-06-2025T13:00:00'];
-        yield ['is missing T', '2025-06-17 13:00:00'];
-        yield ['is missing seconds', '2025-06-17T13:00'];
-        yield ['has single digit month', '2025-6-17T13:00:00'];
-        yield ['has single digit day', '2025-06-7T13:00:00'];
+        yield ['scenario' => 'is invalid date', 'invalidDate' => 'invalid-date'];
+        yield ['scenario' => 'has invalid month', 'invalidDate' => '2025-13-17T13:00:00'];
+        yield ['scenario' => 'has invalid day', 'invalidDate' => '2025-06-32T13:00:00'];
+        yield ['scenario' => 'has invalid hour', 'invalidDate' => '2025-06-17T25:00:00'];
+        yield ['scenario' => 'has invalid minute', 'invalidDate' => '2025-06-17T13:61:00'];
+        yield ['scenario' => 'has invalid second', 'invalidDate' => '2025-06-17T13:00:61'];
+        yield ['scenario' => 'has wrong format', 'invalidDate' => '2025/06/17 13:00:00'];
+        yield ['scenario' => 'has wrong date order', 'invalidDate' => '17-06-2025T13:00:00'];
+        yield ['scenario' => 'is missing T', 'invalidDate' => '2025-06-17 13:00:00'];
+        yield ['scenario' => 'is missing seconds', 'invalidDate' => '2025-06-17T13:00'];
+        yield ['scenario' => 'has single digit month', 'invalidDate' => '2025-6-17T13:00:00'];
+        yield ['scenario' => 'has single digit day', 'invalidDate' => '2025-06-7T13:00:00'];
     }
 }

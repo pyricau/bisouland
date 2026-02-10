@@ -17,6 +17,11 @@ final readonly class AccountId
     ) {
     }
 
+    public static function create(): self
+    {
+        return new self(Uuid::v7());
+    }
+
     public function toString(): string
     {
         return $this->value->toString();

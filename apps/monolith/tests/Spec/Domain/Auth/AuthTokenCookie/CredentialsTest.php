@@ -94,17 +94,20 @@ final class CredentialsTest extends TestCase
     }
 
     /**
-     * @return \Iterator<int|string, array{string, string}>
+     * @return \Iterator<array{
+     *      scenario: string,
+     *      invalidCookieValue: string,
+     *  }>
      */
     public static function invalidCookieValueProvider(): \Iterator
     {
         $stringAuthTokenId = AuthTokenIdFixture::makeString();
         $stringTokenPlain = TokenPlainFixture::makeString();
 
-        yield ['is an empty string', ''];
-        yield ['has no colon separator', "{$stringAuthTokenId} {$stringTokenPlain}"];
-        yield ['has more than one colon separator', "{$stringAuthTokenId}:{$stringTokenPlain}:SuperSecretBisou"];
-        yield ['has invalid AuthTokenId', "InvalidAuthTokenId:{$stringTokenPlain}"];
-        yield ['has invalid TokenPlain', "{$stringAuthTokenId}:InvalidTokenPlain"];
+        yield ['scenario' => 'is an empty string', 'invalidCookieValue' => ''];
+        yield ['scenario' => 'has no colon separator', 'invalidCookieValue' => "{$stringAuthTokenId} {$stringTokenPlain}"];
+        yield ['scenario' => 'has more than one colon separator', 'invalidCookieValue' => "{$stringAuthTokenId}:{$stringTokenPlain}:SuperSecretBisou"];
+        yield ['scenario' => 'has invalid AuthTokenId', 'invalidCookieValue' => "InvalidAuthTokenId:{$stringTokenPlain}"];
+        yield ['scenario' => 'has invalid TokenPlain', 'invalidCookieValue' => "{$stringAuthTokenId}:InvalidTokenPlain"];
     }
 }

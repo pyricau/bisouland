@@ -59,6 +59,6 @@ final class NewPlayerTest extends TestCase
             'password',
         );
 
-        Assert::PlayerNotified($player, 'Bienvenue sur BisouLand');
+        Assert::playerNotified($player, 'Bienvenue sur BisouLand');
     }
 }

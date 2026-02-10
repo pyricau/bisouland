@@ -50,15 +50,18 @@ final class RemoveAuthTokenTest extends TestCase
     }
 
     /**
-     * @return \Iterator<(int | string), array{string, mixed}>
+     * @return \Iterator<array{
+     *      scenario: string,
+     *      invalidRawAccountId: mixed,
+     *  }>
      */
     public static function invalidRawAccountIdProvider(): \Iterator
     {
-        yield ['is null', null];
-        yield ['is an integer', 123];
-        yield ['is a float', 123.45];
-        yield ['is a boolean', true];
-        yield ['is an array', []];
-        yield ['is an object', new \stdClass()];
+        yield ['scenario' => 'is null', 'invalidRawAccountId' => null];
+        yield ['scenario' => 'is an integer', 'invalidRawAccountId' => 123];
+        yield ['scenario' => 'is a float', 'invalidRawAccountId' => 123.45];
+        yield ['scenario' => 'is a boolean', 'invalidRawAccountId' => true];
+        yield ['scenario' => 'is an array', 'invalidRawAccountId' => []];
+        yield ['scenario' => 'is an object', 'invalidRawAccountId' => new \stdClass()];
     }
 }

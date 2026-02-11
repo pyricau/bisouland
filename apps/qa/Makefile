@@ -10,6 +10,7 @@ QA_SERVICE = app
 # Executables
 COMPOSER = docker compose exec $(QA_SERVICE) composer
 CONSOLE = docker compose exec -e APP_ENV=$(env) $(QA_SERVICE) php bin/console
+QALIN = docker compose exec -e APP_ENV=$(env) $(QA_SERVICE) php qalin
 PHP_CS_FIXER = docker compose exec $(QA_SERVICE) php vendor/bin/php-cs-fixer
 PHPSTAN = docker compose exec $(QA_SERVICE) php vendor/bin/phpstan --memory-limit=256M
 PHPUNIT = docker compose exec $(QA_SERVICE) php vendor/bin/phpunit
@@ -64,6 +65,9 @@ composer-dump: ## Dumps autoloader (arg, eg `arg='--classmap-authoritative'`)
 console: ## Runs Symfony Console (arg, env, eg `arg='cache:clear' env='prod'`)
 	@$(CONSOLE) $(arg)
 
+qalin: ## Runs Qalin Console (arg, env, eg `arg='action:sign-up-new-player'`)
+	@$(QALIN) $(arg)
+
 cs-check: ## Checks CS with PHP-CS-Fixer (arg, eg `arg='../monolith/web'`)
 	@$(PHP_CS_FIXER) check --verbose $(arg)
 
@@ -82,6 +86,7 @@ swiss-knife: ## Automated refactorings with Swiss Knife (arg, eg `arg='namespace
 	@$(SWISS_KNIFE) $(arg)
 
 phpunit: ## Runs the tests with PHPUnit (arg, eg `arg='./tests/Smoke'`)
+	@docker compose exec $(QA_SERVICE) sh bin/sfcc-if-stale.sh test
 	@$(PHPUNIT) $(arg)
 
 rector-fix: ## Automated refactorings with Rector (arg, eg `arg='--clear-cache'`)
@@ -106,6 +111,9 @@ app-init: ## First install / resetting (Docker build, up, etc)
 	@echo ''
 	@echo '  [OK] QA initialized'
 
+app-clear: ## Clears the Symfony cache (env, eg `env='prod'`)
+	@$(CONSOLE) cache:clear
+
 app-qa: ## Runs full QA pipeline (composer-dump, cs-check, phpstan-analyze, rector-check, phpunit)
 	@echo ''
 	@echo '  // Running composer dump...'
@@ -119,8 +127,6 @@ app-qa: ## Runs full QA pipeline (composer-dump, cs-check, phpstan-analyze, rect
 	@echo ''
 	@echo '  // Running Rector...'
 	@$(MAKE) rector-check
-	@echo ''
-	@docker compose exec $(QA_SERVICE) sh bin/sfcc-if-stale.sh test
 	@echo ''
 	@echo '  // Running PHPUnit...'
 	@$(MAKE) phpunit

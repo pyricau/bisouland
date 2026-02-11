@@ -1,0 +1,106 @@
+/* Catppuccin Frappé */
+:root {
+    --ctp-base: #303446;
+    --ctp-mantle: #292c3c;
+    --ctp-crust: #232634;
+    --ctp-text: #c6d0f5;
+    --ctp-subtext0: #a5adce;
+    --ctp-surface0: #414559;
+    --ctp-surface1: #51576d;
+    --ctp-surface2: #626880;
+    --ctp-overlay0: #737994;
+    --ctp-blue: #8caaee;
+    --ctp-lavender: #babbf1;
+    --ctp-green: #a6d189;
+    --ctp-red: #e78284;
+    --ctp-peach: #ef9f76;
+    --ctp-teal: #81c8be;
+    --ctp-mauve: #ca9ee6;
+}
+
+body {
+    background: var(--ctp-base);
+    color: var(--ctp-text);
+    font-size: 1.6rem;
+    font-weight: 400;
+}
+
+h1, h2, h3, h4, h5, h6 {
+    color: var(--ctp-lavender);
+}
+
+a { color: var(--ctp-blue); }
+a:hover { color: var(--ctp-lavender); }
+
+nav {
+    padding: 0.8rem 0;
+    margin-bottom: 2rem;
+    border-bottom: 1px solid var(--ctp-surface0);
+}
+
+nav a {
+    color: var(--ctp-subtext0);
+    text-decoration: none;
+    margin-right: 1.5rem;
+    font-size: 1.4rem;
+}
+
+nav a:hover { color: var(--ctp-text); }
+
+.nav-label {
+    color: var(--ctp-overlay0);
+    margin-right: 0.5rem;
+    font-size: 1.4rem;
+}
+
+h1 { color: var(--ctp-mauve); font-weight: 700; }
+
+label {
+    color: var(--ctp-subtext0);
+    font-weight: normal;
+}
+
+form { max-width: 48rem; }
+
+input[type="text"],
+input[type="password"],
+input[type="email"],
+textarea,
+select {
+    background: var(--ctp-surface0);
+    color: var(--ctp-text);
+    border: 1px solid var(--ctp-surface2);
+    border-radius: 4px;
+}
+
+input[type="text"]:focus,
+input[type="password"]:focus,
+input[type="email"]:focus,
+textarea:focus,
+select:focus {
+    border-color: var(--ctp-blue);
+    outline: 0;
+}
+
+.button-primary,
+button.button-primary {
+    background: var(--ctp-teal);
+    border-color: var(--ctp-teal);
+    color: var(--ctp-crust);
+}
+
+.button-primary:hover,
+button.button-primary:hover {
+    background: var(--ctp-green);
+    border-color: var(--ctp-green);
+    color: var(--ctp-crust);
+}
+
+table th, table td { border-bottom-color: var(--ctp-surface1); }
+table th { color: var(--ctp-subtext0); }
+
+.error-icon { font-size: 4rem; margin: 2rem 0; }
+
+.result { margin-top: 1.5rem; padding: 1.2rem; border-radius: 4px; display: none; }
+.result.success { display: block; background: var(--ctp-surface0); color: var(--ctp-green); border: 1px solid var(--ctp-green); }
+.result.error { display: block; background: var(--ctp-surface0); color: var(--ctp-red); border: 1px solid var(--ctp-red); }

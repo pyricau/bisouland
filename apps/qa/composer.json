@@ -29,7 +29,8 @@
         "rector/rector": "^2.3.5",
         "rector/swiss-knife": "^2.3.5",
         "symfony/dotenv": "^8.0",
-        "symfony/http-client": "^8.0.5"
+        "symfony/http-client": "^8.0.5",
+        "symfony/maker-bundle": "^1.66"
     },
     "config": {
         "allow-plugins": {

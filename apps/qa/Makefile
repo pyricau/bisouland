@@ -65,6 +65,9 @@ composer-dump: ## Dumps autoloader (arg, eg `arg='--classmap-authoritative'`)
 console: ## Runs Symfony Console (arg, env, eg `arg='cache:clear' env='prod'`)
 	@$(CONSOLE) $(arg)
 
+maker: ## Runs MakerBundle interactively (arg, eg `arg='make:action InstantFreeUpgrade'`)
+	@docker compose exec -it -e APP_ENV=dev $(QA_SERVICE) php bin/console $(arg)
+
 qalin: ## Runs Qalin Console (arg, env, eg `arg='action:sign-up-new-player'`)
 	@$(QALIN) $(arg)
 

@@ -6,6 +6,8 @@ namespace Bl\Qa\Tests\Monolith\Infrastructure;
 
 use Bl\Qa\Infrastructure\Symfony\AppKernel;
 use Psr\Container\ContainerInterface;
+use Symfony\Bundle\FrameworkBundle\Console\Application;
+use Symfony\Component\Console\Tester\ApplicationTester;
 use Symfony\Contracts\HttpClient\HttpClientInterface;
 
 final class TestKernel
@@ -16,6 +18,11 @@ final class TestKernel
         $appKernel->boot();
 
         $container = $appKernel->getContainer();
+
+        $application = new Application($appKernel);
+        $application->setAutoExit(false);
+
+        $applicationTester = new ApplicationTester($application);
 
         $httpClient = $container->get(HttpClientInterface::class);
         if (!$httpClient instanceof HttpClientInterface) {
@@ -29,6 +36,7 @@ final class TestKernel
 
         return new self(
             $appKernel,
+            $applicationTester,
             $container,
             $httpClient,
             $pdo,
@@ -37,6 +45,7 @@ final class TestKernel
 
     public function __construct(
         private AppKernel $appKernel,
+        private ApplicationTester $applicationTester,
         private ContainerInterface $container,
         private HttpClientInterface $httpClient,
         private \PDO $pdo,
@@ -46,6 +55,11 @@ final class TestKernel
     public function appKernel(): AppKernel
     {
         return $this->appKernel;
+    }
+
+    public function application(): ApplicationTester
+    {
+        return $this->applicationTester;
     }
 
     public function container(): ContainerInterface

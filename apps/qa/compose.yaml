@@ -3,7 +3,7 @@ name: bisouland-qa
 services:
   app:
     build: .
-    command: php -S 0.0.0.0:8080
+    command: php -S 0.0.0.0:8080 -t public
     ports:
       - "43010:8080"
     volumes:

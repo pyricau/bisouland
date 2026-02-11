@@ -21,6 +21,12 @@
         <env name="SHELL_VERBOSITY" value="-1" />
     </php>
     <testsuites>
+        <testsuite name="qalin-spec">
+            <directory>tests/Qalin/Spec</directory>
+        </testsuite>
+        <testsuite name="qalin-integration">
+            <directory>tests/Qalin/Integration</directory>
+        </testsuite>
         <testsuite name="monolith-smoke">
             <directory>tests/Monolith/Smoke</directory>
         </testsuite>

@@ -71,6 +71,12 @@ return (new PhpCsFixer\Config())
             ],
         ],
 
+        // [Symfony] allow multiline `throw` expressions
+        'single_line_throw' => false,
+
+        // [Symfony] allow `=>` on a different line
+        'no_multiline_whitespace_around_double_arrow' => false,
+
         // [Symfony] add use statements instead of allowing FQCNs
         'fully_qualified_strict_types' => ['import_symbols' => true],
 

@@ -1,0 +1,15 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Sign Up New Player - Qalin{% endblock %}
+
+{% block body %}
+    <h1>Sign Up New Player</h1>
+    <form data-api="/api/v1/actions/sign-up-new-player" data-expect="201">
+        <label for="username">Username</label>
+        <input class="u-full-width" type="text" id="username" name="username" required>
+        <label for="password">Password</label>
+        <input class="u-full-width" type="password" id="password" name="password" required>
+        <button class="button-primary" type="submit">Sign Up</button>
+    </form>
+    <div class="result"></div>
+{% endblock %}

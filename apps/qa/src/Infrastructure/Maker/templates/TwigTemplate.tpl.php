@@ -3,7 +3,7 @@
 {% block title %}<?= $action_title; ?> - Qalin{% endblock %}
 
 {% block body %}
-    <h1><?= $action_title; ?></h1>
+    <h2>Action: <?= $action_title; ?></h2>
     <form data-api="/api/v1/actions/<?= $action_kebab; ?>" data-expect="201">
 <?php foreach ($action_parameters as $param): ?>
         <label for="<?= $param['name']; ?>"><?= ucfirst($param['name']); ?></label>

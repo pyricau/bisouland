@@ -10,7 +10,7 @@ parameters:
     - ../monolith/tests/
     - ../monolith/src/
   excludePaths:
-    - src/Infrastructure/Maker/templates/
+    - templates/maker/
   bootstrapFiles:
     - vendor/autoload.php
     - ../monolith/vendor/autoload.php

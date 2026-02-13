@@ -1,10 +1,10 @@
-<?= "<?php\n"; ?>
+<?php echo "<?php\n"; ?>
 
 declare(strict_types=1);
 
-namespace <?= $namespace; ?>;
+namespace <?php echo $namespace; ?>;
 
-use Bl\Qa\Application\Action\<?= $action_name; ?>;
+use Bl\Qa\Application\Action\<?php echo $action_name; ?>;
 use Bl\Qa\Domain\Exception\ServerErrorException;
 use Bl\Qa\Domain\Exception\ValidationFailedException;
 use PHPUnit\Framework\Attributes\CoversClass;
@@ -14,23 +14,23 @@ use PHPUnit\Framework\Attributes\TestDox;
 use PHPUnit\Framework\TestCase;
 use Prophecy\PhpUnit\ProphecyTrait;
 
-#[CoversClass(<?= $action_name; ?>::class)]
+#[CoversClass(<?php echo $action_name; ?>::class)]
 #[Small]
-final class <?= $class_name; ?> extends TestCase
+final class <?php echo $class_name; ?> extends TestCase
 {
     use ProphecyTrait;
 
-    public function test_it_<?= $action_snake; ?>(): void
+    public function test_it_<?php echo $action_snake; ?>(): void
     {
         // TODO: set up test doubles and fixtures
-<?php foreach ($action_parameters as $param): ?>
-        $<?= $param['name']; ?> = 'valid_<?= $param['name']; ?>';
-<?php endforeach; ?>
+<?php foreach ($action_parameters as $param) { ?>
+        $<?php echo $param['name']; ?> = 'valid_<?php echo $param['name']; ?>';
+<?php } ?>
 
-        $<?= $action_camel; ?> = new <?= $action_name; ?>(
+        $<?php echo $action_camel; ?> = new <?php echo $action_name; ?>(
             // TODO: inject revealed prophecies
         );
-        $<?= $action_camel; ?>->run(<?= implode(', ', array_map(fn ($p) => '$' . $p['name'], $action_parameters)); ?>);
+        $<?php echo $action_camel; ?>->run(<?php echo implode(', ', array_map(static fn ($p) => '$'.$p['name'], $action_parameters)); ?>);
 
         // TODO: add assertions
         $this->assertTrue(true);
@@ -46,16 +46,16 @@ final class <?= $class_name; ?> extends TestCase
         string $exception,
     ): void {
         // TODO: set up test doubles
-<?php foreach ($action_parameters as $param): ?>
-        $<?= $param['name']; ?> = 'valid_<?= $param['name']; ?>';
-<?php endforeach; ?>
+<?php foreach ($action_parameters as $param) { ?>
+        $<?php echo $param['name']; ?> = 'valid_<?php echo $param['name']; ?>';
+<?php } ?>
 
-        $<?= $action_camel; ?> = new <?= $action_name; ?>(
+        $<?php echo $action_camel; ?> = new <?php echo $action_name; ?>(
             // TODO: inject revealed prophecies
         );
 
         $this->expectException($exception);
-        $<?= $action_camel; ?>->run(<?= implode(', ', array_map(fn ($p) => '$' . $p['name'], $action_parameters)); ?>);
+        $<?php echo $action_camel; ?>->run(<?php echo implode(', ', array_map(static fn ($p) => '$'.$p['name'], $action_parameters)); ?>);
     }
 
     /**

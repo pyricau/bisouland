@@ -1,8 +1,8 @@
-<?= "<?php\n"; ?>
+<?php echo "<?php\n"; ?>
 
 declare(strict_types=1);
 
-namespace <?= $namespace; ?>;
+namespace <?php echo $namespace; ?>;
 
 use Bl\Qa\Tests\Monolith\Infrastructure\TestKernelSingleton;
 use PHPUnit\Framework\Attributes\CoversNothing;
@@ -13,14 +13,14 @@ use Symfony\Component\HttpFoundation\Response;
 
 #[CoversNothing]
 #[Medium]
-final class <?= $class_name; ?> extends TestCase
+final class <?php echo $class_name; ?> extends TestCase
 {
-    public function test_it_renders_the_<?= $action_snake; ?>_page(): void
+    public function test_it_renders_the_<?php echo $action_snake; ?>_page(): void
     {
         $appKernel = TestKernelSingleton::get()->appKernel();
 
         $request = Request::create(
-            uri: '/actions/<?= $action_kebab; ?>',
+            uri: '/actions/<?php echo $action_kebab; ?>',
             method: 'GET',
         );
 

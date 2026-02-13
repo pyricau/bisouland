@@ -43,8 +43,6 @@ $finder = (new PhpCsFixer\Finder())
         // The rule's fixes from `[PSR-2] statement_indentation` break the following files, so excluding them:
         'phpincludes/bisous.php',
         'phpincludes/cerveau.php',
-        // MakerBundle templates use PHP template syntax by design
-        'src/Infrastructure/Maker/templates/',
     ])
 ;
 

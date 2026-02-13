@@ -104,7 +104,7 @@ final class MakeAction extends AbstractMaker
         $actionSnake = $this->toSnakeCase($actionName);
         $actionCamel = lcfirst($actionName);
 
-        $templateDir = __DIR__.'/templates';
+        $templateDir = __DIR__.'/../../../templates/maker';
         $variables = [
             'action_name' => $actionName,
             'action_kebab' => $actionKebab,

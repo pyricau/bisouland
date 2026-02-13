@@ -1,8 +1,8 @@
-<?= "<?php\n"; ?>
+<?php echo "<?php\n"; ?>
 
 declare(strict_types=1);
 
-namespace <?= $namespace; ?>;
+namespace <?php echo $namespace; ?>;
 
 use Bl\Qa\Tests\Monolith\Infrastructure\TestKernelSingleton;
 use PHPUnit\Framework\Attributes\CoversNothing;
@@ -14,17 +14,17 @@ use Symfony\Component\Console\Command\Command;
 
 #[CoversNothing]
 #[Medium]
-final class <?= $class_name; ?> extends TestCase
+final class <?php echo $class_name; ?> extends TestCase
 {
-    public function test_it_<?= $action_snake; ?>(): void
+    public function test_it_<?php echo $action_snake; ?>(): void
     {
         $application = TestKernelSingleton::get()->application();
 
         $application->run([
-            'command' => 'action:<?= $action_kebab; ?>',
-<?php foreach ($action_parameters as $param): ?>
-            '<?= $param['name']; ?>' => 'valid_<?= $param['name']; ?>', // TODO: use fixture
-<?php endforeach; ?>
+            'command' => 'action:<?php echo $action_kebab; ?>',
+<?php foreach ($action_parameters as $param) { ?>
+            '<?php echo $param['name']; ?>' => 'valid_<?php echo $param['name']; ?>', // TODO: use fixture
+<?php } ?>
         ]);
 
         $this->assertSame(Command::SUCCESS, $application->getStatusCode());
@@ -58,13 +58,13 @@ final class <?= $class_name; ?> extends TestCase
      */
     public static function argumentsAndOptionsProvider(): \Iterator
     {
-<?php foreach ($action_parameters as $i => $param): ?>
+<?php foreach ($action_parameters as $i => $param) { ?>
         yield [
-            'scenario' => '<?= $param['name']; ?> as a required argument',
-            'input' => ['command' => 'action:<?= $action_kebab; ?>'<?php foreach ($action_parameters as $j => $otherParam): ?><?php if ($j !== $i): ?>, '<?= $otherParam['name']; ?>' => 'valid_<?= $otherParam['name']; ?>'<?php endif; ?><?php endforeach; ?>],
-            'expectedOutput' => '/missing.*<?= $param['name']; ?>/',
+            'scenario' => '<?php echo $param['name']; ?> as a required argument',
+            'input' => ['command' => 'action:<?php echo $action_kebab; ?>'<?php foreach ($action_parameters as $j => $otherParam) { ?><?php if ($j !== $i) { ?>, '<?php echo $otherParam['name']; ?>' => 'valid_<?php echo $otherParam['name']; ?>'<?php } ?><?php } ?>],
+            'expectedOutput' => '/missing.*<?php echo $param['name']; ?>/',
         ];
-<?php endforeach; ?>
+<?php } ?>
     }
 
     /**
@@ -91,12 +91,12 @@ final class <?= $class_name; ?> extends TestCase
      */
     public static function invalidInputProvider(): \Iterator
     {
-<?php foreach ($action_parameters as $param): ?>
+<?php foreach ($action_parameters as $param) { ?>
         yield [
-            'scenario' => 'invalid <?= $param['name']; ?>',
-            'input' => ['command' => 'action:<?= $action_kebab; ?>'<?php foreach ($action_parameters as $otherParam): ?>, '<?= $otherParam['name']; ?>' => <?php if ($otherParam['name'] === $param['name']): ?>'x'<?php else: ?>'valid_<?= $otherParam['name']; ?>'<?php endif; ?>
-<?php endforeach; ?>],
+            'scenario' => 'invalid <?php echo $param['name']; ?>',
+            'input' => ['command' => 'action:<?php echo $action_kebab; ?>'<?php foreach ($action_parameters as $otherParam) { ?>, '<?php echo $otherParam['name']; ?>' => <?php if ($otherParam['name'] === $param['name']) { ?>'x'<?php } else { ?>'valid_<?php echo $otherParam['name']; ?>'<?php } ?>
+<?php } ?>],
         ];
-<?php endforeach; ?>
+<?php } ?>
     }
 }

@@ -1,8 +1,8 @@
-<?= "<?php\n"; ?>
+<?php echo "<?php\n"; ?>
 
 declare(strict_types=1);
 
-namespace <?= $namespace; ?>;
+namespace <?php echo $namespace; ?>;
 
 use Bl\Qa\Tests\Monolith\Infrastructure\TestKernelSingleton;
 use PHPUnit\Framework\Attributes\CoversNothing;
@@ -15,20 +15,20 @@ use Symfony\Component\HttpFoundation\Response;
 
 #[CoversNothing]
 #[Medium]
-final class <?= $class_name; ?> extends TestCase
+final class <?php echo $class_name; ?> extends TestCase
 {
-    public function test_it_<?= $action_snake; ?>(): void
+    public function test_it_<?php echo $action_snake; ?>(): void
     {
         $appKernel = TestKernelSingleton::get()->appKernel();
 
         $request = Request::create(
-            uri: '/api/v1/actions/<?= $action_kebab; ?>',
+            uri: '/api/v1/actions/<?php echo $action_kebab; ?>',
             method: 'POST',
             server: ['CONTENT_TYPE' => 'application/json'],
             content: json_encode([
-<?php foreach ($action_parameters as $param): ?>
-                '<?= $param['name']; ?>' => 'valid_<?= $param['name']; ?>', // TODO: use fixture
-<?php endforeach; ?>
+<?php foreach ($action_parameters as $param) { ?>
+                '<?php echo $param['name']; ?>' => 'valid_<?php echo $param['name']; ?>', // TODO: use fixture
+<?php } ?>
             ], \JSON_THROW_ON_ERROR),
         );
 
@@ -37,7 +37,7 @@ final class <?= $class_name; ?> extends TestCase
         $this->assertSame(Response::HTTP_CREATED, $response->getStatusCode(), (string) $response->getContent());
     }
 
-<?php if (count($action_parameters) > 0): ?>
+<?php if (count($action_parameters) > 0) { ?>
     /**
      * @param array<string, string> $body
      */
@@ -50,7 +50,7 @@ final class <?= $class_name; ?> extends TestCase
         $appKernel = TestKernelSingleton::get()->appKernel();
 
         $request = Request::create(
-            uri: '/api/v1/actions/<?= $action_kebab; ?>',
+            uri: '/api/v1/actions/<?php echo $action_kebab; ?>',
             method: 'POST',
             server: ['CONTENT_TYPE' => 'application/json'],
             content: json_encode($body, \JSON_THROW_ON_ERROR),
@@ -69,12 +69,12 @@ final class <?= $class_name; ?> extends TestCase
      */
     public static function requiredParametersProvider(): \Iterator
     {
-<?php foreach ($action_parameters as $i => $param): ?>
+<?php foreach ($action_parameters as $i => $param) { ?>
         yield [
-            'scenario' => '<?= $param['name']; ?> as a required parameter',
-            'body' => [<?php foreach ($action_parameters as $j => $otherParam): ?><?php if ($j !== $i): ?>'<?= $otherParam['name']; ?>' => 'valid_<?= $otherParam['name']; ?>', <?php endif; ?><?php endforeach; ?>],
+            'scenario' => '<?php echo $param['name']; ?> as a required parameter',
+            'body' => [<?php foreach ($action_parameters as $j => $otherParam) { ?><?php if ($j !== $i) { ?>'<?php echo $otherParam['name']; ?>' => 'valid_<?php echo $otherParam['name']; ?>', <?php } ?><?php } ?>],
         ];
-<?php endforeach; ?>
+<?php } ?>
     }
 
     /**
@@ -89,7 +89,7 @@ final class <?= $class_name; ?> extends TestCase
         $appKernel = TestKernelSingleton::get()->appKernel();
 
         $request = Request::create(
-            uri: '/api/v1/actions/<?= $action_kebab; ?>',
+            uri: '/api/v1/actions/<?php echo $action_kebab; ?>',
             method: 'POST',
             server: ['CONTENT_TYPE' => 'application/json'],
             content: json_encode($body, \JSON_THROW_ON_ERROR),
@@ -108,12 +108,12 @@ final class <?= $class_name; ?> extends TestCase
      */
     public static function invalidInputProvider(): \Iterator
     {
-<?php foreach ($action_parameters as $param): ?>
+<?php foreach ($action_parameters as $param) { ?>
         yield [
-            'scenario' => 'invalid <?= $param['name']; ?>',
-            'body' => [<?php foreach ($action_parameters as $otherParam): ?>'<?= $otherParam['name']; ?>' => <?php if ($otherParam['name'] === $param['name']): ?>'x'<?php else: ?>'valid_<?= $otherParam['name']; ?>'<?php endif; ?>, <?php endforeach; ?>],
+            'scenario' => 'invalid <?php echo $param['name']; ?>',
+            'body' => [<?php foreach ($action_parameters as $otherParam) { ?>'<?php echo $otherParam['name']; ?>' => <?php if ($otherParam['name'] === $param['name']) { ?>'x'<?php } else { ?>'valid_<?php echo $otherParam['name']; ?>'<?php } ?>, <?php } ?>],
         ];
-<?php endforeach; ?>
+<?php } ?>
     }
-<?php endif; ?>
+<?php } ?>
 }

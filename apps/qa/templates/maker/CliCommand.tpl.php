@@ -1,10 +1,10 @@
-<?= "<?php\n"; ?>
+<?php echo "<?php\n"; ?>
 
 declare(strict_types=1);
 
-namespace <?= $namespace; ?>;
+namespace <?php echo $namespace; ?>;
 
-use Bl\Qa\Application\Action\<?= $action_name; ?>;
+use Bl\Qa\Application\Action\<?php echo $action_name; ?>;
 use Bl\Qa\Domain\Exception\ServerErrorException;
 use Bl\Qa\Domain\Exception\ValidationFailedException;
 use Symfony\Component\Console\Attribute\Argument;
@@ -13,26 +13,26 @@ use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Style\SymfonyStyle;
 
 #[AsCommand(
-    name: 'action:<?= $action_kebab; ?>',
-    description: '<?= $description; ?>',
+    name: 'action:<?php echo $action_kebab; ?>',
+    description: '<?php echo $description; ?>',
 )]
-final class <?= $class_name; ?> extends Command
+final class <?php echo $class_name; ?> extends Command
 {
     public function __construct(
-        private readonly <?= $action_name; ?> $<?= $action_camel; ?>,
+        private readonly <?php echo $action_name; ?> $<?php echo $action_camel; ?>,
     ) {
         parent::__construct();
     }
 
     public function __invoke(
-<?php foreach ($action_parameters as $param): ?>
-        #[Argument(description: '<?= $param['description']; ?>')]
-        string $<?= $param['name']; ?>,
-<?php endforeach; ?>
+<?php foreach ($action_parameters as $param) { ?>
+        #[Argument(description: '<?php echo $param['description']; ?>')]
+        string $<?php echo $param['name']; ?>,
+<?php } ?>
         SymfonyStyle $io,
     ): int {
         try {
-            $this-><?= $action_camel; ?>->run(<?= implode(', ', array_map(fn ($p) => '$' . $p['name'], $action_parameters)); ?>);
+            $this-><?php echo $action_camel; ?>->run(<?php echo implode(', ', array_map(static fn ($p) => '$'.$p['name'], $action_parameters)); ?>);
         } catch (ValidationFailedException $e) {
             $io->error($e->getMessage());
 
@@ -43,7 +43,7 @@ final class <?= $class_name; ?> extends Command
             return self::FAILURE;
         }
 
-        $io->success('Successfully completed <?= $action_title; ?>');
+        $io->success('Successfully completed <?php echo $action_title; ?>');
 
         // TODO: display result (e.g. Table with markdown style)
 

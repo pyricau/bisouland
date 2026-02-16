@@ -105,6 +105,19 @@ final class MakeAction extends AbstractMaker
         $actionCamel = lcfirst($actionName);
 
         $templateDir = __DIR__.'/../../../templates/maker';
+        $testsDir = __DIR__.'/../../../tests';
+        $hasUsernameParam = false;
+        foreach ($parameters as &$param) {
+            $fixture = $this->discoverFixture($param['name'], $testsDir);
+            $param['fixture_fqcn'] = $fixture['fqcn'] ?? null;
+            $param['fixture_class'] = $fixture['class'] ?? null;
+            if ('username' === $param['name']) {
+                $hasUsernameParam = true;
+            }
+        }
+
+        unset($param);
+
         $variables = [
             'action_name' => $actionName,
             'action_kebab' => $actionKebab,
@@ -113,6 +126,7 @@ final class MakeAction extends AbstractMaker
             'action_camel' => $actionCamel,
             'description' => $description,
             'action_parameters' => $parameters,
+            'has_username_param' => $hasUsernameParam,
         ];
 
         // 1. Action input DTO
@@ -219,6 +233,49 @@ final class MakeAction extends AbstractMaker
         $contents = str_replace('        </nav>', "{$newLink}\n        </nav>", $contents);
 
         file_put_contents($baseTwigPath, $contents);
+    }
+
+    /**
+     * @return array{fqcn: string, class: string}|null
+     */
+    private function discoverFixture(string $paramName, string $testsDir): ?array
+    {
+        $pascalCase = str_replace(' ', '', ucwords(str_replace('_', ' ', $paramName)));
+        $pascalCase = lcfirst($pascalCase);
+        $pascalCase = ucfirst($pascalCase);
+
+        $className = "{$pascalCase}Fixture";
+        $fileName = "{$className}.php";
+
+        $iterator = new \RecursiveIteratorIterator(
+            new \RecursiveDirectoryIterator("{$testsDir}/Fixtures"),
+        );
+        $filePath = null;
+        /** @var \SplFileInfo $file */
+        foreach ($iterator as $file) {
+            if ($file->getFilename() === $fileName) {
+                $filePath = $file->getPathname();
+                break;
+            }
+        }
+
+        if (null === $filePath) {
+            return null;
+        }
+
+        $contents = file_get_contents($filePath);
+        if (false === $contents) {
+            return null;
+        }
+
+        if (1 !== preg_match('/namespace\s+(.+?);/', $contents, $nsMatch)) {
+            return null;
+        }
+
+        return [
+            'fqcn' => "{$nsMatch[1]}\\{$className}",
+            'class' => $className,
+        ];
     }
 
     private function toKebabCase(string $pascalCase): string

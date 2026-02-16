@@ -9,6 +9,11 @@ use Bl\Qa\Application\Action\<?php echo $action_name; ?>\<?php echo $action_name
 use Bl\Qa\Application\Action\<?php echo $action_name; ?>\<?php echo $action_name; ?>Output;
 use Bl\Qa\Domain\Exception\ServerErrorException;
 use Bl\Qa\Domain\Exception\ValidationFailedException;
+<?php foreach ($action_parameters as $param) { ?>
+<?php if ($param['fixture_fqcn']) { ?>
+use <?php echo $param['fixture_fqcn']; ?>;
+<?php } ?>
+<?php } ?>
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\Attributes\Small;
@@ -26,7 +31,11 @@ final class <?php echo $class_name; ?> extends TestCase
     {
         // TODO: set up test doubles and fixtures
 <?php foreach ($action_parameters as $param) { ?>
-        $<?php echo $param['name']; ?> = 'valid_<?php echo $param['name']; ?>';
+<?php if ($param['fixture_fqcn']) { ?>
+        $<?php echo $param['name']; ?> = <?php echo $param['fixture_class']; ?>::makeString();
+<?php } else { ?>
+        $<?php echo $param['name']; ?> = 'valid_<?php echo $param['name']; ?>'; // TODO: use fixture
+<?php } ?>
 <?php } ?>
 
         $<?php echo $action_camel; ?>Handler = new <?php echo $action_name; ?>Handler(
@@ -49,7 +58,11 @@ final class <?php echo $class_name; ?> extends TestCase
     ): void {
         // TODO: set up test doubles
 <?php foreach ($action_parameters as $param) { ?>
-        $<?php echo $param['name']; ?> = 'valid_<?php echo $param['name']; ?>';
+<?php if ($param['fixture_fqcn']) { ?>
+        $<?php echo $param['name']; ?> = <?php echo $param['fixture_class']; ?>::makeString();
+<?php } else { ?>
+        $<?php echo $param['name']; ?> = 'valid_<?php echo $param['name']; ?>'; // TODO: use fixture
+<?php } ?>
 <?php } ?>
 
         $<?php echo $action_camel; ?>Handler = new <?php echo $action_name; ?>Handler(

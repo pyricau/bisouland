@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Bl\Qa\Tests\Monolith\Infrastructure;
 
+use Bl\Qa\Infrastructure\Symfony\ActionRunner;
 use Bl\Qa\Infrastructure\Symfony\AppKernel;
 use Psr\Container\ContainerInterface;
 use Symfony\Bundle\FrameworkBundle\Console\Application;
@@ -34,12 +35,18 @@ final class TestKernel
             throw new \RuntimeException('PDO service not found');
         }
 
+        $actionRunner = $container->get(ActionRunner::class);
+        if (!$actionRunner instanceof ActionRunner) {
+            throw new \RuntimeException('ActionRunner service not found');
+        }
+
         return new self(
             $appKernel,
             $applicationTester,
             $container,
             $httpClient,
             $pdo,
+            $actionRunner,
         );
     }
 
@@ -49,6 +56,7 @@ final class TestKernel
         private ContainerInterface $container,
         private HttpClientInterface $httpClient,
         private \PDO $pdo,
+        private ActionRunner $actionRunner,
     ) {
     }
 
@@ -75,5 +83,10 @@ final class TestKernel
     public function pdo(): \PDO
     {
         return $this->pdo;
+    }
+
+    public function actionRunner(): ActionRunner
+    {
+        return $this->actionRunner;
     }
 }

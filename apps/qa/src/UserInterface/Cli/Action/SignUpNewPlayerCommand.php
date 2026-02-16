@@ -4,7 +4,8 @@ declare(strict_types=1);
 
 namespace Bl\Qa\UserInterface\Cli\Action;
 
-use Bl\Qa\Application\Action\SignUpNewPlayer;
+use Bl\Qa\Application\Action\SignUpNewPlayer\SignUpNewPlayer;
+use Bl\Qa\Application\Action\SignUpNewPlayer\SignUpNewPlayerHandler;
 use Bl\Qa\Domain\Exception\ServerErrorException;
 use Bl\Qa\Domain\Exception\ValidationFailedException;
 use Symfony\Component\Console\Attribute\Argument;
@@ -20,7 +21,7 @@ use Symfony\Component\Console\Style\SymfonyStyle;
 final class SignUpNewPlayerCommand extends Command
 {
     public function __construct(
-        private readonly SignUpNewPlayer $signUpNewPlayer,
+        private readonly SignUpNewPlayerHandler $signUpNewPlayerHandler,
     ) {
         parent::__construct();
     }
@@ -33,7 +34,7 @@ final class SignUpNewPlayerCommand extends Command
         SymfonyStyle $io,
     ): int {
         try {
-            $player = $this->signUpNewPlayer->run($username, $password);
+            $output = $this->signUpNewPlayerHandler->run(new SignUpNewPlayer($username, $password));
         } catch (ValidationFailedException $e) {
             $io->error($e->getMessage());
 
@@ -45,18 +46,18 @@ final class SignUpNewPlayerCommand extends Command
         }
 
         $io->success('Successfully signed up new player');
+
+        $rows = [];
+        foreach ($output->toArray() as $field => $value) {
+            $rows[] = [$field, $value];
+        }
+
+        $rows[] = ['password', '<redacted>'];
+
         $table = new Table($io);
         $table->setStyle('markdown');
         $table->setHeaders(['Field', 'Value']);
-        $table->setRows([
-            ['account_id', $player->account->accountId->toString()],
-            ['username', $player->account->username->toString()],
-            ['password', '<redacted>'],
-            ['love_points', $player->lovePoints->toInt()],
-            ['score', $player->score->toInt()],
-            ['cloud_coordinates_x', $player->cloudCoordinates->getX()],
-            ['cloud_coordinates_y', $player->cloudCoordinates->getY()],
-        ]);
+        $table->setRows($rows);
         $table->render();
 
         return self::SUCCESS;

@@ -45,3 +45,10 @@ services:
         arguments:
             - '%monolith.base_uri%'
         public: true
+
+    Bl\Qa\Application\Action\:
+        resource: '../src/Application/Action/*/*Handler.php'
+        tags: ['app.action_handler']
+
+    Bl\Qa\Infrastructure\Symfony\ActionRunner:
+        public: true

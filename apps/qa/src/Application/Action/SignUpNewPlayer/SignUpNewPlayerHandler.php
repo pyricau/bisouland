@@ -2,19 +2,18 @@
 
 declare(strict_types=1);
 
-namespace Bl\Qa\Application\Action;
+namespace Bl\Qa\Application\Action\SignUpNewPlayer;
 
 use Bl\Qa\Domain\Auth\Account\PasswordPlain;
 use Bl\Qa\Domain\Auth\Account\Username;
 use Bl\Qa\Domain\Exception\ServerErrorException;
 use Bl\Qa\Domain\Exception\ValidationFailedException;
-use Bl\Qa\Domain\Game\Player;
 use Bl\Qa\Domain\Game\SaveNewPlayer;
 
 /**
- * @object-type Action
+ * @object-type UseCase
  */
-final readonly class SignUpNewPlayer
+final readonly class SignUpNewPlayerHandler
 {
     public function __construct(
         private SaveNewPlayer $saveNewPlayer,
@@ -29,13 +28,13 @@ final readonly class SignUpNewPlayer
      * @throws ValidationFailedException If no cloud coordinate Y is available
      * @throws ServerErrorException      If an unexpected error occurs
      */
-    public function run(
-        string $username,
-        string $password,
-    ): Player {
-        return $this->saveNewPlayer->save(
-            Username::fromString($username),
-            PasswordPlain::fromString($password),
+    public function run(SignUpNewPlayer $input): SignUpNewPlayerOutput
+    {
+        $player = $this->saveNewPlayer->save(
+            Username::fromString($input->username),
+            PasswordPlain::fromString($input->password),
         );
+
+        return new SignUpNewPlayerOutput($player);
     }
 }

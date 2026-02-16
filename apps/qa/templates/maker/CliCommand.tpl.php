@@ -4,12 +4,14 @@ declare(strict_types=1);
 
 namespace <?php echo $namespace; ?>;
 
-use Bl\Qa\Application\Action\<?php echo $action_name; ?>;
+use Bl\Qa\Application\Action\<?php echo $action_name; ?>\<?php echo $action_name; ?>;
+use Bl\Qa\Application\Action\<?php echo $action_name; ?>\<?php echo $action_name; ?>Handler;
 use Bl\Qa\Domain\Exception\ServerErrorException;
 use Bl\Qa\Domain\Exception\ValidationFailedException;
 use Symfony\Component\Console\Attribute\Argument;
 use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Console\Command\Command;
+use Symfony\Component\Console\Helper\Table;
 use Symfony\Component\Console\Style\SymfonyStyle;
 
 #[AsCommand(
@@ -19,7 +21,7 @@ use Symfony\Component\Console\Style\SymfonyStyle;
 final class <?php echo $class_name; ?> extends Command
 {
     public function __construct(
-        private readonly <?php echo $action_name; ?> $<?php echo $action_camel; ?>,
+        private readonly <?php echo $action_name; ?>Handler $<?php echo $action_camel; ?>Handler,
     ) {
         parent::__construct();
     }
@@ -32,7 +34,7 @@ final class <?php echo $class_name; ?> extends Command
         SymfonyStyle $io,
     ): int {
         try {
-            $this-><?php echo $action_camel; ?>->run(<?php echo implode(', ', array_map(static fn ($p) => '$'.$p['name'], $action_parameters)); ?>);
+            $output = $this-><?php echo $action_camel; ?>Handler->run(new <?php echo $action_name; ?>(<?php echo implode(', ', array_map(static fn ($p) => '$'.$p['name'], $action_parameters)); ?>));
         } catch (ValidationFailedException $e) {
             $io->error($e->getMessage());
 
@@ -45,7 +47,16 @@ final class <?php echo $class_name; ?> extends Command
 
         $io->success('Successfully completed <?php echo $action_title; ?>');
 
-        // TODO: display result (e.g. Table with markdown style)
+        $rows = [];
+        foreach ($output->toArray() as $field => $value) {
+            $rows[] = [$field, $value];
+        }
+
+        $table = new Table($io);
+        $table->setStyle('markdown');
+        $table->setHeaders(['Field', 'Value']);
+        $table->setRows($rows);
+        $table->render();
 
         return self::SUCCESS;
     }

@@ -147,7 +147,7 @@ enum Upgradable: string
             self::Soup => ceil(5000 * exp(0.4 * $level)),
         };
 
-        if (\is_float($cost) && \is_infinite($cost)) {
+        if (\is_float($cost) && is_infinite($cost)) {
             throw ServerErrorException::make(
                 "Invalid \"Upgradable\" cost: the exponential formula produces infinity (`{$this->value}` at level `{$level}` given)",
             );

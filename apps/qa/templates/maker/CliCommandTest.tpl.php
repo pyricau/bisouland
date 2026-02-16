@@ -16,7 +16,7 @@ use Symfony\Component\Console\Command\Command;
 #[Medium]
 final class <?php echo $class_name; ?> extends TestCase
 {
-    public function test_it_<?php echo $action_snake; ?>(): void
+    public function test_it_runs_command_successfully(): void
     {
         $application = TestKernelSingleton::get()->application();
 

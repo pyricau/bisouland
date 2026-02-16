@@ -17,7 +17,7 @@ use Symfony\Component\HttpFoundation\Response;
 #[Medium]
 final class <?php echo $class_name; ?> extends TestCase
 {
-    public function test_it_<?php echo $action_snake; ?>(): void
+    public function test_it_runs_action_successfully(): void
     {
         $appKernel = TestKernelSingleton::get()->appKernel();
 

@@ -115,63 +115,77 @@ final class MakeAction extends AbstractMaker
             'action_parameters' => $parameters,
         ];
 
-        // 1. Action class
+        // 1. Action input DTO
         $generator->generateClass(
-            "Bl\\Qa\\Application\\Action\\{$actionName}",
+            "Bl\\Qa\\Application\\Action\\{$actionName}\\{$actionName}",
             "{$templateDir}/Action.tpl.php",
             $variables,
         );
 
-        // 2. CLI Command
+        // 2. Action handler
+        $generator->generateClass(
+            "Bl\\Qa\\Application\\Action\\{$actionName}\\{$actionName}Handler",
+            "{$templateDir}/ActionHandler.tpl.php",
+            $variables,
+        );
+
+        // 3. Action output DTO
+        $generator->generateClass(
+            "Bl\\Qa\\Application\\Action\\{$actionName}\\{$actionName}Output",
+            "{$templateDir}/ActionOutput.tpl.php",
+            $variables,
+        );
+
+        // 4. CLI Command
         $generator->generateClass(
             "Bl\\Qa\\UserInterface\\Cli\\Action\\{$actionName}Command",
             "{$templateDir}/CliCommand.tpl.php",
             $variables,
         );
 
-        // 3. Web Controller
+        // 5. Web Controller
         $generator->generateClass(
             "Bl\\Qa\\UserInterface\\Web\\Action\\{$actionName}Controller",
             "{$templateDir}/WebController.tpl.php",
             $variables,
         );
 
-        // 4. API Controller
+        // 6. API Controller
         $generator->generateClass(
             "Bl\\Qa\\UserInterface\\Api\\Action\\{$actionName}Controller",
             "{$templateDir}/ApiController.tpl.php",
             $variables,
         );
 
-        // 5. Twig template
+        // 7. Twig template
         $generator->generateTemplate(
             "actions/{$actionKebab}.html.twig",
             "{$templateDir}/TwigTemplate.tpl.php",
             $variables,
         );
 
-        // 6. Spec test
+        // 8. Spec handler test
         $generator->generateClass(
-            "Bl\\Qa\\Tests\\Qalin\\Spec\\Application\\Action\\{$actionName}Test",
-            "{$templateDir}/SpecTest.tpl.php",
+            "Bl\\Qa\\Tests\\Qalin\\Spec\\Application\\Action\\{$actionName}HandlerTest",
+            "{$templateDir}/SpecHandlerTest.tpl.php",
             $variables,
         );
 
-        // 7. CLI Command integration test
+        // 9. CLI Command integration test
         $generator->generateClass(
             "Bl\\Qa\\Tests\\Qalin\\Integration\\UserInterface\\Cli\\Action\\{$actionName}CommandTest",
             "{$templateDir}/CliCommandTest.tpl.php",
             $variables,
         );
 
-        // 8. Web Controller integration test
+        // 10. Web Controller integration test
         $generator->generateClass(
             "Bl\\Qa\\Tests\\Qalin\\Integration\\UserInterface\\Web\\Action\\{$actionName}ControllerTest",
             "{$templateDir}/WebControllerTest.tpl.php",
             $variables,
         );
 
-        // 9. API Controller integration test
+        // 11. API Controller integration test
         $generator->generateClass(
             "Bl\\Qa\\Tests\\Qalin\\Integration\\UserInterface\\Api\\Action\\{$actionName}ControllerTest",
             "{$templateDir}/ApiControllerTest.tpl.php",
@@ -186,7 +200,7 @@ final class MakeAction extends AbstractMaker
         $this->writeSuccessMessage($io);
         $io->text('Next steps:');
         $io->listing([
-            "Implement domain logic in <fg=yellow>src/Application/Action/{$actionName}.php</>",
+            "Implement domain logic in <fg=yellow>src/Application/Action/{$actionName}/{$actionName}Handler.php</>",
             'Fill in TODO comments in generated files',
             'Run <fg=yellow>make phpstan-analyze</> and <fg=yellow>make phpunit</> to verify',
         ]);

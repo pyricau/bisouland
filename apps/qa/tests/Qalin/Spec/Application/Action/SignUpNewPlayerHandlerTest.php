@@ -4,7 +4,9 @@ declare(strict_types=1);
 
 namespace Bl\Qa\Tests\Qalin\Spec\Application\Action;
 
-use Bl\Qa\Application\Action\SignUpNewPlayer;
+use Bl\Qa\Application\Action\SignUpNewPlayer\SignUpNewPlayer;
+use Bl\Qa\Application\Action\SignUpNewPlayer\SignUpNewPlayerHandler;
+use Bl\Qa\Application\Action\SignUpNewPlayer\SignUpNewPlayerOutput;
 use Bl\Qa\Domain\Auth\Account\PasswordPlain;
 use Bl\Qa\Domain\Auth\Account\Username;
 use Bl\Qa\Domain\Exception\ServerErrorException;
@@ -21,9 +23,9 @@ use PHPUnit\Framework\TestCase;
 use Prophecy\Argument;
 use Prophecy\PhpUnit\ProphecyTrait;
 
-#[CoversClass(SignUpNewPlayer::class)]
+#[CoversClass(SignUpNewPlayerHandler::class)]
 #[Small]
-final class SignUpNewPlayerTest extends TestCase
+final class SignUpNewPlayerHandlerTest extends TestCase
 {
     use ProphecyTrait;
 
@@ -40,12 +42,13 @@ final class SignUpNewPlayerTest extends TestCase
             Argument::that(static fn (PasswordPlain $p): bool => $p->toString() === $password),
         )->willReturn($expectedPlayer);
 
-        $signUpNewPlayer = new SignUpNewPlayer(
+        $signUpNewPlayerHandler = new SignUpNewPlayerHandler(
             $saveNewPlayer->reveal(),
         );
-        $actualPlayer = $signUpNewPlayer->run($username, $password);
+        $output = $signUpNewPlayerHandler->run(new SignUpNewPlayer($username, $password));
 
-        $this->assertSame($expectedPlayer, $actualPlayer);
+        $this->assertInstanceOf(SignUpNewPlayerOutput::class, $output);
+        $this->assertSame($expectedPlayer, $output->player);
     }
 
     /**
@@ -67,12 +70,12 @@ final class SignUpNewPlayerTest extends TestCase
             Argument::that(static fn (PasswordPlain $p): bool => $p->toString() === $password),
         )->willThrow($exception);
 
-        $signUpNewPlayer = new SignUpNewPlayer(
+        $signUpNewPlayerHandler = new SignUpNewPlayerHandler(
             $saveNewPlayer->reveal(),
         );
 
         $this->expectException($exception);
-        $signUpNewPlayer->run($username, $password);
+        $signUpNewPlayerHandler->run(new SignUpNewPlayer($username, $password));
     }
 
     /**

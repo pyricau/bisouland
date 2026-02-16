@@ -4,7 +4,8 @@ declare(strict_types=1);
 
 namespace <?php echo $namespace; ?>;
 
-use Bl\Qa\Application\Action\<?php echo $action_name; ?>;
+use Bl\Qa\Application\Action\<?php echo $action_name; ?>\<?php echo $action_name; ?>;
+use Bl\Qa\Application\Action\<?php echo $action_name; ?>\<?php echo $action_name; ?>Handler;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -14,7 +15,7 @@ final class <?php echo $class_name; ?>
 
 {
     public function __construct(
-        private readonly <?php echo $action_name; ?> $<?php echo $action_camel; ?>,
+        private readonly <?php echo $action_name; ?>Handler $<?php echo $action_camel; ?>Handler,
     ) {
     }
 
@@ -23,15 +24,14 @@ final class <?php echo $class_name; ?>
     {
         $payload = $request->getPayload();
 
-        $this-><?php echo $action_camel; ?>->run(
+        $output = $this-><?php echo $action_camel; ?>Handler->run(new <?php echo $action_name; ?>(
 <?php foreach ($action_parameters as $param) { ?>
             $payload->getString('<?php echo $param['name']; ?>'),
 <?php } ?>
-        );
+        ));
 
-        // TODO: return appropriate response body
         return new JsonResponse(
-            json_encode([], \JSON_THROW_ON_ERROR),
+            json_encode($output->toArray(), \JSON_THROW_ON_ERROR),
             Response::HTTP_CREATED,
             json: true,
         );

@@ -8,6 +8,7 @@ use Bl\Qa\Domain\Auth\Account;
 use Bl\Qa\Domain\Game\Player\CloudCoordinates;
 use Bl\Qa\Domain\Game\Player\LovePoints;
 use Bl\Qa\Domain\Game\Player\Score;
+use Bl\Qa\Domain\Game\Player\UpgradableLevels;
 
 /**
  * @object-type Entity
@@ -19,6 +20,7 @@ final readonly class Player
         public LovePoints $lovePoints,
         public Score $score,
         public CloudCoordinates $cloudCoordinates,
+        public UpgradableLevels $upgradableLevels,
     ) {
     }
 }

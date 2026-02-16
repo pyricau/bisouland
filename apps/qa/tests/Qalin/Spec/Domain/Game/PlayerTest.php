@@ -9,6 +9,7 @@ use Bl\Qa\Tests\Fixtures\Domain\Auth\AccountFixture;
 use Bl\Qa\Tests\Fixtures\Domain\Game\Player\CloudCoordinatesFixture;
 use Bl\Qa\Tests\Fixtures\Domain\Game\Player\LovePointsFixture;
 use Bl\Qa\Tests\Fixtures\Domain\Game\Player\ScoreFixture;
+use Bl\Qa\Tests\Fixtures\Domain\Game\Player\UpgradableLevelsFixture;
 use Bl\Qa\Tests\Fixtures\Domain\Game\PlayerFixture;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\Small;
@@ -53,5 +54,14 @@ final class PlayerTest extends TestCase
         $player = PlayerFixture::make(cloudCoordinates: $cloudCoordinates);
 
         $this->assertSame($cloudCoordinates, $player->cloudCoordinates);
+    }
+
+    #[TestDox('It has UpgradableLevels')]
+    public function test_it_has_upgradable_levels(): void
+    {
+        $upgradableLevels = UpgradableLevelsFixture::make();
+        $player = PlayerFixture::make(upgradableLevels: $upgradableLevels);
+
+        $this->assertSame($upgradableLevels, $player->upgradableLevels);
     }
 }

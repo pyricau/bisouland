@@ -15,6 +15,7 @@ use Bl\Qa\Domain\Game\Player;
 use Bl\Qa\Domain\Game\Player\CloudCoordinates;
 use Bl\Qa\Domain\Game\Player\LovePoints;
 use Bl\Qa\Domain\Game\Player\Score;
+use Bl\Qa\Domain\Game\Player\UpgradableLevels;
 use Bl\Qa\Domain\Game\SaveNewPlayer;
 
 /**
@@ -80,7 +81,21 @@ final readonly class PdoSaveNewPlayer implements SaveNewPlayer
                 amour AS love_points,
                 score,
                 nuage AS cloud_coordinates_x,
-                position AS cloud_coordinates_y
+                position AS cloud_coordinates_y,
+                coeur AS heart,
+                bouche AS mouth,
+                langue AS tongue,
+                dent AS teeth,
+                jambes AS legs,
+                oeil AS eyes,
+                smack AS peck,
+                baiser AS smooch,
+                pelle AS french_kiss,
+                tech1 AS hold_breath,
+                tech2 AS flirt,
+                tech3 AS spit,
+                tech4 AS leap,
+                soupe AS soup
         SQL);
     }
 
@@ -130,6 +145,20 @@ final readonly class PdoSaveNewPlayer implements SaveNewPlayer
          *      score: int,
          *      cloud_coordinates_x: int,
          *      cloud_coordinates_y: int,
+         *      heart: int,
+         *      mouth: int,
+         *      tongue: int,
+         *      teeth: int,
+         *      legs: int,
+         *      eyes: int,
+         *      peck: int,
+         *      smooch: int,
+         *      french_kiss: int,
+         *      hold_breath: int,
+         *      flirt: int,
+         *      spit: int,
+         *      leap: int,
+         *      soup: int,
          * } $row
          */
         $row = $this->stmt->fetch();
@@ -143,6 +172,7 @@ final readonly class PdoSaveNewPlayer implements SaveNewPlayer
             LovePoints::fromInt($row['love_points']),
             Score::fromInt($row['score']),
             CloudCoordinates::fromInts($row['cloud_coordinates_x'], $row['cloud_coordinates_y']),
+            UpgradableLevels::fromArray($row),
         );
     }
 }

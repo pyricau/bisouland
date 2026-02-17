@@ -48,8 +48,10 @@ final class <?php echo $class_name; ?> extends TestCase
 <?php if ('username' === $param['name']) { ?>
                 '<?php echo $param['name']; ?>' => $username,
 <?php } else { ?>
-                '<?php echo $param['name']; ?>' => <?php echo $param['fixture_class']; ?>::makeString(),
+                '<?php echo $param['name']; ?>' => <?php echo $param['fixture_class']; ?>::make<?php echo 'int' === $param['type'] ? 'Int' : 'String'; ?>(),
 <?php } ?>
+<?php } elseif ('int' === $param['type']) { ?>
+                '<?php echo $param['name']; ?>' => 1, // TODO: use fixture
 <?php } else { ?>
                 '<?php echo $param['name']; ?>' => 'valid_<?php echo $param['name']; ?>', // TODO: use fixture
 <?php } ?>
@@ -97,7 +99,7 @@ final class <?php echo $class_name; ?> extends TestCase
 <?php foreach ($action_parameters as $i => $param) { ?>
         yield [
             'scenario' => '<?php echo $param['name']; ?> as a required parameter',
-            'body' => [<?php foreach ($action_parameters as $j => $otherParam) { ?><?php if ($j !== $i) { ?>'<?php echo $otherParam['name']; ?>' => <?php if ($otherParam['fixture_fqcn']) { ?><?php echo $otherParam['fixture_class']; ?>::makeString()<?php } else { ?>'valid_<?php echo $otherParam['name']; ?>'<?php } ?>, <?php } ?><?php } ?>],
+            'body' => [<?php foreach ($action_parameters as $j => $otherParam) { ?><?php if ($j !== $i) { ?>'<?php echo $otherParam['name']; ?>' => <?php if ($otherParam['fixture_fqcn']) { ?><?php echo $otherParam['fixture_class']; ?>::make<?php echo 'int' === $otherParam['type'] ? 'Int' : 'String'; ?>()<?php } elseif ('int' === $otherParam['type']) { ?>1<?php } else { ?>'valid_<?php echo $otherParam['name']; ?>'<?php } ?>, <?php } ?><?php } ?>],
         ];
 <?php } ?>
     }
@@ -136,7 +138,7 @@ final class <?php echo $class_name; ?> extends TestCase
 <?php foreach ($action_parameters as $param) { ?>
         yield [
             'scenario' => 'invalid <?php echo $param['name']; ?>',
-            'body' => [<?php foreach ($action_parameters as $otherParam) { ?>'<?php echo $otherParam['name']; ?>' => <?php if ($otherParam['name'] === $param['name']) { ?>'x'<?php } elseif ($otherParam['fixture_fqcn']) { ?><?php echo $otherParam['fixture_class']; ?>::makeString()<?php } else { ?>'valid_<?php echo $otherParam['name']; ?>'<?php } ?>, <?php } ?>],
+            'body' => [<?php foreach ($action_parameters as $otherParam) { ?>'<?php echo $otherParam['name']; ?>' => <?php if ($otherParam['name'] === $param['name']) { ?><?php echo 'int' === $otherParam['type'] ? '-1' : "'x'"; ?><?php } elseif ($otherParam['fixture_fqcn']) { ?><?php echo $otherParam['fixture_class']; ?>::make<?php echo 'int' === $otherParam['type'] ? 'Int' : 'String'; ?>()<?php } elseif ('int' === $otherParam['type']) { ?>1<?php } else { ?>'valid_<?php echo $otherParam['name']; ?>'<?php } ?>, <?php } ?>],
         ];
 <?php } ?>
     }

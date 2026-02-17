@@ -18,7 +18,7 @@ final class MakeAction extends AbstractMaker
 {
     private string $description = '';
 
-    /** @var list<array{name: string, description: string}> */
+    /** @var list<array{name: string, type: string, description: string}> */
     private array $parameters = [];
 
     public static function getCommandName(): string
@@ -36,7 +36,7 @@ final class MakeAction extends AbstractMaker
         $command
             ->addArgument('name', InputArgument::REQUIRED, 'The action name in PascalCase (e.g. <fg=yellow>InstantFreeUpgrade</>)')
             ->addOption('description', 'd', InputOption::VALUE_REQUIRED, 'Short description for CLI command and page title')
-            ->addOption('parameter', 'p', InputOption::VALUE_REQUIRED | InputOption::VALUE_IS_ARRAY, 'Parameters as name:description pairs (e.g. <fg=yellow>username:4-15 alphanumeric characters</>)')
+            ->addOption('parameter', 'p', InputOption::VALUE_REQUIRED | InputOption::VALUE_IS_ARRAY, 'Parameters as name:type:description (e.g. <fg=yellow>username:string:4-15 alphanumeric characters</>, <fg=yellow>levels:int:number of levels</>). Type defaults to string if omitted.')
         ;
     }
 
@@ -65,11 +65,21 @@ final class MakeAction extends AbstractMaker
         if ([] !== $parameterOptions) {
             $this->parameters = [];
             foreach ($parameterOptions as $parameterOption) {
-                $parts = explode(':', $parameterOption, 2);
-                $this->parameters[] = [
-                    'name' => $parts[0],
-                    'description' => $parts[1] ?? '',
-                ];
+                $parts = explode(':', $parameterOption, 3);
+                if (3 === \count($parts) && \in_array($parts[1], ['string', 'int'], true)) {
+                    $this->parameters[] = [
+                        'name' => $parts[0],
+                        'type' => $parts[1],
+                        'description' => $parts[2],
+                    ];
+                } else {
+                    // Backwards-compatible: name:description (type defaults to string)
+                    $this->parameters[] = [
+                        'name' => $parts[0],
+                        'type' => 'string',
+                        'description' => $parts[1] ?? '',
+                    ];
+                }
             }
         } else {
             $this->parameters = [];
@@ -82,9 +92,11 @@ final class MakeAction extends AbstractMaker
                     break;
                 }
 
+                $paramType = $io->choice("Type for '{$paramName}'", ['string', 'int'], 'string');
                 $paramDescription = $io->ask("Description for '{$paramName}'");
                 $this->parameters[] = [
                     'name' => $paramName,
+                    'type' => \is_string($paramType) ? $paramType : 'string',
                     'description' => \is_string($paramDescription) ? $paramDescription : '',
                 ];
             }

@@ -29,7 +29,7 @@ final class <?php echo $class_name; ?>
     public function __invoke(
 <?php foreach ($action_parameters as $param) { ?>
         #[Argument(description: '<?php echo $param['description']; ?>')]
-        string $<?php echo $param['name']; ?>,
+        <?php echo $param['type']; ?> $<?php echo $param['name']; ?>,
 <?php } ?>
         SymfonyStyle $io,
     ): int {

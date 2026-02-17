@@ -26,7 +26,7 @@ final class <?php echo $class_name; ?>
 
         $output = $this-><?php echo $action_camel; ?>Handler->run(new <?php echo $action_name; ?>(
 <?php foreach ($action_parameters as $param) { ?>
-            $payload->getString('<?php echo $param['name']; ?>'),
+            $payload->get<?php echo 'int' === $param['type'] ? 'Int' : 'String'; ?>('<?php echo $param['name']; ?>'),
 <?php } ?>
         ));
 

@@ -32,7 +32,9 @@ final class <?php echo $class_name; ?> extends TestCase
         // TODO: set up test doubles and fixtures
 <?php foreach ($action_parameters as $param) { ?>
 <?php if ($param['fixture_fqcn']) { ?>
-        $<?php echo $param['name']; ?> = <?php echo $param['fixture_class']; ?>::makeString();
+        $<?php echo $param['name']; ?> = <?php echo $param['fixture_class']; ?>::make<?php echo 'int' === $param['type'] ? 'Int' : 'String'; ?>();
+<?php } elseif ('int' === $param['type']) { ?>
+        $<?php echo $param['name']; ?> = 1; // TODO: use fixture
 <?php } else { ?>
         $<?php echo $param['name']; ?> = 'valid_<?php echo $param['name']; ?>'; // TODO: use fixture
 <?php } ?>
@@ -59,7 +61,9 @@ final class <?php echo $class_name; ?> extends TestCase
         // TODO: set up test doubles
 <?php foreach ($action_parameters as $param) { ?>
 <?php if ($param['fixture_fqcn']) { ?>
-        $<?php echo $param['name']; ?> = <?php echo $param['fixture_class']; ?>::makeString();
+        $<?php echo $param['name']; ?> = <?php echo $param['fixture_class']; ?>::make<?php echo 'int' === $param['type'] ? 'Int' : 'String'; ?>();
+<?php } elseif ('int' === $param['type']) { ?>
+        $<?php echo $param['name']; ?> = 1; // TODO: use fixture
 <?php } else { ?>
         $<?php echo $param['name']; ?> = 'valid_<?php echo $param['name']; ?>'; // TODO: use fixture
 <?php } ?>

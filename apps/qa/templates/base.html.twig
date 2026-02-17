@@ -10,13 +10,17 @@
     <script src="/assets/qalin.js"></script>
 </head>
 <body>
-    <div class="container">
-        <h1>Qalin</h1>
-        <nav>
-            <span class="nav-label">Actions:</span>
-            <a href="/actions/sign-up-new-player">Sign Up New Player</a>
+    <div class="layout">
+        <nav class="sidebar">
+            <h1><a href="/">Qalin</a></h1>
+            <span class="nav-label">Actions</span>
+            {% for action in actions %}
+                <a href="{{ action.path }}">{{ action.name }}</a>
+            {% endfor %}
         </nav>
-        {% block body %}{% endblock %}
+        <main>
+            {% block body %}{% endblock %}
+        </main>
     </div>
 </body>
 </html>

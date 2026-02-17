@@ -220,9 +220,6 @@ final class MakeAction extends AbstractMaker
 
         $generator->writeChanges();
 
-        // Append nav link to base.html.twig
-        $this->appendNavLink($generator, $actionKebab, $actionTitle);
-
         $this->writeSuccessMessage($io);
         $io->text('Next steps:');
         $io->listing([
@@ -230,21 +227,6 @@ final class MakeAction extends AbstractMaker
             'Fill in TODO comments in generated files',
             'Run <fg=yellow>make phpstan-analyze</> and <fg=yellow>make phpunit</> to verify',
         ]);
-    }
-
-    private function appendNavLink(Generator $generator, string $actionKebab, string $actionTitle): void
-    {
-        $baseTwigPath = $generator->getRootDirectory().'/templates/base.html.twig';
-        $contents = file_get_contents($baseTwigPath);
-
-        if (false === $contents) {
-            return;
-        }
-
-        $newLink = "            <a href=\"/actions/{$actionKebab}\">{$actionTitle}</a>";
-        $contents = str_replace('        </nav>', "{$newLink}\n        </nav>", $contents);
-
-        file_put_contents($baseTwigPath, $contents);
     }
 
     /**

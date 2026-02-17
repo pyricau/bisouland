@@ -18,12 +18,12 @@ use Symfony\Component\Console\Style\SymfonyStyle;
     name: 'action:<?php echo $action_kebab; ?>',
     description: '<?php echo $description; ?>',
 )]
-final class <?php echo $class_name; ?> extends Command
+final class <?php echo $class_name; ?>
+
 {
     public function __construct(
         private readonly <?php echo $action_name; ?>Handler $<?php echo $action_camel; ?>Handler,
     ) {
-        parent::__construct();
     }
 
     public function __invoke(
@@ -38,11 +38,11 @@ final class <?php echo $class_name; ?> extends Command
         } catch (ValidationFailedException $e) {
             $io->error($e->getMessage());
 
-            return self::INVALID;
+            return Command::INVALID;
         } catch (ServerErrorException $e) {
             $io->error($e->getMessage());
 
-            return self::FAILURE;
+            return Command::FAILURE;
         }
 
         $io->success('Successfully completed <?php echo $action_title; ?>');
@@ -58,6 +58,6 @@ final class <?php echo $class_name; ?> extends Command
         $table->setRows($rows);
         $table->render();
 
-        return self::SUCCESS;
+        return Command::SUCCESS;
     }
 }

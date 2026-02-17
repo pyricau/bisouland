@@ -18,12 +18,11 @@ use Symfony\Component\Console\Style\SymfonyStyle;
     name: 'action:sign-up-new-player',
     description: 'Signs up a new player for the given username and password',
 )]
-final class SignUpNewPlayerCommand extends Command
+final class SignUpNewPlayerCommand
 {
     public function __construct(
         private readonly SignUpNewPlayerHandler $signUpNewPlayerHandler,
     ) {
-        parent::__construct();
     }
 
     public function __invoke(
@@ -38,11 +37,11 @@ final class SignUpNewPlayerCommand extends Command
         } catch (ValidationFailedException $e) {
             $io->error($e->getMessage());
 
-            return self::INVALID;
+            return Command::INVALID;
         } catch (ServerErrorException $e) {
             $io->error($e->getMessage());
 
-            return self::FAILURE;
+            return Command::FAILURE;
         }
 
         $io->success('Successfully signed up new player');
@@ -60,6 +59,6 @@ final class SignUpNewPlayerCommand extends Command
         $table->setRows($rows);
         $table->render();
 
-        return self::SUCCESS;
+        return Command::SUCCESS;
     }
 }

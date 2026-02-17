@@ -58,7 +58,7 @@ final class <?php echo $class_name; ?> extends TestCase
     }
 
     /**
-     * @param array<string, string> $input
+     * @param array<string, int|string> $input
      */
     #[DataProvider('argumentsAndOptionsProvider')]
     #[TestDox('It has $scenario')]
@@ -79,7 +79,7 @@ final class <?php echo $class_name; ?> extends TestCase
     /**
      * @return \Iterator<array{
      *     scenario: string,
-     *     input: array<string, string>,
+     *     input: array<string, int|string>,
      *     expectedOutput: string,
      * }>
      */
@@ -95,7 +95,7 @@ final class <?php echo $class_name; ?> extends TestCase
     }
 
     /**
-     * @param array<string, string> $input
+     * @param array<string, int|string> $input
      */
     #[DataProvider('invalidInputProvider')]
     #[TestDox('It fails on $scenario')]
@@ -103,6 +103,14 @@ final class <?php echo $class_name; ?> extends TestCase
         string $scenario,
         array $input,
     ): void {
+<?php if ($has_username_param) { ?>
+        if ('invalid username' !== $scenario) {
+            TestKernelSingleton::get()->actionRunner()->run(
+                new SignUpNewPlayer((string) $input['username'], PasswordPlainFixture::makeString()),
+            );
+        }
+
+<?php } ?>
         $application = TestKernelSingleton::get()->application();
 
         $application->run($input);
@@ -113,7 +121,7 @@ final class <?php echo $class_name; ?> extends TestCase
     /**
      * @return \Iterator<array{
      *     scenario: string,
-     *     input: array<string, string>,
+     *     input: array<string, int|string>,
      * }>
      */
     public static function invalidInputProvider(): \Iterator

@@ -66,7 +66,7 @@ final class <?php echo $class_name; ?> extends TestCase
 
 <?php if (count($action_parameters) > 0) { ?>
     /**
-     * @param array<string, string> $body
+     * @param array<string, int|string> $body
      */
     #[DataProvider('requiredParametersProvider')]
     #[TestDox('It has $scenario')]
@@ -91,7 +91,7 @@ final class <?php echo $class_name; ?> extends TestCase
     /**
      * @return \Iterator<array{
      *     scenario: string,
-     *     body: array<string, string>,
+     *     body: array<string, int|string>,
      * }>
      */
     public static function requiredParametersProvider(): \Iterator
@@ -105,7 +105,7 @@ final class <?php echo $class_name; ?> extends TestCase
     }
 
     /**
-     * @param array<string, string> $body
+     * @param array<string, int|string> $body
      */
     #[DataProvider('invalidInputProvider')]
     #[TestDox('It fails on $scenario')]
@@ -113,6 +113,14 @@ final class <?php echo $class_name; ?> extends TestCase
         string $scenario,
         array $body,
     ): void {
+<?php if ($has_username_param) { ?>
+        if ('invalid username' !== $scenario) {
+            TestKernelSingleton::get()->actionRunner()->run(
+                new SignUpNewPlayer((string) $body['username'], PasswordPlainFixture::makeString()),
+            );
+        }
+
+<?php } ?>
         $appKernel = TestKernelSingleton::get()->appKernel();
 
         $request = Request::create(
@@ -130,7 +138,7 @@ final class <?php echo $class_name; ?> extends TestCase
     /**
      * @return \Iterator<array{
      *     scenario: string,
-     *     body: array<string, string>,
+     *     body: array<string, int|string>,
      * }>
      */
     public static function invalidInputProvider(): \Iterator

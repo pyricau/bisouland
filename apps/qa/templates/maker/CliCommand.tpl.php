@@ -18,11 +18,11 @@ use Symfony\Component\Console\Style\SymfonyStyle;
     name: 'action:<?php echo $action_kebab; ?>',
     description: '<?php echo $description; ?>',
 )]
-final class <?php echo $class_name; ?>
+final readonly class <?php echo $class_name; ?>
 
 {
     public function __construct(
-        private readonly <?php echo $action_name; ?>Handler $<?php echo $action_camel; ?>Handler,
+        private <?php echo $action_name; ?>Handler $<?php echo $action_camel; ?>Handler,
     ) {
     }
 

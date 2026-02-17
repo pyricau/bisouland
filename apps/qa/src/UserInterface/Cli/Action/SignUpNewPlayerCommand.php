@@ -18,10 +18,10 @@ use Symfony\Component\Console\Style\SymfonyStyle;
     name: 'action:sign-up-new-player',
     description: 'Signs up a new player for the given username and password',
 )]
-final class SignUpNewPlayerCommand
+final readonly class SignUpNewPlayerCommand
 {
     public function __construct(
-        private readonly SignUpNewPlayerHandler $signUpNewPlayerHandler,
+        private SignUpNewPlayerHandler $signUpNewPlayerHandler,
     ) {
     }
 

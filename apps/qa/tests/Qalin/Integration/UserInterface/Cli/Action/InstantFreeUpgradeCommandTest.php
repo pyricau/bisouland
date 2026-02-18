@@ -32,7 +32,7 @@ final class InstantFreeUpgradeCommandTest extends TestCase
             'command' => 'action:instant-free-upgrade',
             'username' => $username,
             'upgradable' => UpgradableFixture::makeString(),
-            'levels' => 1, // TODO: use fixture
+            '--levels' => 1,
         ]);
 
         $this->assertSame(Command::SUCCESS, $application->getStatusCode());
@@ -67,18 +67,51 @@ final class InstantFreeUpgradeCommandTest extends TestCase
     {
         yield [
             'scenario' => 'username as a required argument',
-            'input' => ['command' => 'action:instant-free-upgrade', 'upgradable' => UpgradableFixture::makeString(), 'levels' => 1],
+            'input' => ['command' => 'action:instant-free-upgrade', 'upgradable' => UpgradableFixture::makeString()],
             'expectedOutput' => '/missing.*username/',
         ];
         yield [
             'scenario' => 'upgradable as a required argument',
-            'input' => ['command' => 'action:instant-free-upgrade', 'username' => UsernameFixture::makeString(), 'levels' => 1],
+            'input' => ['command' => 'action:instant-free-upgrade', 'username' => UsernameFixture::makeString()],
             'expectedOutput' => '/missing.*upgradable/',
         ];
+    }
+
+    /**
+     * @param array<string, int|string> $input
+     */
+    #[DataProvider('optionsProvider')]
+    #[TestDox('It has $scenario')]
+    public function test_it_has_options(
+        string $scenario,
+        array $input,
+    ): void {
+        $username = (string) $input['username'];
+        TestKernelSingleton::get()->actionRunner()->run(
+            new SignUpNewPlayer($username, PasswordPlainFixture::makeString()),
+        );
+        $application = TestKernelSingleton::get()->application();
+
+        $application->run($input);
+
+        $this->assertSame(Command::SUCCESS, $application->getStatusCode());
+    }
+
+    /**
+     * @return \Iterator<array{
+     *     scenario: string,
+     *     input: array<string, int|string>,
+     * }>
+     */
+    public static function optionsProvider(): \Iterator
+    {
         yield [
-            'scenario' => 'levels as a required argument',
+            'scenario' => 'levels as an option (defaults to 1)',
             'input' => ['command' => 'action:instant-free-upgrade', 'username' => UsernameFixture::makeString(), 'upgradable' => UpgradableFixture::makeString()],
-            'expectedOutput' => '/missing.*levels/',
+        ];
+        yield [
+            'scenario' => 'levels as an option (set to 2)',
+            'input' => ['command' => 'action:instant-free-upgrade', 'username' => UsernameFixture::makeString(), 'upgradable' => UpgradableFixture::makeString(), '--levels' => 2],
         ];
     }
 
@@ -114,15 +147,15 @@ final class InstantFreeUpgradeCommandTest extends TestCase
     {
         yield [
             'scenario' => 'invalid username',
-            'input' => ['command' => 'action:instant-free-upgrade', 'username' => 'x', 'upgradable' => UpgradableFixture::makeString(), 'levels' => 1],
+            'input' => ['command' => 'action:instant-free-upgrade', 'username' => 'x', 'upgradable' => UpgradableFixture::makeString(), '--levels' => 1],
         ];
         yield [
             'scenario' => 'invalid upgradable',
-            'input' => ['command' => 'action:instant-free-upgrade', 'username' => UsernameFixture::makeString(), 'upgradable' => 'x', 'levels' => 1],
+            'input' => ['command' => 'action:instant-free-upgrade', 'username' => UsernameFixture::makeString(), 'upgradable' => 'x', '--levels' => 1],
         ];
         yield [
             'scenario' => 'invalid levels',
-            'input' => ['command' => 'action:instant-free-upgrade', 'username' => UsernameFixture::makeString(), 'upgradable' => UpgradableFixture::makeString(), 'levels' => -1],
+            'input' => ['command' => 'action:instant-free-upgrade', 'username' => UsernameFixture::makeString(), 'upgradable' => UpgradableFixture::makeString(), '--levels' => -1],
         ];
     }
 }

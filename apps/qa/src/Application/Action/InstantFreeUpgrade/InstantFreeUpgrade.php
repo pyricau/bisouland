@@ -12,7 +12,7 @@ final readonly class InstantFreeUpgrade
     public function __construct(
         public string $username,
         public string $upgradable,
-        public int $levels,
+        public int $levels = 1,
     ) {
     }
 }

@@ -78,15 +78,56 @@ final class InstantFreeUpgradeControllerTest extends TestCase
     {
         yield [
             'scenario' => 'username as a required parameter',
-            'body' => ['upgradable' => UpgradableFixture::makeString(), 'levels' => 1],
+            'body' => ['upgradable' => UpgradableFixture::makeString()],
         ];
         yield [
             'scenario' => 'upgradable as a required parameter',
-            'body' => ['username' => UsernameFixture::makeString(), 'levels' => 1],
+            'body' => ['username' => UsernameFixture::makeString()],
+        ];
+    }
+
+    /**
+     * @param array<string, int|string> $body
+     */
+    #[DataProvider('optionalParametersProvider')]
+    #[TestDox('It has $scenario')]
+    public function test_it_has_optional_parameters(
+        string $scenario,
+        array $body,
+    ): void {
+        $username = (string) $body['username'];
+        TestKernelSingleton::get()->actionRunner()->run(
+            new SignUpNewPlayer($username, PasswordPlainFixture::makeString()),
+        );
+        $appKernel = TestKernelSingleton::get()->appKernel();
+
+        $request = Request::create(
+            uri: '/api/v1/actions/instant-free-upgrade',
+            method: 'POST',
+            server: ['CONTENT_TYPE' => 'application/json'],
+            content: json_encode($body, \JSON_THROW_ON_ERROR),
+        );
+
+        $response = $appKernel->handle($request);
+
+        $this->assertSame(Response::HTTP_CREATED, $response->getStatusCode(), (string) $response->getContent());
+    }
+
+    /**
+     * @return \Iterator<array{
+     *     scenario: string,
+     *     body: array<string, int|string>,
+     * }>
+     */
+    public static function optionalParametersProvider(): \Iterator
+    {
+        yield [
+            'scenario' => 'levels as an optional parameter (defaults to 1)',
+            'body' => ['username' => UsernameFixture::makeString(), 'upgradable' => UpgradableFixture::makeString()],
         ];
         yield [
-            'scenario' => 'levels as a required parameter',
-            'body' => ['username' => UsernameFixture::makeString(), 'upgradable' => UpgradableFixture::makeString()],
+            'scenario' => 'levels as an optional parameter (set to 2)',
+            'body' => ['username' => UsernameFixture::makeString(), 'upgradable' => UpgradableFixture::makeString(), 'levels' => 2],
         ];
     }
 

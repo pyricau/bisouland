@@ -23,7 +23,7 @@ final class TestKernel
         $application = new Application($appKernel);
         $application->setAutoExit(false);
 
-        $applicationTester = new ApplicationTester($application);
+        $stderrApplicationTester = new StderrApplicationTester($application);
 
         $httpClient = $container->get(HttpClientInterface::class);
         if (!$httpClient instanceof HttpClientInterface) {
@@ -42,7 +42,7 @@ final class TestKernel
 
         return new self(
             $appKernel,
-            $applicationTester,
+            $stderrApplicationTester,
             $container,
             $httpClient,
             $pdo,

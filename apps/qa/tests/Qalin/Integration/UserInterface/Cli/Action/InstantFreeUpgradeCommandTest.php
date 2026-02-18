@@ -48,13 +48,12 @@ final class InstantFreeUpgradeCommandTest extends TestCase
         array $input,
         string $expectedOutput,
     ): void {
-        $this->expectOutputRegex($expectedOutput);
-
         $application = TestKernelSingleton::get()->application();
 
         $application->run($input);
 
         $this->assertSame(Command::FAILURE, $application->getStatusCode());
+        $this->assertMatchesRegularExpression($expectedOutput, $application->getErrorOutput());
     }
 
     /**

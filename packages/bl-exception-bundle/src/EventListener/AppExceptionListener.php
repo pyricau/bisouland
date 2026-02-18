@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Bl\Qa\Infrastructure\Symfony\EventListener;
+namespace Bl\ExceptionBundle\EventListener;
 
 use Bl\Exception\AppException;
 use Psr\Log\LoggerInterface;
@@ -28,17 +28,19 @@ final class AppExceptionListener
         }
 
         $exception = $event->getThrowable();
+        $token = Uuid::v7()->toString();
 
         [$message, $statusCode] = match (true) {
             $exception instanceof AppException => [$exception->getMessage(), $exception->getCode()],
             $exception instanceof HttpException => [$exception->getMessage(), $exception->getStatusCode()],
-            default => ['An unexpected error occurred', Response::HTTP_INTERNAL_SERVER_ERROR],
+            default => [
+                "An unexpected error occurred, please whisper this token to the administrator: {$token}",
+                Response::HTTP_INTERNAL_SERVER_ERROR,
+            ],
         };
 
         if (Response::HTTP_INTERNAL_SERVER_ERROR === $statusCode) {
-            $token = Uuid::v7()->toString();
             $this->logger->error($exception->getMessage(), ['exception' => $exception, 'token' => $token]);
-            $message = "An unexpected error occurred, please whisper this token to the administrator: {$token}";
         }
 
         $event->setResponse(new JsonResponse(

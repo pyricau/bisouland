@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "ffc107ba4ed09ff5efba4bc4cd5570ae",
+    "content-hash": "c69f5318dd54502bcaf0ea624a24eafd",
     "packages": [
         {
             "name": "bl/exception",
@@ -33,6 +33,39 @@
                 }
             ],
             "description": "BisouLand - Exception",
+            "transport-options": {
+                "relative": true
+            }
+        },
+        {
+            "name": "bl/exception-bundle",
+            "version": "dev-main",
+            "dist": {
+                "type": "path",
+                "url": "../../packages/bl-exception-bundle",
+                "reference": "219850fffb11831d5c0755c893f87eef6fc89e45"
+            },
+            "require": {
+                "bl/exception": "*",
+                "php": ">=8.5",
+                "symfony/framework-bundle": "^8.0"
+            },
+            "type": "symfony-bundle",
+            "autoload": {
+                "psr-4": {
+                    "Bl\\ExceptionBundle\\": "src/"
+                }
+            },
+            "license": [
+                "Apache-2.0"
+            ],
+            "authors": [
+                {
+                    "name": "Loïc Faugeron",
+                    "email": "faugeron.loic@gmail.com"
+                }
+            ],
+            "description": "BisouLand - Exception Bundle",
             "transport-options": {
                 "relative": true
             }
@@ -7895,7 +7928,8 @@
     "aliases": [],
     "minimum-stability": "stable",
     "stability-flags": {
-        "bl/exception": 20
+        "bl/exception": 20,
+        "bl/exception-bundle": 20
     },
     "prefer-stable": false,
     "prefer-lowest": false,

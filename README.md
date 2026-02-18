@@ -25,12 +25,15 @@ cd bisouland
 
 Find general documentation here: [docs](./docs/).
 
-The `apps` folder contains the different applications:
+This is a monorepo. The `apps` folder contains the different applications:
 
 * [Monolith](./apps/monolith/README.md):
   the main (original) BisouLand application
 * [QA](./apps/qa/README.md):
   tools to keep BisouLand on its toes
+
+The `packages` folder contains shared libraries used across apps.
+See [How to manage packages](./docs/how-to/002-how-to-manage-packages.md) for details.
 
 ## Port Convention
 

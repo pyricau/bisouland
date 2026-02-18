@@ -17,6 +17,7 @@
     "require": {
         "php": ">=8.5",
         "bl/exception": "*@dev",
+        "bl/exception-bundle": "*@dev",
         "ext-curl": "*",
         "ext-pdo_pgsql": "*",
         "phpspec/prophecy-phpunit": "^2.4",

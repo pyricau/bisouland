@@ -26,6 +26,21 @@ final class AccountIdTest extends TestCase
         $this->assertSame($stringAccountId, $accountId->toString());
     }
 
+    #[TestDox('It generates unique IDs')]
+    public function test_it_generates_unique_ids(): void
+    {
+        $accountId1 = AccountId::create();
+        $accountId2 = AccountId::create();
+
+        // If fromString doesn't throw, the format is valid
+        AccountId::fromString($accountId1->toString());
+        AccountId::fromString($accountId2->toString());
+
+        $this->assertInstanceOf(AccountId::class, $accountId1);
+        $this->assertInstanceOf(AccountId::class, $accountId2);
+        $this->assertNotSame($accountId1->toString(), $accountId2->toString());
+    }
+
     #[TestDox('It fails when it is not a valid UUID')]
     public function test_it_fails_when_it_is_not_a_valid_uuid(): void
     {

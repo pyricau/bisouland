@@ -9,6 +9,8 @@ QA_SERVICE = app
 
 # Executables
 COMPOSER = docker compose exec $(QA_SERVICE) composer
+CONSOLE = docker compose exec -e APP_ENV=$(env) $(QA_SERVICE) php bin/console
+QALIN = docker compose exec -e APP_ENV=$(env) $(QA_SERVICE) php qalin
 PHP_CS_FIXER = docker compose exec $(QA_SERVICE) php vendor/bin/php-cs-fixer
 PHPSTAN = docker compose exec $(QA_SERVICE) php vendor/bin/phpstan --memory-limit=256M
 PHPUNIT = docker compose exec $(QA_SERVICE) php vendor/bin/phpunit
@@ -60,20 +62,34 @@ composer-update: ## Updates dependencies (arg, eg `arg='--no-dev'`)
 composer-dump: ## Dumps autoloader (arg, eg `arg='--classmap-authoritative'`)
 	@$(COMPOSER) dump-autoload --optimize --strict-psr --strict-ambiguous $(arg)
 
+console: ## Runs Symfony Console (arg, env, eg `arg='cache:clear' env='prod'`)
+	@$(CONSOLE) $(arg)
+
+maker: ## Runs MakerBundle interactively (arg, eg `arg='make:action InstantFreeUpgrade'`)
+	@docker compose exec -it -e APP_ENV=dev $(QA_SERVICE) php bin/console $(arg)
+
+qalin: ## Runs Qalin Console (arg, env, eg `arg='action:sign-up-new-player'`)
+	@$(QALIN) $(arg)
+
 cs-check: ## Checks CS with PHP-CS-Fixer (arg, eg `arg='../monolith/web'`)
 	@$(PHP_CS_FIXER) check --verbose $(arg)
 
 cs-fix: ## Fixes CS with Swiss Knife and PHP-CS-Fixer
+	@$(SWISS_KNIFE) namespace-to-psr-4 src --namespace-root 'Bl\\Qa\\'
 	@$(SWISS_KNIFE) namespace-to-psr-4 tests --namespace-root 'Bl\\Qa\\Tests\\'
 	@$(PHP_CS_FIXER) fix --verbose $(arg)
 
-static-analysis: ## Static Analysis with phpstan (arg, eg `arg='../monolith/web'`)
+phpstan: ## Runs phpstan (arg, eg `arg='clear-result-cache'`)
+	@$(PHPSTAN) $(arg)
+
+phpstan-analyze: ## Static Analysis with phpstan (arg, eg `arg='../monolith/web'`)
 	@$(PHPSTAN) analyze $(arg)
 
 swiss-knife: ## Automated refactorings with Swiss Knife (arg, eg `arg='namespace-to-psr-4 src --namespace-root \'App\\\''`)
 	@$(SWISS_KNIFE) $(arg)
 
-test: ## Runs the tests with PHPUnit (arg, eg `arg='./tests/Smoke'`)
+phpunit: ## Runs the tests with PHPUnit (arg, eg `arg='./tests/Smoke'`)
+	@docker compose exec $(QA_SERVICE) sh bin/sfcc-if-stale.sh test
 	@$(PHPUNIT) $(arg)
 
 rector-fix: ## Automated refactorings with Rector (arg, eg `arg='--clear-cache'`)
@@ -93,9 +109,15 @@ app-init: ## First install / resetting (Docker build, up, etc)
 	@echo '  // Starting QA docker services...'
 	@$(MAKE) docker-init
 	@echo ''
+	@echo '  // Installing Composer dependencies...'
+	@$(MAKE) composer-install
+	@echo ''
 	@echo '  [OK] QA initialized'
 
-app-qa: ## Runs full QA pipeline (composer-dump, cs-check, static-analysis, rector-process, test)
+app-clear: ## Clears the Symfony cache (env, eg `env='prod'`)
+	@$(CONSOLE) cache:clear
+
+app-qa: ## Runs full QA pipeline (composer-dump, cs-check, phpstan-analyze, rector-check, phpunit)
 	@echo ''
 	@echo '  // Running composer dump...'
 	@$(MAKE) composer-dump
@@ -104,12 +126,12 @@ app-qa: ## Runs full QA pipeline (composer-dump, cs-check, static-analysis, rect
 	@$(MAKE) cs-check
 	@echo ''
 	@echo '  // Running PHPStan...'
-	@$(MAKE) static-analysis
+	@$(MAKE) phpstan
 	@echo ''
 	@echo '  // Running Rector...'
 	@$(MAKE) rector-check
 	@echo ''
 	@echo '  // Running PHPUnit...'
-	@$(MAKE) test
+	@$(MAKE) phpunit
 	@echo ''
 	@echo '  [OK] QA done'

@@ -54,13 +54,16 @@ final class TokenPlainTest extends TestCase
     }
 
     /**
-     * @return \Iterator<(int | string), array{string, string}>
+     * @return \Iterator<array{
+     *      scenario: string,
+     *      invalidTokenPlain: string,
+     *  }>
      */
     public static function invalidTokenPlainProvider(): \Iterator
     {
-        yield ['is an empty string', ''];
-        yield ['is shorter than 32 characters', 'not 32 characters'];
-        yield ['is longer than 32 characters', 'this string is definitely way too long to be 32 hexadecimal characters'];
-        yield ['has non hexadecimal characters', 'non hexadecimal characters!!!!!'];
+        yield ['scenario' => 'is an empty string', 'invalidTokenPlain' => ''];
+        yield ['scenario' => 'is shorter than 32 characters', 'invalidTokenPlain' => 'not 32 characters'];
+        yield ['scenario' => 'is longer than 32 characters', 'invalidTokenPlain' => 'this string is definitely way too long to be 32 hexadecimal characters'];
+        yield ['scenario' => 'has non hexadecimal characters', 'invalidTokenPlain' => 'non hexadecimal characters!!!!!'];
     }
 }

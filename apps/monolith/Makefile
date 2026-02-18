@@ -56,7 +56,7 @@ composer-update: ## Updates dependencies (arg, eg `arg='--no-dev'`)
 composer-dump: ## Dumps autoloader (arg, eg `arg='--classmap-authoritative'`)
 	@$(COMPOSER) dump-autoload --optimize --strict-psr --strict-ambiguous $(arg)
 
-test: ## Runs the tests with PHPUnit (arg, eg `arg='./tests/Smoke'`)
+phpunit: ## Runs the tests with PHPUnit (arg, eg `arg='./tests/Smoke'`)
 	@$(PHPUNIT) $(arg)
 
 ## —— Database ⛁ ———————————————————————————————————————————————————————————————
@@ -71,6 +71,10 @@ app-init: ## First install / resetting (Docker build, up, etc)
 	@echo '  // Starting Monolith docker services...'
 	@$(MAKE) docker-init
 	@echo ''
+	@echo '  // Installing Composer dependencies...'
+	@$(MAKE) composer-install
+	@docker compose exec $(MONOLITH_SERVICE) chmod -R o+rX vendor/
+	@echo ''
 	@echo '  // Waiting for PostgreSQL to initialize...'
 	@sleep 3
 	@echo ''
@@ -84,6 +88,6 @@ app-qa: ## Runs full QA pipeline (composer-dump, test)
 	@$(MAKE) composer-dump
 	@echo ''
 	@echo '  // Running PHPUnit...'
-	@$(MAKE) test
+	@$(MAKE) phpunit
 	@echo ''
 	@echo '  [OK] QA done'

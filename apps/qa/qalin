@@ -1,0 +1,33 @@
+#!/usr/bin/env php
+<?php
+
+declare(strict_types=1);
+
+use Bl\Qa\Infrastructure\Symfony\AppKernel;
+use Symfony\Bundle\FrameworkBundle\Console\Application as FrameworkApplication;
+use Symfony\Component\Console\Application;
+
+if (!is_dir(__DIR__.'/vendor')) {
+    throw new LogicException('Dependencies are missing. Try running "composer install".');
+}
+
+if (!is_file(__DIR__.'/vendor/autoload_runtime.php')) {
+    throw new LogicException('Symfony Runtime is missing. Try running "composer require symfony/runtime".');
+}
+
+require_once __DIR__.'/vendor/autoload_runtime.php';
+
+return static function (array $context): Application {
+    $kernel = new AppKernel($context['APP_ENV'], (bool) $context['APP_DEBUG']);
+    $frameworkApp = new FrameworkApplication($kernel);
+
+    $qalin = new Application('Qalin');
+    foreach ($frameworkApp->all() as $command) {
+        $name = $command->getName();
+        if (str_starts_with($name, 'action:') || str_starts_with($name, 'scenario:')) {
+            $qalin->addCommand($command);
+        }
+    }
+
+    return $qalin;
+};

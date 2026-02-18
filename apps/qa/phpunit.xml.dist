@@ -2,7 +2,7 @@
 <!-- https://phpunit.readthedocs.io/en/latest/configuration.html -->
 <phpunit xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:noNamespaceSchemaLocation="vendor/phpunit/phpunit/phpunit.xsd"
-         bootstrap="vendor/autoload.php"
+         bootstrap="tests/bootstrap.php"
          cacheDirectory=".phpunit.cache"
          executionOrder="depends,defects"
          shortenArraysForExportThreshold="10"
@@ -21,6 +21,12 @@
         <env name="SHELL_VERBOSITY" value="-1" />
     </php>
     <testsuites>
+        <testsuite name="qalin-spec">
+            <directory>tests/Qalin/Spec</directory>
+        </testsuite>
+        <testsuite name="qalin-integration">
+            <directory>tests/Qalin/Integration</directory>
+        </testsuite>
         <testsuite name="monolith-smoke">
             <directory>tests/Monolith/Smoke</directory>
         </testsuite>
@@ -35,6 +41,7 @@
 
     <source ignoreIndirectDeprecations="true" restrictNotices="true" restrictWarnings="true">
         <include>
+            <directory>src</directory>
             <directory>../monolith/web</directory>
         </include>
     </source>

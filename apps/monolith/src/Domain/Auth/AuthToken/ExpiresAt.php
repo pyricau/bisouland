@@ -54,7 +54,9 @@ final readonly class ExpiresAt
             }
         }
 
-        throw ValidationFailedException::make("Invalid \"ExpiresAt\" parameter: it should be a valid ISO 8601 date (`{$value}` given)");
+        throw ValidationFailedException::make(
+            "Invalid \"ExpiresAt\" parameter: it should be a valid ISO 8601 date (`{$value}` given)",
+        );
     }
 
     /**
@@ -71,7 +73,9 @@ final readonly class ExpiresAt
             return new self($dateTime);
         }
 
-        throw ValidationFailedException::make("Invalid \"ExpiresAt\" parameter: it should be a valid UNIX timestamp (`{$value}` given)");
+        throw ValidationFailedException::make(
+            "Invalid \"ExpiresAt\" parameter: it should be a valid UNIX timestamp (`{$value}` given)",
+        );
     }
 
     /**

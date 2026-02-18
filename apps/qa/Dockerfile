@@ -41,14 +41,5 @@ COPY --from=composer:2 /usr/bin/composer /usr/bin/composer
 
 WORKDIR /apps/qa
 
-# Caching `composer install`, as long as composer.{json,lock} don't change.
-COPY composer.json composer.lock ./
-RUN composer install \
-    --no-cache \
-    --no-interaction \
-    --no-plugins \
-    --no-scripts \
-    --optimize-autoloader
-
-# Copy the remaining application files (excluding those listed in .dockerignore)
+# Copy the application files (excluding those listed in .dockerignore)
 COPY . .

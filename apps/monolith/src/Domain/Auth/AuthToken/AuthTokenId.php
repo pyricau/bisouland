@@ -28,7 +28,9 @@ final readonly class AuthTokenId
     public static function fromString(string $value): self
     {
         if (false === Uuid::isValid($value)) {
-            throw ValidationFailedException::make("Invalid \"AuthTokenId\" parameter: it should be a valid UUID (`{$value}` given)");
+            throw ValidationFailedException::make(
+                "Invalid \"AuthTokenId\" parameter: it should be a valid UUID (`{$value}` given)",
+            );
         }
 
         return new self(Uuid::fromString($value));

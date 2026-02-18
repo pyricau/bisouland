@@ -17,7 +17,7 @@
         "php": ">=8.5",
         "ext-curl": "*",
         "ext-pdo_pgsql": "*",
-        "symfony/uid": "^8.0"
+        "symfony/uid": "^8.0.4"
     },
     "autoload": {
         "psr-4": {
@@ -35,7 +35,7 @@
     },
     "require-dev": {
         "phpspec/prophecy-phpunit": "^2.4",
-        "phpunit/phpunit": "^12.5.6"
+        "phpunit/phpunit": "^12.5.8"
     },
     "autoload-dev": {
         "psr-4": {

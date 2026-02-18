@@ -31,7 +31,9 @@ final readonly class TokenPlain
     ): self {
         if (1 !== preg_match('/^[0-9a-f]{32}$/i', $value)) {
             // Invalid value aren't technically tokens, so aren't sensitive
-            throw ValidationFailedException::make("Invalid \"TokenPlain\" parameter: it should be 32 hexadecimal characters (`{$value}` given)");
+            throw ValidationFailedException::make(
+                "Invalid \"TokenPlain\" parameter: it should be 32 hexadecimal characters (`{$value}` given)",
+            );
         }
 
         return new self($value);

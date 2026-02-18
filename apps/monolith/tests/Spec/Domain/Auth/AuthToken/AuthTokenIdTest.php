@@ -19,11 +19,11 @@ final class AuthTokenIdTest extends TestCase
     #[TestDox('It can be converted from/to string')]
     public function test_it_can_be_converted_from_and_to_string(): void
     {
-        $id = AuthTokenIdFixture::makeString();
-        $authTokenId = AuthTokenId::fromString($id);
+        $stringAuthTokenId = AuthTokenIdFixture::makeString();
+        $authTokenId = AuthTokenId::fromString($stringAuthTokenId);
 
         $this->assertInstanceOf(AuthTokenId::class, $authTokenId);
-        $this->assertSame($id, $authTokenId->toString());
+        $this->assertSame($stringAuthTokenId, $authTokenId->toString());
     }
 
     #[TestDox('It generates unique IDs')]

@@ -41,19 +41,19 @@ make cs-check
 make cs-fix
 
 ## To just run phpstan
-make static-analysis
+make phpstan
 
 ## To just run rector
 make rector-process
 
 ## To just run phpunit
-make test
+make phpunit
 
 ### To display technical specifications:
-make test arg='--testdox'
+make phpunit arg='--testdox'
 
 ### To just run Smoke tests:
-make test arg='./tests/Smoke'
+make phpunit arg='./tests/Smoke'
 
 # Discover everything you can do
 make

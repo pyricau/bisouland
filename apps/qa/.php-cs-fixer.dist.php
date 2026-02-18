@@ -35,6 +35,9 @@ $finder = (new PhpCsFixer\Finder())
         __DIR__,
         __DIR__.'/../monolith',
     ])
+    ->exclude([
+        'var',
+    ])
     ->notPath([
         // Note: `notPath()` expect paths relatives to the ones provided in `in()`
         // The rule's fixes from `[PSR-2] statement_indentation` break the following files, so excluding them:
@@ -67,6 +70,12 @@ return (new PhpCsFixer\Config())
                 'parameters',
             ],
         ],
+
+        // [Symfony] allow multiline `throw` expressions
+        'single_line_throw' => false,
+
+        // [Symfony] allow `=>` on a different line
+        'no_multiline_whitespace_around_double_arrow' => false,
 
         // [Symfony] add use statements instead of allowing FQCNs
         'fully_qualified_strict_types' => ['import_symbols' => true],

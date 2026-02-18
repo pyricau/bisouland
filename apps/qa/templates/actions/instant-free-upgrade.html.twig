@@ -1,0 +1,24 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Instant Free Upgrade - Qalin{% endblock %}
+
+{% block body %}
+    <h2>Action: Instant Free Upgrade</h2>
+    <form data-api="/api/v1/actions/instant-free-upgrade" data-expect="201">
+        <label for="username">Username</label>
+        <div style="position: relative;">
+            <input class="u-full-width" type="text" id="username" name="username" required>
+            <ul id="username-suggestions"></ul>
+        </div>
+        <label for="upgradable">Upgradable</label>
+        <select class="u-full-width" id="upgradable" name="upgradable" required>
+            {% for upgradable in upgradables %}
+                <option value="{{ upgradable.value }}">{{ upgradable.name }}</option>
+            {% endfor %}
+        </select>
+        <label for="levels">Levels</label>
+        <input class="u-full-width" type="number" id="levels" name="levels" value="1">
+        <button class="button-primary" type="submit">Instant Free Upgrade</button>
+    </form>
+    <div class="result"></div>
+{% endblock %}

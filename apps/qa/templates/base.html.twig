@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}Qalin{% endblock %}</title>
+    <link rel="stylesheet" href="/assets/skeleton/normalize.css">
+    <link rel="stylesheet" href="/assets/skeleton/skeleton.css">
+    <link rel="stylesheet" href="/assets/qalin.css">
+    <script src="/assets/qalin.js"></script>
+</head>
+<body>
+    <div class="layout">
+        <nav class="sidebar">
+            <h1><a href="/">Qalin</a></h1>
+            <span class="nav-label">Actions</span>
+            {% for action in actions %}
+                <a href="{{ action.path }}">{{ action.name }}</a>
+            {% endfor %}
+        </nav>
+        <main>
+            {% block body %}{% endblock %}
+        </main>
+    </div>
+</body>
+</html>

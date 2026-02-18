@@ -4,51 +4,75 @@ declare(strict_types=1);
 
 namespace Bl\Qa\Tests\Monolith\Infrastructure;
 
-use Symfony\Component\Dotenv\Dotenv;
-use Symfony\Component\HttpClient\HttpClient;
+use Bl\Qa\Infrastructure\Symfony\ActionRunner;
+use Bl\Qa\Infrastructure\Symfony\AppKernel;
+use Psr\Container\ContainerInterface;
+use Symfony\Bundle\FrameworkBundle\Console\Application;
+use Symfony\Component\Console\Tester\ApplicationTester;
 use Symfony\Contracts\HttpClient\HttpClientInterface;
 
-final readonly class TestKernel
+final class TestKernel
 {
     public static function make(): self
     {
-        new Dotenv()->load(__DIR__.'/../../../../monolith/.env');
+        $appKernel = new AppKernel('test', false);
+        $appKernel->boot();
 
-        $httpClient = HttpClient::createForBaseUri('http://web/');
+        $container = $appKernel->getContainer();
 
-        // Database connection
-        $dbHost = $_ENV['DATABASE_HOST'] ?? 'localhost';
-        $dbPort = $_ENV['DATABASE_PORT'] ?? '5432';
-        $dbName = $_ENV['DATABASE_NAME'] ?? '';
-        $dbUser = $_ENV['DATABASE_USER'] ?? '';
-        $dbPass = $_ENV['DATABASE_PASSWORD'] ?? '';
+        $application = new Application($appKernel);
+        $application->setAutoExit(false);
 
-        if (!\is_string($dbHost) || !\is_string($dbPort) || !\is_string($dbName) || !\is_string($dbUser) || !\is_string($dbPass)) {
-            throw new \RuntimeException('Database configuration must be strings');
+        $stderrApplicationTester = new StderrApplicationTester($application);
+
+        $httpClient = $container->get(HttpClientInterface::class);
+        if (!$httpClient instanceof HttpClientInterface) {
+            throw new \RuntimeException('HttpClientInterface service not found');
         }
 
-        $pdo = new \PDO(
-            "pgsql:host={$dbHost};port={$dbPort};dbname={$dbName}",
-            $dbUser,
-            $dbPass,
-            [
-                \PDO::ATTR_ERRMODE => \PDO::ERRMODE_EXCEPTION,
-                \PDO::ATTR_DEFAULT_FETCH_MODE => \PDO::FETCH_ASSOC,
-                \PDO::ATTR_EMULATE_PREPARES => false,
-                \PDO::ATTR_PERSISTENT => true,
-            ],
-        );
+        $pdo = $container->get(\PDO::class);
+        if (!$pdo instanceof \PDO) {
+            throw new \RuntimeException('PDO service not found');
+        }
+
+        $actionRunner = $container->get(ActionRunner::class);
+        if (!$actionRunner instanceof ActionRunner) {
+            throw new \RuntimeException('ActionRunner service not found');
+        }
 
         return new self(
+            $appKernel,
+            $stderrApplicationTester,
+            $container,
             $httpClient,
             $pdo,
+            $actionRunner,
         );
     }
 
     public function __construct(
+        private AppKernel $appKernel,
+        private ApplicationTester $applicationTester,
+        private ContainerInterface $container,
         private HttpClientInterface $httpClient,
         private \PDO $pdo,
+        private ActionRunner $actionRunner,
     ) {
+    }
+
+    public function appKernel(): AppKernel
+    {
+        return $this->appKernel;
+    }
+
+    public function application(): ApplicationTester
+    {
+        return $this->applicationTester;
+    }
+
+    public function container(): ContainerInterface
+    {
+        return $this->container;
     }
 
     public function httpClient(): HttpClientInterface
@@ -59,5 +83,10 @@ final readonly class TestKernel
     public function pdo(): \PDO
     {
         return $this->pdo;
+    }
+
+    public function actionRunner(): ActionRunner
+    {
+        return $this->actionRunner;
     }
 }

@@ -30,7 +30,9 @@ final readonly class CreateAuthToken
     {
         if (false === \is_string($rawAccountId)) {
             $type = get_debug_type($rawAccountId);
-            throw ValidationFailedException::make("Invalid \"AccountId\" parameter: it should be a string (`{$type}` given)");
+            throw ValidationFailedException::make(
+                "Invalid \"AccountId\" parameter: it should be a string (`{$type}` given)",
+            );
         }
 
         $tokenPlain = TokenPlain::create();

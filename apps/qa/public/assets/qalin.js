@@ -1,4 +1,29 @@
 document.addEventListener('DOMContentLoaded', () => {
+    const usernameInput = document.getElementById('username');
+    const suggestions = document.getElementById('username-suggestions');
+    if (usernameInput && suggestions) {
+        usernameInput.addEventListener('input', async function () {
+            const q = this.value;
+            if (q.length < 2) { suggestions.style.display = 'none'; return; }
+            const data = await fetch('/api/v1/usernames?q=' + encodeURIComponent(q)).then(r => r.json());
+            if (data.usernames.length === 0) { suggestions.style.display = 'none'; return; }
+            suggestions.innerHTML = data.usernames.map(u => `<li>${u}</li>`).join('');
+            suggestions.querySelectorAll('li').forEach(li => {
+                li.addEventListener('click', () => {
+                    usernameInput.value = li.textContent;
+                    suggestions.style.display = 'none';
+                });
+            });
+            suggestions.style.display = 'block';
+        });
+
+        document.addEventListener('click', (e) => {
+            if (!usernameInput.contains(e.target) && !suggestions.contains(e.target)) {
+                suggestions.style.display = 'none';
+            }
+        });
+    }
+
     document.querySelectorAll('form[data-api]').forEach((form) => {
         const resultEl = form.nextElementSibling;
         const expectedStatus = parseInt(form.dataset.expect || '201', 10);

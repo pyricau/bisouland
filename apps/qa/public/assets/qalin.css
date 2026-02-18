@@ -141,3 +141,25 @@ table th { color: var(--ctp-subtext0); }
 .result { margin-top: 1.5rem; padding: 1.2rem; border-radius: 4px; display: none; }
 .result.success { display: block; background: var(--ctp-surface0); color: var(--ctp-green); border: 1px solid var(--ctp-green); }
 .result.error { display: block; background: var(--ctp-surface0); color: var(--ctp-red); border: 1px solid var(--ctp-red); }
+
+#username-suggestions {
+    display: none;
+    position: absolute;
+    z-index: 10;
+    width: 100%;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+    background: var(--ctp-surface0);
+    border: 1px solid var(--ctp-blue);
+    border-top: none;
+    border-radius: 0 0 4px 4px;
+}
+#username-suggestions li {
+    padding: 0.6rem 1rem;
+    cursor: pointer;
+    color: var(--ctp-text);
+}
+#username-suggestions li:hover {
+    background: var(--ctp-surface1);
+}

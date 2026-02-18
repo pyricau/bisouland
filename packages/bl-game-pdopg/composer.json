@@ -1,0 +1,16 @@
+{
+    "name": "bl/game-pdopg",
+    "type": "library",
+    "description": "BisouLand - Game PDO PostgreSQL",
+    "license": "Apache-2.0",
+    "authors": [{"name": "Loïc Faugeron", "email": "faugeron.loic@gmail.com"}],
+    "require": {
+        "php": ">=8.5",
+        "ext-pdo_pgsql": "*",
+        "bl/auth": "*@dev",
+        "bl/exception": "*@dev",
+        "bl/game": "*@dev"
+    },
+    "autoload": {"psr-4": {"Bl\\Game\\PdoPg\\": "src/"}},
+    "repositories": [{"type": "path", "url": "../*"}]
+}

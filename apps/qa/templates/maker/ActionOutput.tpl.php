@@ -5,8 +5,8 @@ declare(strict_types=1);
 namespace <?php echo $namespace; ?>;
 
 use Bl\Qa\Application\Action\ActionOutput;
-use Bl\Qa\Domain\Game\Player;
-use Bl\Qa\Domain\Game\Player\UpgradableLevels\Upgradable;
+use Bl\Game\Player;
+use Bl\Game\Player\UpgradableLevels\Upgradable;
 
 /**
  * @object-type DataTransferObject

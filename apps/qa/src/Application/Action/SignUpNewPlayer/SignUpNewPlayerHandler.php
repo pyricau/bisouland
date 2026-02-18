@@ -8,7 +8,7 @@ use Bl\Auth\Account\PasswordPlain;
 use Bl\Auth\Account\Username;
 use Bl\Exception\ServerErrorException;
 use Bl\Exception\ValidationFailedException;
-use Bl\Qa\Domain\Game\SaveNewPlayer;
+use Bl\Game\SaveNewPlayer;
 
 /**
  * @object-type UseCase

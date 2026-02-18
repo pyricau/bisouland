@@ -281,15 +281,29 @@ final class MakeAction extends AbstractMaker
         $className = "{$pascalCase}Fixture";
         $fileName = "{$className}.php";
 
-        $iterator = new \RecursiveIteratorIterator(
-            new \RecursiveDirectoryIterator("{$testsDir}/Fixtures"),
-        );
+        $searchDirs = ["{$testsDir}/Fixtures"];
+        $packagesDir = __DIR__.'/../../../../../packages';
+        foreach (glob("{$packagesDir}/*/src") ?: [] as $packageSrc) {
+            if (is_dir($packageSrc)) {
+                $searchDirs[] = $packageSrc;
+            }
+        }
+
         $filePath = null;
-        /** @var \SplFileInfo $file */
-        foreach ($iterator as $file) {
-            if ($file->getFilename() === $fileName) {
-                $filePath = $file->getPathname();
-                break;
+        foreach ($searchDirs as $searchDir) {
+            if (!is_dir($searchDir)) {
+                continue;
+            }
+
+            $iterator = new \RecursiveIteratorIterator(
+                new \RecursiveDirectoryIterator($searchDir),
+            );
+            /** @var \SplFileInfo $file */
+            foreach ($iterator as $file) {
+                if ($file->getFilename() === $fileName) {
+                    $filePath = $file->getPathname();
+                    break 2;
+                }
             }
         }
 

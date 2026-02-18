@@ -14,6 +14,10 @@ bisouland/
     ├── bl-auth-tests/        # Test fixtures for bl/auth
     ├── bl-exception/         # Framework-agnostic exception library
     ├── bl-exception-bundle/  # Symfony integration for bl/exception
+    ├── bl-game/              # Game domain (Player, upgradables, etc.)
+    ├── bl-game-bundle/       # Symfony integration for bl/game
+    ├── bl-game-pdopg/        # PDO PostgreSQL implementations for bl/game
+    ├── bl-game-tests/        # Test fixtures for bl/game
     └── ...
 ```
 

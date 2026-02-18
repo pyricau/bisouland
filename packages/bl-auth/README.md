@@ -65,27 +65,3 @@ When a **Player** is viewing a BisouLand page, we check the `bl_auth_token` **Co
    (hashing **TokenPlain** with SHA-256 and using `hash_equals()`).
    If not, throw a `401 UNAUTHORIZED`.
 3. If all passed, **Player** is Signed In.
-
-## Classes
-
-### Account
-
-- `Bl\Auth\Account`: Entity (AccountId + Username + PasswordHash)
-- `Bl\Auth\Account\AccountId`: ValueObject (UUID v7)
-- `Bl\Auth\Account\Username`: ValueObject (4-15 chars, alphanumeric + underscore)
-- `Bl\Auth\Account\PasswordHash`: ValueObject (bcrypt hash)
-- `Bl\Auth\Account\PasswordPlain`: ValueObject (min 8 chars, NIST SP 800-63B Rev 4)
-
-### AuthToken
-
-- `Bl\Auth\AuthToken`: Entity (AuthTokenId + TokenHash + AccountId + ExpiresAt)
-- `Bl\Auth\AuthToken\AuthTokenId`: ValueObject (UUID v7)
-- `Bl\Auth\AuthToken\TokenPlain`: ValueObject (32 hex chars, generated with `random_bytes`)
-- `Bl\Auth\AuthToken\TokenHash`: ValueObject (SHA-256 hash of TokenPlain)
-- `Bl\Auth\AuthToken\ExpiresAt`: ValueObject (ISO 8601 date, default +15 days)
-- `Bl\Auth\SaveAuthToken`: Service interface
-- `Bl\Auth\DeleteAuthToken`: Service interface
-
-### AuthTokenCookie
-
-- `Bl\Auth\AuthTokenCookie\Credentials`: ValueObject (`auth_token_id:token_plain`, cookie name `bl_auth_token`)

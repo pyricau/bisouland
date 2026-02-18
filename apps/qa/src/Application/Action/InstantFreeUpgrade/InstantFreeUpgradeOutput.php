@@ -4,9 +4,9 @@ declare(strict_types=1);
 
 namespace Bl\Qa\Application\Action\InstantFreeUpgrade;
 
+use Bl\Game\Player;
+use Bl\Game\Player\UpgradableLevels\Upgradable;
 use Bl\Qa\Application\Action\ActionOutput;
-use Bl\Qa\Domain\Game\Player;
-use Bl\Qa\Domain\Game\Player\UpgradableLevels\Upgradable;
 
 /**
  * @object-type DataTransferObject

@@ -96,6 +96,7 @@ final class MakeAction extends AbstractMaker
             $descriptionOption = $input->getOption('description');
             $this->description = \is_string($descriptionOption) ? $descriptionOption : '';
         }
+
         if ([] === $this->parameters) {
             $this->parseParameterOptions($input);
         }

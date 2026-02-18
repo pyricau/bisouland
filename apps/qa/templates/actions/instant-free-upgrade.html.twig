@@ -6,7 +6,10 @@
     <h2>Action: Instant Free Upgrade</h2>
     <form data-api="/api/v1/actions/instant-free-upgrade" data-expect="201">
         <label for="username">Username</label>
-        <input class="u-full-width" type="text" id="username" name="username" required>
+        <div style="position: relative;">
+            <input class="u-full-width" type="text" id="username" name="username" required autocomplete="off">
+            <ul id="username-suggestions"></ul>
+        </div>
         <label for="upgradable">Upgradable</label>
         <select class="u-full-width" id="upgradable" name="upgradable" required>
             {% for upgradable in upgradables %}
@@ -18,4 +21,52 @@
         <button class="button-primary" type="submit">Instant Free Upgrade</button>
     </form>
     <div class="result"></div>
+    <style>
+        #username-suggestions {
+            display: none;
+            position: absolute;
+            z-index: 10;
+            width: 100%;
+            margin: 0;
+            padding: 0;
+            list-style: none;
+            background: var(--ctp-surface0);
+            border: 1px solid var(--ctp-blue);
+            border-top: none;
+            border-radius: 0 0 4px 4px;
+        }
+        #username-suggestions li {
+            padding: 0.6rem 1rem;
+            cursor: pointer;
+            color: var(--ctp-text);
+        }
+        #username-suggestions li:hover {
+            background: var(--ctp-surface1);
+        }
+    </style>
+    <script>
+        const usernameInput = document.getElementById('username');
+        const suggestions = document.getElementById('username-suggestions');
+
+        usernameInput.addEventListener('input', async function () {
+            const q = this.value;
+            if (q.length < 2) { suggestions.style.display = 'none'; return; }
+            const data = await fetch('/api/v1/usernames?q=' + encodeURIComponent(q)).then(r => r.json());
+            if (data.usernames.length === 0) { suggestions.style.display = 'none'; return; }
+            suggestions.innerHTML = data.usernames.map(u => `<li>${u}</li>`).join('');
+            suggestions.querySelectorAll('li').forEach(li => {
+                li.addEventListener('click', () => {
+                    usernameInput.value = li.textContent;
+                    suggestions.style.display = 'none';
+                });
+            });
+            suggestions.style.display = 'block';
+        });
+
+        document.addEventListener('click', (e) => {
+            if (!usernameInput.contains(e.target) && !suggestions.contains(e.target)) {
+                suggestions.style.display = 'none';
+            }
+        });
+    </script>
 {% endblock %}

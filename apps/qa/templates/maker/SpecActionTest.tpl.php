@@ -68,9 +68,12 @@ final class <?php echo $class_name; ?> extends TestCase
 
     #[DataProvider('optionalParametersProvider')]
     #[TestDox('It has $scenario')]
-    public function test_it_has_optional_parameters(string $scenario, <?php echo implode(', ', array_map(static fn ($p) => "int \$expected".ucfirst($p['name']), array_filter($action_parameters, static fn ($p) => null !== $p['default'] && 'int' === $p['type']))); ?>): void
+    public function test_it_has_optional_parameters(string $scenario, <?php echo implode(', ', array_map(static fn ($p) => 'int $expected'.ucfirst($p['name']), array_filter($action_parameters, static fn ($p) => null !== $p['default'] && 'int' === $p['type']))); ?>): void
     {
-<?php foreach ($action_parameters as $param) { if (null !== $param['default']) { continue; } ?>
+<?php foreach ($action_parameters as $param) {
+    if (null !== $param['default']) {
+        continue;
+    } ?>
         $<?php echo $param['name']; ?> = <?php if ($param['fixture_fqcn']) { ?><?php echo $param['fixture_class']; ?>::make<?php echo 'int' === $param['type'] ? 'Int' : 'String'; ?>();<?php } elseif ('int' === $param['type']) { ?>1;<?php } else { ?>'valid_<?php echo $param['name']; ?>';<?php } ?>
 
 <?php } ?>

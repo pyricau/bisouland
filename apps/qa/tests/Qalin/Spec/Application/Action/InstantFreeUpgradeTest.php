@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace Bl\Qa\Tests\Qalin\Spec\Application\Action;
 
+use Bl\Auth\Tests\Fixtures\Account\UsernameFixture;
 use Bl\Qa\Application\Action\InstantFreeUpgrade\InstantFreeUpgrade;
-use Bl\Qa\Tests\Fixtures\Domain\Auth\Account\UsernameFixture;
 use Bl\Qa\Tests\Fixtures\Domain\Game\Player\UpgradableLevels\UpgradableFixture;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\DataProvider;

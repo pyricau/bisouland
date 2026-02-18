@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace Bl\Qa\Tests\Qalin\Spec\Domain\Game;
 
+use Bl\Auth\Tests\Fixtures\AccountFixture;
 use Bl\Qa\Domain\Game\Player;
-use Bl\Qa\Tests\Fixtures\Domain\Auth\AccountFixture;
 use Bl\Qa\Tests\Fixtures\Domain\Game\Player\CloudCoordinatesFixture;
 use Bl\Qa\Tests\Fixtures\Domain\Game\Player\LovePointsFixture;
 use Bl\Qa\Tests\Fixtures\Domain\Game\Player\MilliScoreFixture;

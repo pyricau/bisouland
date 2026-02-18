@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace Bl\Infrastructure\Pg\Auth;
 
-use Bl\Domain\Auth\Account\AccountId;
-use Bl\Domain\Auth\DeleteAuthToken;
+use Bl\Auth\Account\AccountId;
+use Bl\Auth\DeleteAuthToken;
 
 final readonly class PdoDeleteAuthToken implements DeleteAuthToken
 {

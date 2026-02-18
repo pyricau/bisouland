@@ -16,6 +16,7 @@
     ],
     "require": {
         "php": ">=8.5",
+        "bl/auth": "*@dev",
         "bl/exception": "*@dev",
         "bl/exception-bundle": "*@dev",
         "ext-curl": "*",
@@ -58,6 +59,7 @@
     },
     "autoload-dev": {
         "psr-4": {
+            "Bl\\Auth\\Tests\\": "../../packages/bl-auth/tests/",
             "Bl\\Qa\\Tests\\": "tests/"
         }
     }

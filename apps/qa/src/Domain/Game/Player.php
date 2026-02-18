@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Bl\Qa\Domain\Game;
 
-use Bl\Qa\Domain\Auth\Account;
+use Bl\Auth\Account;
 use Bl\Qa\Domain\Game\Player\CloudCoordinates;
 use Bl\Qa\Domain\Game\Player\LovePoints;
 use Bl\Qa\Domain\Game\Player\MilliScore;

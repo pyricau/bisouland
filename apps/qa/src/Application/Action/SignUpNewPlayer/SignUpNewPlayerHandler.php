@@ -4,10 +4,10 @@ declare(strict_types=1);
 
 namespace Bl\Qa\Application\Action\SignUpNewPlayer;
 
+use Bl\Auth\Account\PasswordPlain;
+use Bl\Auth\Account\Username;
 use Bl\Exception\ServerErrorException;
 use Bl\Exception\ValidationFailedException;
-use Bl\Qa\Domain\Auth\Account\PasswordPlain;
-use Bl\Qa\Domain\Auth\Account\Username;
 use Bl\Qa\Domain\Game\SaveNewPlayer;
 
 /**

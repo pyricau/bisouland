@@ -7,7 +7,6 @@ parameters:
   paths:
     - src/
     - tests/
-    - ../monolith/tests/
     - ../monolith/src/
     - ../../packages/
   excludePaths:

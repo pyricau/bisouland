@@ -56,6 +56,9 @@ packages/bl-<name>/
 # composer
 composer.lock
 vendor/
+
+# editors
+*.swp
 ```
 
 **`composer.json`** (plain library):
@@ -83,9 +86,9 @@ vendor/
 }
 ```
 
-For a Symfony bundle, use `"type": "symfony-bundle"`. To depend on another local package
-(e.g. the library it integrates), reference it in `require` — the `repositories` path
-entry `"..//*"` resolves sibling packages:
+For a Symfony bundle, use `"type": "symfony-bundle"`.
+To depend on another local package (e.g. the library it integrates), reference it in `require`.
+The `repositories` path entry `"..//*"` resolves sibling packages:
 
 ```json
 {
@@ -98,7 +101,7 @@ entry `"..//*"` resolves sibling packages:
     ],
     "require": {
         "php": ">=8.5",
-        "bl/<name>": "*",
+        "bl/<name>": "*@dev",
         "symfony/framework-bundle": "^8.0"
     },
     "autoload": {
@@ -146,3 +149,8 @@ return [
     // ...
 ];
 ```
+
+## Testing and quality tools
+
+Packages have no standalone test runner or quality tooling. Everything is centralised
+in `apps/qa`. See [003-how-to-run-qa.md](003-how-to-run-qa.md).

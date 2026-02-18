@@ -4,16 +4,16 @@ declare(strict_types=1);
 
 namespace Bl\Qa\Tests\Qalin\Spec\Application\Action;
 
+use Bl\Auth\Account\PasswordPlain;
+use Bl\Auth\Account\Username;
+use Bl\Auth\Tests\Fixtures\Account\PasswordPlainFixture;
+use Bl\Auth\Tests\Fixtures\Account\UsernameFixture;
 use Bl\Exception\ServerErrorException;
 use Bl\Exception\ValidationFailedException;
 use Bl\Qa\Application\Action\SignUpNewPlayer\SignUpNewPlayer;
 use Bl\Qa\Application\Action\SignUpNewPlayer\SignUpNewPlayerHandler;
 use Bl\Qa\Application\Action\SignUpNewPlayer\SignUpNewPlayerOutput;
-use Bl\Qa\Domain\Auth\Account\PasswordPlain;
-use Bl\Qa\Domain\Auth\Account\Username;
 use Bl\Qa\Domain\Game\SaveNewPlayer;
-use Bl\Qa\Tests\Fixtures\Domain\Auth\Account\PasswordPlainFixture;
-use Bl\Qa\Tests\Fixtures\Domain\Auth\Account\UsernameFixture;
 use Bl\Qa\Tests\Fixtures\Domain\Game\PlayerFixture;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\DataProvider;

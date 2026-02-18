@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-use Bl\Domain\Auth\DeleteAuthToken;
+use Bl\Auth\DeleteAuthToken;
 use Bl\Infrastructure\Pg\Auth\PdoDeleteAuthToken;
 
 /**

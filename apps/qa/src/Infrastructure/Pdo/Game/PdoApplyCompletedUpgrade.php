@@ -4,12 +4,12 @@ declare(strict_types=1);
 
 namespace Bl\Qa\Infrastructure\Pdo\Game;
 
+use Bl\Auth\Account;
+use Bl\Auth\Account\AccountId;
+use Bl\Auth\Account\PasswordHash;
+use Bl\Auth\Account\Username;
 use Bl\Exception\ServerErrorException;
 use Bl\Exception\ValidationFailedException;
-use Bl\Qa\Domain\Auth\Account;
-use Bl\Qa\Domain\Auth\Account\AccountId;
-use Bl\Qa\Domain\Auth\Account\PasswordHash;
-use Bl\Qa\Domain\Auth\Account\Username;
 use Bl\Qa\Domain\Game\ApplyCompletedUpgrade;
 use Bl\Qa\Domain\Game\Player;
 use Bl\Qa\Domain\Game\Player\CloudCoordinates;

@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-use Bl\Domain\Auth\SaveAuthToken;
+use Bl\Auth\SaveAuthToken;
 use Bl\Infrastructure\Pg\Auth\PdoSaveAuthToken;
 
 /**

@@ -19,5 +19,4 @@ apps-init: ## First install / resetting (Docker build, up, etc)
 	@$(MAKE) -C apps/qa app-init
 
 apps-qa: ## Runs full QA pipeline (composer-dump, cs-check, static-analysis, rector-process, test)
-	@$(MAKE) -C apps/monolith app-qa
 	@$(MAKE) -C apps/qa app-qa

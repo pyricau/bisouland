@@ -4,8 +4,41 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "c69f5318dd54502bcaf0ea624a24eafd",
+    "content-hash": "5a911174d2cae18d9ffbc06cca8c4676",
     "packages": [
+        {
+            "name": "bl/auth",
+            "version": "dev-main",
+            "dist": {
+                "type": "path",
+                "url": "../../packages/bl-auth",
+                "reference": "025981fefbf7865a2340213b9b78b93bd9994631"
+            },
+            "require": {
+                "bl/exception": "*",
+                "php": ">=8.5",
+                "symfony/uid": "^8.0"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "Bl\\Auth\\": "src/"
+                }
+            },
+            "license": [
+                "Apache-2.0"
+            ],
+            "authors": [
+                {
+                    "name": "Loïc Faugeron",
+                    "email": "faugeron.loic@gmail.com"
+                }
+            ],
+            "description": "BisouLand - Auth",
+            "transport-options": {
+                "relative": true
+            }
+        },
         {
             "name": "bl/exception",
             "version": "dev-main",
@@ -43,12 +76,14 @@
             "dist": {
                 "type": "path",
                 "url": "../../packages/bl-exception-bundle",
-                "reference": "219850fffb11831d5c0755c893f87eef6fc89e45"
+                "reference": "ea3bb324cf1f2caea6f064d3b26099276a4a2053"
             },
             "require": {
                 "bl/exception": "*",
                 "php": ">=8.5",
-                "symfony/framework-bundle": "^8.0"
+                "psr/log": "^3.0",
+                "symfony/framework-bundle": "^8.0",
+                "symfony/uid": "^8.0"
             },
             "type": "symfony-bundle",
             "autoload": {
@@ -7928,6 +7963,7 @@
     "aliases": [],
     "minimum-stability": "stable",
     "stability-flags": {
+        "bl/auth": 20,
         "bl/exception": 20,
         "bl/exception-bundle": 20
     },

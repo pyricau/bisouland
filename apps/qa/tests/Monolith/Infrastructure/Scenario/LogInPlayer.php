@@ -4,13 +4,12 @@ declare(strict_types=1);
 
 namespace Bl\Qa\Tests\Monolith\Infrastructure\Scenario;
 
+use Bl\Auth\AuthTokenCookie\Credentials;
 use Bl\Qa\Tests\Monolith\Infrastructure\TestKernelSingleton;
 use Symfony\Component\HttpClient\Exception\RedirectionException;
 
 final readonly class LogInPlayer
 {
-    private const string AUTH_TOKEN_COOKIE_NAME = 'bl_auth_token';
-
     public static function run(Player $player): string
     {
         $httpClient = TestKernelSingleton::get()->httpClient();
@@ -35,7 +34,7 @@ final readonly class LogInPlayer
 
         $headers = $response->getHeaders(false);
         $cookies = $headers['set-cookie'] ?? $headers['Set-Cookie'] ?? [];
-        $cookiePrefix = self::AUTH_TOKEN_COOKIE_NAME.'=';
+        $cookiePrefix = Credentials::NAME.'=';
         foreach ($cookies as $cookie) {
             if (str_starts_with($cookie, $cookiePrefix)) {
                 return $cookie;

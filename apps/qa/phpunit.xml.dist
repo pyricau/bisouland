@@ -21,6 +21,9 @@
         <env name="SHELL_VERBOSITY" value="-1" />
     </php>
     <testsuites>
+        <testsuite name="packages-spec">
+            <directory>../../packages/*/tests/Spec</directory>
+        </testsuite>
         <testsuite name="qalin-spec">
             <directory>tests/Qalin/Spec</directory>
         </testsuite>
@@ -42,6 +45,7 @@
     <source ignoreIndirectDeprecations="true" restrictNotices="true" restrictWarnings="true">
         <include>
             <directory>src</directory>
+            <directory>../../packages</directory>
             <directory>../monolith/web</directory>
         </include>
     </source>

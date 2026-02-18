@@ -1,10 +1,8 @@
 # composer
 vendor/
 
-# symfony
-config/reference.php
-config/secrets/prod/prod.decrypt.private.php
-var/
+# editors
+*.swp
 
 # environment variables
 .env.local
@@ -15,9 +13,14 @@ var/
 .php-cs-fixer.php
 .php-cs-fixer.cache
 
+# phpstan
+phpstan.neon
+
 # phpunit
 phpunit.xml
 .phpunit.cache/
 
-# phpstan
-phpstan.neon
+# symfony
+config/reference.php
+config/secrets/prod/prod.decrypt.private.php
+var/

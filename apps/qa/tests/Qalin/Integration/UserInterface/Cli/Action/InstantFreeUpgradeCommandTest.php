@@ -41,9 +41,9 @@ final class InstantFreeUpgradeCommandTest extends TestCase
     /**
      * @param array<string, int|string> $input
      */
-    #[DataProvider('argumentsAndOptionsProvider')]
+    #[DataProvider('requiredArgumentsProvider')]
     #[TestDox('It has $scenario')]
-    public function test_it_has_arguments_and_options(
+    public function test_it_has_required_arguments(
         string $scenario,
         array $input,
         string $expectedOutput,
@@ -63,7 +63,7 @@ final class InstantFreeUpgradeCommandTest extends TestCase
      *     expectedOutput: string,
      * }>
      */
-    public static function argumentsAndOptionsProvider(): \Iterator
+    public static function requiredArgumentsProvider(): \Iterator
     {
         yield [
             'scenario' => 'username as a required argument',

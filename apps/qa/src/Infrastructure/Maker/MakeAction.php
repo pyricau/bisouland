@@ -18,7 +18,7 @@ final class MakeAction extends AbstractMaker
 {
     private string $description = '';
 
-    /** @var list<array{name: string, type: string, description: string}> */
+    /** @var list<array{name: string, type: string, description: string, default: string|null}> */
     private array $parameters = [];
 
     public static function getCommandName(): string
@@ -36,7 +36,7 @@ final class MakeAction extends AbstractMaker
         $command
             ->addArgument('name', InputArgument::REQUIRED, 'The action name in PascalCase (e.g. <fg=yellow>InstantFreeUpgrade</>)')
             ->addOption('description', 'd', InputOption::VALUE_REQUIRED, 'Short description for CLI command and page title')
-            ->addOption('parameter', 'p', InputOption::VALUE_REQUIRED | InputOption::VALUE_IS_ARRAY, 'Parameters as name:type:description (e.g. <fg=yellow>username:string:4-15 alphanumeric characters</>, <fg=yellow>levels:int:number of levels</>). Type defaults to string if omitted.')
+            ->addOption('parameter', 'p', InputOption::VALUE_REQUIRED | InputOption::VALUE_IS_ARRAY, 'Parameters as name:type:description[:default] (e.g. <fg=yellow>username:string:4-15 alphanumeric characters</>, <fg=yellow>levels:int:number of levels:1</>). Type defaults to string if omitted. Providing a default makes the parameter optional.')
         ;
     }
 
@@ -65,12 +65,13 @@ final class MakeAction extends AbstractMaker
         if ([] !== $parameterOptions) {
             $this->parameters = [];
             foreach ($parameterOptions as $parameterOption) {
-                $parts = explode(':', $parameterOption, 3);
-                if (3 === \count($parts) && \in_array($parts[1], ['string', 'int'], true)) {
+                $parts = explode(':', $parameterOption, 4);
+                if (\count($parts) >= 3 && \in_array($parts[1], ['string', 'int'], true)) {
                     $this->parameters[] = [
                         'name' => $parts[0],
                         'type' => $parts[1],
                         'description' => $parts[2],
+                        'default' => $parts[3] ?? null,
                     ];
                 } else {
                     // Backwards-compatible: name:description (type defaults to string)
@@ -78,6 +79,7 @@ final class MakeAction extends AbstractMaker
                         'name' => $parts[0],
                         'type' => 'string',
                         'description' => $parts[1] ?? '',
+                        'default' => null,
                     ];
                 }
             }
@@ -94,10 +96,12 @@ final class MakeAction extends AbstractMaker
 
                 $paramType = $io->choice("Type for '{$paramName}'", ['string', 'int'], 'string');
                 $paramDescription = $io->ask("Description for '{$paramName}'");
+                $paramDefault = $io->ask("Default value for '{$paramName}' (leave empty to make it required)");
                 $this->parameters[] = [
                     'name' => $paramName,
                     'type' => \is_string($paramType) ? $paramType : 'string',
                     'description' => \is_string($paramDescription) ? $paramDescription : '',
+                    'default' => \is_string($paramDefault) && '' !== $paramDefault ? $paramDefault : null,
                 ];
             }
         }
@@ -119,6 +123,7 @@ final class MakeAction extends AbstractMaker
         $templateDir = __DIR__.'/../../../templates/maker';
         $testsDir = __DIR__.'/../../../tests';
         $hasUsernameParam = false;
+        $hasOptionalParams = false;
         foreach ($parameters as &$param) {
             $fixture = $this->discoverFixture($param['name'], $testsDir);
             $param['fixture_fqcn'] = $fixture['fqcn'] ?? null;
@@ -126,9 +131,16 @@ final class MakeAction extends AbstractMaker
             if ('username' === $param['name']) {
                 $hasUsernameParam = true;
             }
+
+            if (null !== $param['default']) {
+                $hasOptionalParams = true;
+            }
         }
 
         unset($param);
+
+        // Required params must come before optional ones (PHP default value constraint)
+        usort($parameters, static fn (array $a, array $b): int => (null !== $a['default']) <=> (null !== $b['default']));
 
         $variables = [
             'action_name' => $actionName,
@@ -139,6 +151,7 @@ final class MakeAction extends AbstractMaker
             'description' => $description,
             'action_parameters' => $parameters,
             'has_username_param' => $hasUsernameParam,
+            'has_optional_params' => $hasOptionalParams,
         ];
 
         // 1. Action input DTO

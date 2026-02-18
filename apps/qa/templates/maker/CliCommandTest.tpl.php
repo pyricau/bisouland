@@ -40,16 +40,17 @@ final class <?php echo $class_name; ?> extends TestCase
         $application->run([
             'command' => 'action:<?php echo $action_kebab; ?>',
 <?php foreach ($action_parameters as $param) { ?>
+<?php $key = null !== $param['default'] ? '--'.$param['name'] : $param['name']; ?>
 <?php if ($param['fixture_fqcn']) { ?>
 <?php if ('username' === $param['name']) { ?>
-            '<?php echo $param['name']; ?>' => $username,
+            '<?php echo $key; ?>' => $username,
 <?php } else { ?>
-            '<?php echo $param['name']; ?>' => <?php echo $param['fixture_class']; ?>::make<?php echo 'int' === $param['type'] ? 'Int' : 'String'; ?>(),
+            '<?php echo $key; ?>' => <?php echo $param['fixture_class']; ?>::make<?php echo 'int' === $param['type'] ? 'Int' : 'String'; ?>(),
 <?php } ?>
 <?php } elseif ('int' === $param['type']) { ?>
-            '<?php echo $param['name']; ?>' => 1, // TODO: use fixture
+            '<?php echo $key; ?>' => 1, // TODO: use fixture
 <?php } else { ?>
-            '<?php echo $param['name']; ?>' => 'valid_<?php echo $param['name']; ?>', // TODO: use fixture
+            '<?php echo $key; ?>' => 'valid_<?php echo $param['name']; ?>', // TODO: use fixture
 <?php } ?>
 <?php } ?>
         ]);
@@ -60,9 +61,9 @@ final class <?php echo $class_name; ?> extends TestCase
     /**
      * @param array<string, int|string> $input
      */
-    #[DataProvider('argumentsAndOptionsProvider')]
+    #[DataProvider('requiredArgumentsProvider')]
     #[TestDox('It has $scenario')]
-    public function test_it_has_arguments_and_options(
+    public function test_it_has_required_arguments(
         string $scenario,
         array $input,
         string $expectedOutput,
@@ -82,17 +83,73 @@ final class <?php echo $class_name; ?> extends TestCase
      *     expectedOutput: string,
      * }>
      */
-    public static function argumentsAndOptionsProvider(): \Iterator
+    public static function requiredArgumentsProvider(): \Iterator
     {
-<?php foreach ($action_parameters as $i => $param) { ?>
+<?php foreach ($action_parameters as $i => $param) {
+    if (null !== $param['default']) {
+        continue;
+    } ?>
         yield [
             'scenario' => '<?php echo $param['name']; ?> as a required argument',
-            'input' => ['command' => 'action:<?php echo $action_kebab; ?>'<?php foreach ($action_parameters as $j => $otherParam) { ?><?php if ($j !== $i) { ?>, '<?php echo $otherParam['name']; ?>' => <?php if ($otherParam['fixture_fqcn']) { ?><?php echo $otherParam['fixture_class']; ?>::make<?php echo 'int' === $otherParam['type'] ? 'Int' : 'String'; ?>()<?php } elseif ('int' === $otherParam['type']) { ?>1<?php } else { ?>'valid_<?php echo $otherParam['name']; ?>'<?php } ?><?php } ?><?php } ?>],
+            'input' => ['command' => 'action:<?php echo $action_kebab; ?>'<?php foreach ($action_parameters as $j => $otherParam) { ?><?php if ($j !== $i && null === $otherParam['default']) { ?>, '<?php echo $otherParam['name']; ?>' => <?php if ($otherParam['fixture_fqcn']) { ?><?php echo $otherParam['fixture_class']; ?>::make<?php echo 'int' === $otherParam['type'] ? 'Int' : 'String'; ?>()<?php } elseif ('int' === $otherParam['type']) { ?>1<?php } else { ?>'valid_<?php echo $otherParam['name']; ?>'<?php } ?><?php } ?><?php } ?>],
             'expectedOutput' => '/missing.*<?php echo $param['name']; ?>/',
         ];
 <?php } ?>
     }
 
+<?php if ($has_optional_params) { ?>
+    /**
+     * @param array<string, int|string> $input
+     */
+    #[DataProvider('optionsProvider')]
+    #[TestDox('It has $scenario')]
+    public function test_it_has_options(
+        string $scenario,
+        array $input,
+    ): void {
+<?php if ($has_username_param) { ?>
+        $username = (string) $input['username'];
+        TestKernelSingleton::get()->actionRunner()->run(
+            new SignUpNewPlayer($username, PasswordPlainFixture::makeString()),
+        );
+<?php } ?>
+        $application = TestKernelSingleton::get()->application();
+
+        $application->run($input);
+
+        $this->assertSame(Command::SUCCESS, $application->getStatusCode());
+    }
+
+    /**
+     * @return \Iterator<array{
+     *     scenario: string,
+     *     input: array<string, int|string>,
+     * }>
+     */
+    public static function optionsProvider(): \Iterator
+    {
+<?php foreach ($action_parameters as $param) {
+    if (null === $param['default']) {
+        continue;
+    } ?>
+        yield [
+            'scenario' => '<?php echo $param['name']; ?> as an option (defaults to <?php echo $param['default']; ?>)',
+            'input' => ['command' => 'action:<?php echo $action_kebab; ?>'<?php foreach ($action_parameters as $otherParam) {
+                if (null !== $otherParam['default']) {
+                    continue;
+                } ?>, '<?php echo $otherParam['name']; ?>' => <?php if ($otherParam['fixture_fqcn']) { ?><?php if ('username' === $otherParam['name']) { ?>UsernameFixture::makeString()<?php } else { ?><?php echo $otherParam['fixture_class']; ?>::make<?php echo 'int' === $otherParam['type'] ? 'Int' : 'String'; ?>()<?php } ?><?php } elseif ('int' === $otherParam['type']) { ?>1<?php } else { ?>'valid_<?php echo $otherParam['name']; ?>'<?php } ?><?php } ?>],
+        ];
+        yield [
+            'scenario' => '<?php echo $param['name']; ?> as an option (set to <?php echo 'int' === $param['type'] ? (int) $param['default'] + 1 : 'another_value'; ?>)',
+            'input' => ['command' => 'action:<?php echo $action_kebab; ?>'<?php foreach ($action_parameters as $otherParam) {
+                if (null !== $otherParam['default']) {
+                    continue;
+                } ?>, '<?php echo $otherParam['name']; ?>' => <?php if ($otherParam['fixture_fqcn']) { ?><?php if ('username' === $otherParam['name']) { ?>UsernameFixture::makeString()<?php } else { ?><?php echo $otherParam['fixture_class']; ?>::make<?php echo 'int' === $otherParam['type'] ? 'Int' : 'String'; ?>()<?php } ?><?php } elseif ('int' === $otherParam['type']) { ?>1<?php } else { ?>'valid_<?php echo $otherParam['name']; ?>'<?php } ?><?php } ?>, '--<?php echo $param['name']; ?>' => <?php echo 'int' === $param['type'] ? (int) $param['default'] + 1 : "'another_value'"; ?>],
+        ];
+<?php } ?>
+    }
+
+<?php } ?>
     /**
      * @param array<string, int|string> $input
      */
@@ -128,7 +185,7 @@ final class <?php echo $class_name; ?> extends TestCase
 <?php foreach ($action_parameters as $param) { ?>
         yield [
             'scenario' => 'invalid <?php echo $param['name']; ?>',
-            'input' => ['command' => 'action:<?php echo $action_kebab; ?>'<?php foreach ($action_parameters as $otherParam) { ?>, '<?php echo $otherParam['name']; ?>' => <?php if ($otherParam['name'] === $param['name']) { ?><?php echo 'int' === $otherParam['type'] ? '-1' : "'x'"; ?><?php } elseif ($otherParam['fixture_fqcn']) { ?><?php echo $otherParam['fixture_class']; ?>::make<?php echo 'int' === $otherParam['type'] ? 'Int' : 'String'; ?>()<?php } elseif ('int' === $otherParam['type']) { ?>1<?php } else { ?>'valid_<?php echo $otherParam['name']; ?>'<?php } ?>
+            'input' => ['command' => 'action:<?php echo $action_kebab; ?>'<?php foreach ($action_parameters as $otherParam) { ?><?php $otherKey = null !== $otherParam['default'] ? '--'.$otherParam['name'] : $otherParam['name']; ?>, '<?php echo $otherKey; ?>' => <?php if ($otherParam['name'] === $param['name']) { ?><?php echo 'int' === $otherParam['type'] ? '-1' : "'x'"; ?><?php } elseif ($otherParam['fixture_fqcn']) { ?><?php echo $otherParam['fixture_class']; ?>::make<?php echo 'int' === $otherParam['type'] ? 'Int' : 'String'; ?>()<?php } elseif ('int' === $otherParam['type']) { ?>1<?php } else { ?>'valid_<?php echo $otherParam['name']; ?>'<?php } ?>
 <?php } ?>],
         ];
 <?php } ?>

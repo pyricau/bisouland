@@ -10,6 +10,8 @@ use Bl\Qa\Domain\Exception\ServerErrorException;
 use Bl\Qa\Domain\Exception\ValidationFailedException;
 use Symfony\Component\Console\Attribute\Argument;
 use Symfony\Component\Console\Attribute\AsCommand;
+<?php if ($has_optional_params) { ?>use Symfony\Component\Console\Attribute\Option;
+<?php } ?>
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Helper\Table;
 use Symfony\Component\Console\Style\SymfonyStyle;
@@ -27,11 +29,21 @@ final readonly class <?php echo $class_name; ?>
     }
 
     public function __invoke(
-<?php foreach ($action_parameters as $param) { ?>
+<?php foreach ($action_parameters as $param) {
+    if (null !== $param['default']) {
+        continue;
+    } ?>
         #[Argument(description: '<?php echo $param['description']; ?>')]
         <?php echo $param['type']; ?> $<?php echo $param['name']; ?>,
 <?php } ?>
         SymfonyStyle $io,
+<?php foreach ($action_parameters as $param) {
+    if (null === $param['default']) {
+        continue;
+    } ?>
+        #[Option(description: '<?php echo $param['description']; ?>')]
+        <?php echo $param['type']; ?> $<?php echo $param['name']; ?> = <?php echo 'int' === $param['type'] ? $param['default'] : "'{$param['default']}'"; ?>,
+<?php } ?>
     ): int {
         try {
             $output = $this-><?php echo $action_camel; ?>Handler->run(new <?php echo $action_name; ?>(<?php echo implode(', ', array_map(static fn ($p) => '$'.$p['name'], $action_parameters)); ?>));

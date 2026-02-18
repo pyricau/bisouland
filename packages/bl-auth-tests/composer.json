@@ -1,7 +1,7 @@
 {
-    "name": "bl/auth",
+    "name": "bl/auth-tests",
     "type": "library",
-    "description": "BisouLand - Auth",
+    "description": "BisouLand - Auth Test Fixtures",
     "license": "Apache-2.0",
     "authors": [
         {
@@ -11,12 +11,15 @@
     ],
     "require": {
         "php": ">=8.5",
-        "bl/exception": "*@dev",
-        "symfony/uid": "^8.0"
+        "bl/auth": "*@dev"
+    },
+    "require-dev": {
+        "phpspec/prophecy-phpunit": "^2.4",
+        "phpunit/phpunit": "^12.0"
     },
     "autoload": {
         "psr-4": {
-            "Bl\\Auth\\": "src/"
+            "Bl\\Auth\\Tests\\": "src/"
         }
     },
     "repositories": [

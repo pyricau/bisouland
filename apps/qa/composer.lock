@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "5a911174d2cae18d9ffbc06cca8c4676",
+    "content-hash": "a7430dcf5739698accb2d9b0f0816579",
     "packages": [
         {
             "name": "bl/auth",
@@ -12,10 +12,10 @@
             "dist": {
                 "type": "path",
                 "url": "../../packages/bl-auth",
-                "reference": "025981fefbf7865a2340213b9b78b93bd9994631"
+                "reference": "acea623c5dd25ada7acc9a637446c09c918ecf98"
             },
             "require": {
-                "bl/exception": "*",
+                "bl/exception": "*@dev",
                 "php": ">=8.5",
                 "symfony/uid": "^8.0"
             },
@@ -5913,6 +5913,38 @@
     ],
     "packages-dev": [
         {
+            "name": "bl/auth-tests",
+            "version": "dev-main",
+            "dist": {
+                "type": "path",
+                "url": "../../packages/bl-auth-tests",
+                "reference": "ade8670103962309343de832b8f5a0d8b4ae2cbe"
+            },
+            "require": {
+                "bl/auth": "*@dev",
+                "php": ">=8.5"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "Bl\\Auth\\Tests\\": "src/"
+                }
+            },
+            "license": [
+                "Apache-2.0"
+            ],
+            "authors": [
+                {
+                    "name": "Loïc Faugeron",
+                    "email": "faugeron.loic@gmail.com"
+                }
+            ],
+            "description": "BisouLand - Auth Test Fixtures",
+            "transport-options": {
+                "relative": true
+            }
+        },
+        {
             "name": "clue/ndjson-react",
             "version": "v1.3.0",
             "source": {
@@ -7964,6 +7996,7 @@
     "minimum-stability": "stable",
     "stability-flags": {
         "bl/auth": 20,
+        "bl/auth-tests": 20,
         "bl/exception": 20,
         "bl/exception-bundle": 20
     },

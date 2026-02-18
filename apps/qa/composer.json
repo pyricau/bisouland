@@ -35,6 +35,7 @@
         "symfony/yaml": "^8.0.1"
     },
     "require-dev": {
+        "bl/auth-tests": "*@dev",
         "friendsofphp/php-cs-fixer": "^3.93.1",
         "jangregor/phpstan-prophecy": "^2.2",
         "phpstan/phpstan": "^2.1.38",
@@ -59,7 +60,6 @@
     },
     "autoload-dev": {
         "psr-4": {
-            "Bl\\Auth\\Tests\\": "../../packages/bl-auth/tests/",
             "Bl\\Qa\\Tests\\": "tests/"
         }
     }

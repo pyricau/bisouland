@@ -60,29 +60,8 @@ final class MakeAction extends AbstractMaker
         }
 
         // Parameters: use --parameter options or prompt
-        /** @var list<string> $parameterOptions */
-        $parameterOptions = $input->getOption('parameter');
-        if ([] !== $parameterOptions) {
-            $this->parameters = [];
-            foreach ($parameterOptions as $parameterOption) {
-                $parts = explode(':', $parameterOption, 4);
-                if (\count($parts) >= 3 && \in_array($parts[1], ['string', 'int'], true)) {
-                    $this->parameters[] = [
-                        'name' => $parts[0],
-                        'type' => $parts[1],
-                        'description' => $parts[2],
-                        'default' => $parts[3] ?? null,
-                    ];
-                } else {
-                    // Backwards-compatible: name:description (type defaults to string)
-                    $this->parameters[] = [
-                        'name' => $parts[0],
-                        'type' => 'string',
-                        'description' => $parts[1] ?? '',
-                        'default' => null,
-                    ];
-                }
-            }
+        if ([] !== $input->getOption('parameter')) {
+            $this->parseParameterOptions($input);
         } else {
             $this->parameters = [];
             $io->note('Add parameters (empty name to stop):');
@@ -111,6 +90,16 @@ final class MakeAction extends AbstractMaker
     {
         /** @var string $actionName */
         $actionName = $input->getArgument('name');
+
+        // interact() is skipped when --no-interaction is used; parse options as fallback
+        if ('' === $this->description) {
+            $descriptionOption = $input->getOption('description');
+            $this->description = \is_string($descriptionOption) ? $descriptionOption : '';
+        }
+        if ([] === $this->parameters) {
+            $this->parseParameterOptions($input);
+        }
+
         $description = $this->description;
         $parameters = $this->parameters;
 
@@ -203,28 +192,35 @@ final class MakeAction extends AbstractMaker
             $variables,
         );
 
-        // 8. Spec handler test
+        // 8. Spec action input DTO test
+        $generator->generateClass(
+            "Bl\\Qa\\Tests\\Qalin\\Spec\\Application\\Action\\{$actionName}Test",
+            "{$templateDir}/SpecActionTest.tpl.php",
+            $variables,
+        );
+
+        // 9. Spec action handler test
         $generator->generateClass(
             "Bl\\Qa\\Tests\\Qalin\\Spec\\Application\\Action\\{$actionName}HandlerTest",
             "{$templateDir}/SpecHandlerTest.tpl.php",
             $variables,
         );
 
-        // 9. CLI Command integration test
+        // 10. CLI Command integration test
         $generator->generateClass(
             "Bl\\Qa\\Tests\\Qalin\\Integration\\UserInterface\\Cli\\Action\\{$actionName}CommandTest",
             "{$templateDir}/CliCommandTest.tpl.php",
             $variables,
         );
 
-        // 10. Web Controller integration test
+        // 11. Web Controller integration test
         $generator->generateClass(
             "Bl\\Qa\\Tests\\Qalin\\Integration\\UserInterface\\Web\\Action\\{$actionName}ControllerTest",
             "{$templateDir}/WebControllerTest.tpl.php",
             $variables,
         );
 
-        // 11. API Controller integration test
+        // 12. API Controller integration test
         $generator->generateClass(
             "Bl\\Qa\\Tests\\Qalin\\Integration\\UserInterface\\Api\\Action\\{$actionName}ControllerTest",
             "{$templateDir}/ApiControllerTest.tpl.php",
@@ -240,6 +236,36 @@ final class MakeAction extends AbstractMaker
             'Fill in TODO comments in generated files',
             'Run <fg=yellow>make phpstan-analyze</> and <fg=yellow>make phpunit</> to verify',
         ]);
+    }
+
+    private function parseParameterOptions(InputInterface $input): void
+    {
+        /** @var list<string> $parameterOptions */
+        $parameterOptions = $input->getOption('parameter');
+        if ([] === $parameterOptions) {
+            return;
+        }
+
+        $this->parameters = [];
+        foreach ($parameterOptions as $parameterOption) {
+            $parts = explode(':', $parameterOption, 4);
+            if (\count($parts) >= 3 && \in_array($parts[1], ['string', 'int'], true)) {
+                $this->parameters[] = [
+                    'name' => $parts[0],
+                    'type' => $parts[1],
+                    'description' => $parts[2],
+                    'default' => $parts[3] ?? null,
+                ];
+            } else {
+                // Backwards-compatible: name:description (type defaults to string)
+                $this->parameters[] = [
+                    'name' => $parts[0],
+                    'type' => 'string',
+                    'description' => $parts[1] ?? '',
+                    'default' => null,
+                ];
+            }
+        }
     }
 
     /**

@@ -7,8 +7,8 @@ namespace Bl\Qa\UserInterface\Api\Action;
 use Bl\Qa\Application\Action\SignUpNewPlayer\SignUpNewPlayer;
 use Bl\Qa\Application\Action\SignUpNewPlayer\SignUpNewPlayerHandler;
 use Symfony\Component\HttpFoundation\JsonResponse;
-use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpKernel\Attribute\MapRequestPayload;
 use Symfony\Component\Routing\Attribute\Route;
 
 final readonly class SignUpNewPlayerController
@@ -19,14 +19,11 @@ final readonly class SignUpNewPlayerController
     }
 
     #[Route('/api/v1/actions/sign-up-new-player', methods: ['POST'])]
-    public function __invoke(Request $request): JsonResponse
-    {
-        $payload = $request->getPayload();
-
-        $output = $this->signUpNewPlayerHandler->run(new SignUpNewPlayer(
-            $payload->getString('username'),
-            $payload->getString('password'),
-        ));
+    public function __invoke(
+        #[MapRequestPayload]
+        SignUpNewPlayer $signUpNewPlayer,
+    ): JsonResponse {
+        $output = $this->signUpNewPlayerHandler->run($signUpNewPlayer);
 
         return new JsonResponse(
             json_encode($output->toArray(), \JSON_THROW_ON_ERROR),

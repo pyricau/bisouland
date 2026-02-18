@@ -7,8 +7,8 @@ namespace <?php echo $namespace; ?>;
 use Bl\Qa\Application\Action\<?php echo $action_name; ?>\<?php echo $action_name; ?>;
 use Bl\Qa\Application\Action\<?php echo $action_name; ?>\<?php echo $action_name; ?>Handler;
 use Symfony\Component\HttpFoundation\JsonResponse;
-use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpKernel\Attribute\MapRequestPayload;
 use Symfony\Component\Routing\Attribute\Route;
 
 final readonly class <?php echo $class_name; ?>
@@ -20,15 +20,11 @@ final readonly class <?php echo $class_name; ?>
     }
 
     #[Route('/api/v1/actions/<?php echo $action_kebab; ?>', methods: ['POST'])]
-    public function __invoke(Request $request): JsonResponse
-    {
-        $payload = $request->getPayload();
-
-        $output = $this-><?php echo $action_camel; ?>Handler->run(new <?php echo $action_name; ?>(
-<?php foreach ($action_parameters as $param) { ?>
-            $payload->get<?php echo 'int' === $param['type'] ? 'Int' : 'String'; ?>('<?php echo $param['name']; ?>'),
-<?php } ?>
-        ));
+    public function __invoke(
+        #[MapRequestPayload]
+        <?php echo $action_name; ?> $<?php echo $action_camel; ?>,
+    ): JsonResponse {
+        $output = $this-><?php echo $action_camel; ?>Handler->run($<?php echo $action_camel; ?>);
 
         return new JsonResponse(
             json_encode($output->toArray(), \JSON_THROW_ON_ERROR),

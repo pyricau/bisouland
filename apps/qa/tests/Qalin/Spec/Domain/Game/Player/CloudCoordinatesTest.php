@@ -29,8 +29,8 @@ final class CloudCoordinatesTest extends TestCase
         $this->assertSame($y, $cloudCoordinates->getY());
     }
 
-    #[TestDox('It can be created with default value (1,1)')]
-    public function test_it_can_be_created_with_default_value(): void
+    #[TestDox('It can be created at its starting value (1,1)')]
+    public function test_it_can_be_created_at_its_starting_value(): void
     {
         $cloudCoordinates = CloudCoordinates::create();
 

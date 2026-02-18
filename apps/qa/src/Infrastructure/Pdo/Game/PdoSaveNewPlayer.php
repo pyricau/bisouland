@@ -109,8 +109,8 @@ final readonly class PdoSaveNewPlayer implements SaveNewPlayer
                 'account_id' => $accountId->toString(),
                 'username' => $username->toString(),
                 'password_hash' => $passwordHash->toString(),
-                'love_points' => LovePoints::INITIAL,
-                'milli_score' => MilliScore::INITIAL,
+                'love_points' => LovePoints::STARTING_LOVE_POINTS,
+                'milli_score' => MilliScore::STARTING_MILLI_SCORE,
             ]);
         } catch (\PDOException $pdoException) {
             $code = $pdoException->getCode();

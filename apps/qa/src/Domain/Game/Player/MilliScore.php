@@ -16,7 +16,7 @@ use Bl\Qa\Domain\Exception\ValidationFailedException;
  */
 final readonly class MilliScore
 {
-    public const int INITIAL = 0;
+    public const int STARTING_MILLI_SCORE = 0;
 
     private function __construct(
         private int $value,
@@ -49,6 +49,6 @@ final readonly class MilliScore
 
     public static function create(): self
     {
-        return new self(self::INITIAL);
+        return new self(self::STARTING_MILLI_SCORE);
     }
 }

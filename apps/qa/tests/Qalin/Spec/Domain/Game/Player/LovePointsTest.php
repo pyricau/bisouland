@@ -26,8 +26,8 @@ final class LovePointsTest extends TestCase
         $this->assertSame($intLovePoints, $lovePoints->toInt());
     }
 
-    #[TestDox('It can be created with default value (300)')]
-    public function test_it_can_be_created_with_default_value(): void
+    #[TestDox('It can be created at its starting value (300)')]
+    public function test_it_can_be_created_at_its_starting_value(): void
     {
         $lovePoints = LovePoints::create();
 

@@ -11,7 +11,7 @@ use Bl\Qa\Domain\Exception\ValidationFailedException;
  */
 final readonly class LovePoints
 {
-    public const int INITIAL = 300;
+    public const int STARTING_LOVE_POINTS = 300;
 
     private function __construct(
         private int $value,
@@ -39,6 +39,6 @@ final readonly class LovePoints
 
     public static function create(): self
     {
-        return new self(self::INITIAL);
+        return new self(self::STARTING_LOVE_POINTS);
     }
 }

@@ -27,8 +27,8 @@ final class MilliScoreTest extends TestCase
         $this->assertSame($intMilliScore, $milliScore->toInt());
     }
 
-    #[TestDox('It can be created with default value (0)')]
-    public function test_it_can_be_created_with_default_value(): void
+    #[TestDox('It can be created at its starting value (0)')]
+    public function test_it_can_be_created_at_its_starting_value(): void
     {
         $milliScore = MilliScore::create();
 

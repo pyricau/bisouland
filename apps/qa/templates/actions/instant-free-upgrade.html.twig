@@ -8,7 +8,11 @@
         <label for="username">Username</label>
         <input class="u-full-width" type="text" id="username" name="username" required>
         <label for="upgradable">Upgradable</label>
-        <input class="u-full-width" type="text" id="upgradable" name="upgradable" required>
+        <select class="u-full-width" id="upgradable" name="upgradable" required>
+            {% for upgradable in upgradables %}
+                <option value="{{ upgradable.value }}">{{ upgradable.name }}</option>
+            {% endfor %}
+        </select>
         <label for="levels">Levels</label>
         <input class="u-full-width" type="number" id="levels" name="levels" value="1">
         <button class="button-primary" type="submit">Instant Free Upgrade</button>

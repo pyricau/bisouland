@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Bl\Domain\Auth\AuthToken;
 
-use Bl\Domain\Exception\ValidationFailedException;
+use Bl\Exception\ValidationFailedException;
 
 /**
  * @object-type ValueObject

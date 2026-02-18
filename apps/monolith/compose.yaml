@@ -8,6 +8,8 @@ services:
     volumes:
       - .:/apps/monolith
       - vendor:/apps/monolith/vendor
+      # Mount shared packages
+      - ../../packages:/packages
     depends_on:
       - db
     environment:

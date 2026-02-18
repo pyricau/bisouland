@@ -6,8 +6,8 @@ namespace <?php echo $namespace; ?>;
 
 use Bl\Qa\Application\Action\<?php echo $action_name; ?>\<?php echo $action_name; ?>;
 use Bl\Qa\Application\Action\<?php echo $action_name; ?>\<?php echo $action_name; ?>Handler;
-use Bl\Qa\Domain\Exception\ServerErrorException;
-use Bl\Qa\Domain\Exception\ValidationFailedException;
+use Bl\Exception\ServerErrorException;
+use Bl\Exception\ValidationFailedException;
 use Symfony\Component\Console\Attribute\Argument;
 use Symfony\Component\Console\Attribute\AsCommand;
 <?php if ($has_optional_params) { ?>use Symfony\Component\Console\Attribute\Option;

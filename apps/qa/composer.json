@@ -8,8 +8,15 @@
             "email": "faugeron.loic@gmail.com"
         }
     ],
+    "repositories": [
+        {
+            "type": "path",
+            "url": "../../packages/*"
+        }
+    ],
     "require": {
         "php": ">=8.5",
+        "bl/exception": "*@dev",
         "ext-curl": "*",
         "ext-pdo_pgsql": "*",
         "phpspec/prophecy-phpunit": "^2.4",

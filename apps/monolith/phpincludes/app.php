@@ -6,11 +6,11 @@ use Bl\Application\Auth\AuthTokenCookie\CreateAuthTokenCookie;
 use Bl\Application\Auth\AuthTokenCookie\RemoveAuthTokenCookie;
 use Bl\Domain\Auth\AuthToken\TokenHash;
 use Bl\Domain\Auth\AuthTokenCookie\Credentials;
-use Bl\Domain\Exception\ValidationFailedException;
 use Bl\Domain\Upgradable\UpgradableBisou;
 use Bl\Domain\Upgradable\UpgradableCategory;
 use Bl\Domain\Upgradable\UpgradableOrgan;
 use Bl\Domain\Upgradable\UpgradableTechnique;
+use Bl\Exception\ValidationFailedException;
 use Symfony\Component\Uid\Uuid;
 
 header('Content-type: text/html; charset=UTF-8');

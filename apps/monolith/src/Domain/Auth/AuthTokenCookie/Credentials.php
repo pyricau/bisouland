@@ -6,7 +6,7 @@ namespace Bl\Domain\Auth\AuthTokenCookie;
 
 use Bl\Domain\Auth\AuthToken\AuthTokenId;
 use Bl\Domain\Auth\AuthToken\TokenPlain;
-use Bl\Domain\Exception\ValidationFailedException;
+use Bl\Exception\ValidationFailedException;
 
 final readonly class Credentials
 {

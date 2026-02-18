@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace Bl\Qa\Tests\Qalin\Spec\Domain\Auth\Account;
 
+use Bl\Exception\ValidationFailedException;
 use Bl\Qa\Domain\Auth\Account\AccountId;
-use Bl\Qa\Domain\Exception\ValidationFailedException;
 use Bl\Qa\Tests\Fixtures\Domain\Auth\Account\AccountIdFixture;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\Small;

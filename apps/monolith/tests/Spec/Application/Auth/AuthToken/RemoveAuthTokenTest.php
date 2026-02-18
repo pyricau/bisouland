@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace Bl\Tests\Spec\Application\Auth\AuthToken;
 
 use Bl\Application\Auth\AuthToken\RemoveAuthToken;
-use Bl\Domain\Exception\ValidationFailedException;
+use Bl\Exception\ValidationFailedException;
 use Bl\Tests\Spec\Domain\Auth\Account\Fixtures\AccountIdFixture;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\DataProvider;

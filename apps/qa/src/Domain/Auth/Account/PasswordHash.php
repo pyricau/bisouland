@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Bl\Qa\Domain\Auth\Account;
 
-use Bl\Qa\Domain\Exception\ValidationFailedException;
+use Bl\Exception\ValidationFailedException;
 
 /**
  * @object-type ValueObject

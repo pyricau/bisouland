@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Bl\Qa\Infrastructure\Pdo\Game;
 
-use Bl\Qa\Domain\Exception\ServerErrorException;
+use Bl\Exception\ServerErrorException;
 use Bl\Qa\Domain\Game\SearchUsernames;
 
 final readonly class PdoSearchUsernames implements SearchUsernames

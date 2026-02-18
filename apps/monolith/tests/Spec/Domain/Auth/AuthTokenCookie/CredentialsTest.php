@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace Bl\Tests\Spec\Domain\Auth\AuthTokenCookie;
 
 use Bl\Domain\Auth\AuthTokenCookie\Credentials;
-use Bl\Domain\Exception\ValidationFailedException;
+use Bl\Exception\ValidationFailedException;
 use Bl\Tests\Spec\Domain\Auth\AuthToken\Fixtures\AuthTokenIdFixture;
 use Bl\Tests\Spec\Domain\Auth\AuthToken\Fixtures\TokenPlainFixture;
 use PHPUnit\Framework\Attributes\CoversClass;

@@ -4,13 +4,13 @@ declare(strict_types=1);
 
 namespace Bl\Qa\Tests\Qalin\Spec\Application\Action;
 
+use Bl\Exception\ServerErrorException;
+use Bl\Exception\ValidationFailedException;
 use Bl\Qa\Application\Action\SignUpNewPlayer\SignUpNewPlayer;
 use Bl\Qa\Application\Action\SignUpNewPlayer\SignUpNewPlayerHandler;
 use Bl\Qa\Application\Action\SignUpNewPlayer\SignUpNewPlayerOutput;
 use Bl\Qa\Domain\Auth\Account\PasswordPlain;
 use Bl\Qa\Domain\Auth\Account\Username;
-use Bl\Qa\Domain\Exception\ServerErrorException;
-use Bl\Qa\Domain\Exception\ValidationFailedException;
 use Bl\Qa\Domain\Game\SaveNewPlayer;
 use Bl\Qa\Tests\Fixtures\Domain\Auth\Account\PasswordPlainFixture;
 use Bl\Qa\Tests\Fixtures\Domain\Auth\Account\UsernameFixture;

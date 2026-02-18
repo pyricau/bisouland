@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Bl\Qa\Tests\Qalin\Spec\Domain\Game\Player\UpgradableLevels;
 
-use Bl\Qa\Domain\Exception\ValidationFailedException;
+use Bl\Exception\ValidationFailedException;
 use Bl\Qa\Domain\Game\Player\UpgradableLevels\Upgradable;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\DataProvider;

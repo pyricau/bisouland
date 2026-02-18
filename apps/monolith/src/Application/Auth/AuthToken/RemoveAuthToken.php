@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace Bl\Application\Auth\AuthToken;
 
 use Bl\Domain\Auth\Account\AccountId;
-use Bl\Domain\Exception\ValidationFailedException;
+use Bl\Exception\ValidationFailedException;
 
 /**
  * @object-type Command

@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Bl\Qa\Domain\Game\Player;
 
-use Bl\Qa\Domain\Exception\ValidationFailedException;
+use Bl\Exception\ValidationFailedException;
 use Bl\Qa\Domain\Game\Player\UpgradableLevels\Upgradable;
 
 /**

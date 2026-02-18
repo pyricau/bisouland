@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Bl\Domain\Auth\Account;
 
-use Bl\Domain\Exception\ValidationFailedException;
+use Bl\Exception\ValidationFailedException;
 use Symfony\Component\Uid\Uuid;
 
 /**

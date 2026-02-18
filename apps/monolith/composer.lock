@@ -4,8 +4,39 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "6739b22e78d7b4243f6fa78df737a05e",
+    "content-hash": "7be172d34d1ad717a1a58ade5af999af",
     "packages": [
+        {
+            "name": "bl/exception",
+            "version": "dev-main",
+            "dist": {
+                "type": "path",
+                "url": "../../packages/bl-exception",
+                "reference": "e16123dcbc7ecd9d242847e4863f7108bb49cb05"
+            },
+            "require": {
+                "php": ">=8.5"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "Bl\\Exception\\": "src/"
+                }
+            },
+            "license": [
+                "Apache-2.0"
+            ],
+            "authors": [
+                {
+                    "name": "Loïc Faugeron",
+                    "email": "faugeron.loic@gmail.com"
+                }
+            ],
+            "description": "BisouLand - Exception",
+            "transport-options": {
+                "relative": true
+            }
+        },
         {
             "name": "symfony/polyfill-uuid",
             "version": "v1.33.0",
@@ -2452,7 +2483,9 @@
     ],
     "aliases": [],
     "minimum-stability": "stable",
-    "stability-flags": {},
+    "stability-flags": {
+        "bl/exception": 20
+    },
     "prefer-stable": false,
     "prefer-lowest": false,
     "platform": {

@@ -4,9 +4,9 @@ declare(strict_types=1);
 
 namespace Bl\Qa\Domain\Game;
 
+use Bl\Exception\ServerErrorException;
+use Bl\Exception\ValidationFailedException;
 use Bl\Qa\Domain\Auth\Account\Username;
-use Bl\Qa\Domain\Exception\ServerErrorException;
-use Bl\Qa\Domain\Exception\ValidationFailedException;
 use Bl\Qa\Domain\Game\Player\UpgradableLevels\Upgradable;
 
 /**

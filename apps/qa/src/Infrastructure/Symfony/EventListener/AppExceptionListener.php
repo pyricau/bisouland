@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Bl\Qa\Infrastructure\Symfony\EventListener;
 
-use Bl\Qa\Domain\Exception\AppException;
+use Bl\Exception\AppException;
 use Psr\Log\LoggerInterface;
 use Symfony\Component\EventDispatcher\Attribute\AsEventListener;
 use Symfony\Component\HttpFoundation\JsonResponse;

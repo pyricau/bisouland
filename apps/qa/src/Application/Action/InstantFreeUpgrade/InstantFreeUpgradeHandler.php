@@ -4,9 +4,9 @@ declare(strict_types=1);
 
 namespace Bl\Qa\Application\Action\InstantFreeUpgrade;
 
+use Bl\Exception\ServerErrorException;
+use Bl\Exception\ValidationFailedException;
 use Bl\Qa\Domain\Auth\Account\Username;
-use Bl\Qa\Domain\Exception\ServerErrorException;
-use Bl\Qa\Domain\Exception\ValidationFailedException;
 use Bl\Qa\Domain\Game\ApplyCompletedUpgrade;
 use Bl\Qa\Domain\Game\FindPlayer;
 use Bl\Qa\Domain\Game\Player\UpgradableLevels\Upgradable;

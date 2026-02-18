@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Bl\Qa\Domain\Exception;
+namespace Bl\Exception;
 
 final class NotFoundException extends AppException
 {

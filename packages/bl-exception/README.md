@@ -1,4 +1,4 @@
-# Domain Exceptions
+# BisouLand - Exception
 
 ```
 AppException (500 INTERNAL SERVER ERROR)

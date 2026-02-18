@@ -34,6 +34,7 @@ $finder = (new PhpCsFixer\Finder())
     ->in([
         __DIR__,
         __DIR__.'/../monolith',
+        __DIR__.'/../../packages',
     ])
     ->exclude([
         'var',

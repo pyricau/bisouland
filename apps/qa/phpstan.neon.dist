@@ -9,6 +9,7 @@ parameters:
     - tests/
     - ../monolith/tests/
     - ../monolith/src/
+    - ../../packages/
   excludePaths:
     - templates/maker/
   bootstrapFiles:

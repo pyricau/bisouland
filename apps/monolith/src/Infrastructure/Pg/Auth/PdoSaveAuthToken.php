@@ -6,7 +6,7 @@ namespace Bl\Infrastructure\Pg\Auth;
 
 use Bl\Domain\Auth\AuthToken;
 use Bl\Domain\Auth\SaveAuthToken;
-use Bl\Domain\Exception\ValidationFailedException;
+use Bl\Exception\ValidationFailedException;
 
 final readonly class PdoSaveAuthToken implements SaveAuthToken
 {

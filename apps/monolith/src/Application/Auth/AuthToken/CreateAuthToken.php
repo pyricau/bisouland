@@ -10,7 +10,7 @@ use Bl\Domain\Auth\AuthToken\AuthTokenId;
 use Bl\Domain\Auth\AuthToken\ExpiresAt;
 use Bl\Domain\Auth\AuthToken\TokenHash;
 use Bl\Domain\Auth\AuthToken\TokenPlain;
-use Bl\Domain\Exception\ValidationFailedException;
+use Bl\Exception\ValidationFailedException;
 
 /**
  * @object-type Command

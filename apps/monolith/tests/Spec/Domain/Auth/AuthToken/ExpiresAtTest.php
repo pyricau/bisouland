@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace Bl\Tests\Spec\Domain\Auth\AuthToken;
 
 use Bl\Domain\Auth\AuthToken\ExpiresAt;
-use Bl\Domain\Exception\ValidationFailedException;
+use Bl\Exception\ValidationFailedException;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\Attributes\Small;

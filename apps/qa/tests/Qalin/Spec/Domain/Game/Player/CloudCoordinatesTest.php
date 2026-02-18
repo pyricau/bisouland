@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Bl\Qa\Tests\Qalin\Spec\Domain\Game\Player;
 
-use Bl\Qa\Domain\Exception\ValidationFailedException;
+use Bl\Exception\ValidationFailedException;
 use Bl\Qa\Domain\Game\Player\CloudCoordinates;
 use Bl\Qa\Tests\Fixtures\Domain\Game\Player\CloudCoordinatesFixture;
 use PHPUnit\Framework\Attributes\CoversClass;

@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Bl\Domain\Exception;
+namespace Bl\Exception;
 
 class AppException extends \DomainException
 {
@@ -16,7 +16,7 @@ class AppException extends \DomainException
         parent::__construct($message, $code, $previous);
     }
 
-    public static function make(string $message, ?\Exception $previous = null): self
+    public static function make(string $message, ?\Throwable $previous = null): self
     {
         return new static($message, static::CODE, $previous);
     }

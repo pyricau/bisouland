@@ -7,7 +7,7 @@ namespace Bl\Tests\Spec\Application\Auth\AuthToken;
 use Bl\Application\Auth\AuthToken\CreateAuthToken;
 use Bl\Domain\Auth\AuthToken;
 use Bl\Domain\Auth\AuthToken\TokenHash;
-use Bl\Domain\Exception\ValidationFailedException;
+use Bl\Exception\ValidationFailedException;
 use Bl\Tests\Spec\Domain\Auth\Account\Fixtures\AccountIdFixture;
 use Bl\Tests\Spec\Domain\Auth\AuthToken\Fixtures\AuthTokenIdFixture;
 use Bl\Tests\Spec\Domain\Auth\AuthToken\Fixtures\ExpiresAtFixture;

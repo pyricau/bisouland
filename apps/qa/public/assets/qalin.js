@@ -8,7 +8,10 @@ document.addEventListener('DOMContentLoaded', () => {
             resetResult(resultEl);
 
             const body = {};
-            new FormData(form).forEach((value, key) => { body[key] = value; });
+            new FormData(form).forEach((value, key) => {
+                const field = form.elements[key];
+                body[key] = field && field.type === 'number' ? Number(value) : value;
+            });
 
             try {
                 const response = await fetch(form.dataset.api, {
@@ -35,7 +38,8 @@ function showSuccess(resultEl, data) {
     const rows = Object.entries(data)
         .map(([key, value]) => {
             const label = key.replace(/_/g, ' ').replace(/\b\w/g, c => c.toUpperCase());
-            return `<tr><th>${label}</th><td>${value}</td></tr>`;
+            const formatted = typeof value === 'number' ? value.toLocaleString() : value;
+            return `<tr><th>${label}</th><td>${formatted}</td></tr>`;
         })
         .join('');
     resultEl.innerHTML = `<table>${rows}</table>`;

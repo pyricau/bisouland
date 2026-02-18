@@ -100,6 +100,7 @@ form { max-width: 48rem; }
 input[type="text"],
 input[type="password"],
 input[type="email"],
+input[type="number"],
 textarea,
 select {
     background: var(--ctp-surface0);
@@ -111,6 +112,7 @@ select {
 input[type="text"]:focus,
 input[type="password"]:focus,
 input[type="email"]:focus,
+input[type="number"]:focus,
 textarea:focus,
 select:focus {
     border-color: var(--ctp-blue);

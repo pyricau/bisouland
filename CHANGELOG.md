@@ -6,13 +6,16 @@ This file logs the changes between versions.
 
 v4: 2025 second v1 rollback, refactoring attempt.
 
-* `4.0.23`:
+* `4.0.23`: Qalin
     * replaced remnants of private messages with system notifications
-    * removed admin backend (news article management)
+    * removed old admin backend (news article management)
     * removed admin player
     * removed obsolete database fields (espion, confirmation, etc)
     * made monolith web app stateless (no sessions)
     * SQL performance improvements
+    * created Qalin app in apps/qa (Symfony app)
+    * created Qalin SignUpNewPlayer action
+    * created Qalin InstantFreeUpgrade action
 * `4.0.22`: fixed XSS vulnerability affecting auth cookie
 * `4.0.21`: migrated from MySQL to PostgreSQL
 * `4.0.20`: migrated from PHP 8.4 to PHP 8.5

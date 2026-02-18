@@ -14,7 +14,7 @@ use Bl\Qa\Domain\Game\ApplyCompletedUpgrade;
 use Bl\Qa\Domain\Game\Player;
 use Bl\Qa\Domain\Game\Player\CloudCoordinates;
 use Bl\Qa\Domain\Game\Player\LovePoints;
-use Bl\Qa\Domain\Game\Player\Score;
+use Bl\Qa\Domain\Game\Player\MilliScore;
 use Bl\Qa\Domain\Game\Player\UpgradableLevels;
 use Bl\Qa\Domain\Game\Player\UpgradableLevels\Upgradable;
 
@@ -28,14 +28,14 @@ final readonly class PdoApplyCompletedUpgrade implements ApplyCompletedUpgrade
         $this->updateStmtTemplate = <<<'SQL'
             UPDATE membres
             SET %upgradable% = %upgradable% + 1,
-                score = score + :score
+                score = score + :milli_score
             WHERE pseudo = :username
             RETURNING
                 id AS account_id,
                 pseudo AS username,
                 mdp AS password_hash,
                 amour AS love_points,
-                score,
+                score AS milli_score,
                 nuage AS cloud_coordinates_x,
                 position AS cloud_coordinates_y,
                 coeur AS heart,
@@ -55,7 +55,7 @@ final readonly class PdoApplyCompletedUpgrade implements ApplyCompletedUpgrade
         SQL;
     }
 
-    public function apply(Username $username, Upgradable $upgradable, int $score): Player
+    public function apply(Username $username, Upgradable $upgradable, int $milliScore): Player
     {
         $updateStmt = $this->pdo->prepare(str_replace(
             '%upgradable%',
@@ -65,13 +65,13 @@ final readonly class PdoApplyCompletedUpgrade implements ApplyCompletedUpgrade
 
         try {
             $updateStmt->execute([
-                'score' => $score,
+                'milli_score' => $milliScore,
                 'username' => $username->toString(),
             ]);
         } catch (\PDOException $pdoException) {
             throw ServerErrorException::make(
                 'Failed to ApplyCompletedUpgrade'
-                ." (`{$username->toString()}`, `{$upgradable->toString()}`, `{$score}`)"
+                ." (`{$username->toString()}`, `{$upgradable->toString()}`, `{$milliScore}`)"
                 .': unexpected database error',
                 $pdoException,
             );
@@ -83,7 +83,7 @@ final readonly class PdoApplyCompletedUpgrade implements ApplyCompletedUpgrade
          *      username: string,
          *      password_hash: string,
          *      love_points: int,
-         *      score: int,
+         *      milli_score: int,
          *      cloud_coordinates_x: int,
          *      cloud_coordinates_y: int,
          *      heart: int,
@@ -116,7 +116,7 @@ final readonly class PdoApplyCompletedUpgrade implements ApplyCompletedUpgrade
                 PasswordHash::fromString($row['password_hash']),
             ),
             LovePoints::fromInt($row['love_points']),
-            Score::fromInt($row['score']),
+            MilliScore::fromInt($row['milli_score']),
             CloudCoordinates::fromInts($row['cloud_coordinates_x'], $row['cloud_coordinates_y']),
             UpgradableLevels::fromArray($row),
         );

@@ -3,7 +3,7 @@
 Once a **Player** has **Signed Up**, they are placed on a **Cloud**
 at a **Fluffy Spot** (cloud coordinates X/Y).
 
-They start with **300 Love Points**, a **Score** of 0,
+They start with **300 Love Points**, a **MilliScore** of 0,
 and initial **Upgradable Levels** (Heart and Mouth at 1, everything else at 0).
 
 A **Player** can spend **Love Points** to **Upgrade** their **Organs**,
@@ -22,26 +22,26 @@ sequenceDiagram
 
     Visitor->>BisouLand: Sign Up
     BisouLand->>Database: Create Account
-    BisouLand->>Database: Create Player (Cloud Coordinates, Love Points, Score, Upgradable Levels)
+    BisouLand->>Database: Create Player (Cloud Coordinates, Love Points, MilliScore, Upgradable Levels)
 
     Note over BisouLand: Player is now in the Game
 
     Player->>BisouLand: Upgrade
-    BisouLand->>Database: Increment Upgradable Level, Deduct Love Points, Add Cost to Score
+    BisouLand->>Database: Increment Upgradable Level, Deduct Love Points, Add Cost to MilliScore
 ```
 
 ## Ubiquitous Dictionary
 
-| Term              | Type   | Definition                                                                     |
-|-------------------|--------|--------------------------------------------------------------------------------|
-| Player            | Model  | A registered player with cloud coordinates, love points, score, and levels     |
-| Cloud Coordinates | Model  | A player's position: X (cloud number, starts at 1) and Y (fluffy spot, 1-16)   |
-| Love Points       | Model  | Currency for upgrades, starts at 300                                           |
-| Score             | Model  | Accumulated by adding the cost of each upgrade, starts at 0                    |
-| Upgradable Levels | Model  | Current level for each upgradables                                             |
-| Upgradable        | Model  | An organ, bisou, or technique that can be upgraded                             |
-| Sign Up           | Action | Creates an Account and a Player with auto-assigned cloud coordinates           |
-| Upgrade           | Action | Spends love points to increment an upgradable level, adding the cost to score  |
+| Term                    | Type   | Definition                                                                          |
+|-------------------------|--------|-------------------------------------------------------------------------------------|
+| Player                  | Model  | A registered player with cloud coordinates, love points, milli_score, etc           |
+| Cloud Coordinates       | Model  | A player's position: X (cloud number, starts at 1) and Y (fluffy spot, 1-16)        |
+| Love Points             | Model  | Currency for upgrades, starts at 300                                                |
+| MilliScore              | Model  | Raw score stored in DB; divide by 1000 to get the displayed score, starts at 0      |
+| Upgradable Levels       | Model  | Current level for each upgradables                                                  |
+| Upgradable              | Model  | An organ, bisou, or technique that can be upgraded                                  |
+| Sign Up                 | Action | Creates an Account and a Player with auto-assigned cloud coordinates                |
+| Apply Completed Upgrade | Action | Spends love points to increment an upgradable level, adding the cost to milli_score |
 
 ## Cloud Placement
 

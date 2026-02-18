@@ -24,5 +24,5 @@ interface ApplyCompletedUpgrade
      * @throws ValidationFailedException If the username is not an already existing one
      * @throws ServerErrorException      If an unexpected error occurs
      */
-    public function apply(Username $username, Upgradable $upgradable, int $score): Player;
+    public function apply(Username $username, Upgradable $upgradable, int $milliScore): Player;
 }

@@ -14,7 +14,7 @@ use Bl\Qa\Domain\Exception\ValidationFailedException;
 use Bl\Qa\Domain\Game\Player;
 use Bl\Qa\Domain\Game\Player\CloudCoordinates;
 use Bl\Qa\Domain\Game\Player\LovePoints;
-use Bl\Qa\Domain\Game\Player\Score;
+use Bl\Qa\Domain\Game\Player\MilliScore;
 use Bl\Qa\Domain\Game\Player\UpgradableLevels;
 use Bl\Qa\Domain\Game\SaveNewPlayer;
 
@@ -73,13 +73,13 @@ final readonly class PdoSaveNewPlayer implements SaveNewPlayer
                 :username,
                 :password_hash,
                 :love_points,
-                :score,
+                :milli_score,
                 (SELECT cloud_coordinates_x FROM available_cloud_coordinates_x),
                 (SELECT cloud_coordinates_y FROM available_cloud_coordinates_y)
             )
             RETURNING
                 amour AS love_points,
-                score,
+                score AS milli_score,
                 nuage AS cloud_coordinates_x,
                 position AS cloud_coordinates_y,
                 coeur AS heart,
@@ -110,7 +110,7 @@ final readonly class PdoSaveNewPlayer implements SaveNewPlayer
                 'username' => $username->toString(),
                 'password_hash' => $passwordHash->toString(),
                 'love_points' => LovePoints::INITIAL,
-                'score' => Score::INITIAL,
+                'milli_score' => MilliScore::INITIAL,
             ]);
         } catch (\PDOException $pdoException) {
             $code = $pdoException->getCode();
@@ -142,7 +142,7 @@ final readonly class PdoSaveNewPlayer implements SaveNewPlayer
         /**
          * @var array{
          *      love_points: int,
-         *      score: int,
+         *      milli_score: int,
          *      cloud_coordinates_x: int,
          *      cloud_coordinates_y: int,
          *      heart: int,
@@ -170,7 +170,7 @@ final readonly class PdoSaveNewPlayer implements SaveNewPlayer
                 $passwordHash,
             ),
             LovePoints::fromInt($row['love_points']),
-            Score::fromInt($row['score']),
+            MilliScore::fromInt($row['milli_score']),
             CloudCoordinates::fromInts($row['cloud_coordinates_x'], $row['cloud_coordinates_y']),
             UpgradableLevels::fromArray($row),
         );

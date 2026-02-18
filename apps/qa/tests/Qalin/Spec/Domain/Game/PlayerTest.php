@@ -8,7 +8,7 @@ use Bl\Qa\Domain\Game\Player;
 use Bl\Qa\Tests\Fixtures\Domain\Auth\AccountFixture;
 use Bl\Qa\Tests\Fixtures\Domain\Game\Player\CloudCoordinatesFixture;
 use Bl\Qa\Tests\Fixtures\Domain\Game\Player\LovePointsFixture;
-use Bl\Qa\Tests\Fixtures\Domain\Game\Player\ScoreFixture;
+use Bl\Qa\Tests\Fixtures\Domain\Game\Player\MilliScoreFixture;
 use Bl\Qa\Tests\Fixtures\Domain\Game\Player\UpgradableLevelsFixture;
 use Bl\Qa\Tests\Fixtures\Domain\Game\PlayerFixture;
 use PHPUnit\Framework\Attributes\CoversClass;
@@ -38,13 +38,13 @@ final class PlayerTest extends TestCase
         $this->assertSame($lovePoints, $player->lovePoints);
     }
 
-    #[TestDox('It has Score')]
-    public function test_it_has_score(): void
+    #[TestDox('It has MilliScore')]
+    public function test_it_has_milli_score(): void
     {
-        $score = ScoreFixture::make();
-        $player = PlayerFixture::make(score: $score);
+        $milliScore = MilliScoreFixture::make();
+        $player = PlayerFixture::make(milliScore: $milliScore);
 
-        $this->assertSame($score, $player->score);
+        $this->assertSame($milliScore, $player->milliScore);
     }
 
     #[TestDox('It has CloudCoordinates')]

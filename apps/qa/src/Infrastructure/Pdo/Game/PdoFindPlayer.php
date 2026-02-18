@@ -14,7 +14,7 @@ use Bl\Qa\Domain\Game\FindPlayer;
 use Bl\Qa\Domain\Game\Player;
 use Bl\Qa\Domain\Game\Player\CloudCoordinates;
 use Bl\Qa\Domain\Game\Player\LovePoints;
-use Bl\Qa\Domain\Game\Player\Score;
+use Bl\Qa\Domain\Game\Player\MilliScore;
 use Bl\Qa\Domain\Game\Player\UpgradableLevels;
 
 final readonly class PdoFindPlayer implements FindPlayer
@@ -30,7 +30,7 @@ final readonly class PdoFindPlayer implements FindPlayer
                 pseudo AS username,
                 mdp AS password_hash,
                 amour AS love_points,
-                score,
+                score AS milli_score,
                 nuage AS cloud_coordinates_x,
                 position AS cloud_coordinates_y,
                 coeur AS heart,
@@ -71,7 +71,7 @@ final readonly class PdoFindPlayer implements FindPlayer
          *      username: string,
          *      password_hash: string,
          *      love_points: int,
-         *      score: int,
+         *      milli_score: int,
          *      cloud_coordinates_x: int,
          *      cloud_coordinates_y: int,
          *      heart: int,
@@ -104,7 +104,7 @@ final readonly class PdoFindPlayer implements FindPlayer
                 PasswordHash::fromString($row['password_hash']),
             ),
             LovePoints::fromInt($row['love_points']),
-            Score::fromInt($row['score']),
+            MilliScore::fromInt($row['milli_score']),
             CloudCoordinates::fromInts($row['cloud_coordinates_x'], $row['cloud_coordinates_y']),
             UpgradableLevels::fromArray($row),
         );

@@ -8,8 +8,13 @@ use Bl\Qa\Domain\Exception\ValidationFailedException;
 
 /**
  * @object-type ValueObject
+ *
+ * The raw score value stored in the database.
+ * Divide by 1000 to get the player-facing score: `floor(milli_score / 1000)`.
+ *
+ * Named after the SI "milli" prefix (1/1000), as in milliseconds.
  */
-final readonly class Score
+final readonly class MilliScore
 {
     public const int INITIAL = 0;
 
@@ -23,6 +28,11 @@ final readonly class Score
         return $this->value;
     }
 
+    public function toScore(): int
+    {
+        return (int) floor($this->value / 1000);
+    }
+
     /**
      * @throws ValidationFailedException If $value is negative
      */
@@ -30,7 +40,7 @@ final readonly class Score
     {
         if ($value < 0) {
             throw ValidationFailedException::make(
-                "Invalid \"Score\" parameter: it should be >= 0 (`{$value}` given)",
+                "Invalid \"MilliScore\" parameter: it should be >= 0 (`{$value}` given)",
             );
         }
 

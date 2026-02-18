@@ -7,7 +7,7 @@ namespace Bl\Qa\Domain\Game;
 use Bl\Qa\Domain\Auth\Account;
 use Bl\Qa\Domain\Game\Player\CloudCoordinates;
 use Bl\Qa\Domain\Game\Player\LovePoints;
-use Bl\Qa\Domain\Game\Player\Score;
+use Bl\Qa\Domain\Game\Player\MilliScore;
 use Bl\Qa\Domain\Game\Player\UpgradableLevels;
 
 /**
@@ -18,7 +18,7 @@ final readonly class Player
     public function __construct(
         public Account $account,
         public LovePoints $lovePoints,
-        public Score $score,
+        public MilliScore $milliScore,
         public CloudCoordinates $cloudCoordinates,
         public UpgradableLevels $upgradableLevels,
     ) {

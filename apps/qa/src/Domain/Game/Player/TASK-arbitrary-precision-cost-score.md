@@ -1,4 +1,4 @@
-# Switch cost/score to arbitrary precision (bcmath + NUMERIC)
+# Switch cost/milli_score to arbitrary precision (bcmath + NUMERIC)
 
 ## Problem
 
@@ -29,23 +29,23 @@ Replace `int` with `string` (bcmath) in PHP and `BIGINT` with `NUMERIC` in Postg
 ### PHP domain (`apps/qa/src/`)
 
 - `Upgradable::computeCost()`: return `string` instead of `int`, use `bcmul`/`bcpow` or convert the float result via `number_format($cost, 0, '', '')`
-- `Score`: store `string`, expose `fromString()`/`toString()` instead of `fromInt()`/`toInt()`
+- `MilliScore`: store `string`, expose `fromString()`/`toString()` instead of `fromInt()`/`toInt()`
 - `LovePoints`: same `int` -> `string` treatment
 
 ### Infrastructure
 
-- PDO bindings: pass cost/score/love_points as `string`
+- PDO bindings: pass cost/milli_score/love_points as `string`
 - PDO fetch: read them as `string` (PostgreSQL `NUMERIC` returns strings via PDO)
 
 ### User Interface
 
-- API JSON responses: cost/score/love_points become JSON strings (breaking change)
+- API JSON responses: cost/milli_score/love_points become JSON strings (breaking change)
 - CLI table output: no visible change (strings display the same)
 - Web templates: no visible change
 
 ### Tests
 
-- All fixtures and assertions for `Score`, `LovePoints`, and cost switch from `int` to `string`
+- All fixtures and assertions for `MilliScore`, `LovePoints`, and cost switch from `int` to `string`
 - CostTest expected values become string comparisons
 
 ### Dependencies

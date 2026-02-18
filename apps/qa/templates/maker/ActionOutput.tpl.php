@@ -27,7 +27,7 @@ final readonly class <?php echo $class_name; ?> implements ActionOutput
             'account_id' => $this->player->account->accountId->toString(),
             'username' => $this->player->account->username->toString(),
             'love_points' => $this->player->lovePoints->toInt(),
-            'score' => $this->player->score->toInt(),
+            'milli_score' => $this->player->milliScore->toInt(),
             'cloud_coordinates_x' => $this->player->cloudCoordinates->getX(),
             'cloud_coordinates_y' => $this->player->cloudCoordinates->getY(),
         ];

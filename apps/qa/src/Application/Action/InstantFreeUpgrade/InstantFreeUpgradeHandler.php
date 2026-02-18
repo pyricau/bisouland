@@ -44,8 +44,8 @@ final readonly class InstantFreeUpgradeHandler
 
         for ($i = 0; $i < $input->levels; ++$i) {
             $upgradable->checkPrerequisites($player->upgradableLevels);
-            $score = $upgradable->computeCost($player->upgradableLevels);
-            $player = $this->applyCompletedUpgrade->apply($username, $upgradable, $score);
+            $milliScore = $upgradable->computeCost($player->upgradableLevels);
+            $player = $this->applyCompletedUpgrade->apply($username, $upgradable, $milliScore);
         }
 
         return new InstantFreeUpgradeOutput($player);

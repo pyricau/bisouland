@@ -62,7 +62,7 @@ final class InstantFreeUpgradeHandlerTest extends TestCase
         $applyCompletedUpgrade->apply(
             Argument::type(Username::class),
             Argument::type(Upgradable::class),
-            Argument::type('int'), // score
+            Argument::type('int'), // milli_score
         )->shouldBeCalledTimes($levels)->willReturn($expectedPlayer);
 
         $instantFreeUpgradeHandler = new InstantFreeUpgradeHandler(

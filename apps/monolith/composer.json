@@ -22,6 +22,7 @@
     "require": {
         "php": ">=8.5",
         "bl/auth": "*@dev",
+        "bl/auth-pdopg": "*@dev",
         "bl/exception": "*@dev",
         "ext-curl": "*",
         "ext-pdo_pgsql": "*",

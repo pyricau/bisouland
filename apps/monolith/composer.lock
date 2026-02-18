@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "186c3cdcc9894426180dc3170997fd54",
+    "content-hash": "85c8a5a89048bc5327e78f7b886016be",
     "packages": [
         {
             "name": "bl/auth",
@@ -12,25 +12,17 @@
             "dist": {
                 "type": "path",
                 "url": "../../packages/bl-auth",
-                "reference": "7c14d5018d0f1738e04ac83e2124b20634702128"
+                "reference": "acea623c5dd25ada7acc9a637446c09c918ecf98"
             },
             "require": {
-                "bl/exception": "*",
+                "bl/exception": "*@dev",
                 "php": ">=8.5",
                 "symfony/uid": "^8.0"
-            },
-            "require-dev": {
-                "phpunit/phpunit": "^12.0"
             },
             "type": "library",
             "autoload": {
                 "psr-4": {
                     "Bl\\Auth\\": "src/"
-                }
-            },
-            "autoload-dev": {
-                "psr-4": {
-                    "Bl\\Auth\\Tests\\": "tests/"
                 }
             },
             "license": [
@@ -43,6 +35,40 @@
                 }
             ],
             "description": "BisouLand - Auth",
+            "transport-options": {
+                "relative": true
+            }
+        },
+        {
+            "name": "bl/auth-pdopg",
+            "version": "dev-main",
+            "dist": {
+                "type": "path",
+                "url": "../../packages/bl-auth-pdopg",
+                "reference": "844b516e8b6332fd3490d1fdd7968c1a75b24c77"
+            },
+            "require": {
+                "bl/auth": "*@dev",
+                "bl/exception": "*@dev",
+                "ext-pdo_pgsql": "*",
+                "php": ">=8.5"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "Bl\\Auth\\PdoPg\\": "src/"
+                }
+            },
+            "license": [
+                "Apache-2.0"
+            ],
+            "authors": [
+                {
+                    "name": "Loïc Faugeron",
+                    "email": "faugeron.loic@gmail.com"
+                }
+            ],
+            "description": "BisouLand - Auth PDO PostgreSQL",
             "transport-options": {
                 "relative": true
             }
@@ -245,6 +271,7 @@
     "minimum-stability": "stable",
     "stability-flags": {
         "bl/auth": 20,
+        "bl/auth-pdopg": 20,
         "bl/exception": 20
     },
     "prefer-stable": false,

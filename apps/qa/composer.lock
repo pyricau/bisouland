@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "a7430dcf5739698accb2d9b0f0816579",
+    "content-hash": "3f14afd9771560e0f37e18f6d082a848",
     "packages": [
         {
             "name": "bl/auth",
@@ -35,6 +35,40 @@
                 }
             ],
             "description": "BisouLand - Auth",
+            "transport-options": {
+                "relative": true
+            }
+        },
+        {
+            "name": "bl/auth-pdopg",
+            "version": "dev-main",
+            "dist": {
+                "type": "path",
+                "url": "../../packages/bl-auth-pdopg",
+                "reference": "844b516e8b6332fd3490d1fdd7968c1a75b24c77"
+            },
+            "require": {
+                "bl/auth": "*@dev",
+                "bl/exception": "*@dev",
+                "ext-pdo_pgsql": "*",
+                "php": ">=8.5"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "Bl\\Auth\\PdoPg\\": "src/"
+                }
+            },
+            "license": [
+                "Apache-2.0"
+            ],
+            "authors": [
+                {
+                    "name": "Loïc Faugeron",
+                    "email": "faugeron.loic@gmail.com"
+                }
+            ],
+            "description": "BisouLand - Auth PDO PostgreSQL",
             "transport-options": {
                 "relative": true
             }
@@ -5918,11 +5952,15 @@
             "dist": {
                 "type": "path",
                 "url": "../../packages/bl-auth-tests",
-                "reference": "ade8670103962309343de832b8f5a0d8b4ae2cbe"
+                "reference": "f4a4a7cfe6d1b3905a8b7bde4fa99807ec08a4e3"
             },
             "require": {
                 "bl/auth": "*@dev",
                 "php": ">=8.5"
+            },
+            "require-dev": {
+                "phpspec/prophecy-phpunit": "^2.4",
+                "phpunit/phpunit": "^12.0"
             },
             "type": "library",
             "autoload": {
@@ -7996,6 +8034,7 @@
     "minimum-stability": "stable",
     "stability-flags": {
         "bl/auth": 20,
+        "bl/auth-pdopg": 20,
         "bl/auth-tests": 20,
         "bl/exception": 20,
         "bl/exception-bundle": 20

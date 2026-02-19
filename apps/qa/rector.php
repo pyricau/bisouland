@@ -38,6 +38,7 @@ return RectorConfig::configure()
     ->withPaths([
         __DIR__,
         __DIR__.'/../monolith',
+        __DIR__.'/../../packages',
     ])
     ->withSkip([
         // —— Excluded paths ———————————————————————————————————————————————————
@@ -48,6 +49,8 @@ return RectorConfig::configure()
         __DIR__.'/vendor',
         // [monolith]
         __DIR__.'/../monolith/vendor',
+        // [packages]
+        __DIR__.'/../../packages/*/vendor',
 
         // —— Excluded rules ———————————————————————————————————————————————————
         // [CODE_QUALITY]

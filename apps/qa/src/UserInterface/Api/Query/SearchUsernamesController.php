@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Bl\Qa\UserInterface\Api\Query;
 
-use Bl\Qa\Domain\Game\SearchUsernames;
+use Bl\Game\SearchUsernames;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Attribute\Route;

@@ -4,10 +4,10 @@ declare(strict_types=1);
 
 namespace Bl\Qa\UserInterface\Cli\Action;
 
+use Bl\Exception\ServerErrorException;
+use Bl\Exception\ValidationFailedException;
 use Bl\Qa\Application\Action\InstantFreeUpgrade\InstantFreeUpgrade;
 use Bl\Qa\Application\Action\InstantFreeUpgrade\InstantFreeUpgradeHandler;
-use Bl\Qa\Domain\Exception\ServerErrorException;
-use Bl\Qa\Domain\Exception\ValidationFailedException;
 use Symfony\Component\Console\Attribute\Argument;
 use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Console\Attribute\Option;

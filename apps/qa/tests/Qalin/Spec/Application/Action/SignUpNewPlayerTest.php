@@ -4,9 +4,9 @@ declare(strict_types=1);
 
 namespace Bl\Qa\Tests\Qalin\Spec\Application\Action;
 
+use Bl\Auth\Tests\Fixtures\Account\PasswordPlainFixture;
+use Bl\Auth\Tests\Fixtures\Account\UsernameFixture;
 use Bl\Qa\Application\Action\SignUpNewPlayer\SignUpNewPlayer;
-use Bl\Qa\Tests\Fixtures\Domain\Auth\Account\PasswordPlainFixture;
-use Bl\Qa\Tests\Fixtures\Domain\Auth\Account\UsernameFixture;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\Attributes\Small;

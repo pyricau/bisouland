@@ -4,18 +4,18 @@ declare(strict_types=1);
 
 namespace Bl\Qa\Tests\Qalin\Spec\Application\Action;
 
+use Bl\Auth\Account\Username;
+use Bl\Auth\Tests\Fixtures\Account\UsernameFixture;
+use Bl\Exception\ServerErrorException;
+use Bl\Exception\ValidationFailedException;
+use Bl\Game\ApplyCompletedUpgrade;
+use Bl\Game\FindPlayer;
+use Bl\Game\Player\UpgradableLevels\Upgradable;
+use Bl\Game\Tests\Fixtures\Player\UpgradableLevels\UpgradableFixture;
+use Bl\Game\Tests\Fixtures\PlayerFixture;
 use Bl\Qa\Application\Action\InstantFreeUpgrade\InstantFreeUpgrade;
 use Bl\Qa\Application\Action\InstantFreeUpgrade\InstantFreeUpgradeHandler;
 use Bl\Qa\Application\Action\InstantFreeUpgrade\InstantFreeUpgradeOutput;
-use Bl\Qa\Domain\Auth\Account\Username;
-use Bl\Qa\Domain\Exception\ServerErrorException;
-use Bl\Qa\Domain\Exception\ValidationFailedException;
-use Bl\Qa\Domain\Game\ApplyCompletedUpgrade;
-use Bl\Qa\Domain\Game\FindPlayer;
-use Bl\Qa\Domain\Game\Player\UpgradableLevels\Upgradable;
-use Bl\Qa\Tests\Fixtures\Domain\Auth\Account\UsernameFixture;
-use Bl\Qa\Tests\Fixtures\Domain\Game\Player\UpgradableLevels\UpgradableFixture;
-use Bl\Qa\Tests\Fixtures\Domain\Game\PlayerFixture;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\Attributes\Small;

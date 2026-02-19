@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace <?php echo $namespace; ?>;
 
-use Bl\Qa\Domain\Exception\ServerErrorException;
-use Bl\Qa\Domain\Exception\ValidationFailedException;
+use Bl\Exception\ServerErrorException;
+use Bl\Exception\ValidationFailedException;
 
 /**
  * @object-type UseCase

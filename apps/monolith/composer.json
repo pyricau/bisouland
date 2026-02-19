@@ -13,8 +13,17 @@
             "email": "py@gmail.com"
         }
     ],
+    "repositories": [
+        {
+            "type": "path",
+            "url": "../../packages/*"
+        }
+    ],
     "require": {
         "php": ">=8.5",
+        "bl/auth": "*@dev",
+        "bl/auth-pdopg": "*@dev",
+        "bl/exception": "*@dev",
         "ext-curl": "*",
         "ext-pdo_pgsql": "*",
         "symfony/uid": "^8.0.4"
@@ -32,15 +41,6 @@
             "phpincludes/remove_auth_token.php",
             "phpincludes/save_auth_token.php"
         ]
-    },
-    "require-dev": {
-        "phpspec/prophecy-phpunit": "^2.4",
-        "phpunit/phpunit": "^12.5.8"
-    },
-    "autoload-dev": {
-        "psr-4": {
-            "Bl\\Tests\\": "tests/"
-        }
     },
     "config": {
         "bump-after-update": true,

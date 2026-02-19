@@ -1,0 +1,28 @@
+{
+    "name": "bl/auth",
+    "type": "library",
+    "description": "BisouLand - Auth",
+    "license": "Apache-2.0",
+    "authors": [
+        {
+            "name": "Loïc Faugeron",
+            "email": "faugeron.loic@gmail.com"
+        }
+    ],
+    "require": {
+        "php": ">=8.5",
+        "bl/exception": "*@dev",
+        "symfony/uid": "^8.0"
+    },
+    "autoload": {
+        "psr-4": {
+            "Bl\\Auth\\": "src/"
+        }
+    },
+    "repositories": [
+        {
+            "type": "path",
+            "url": "../*"
+        }
+    ]
+}

@@ -1,0 +1,26 @@
+{
+    "name": "bl/exception",
+    "type": "library",
+    "description": "BisouLand - Exception",
+    "license": "Apache-2.0",
+    "authors": [
+        {
+            "name": "Loïc Faugeron",
+            "email": "faugeron.loic@gmail.com"
+        }
+    ],
+    "require": {
+        "php": ">=8.5"
+    },
+    "autoload": {
+        "psr-4": {
+            "Bl\\Exception\\": "src/"
+        }
+    },
+    "repositories": [
+        {
+            "type": "path",
+            "url": "../*"
+        }
+    ]
+}

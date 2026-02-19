@@ -4,12 +4,12 @@ declare(strict_types=1);
 
 namespace Bl\Qa\Application\Action\InstantFreeUpgrade;
 
-use Bl\Qa\Domain\Auth\Account\Username;
-use Bl\Qa\Domain\Exception\ServerErrorException;
-use Bl\Qa\Domain\Exception\ValidationFailedException;
-use Bl\Qa\Domain\Game\ApplyCompletedUpgrade;
-use Bl\Qa\Domain\Game\FindPlayer;
-use Bl\Qa\Domain\Game\Player\UpgradableLevels\Upgradable;
+use Bl\Auth\Account\Username;
+use Bl\Exception\ServerErrorException;
+use Bl\Exception\ValidationFailedException;
+use Bl\Game\ApplyCompletedUpgrade;
+use Bl\Game\FindPlayer;
+use Bl\Game\Player\UpgradableLevels\Upgradable;
 
 /**
  * @object-type UseCase

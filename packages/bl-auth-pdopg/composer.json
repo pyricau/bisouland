@@ -1,0 +1,29 @@
+{
+    "name": "bl/auth-pdopg",
+    "type": "library",
+    "description": "BisouLand - Auth PDO PostgreSQL",
+    "license": "Apache-2.0",
+    "authors": [
+        {
+            "name": "Loïc Faugeron",
+            "email": "faugeron.loic@gmail.com"
+        }
+    ],
+    "require": {
+        "php": ">=8.5",
+        "ext-pdo_pgsql": "*",
+        "bl/auth": "*@dev",
+        "bl/exception": "*@dev"
+    },
+    "autoload": {
+        "psr-4": {
+            "Bl\\Auth\\PdoPg\\": "src/"
+        }
+    },
+    "repositories": [
+        {
+            "type": "path",
+            "url": "../*"
+        }
+    ]
+}

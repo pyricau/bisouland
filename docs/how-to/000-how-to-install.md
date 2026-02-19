@@ -20,11 +20,14 @@ make apps-qa
 
 The website can then be accessed at this URL: http://localhost:43000.
 
-BisouLand is actually divided into apps:
+BisouLand is a monorepo divided into apps and packages:
 
 * `apps/monolith`: the eXtreme Legacy (2005 LAMP) app,
   that's the website you browse at http://localhost:43000
 * `apps/qa`: tools to improve and maintain the high quality of BisouLand,
   that'd be tests, coding standards, static analysis, etc
+* `packages/`: shared libraries used across apps
+  (e.g. `bl/exception`, `bl/auth`, etc)
 
-Find more documentation for each app in their respective directories.
+Find more documentation for each app in their respective directories,
+and further how-to guides in `docs/how-to/`.

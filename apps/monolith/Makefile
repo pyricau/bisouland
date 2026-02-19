@@ -9,7 +9,6 @@ MONOLITH_SERVICE = web
 
 # Executables
 COMPOSER = docker compose exec $(MONOLITH_SERVICE) composer
-PHPUNIT = docker compose exec $(MONOLITH_SERVICE) php vendor/bin/phpunit
 
 # Misc
 .DEFAULT_GOAL = help
@@ -56,9 +55,6 @@ composer-update: ## Updates dependencies (arg, eg `arg='--no-dev'`)
 composer-dump: ## Dumps autoloader (arg, eg `arg='--classmap-authoritative'`)
 	@$(COMPOSER) dump-autoload --optimize --strict-psr --strict-ambiguous $(arg)
 
-phpunit: ## Runs the tests with PHPUnit (arg, eg `arg='./tests/Smoke'`)
-	@$(PHPUNIT) $(arg)
-
 ## —— Database ⛁ ———————————————————————————————————————————————————————————————
 db-reset: ## Reset the database by dropping and recreating it with schema.sql
 	@./bin/db-reset.sh
@@ -82,12 +78,3 @@ app-init: ## First install / resetting (Docker build, up, etc)
 	@echo ''
 	@echo '  [OK] Monolith initialized'
 
-app-qa: ## Runs full QA pipeline (composer-dump, test)
-	@echo ''
-	@echo '  // Running composer dump...'
-	@$(MAKE) composer-dump
-	@echo ''
-	@echo '  // Running PHPUnit...'
-	@$(MAKE) phpunit
-	@echo ''
-	@echo '  [OK] QA done'

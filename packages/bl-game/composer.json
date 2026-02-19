@@ -1,0 +1,14 @@
+{
+    "name": "bl/game",
+    "type": "library",
+    "description": "BisouLand - Game",
+    "license": "Apache-2.0",
+    "authors": [{"name": "Loïc Faugeron", "email": "faugeron.loic@gmail.com"}],
+    "require": {
+        "php": ">=8.5",
+        "bl/auth": "*@dev",
+        "bl/exception": "*@dev"
+    },
+    "autoload": {"psr-4": {"Bl\\Game\\": "src/"}},
+    "repositories": [{"type": "path", "url": "../*"}]
+}

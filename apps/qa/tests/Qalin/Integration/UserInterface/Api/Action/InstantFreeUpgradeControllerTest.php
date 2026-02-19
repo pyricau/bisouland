@@ -4,10 +4,10 @@ declare(strict_types=1);
 
 namespace Bl\Qa\Tests\Qalin\Integration\UserInterface\Api\Action;
 
+use Bl\Auth\Tests\Fixtures\Account\PasswordPlainFixture;
+use Bl\Auth\Tests\Fixtures\Account\UsernameFixture;
+use Bl\Game\Tests\Fixtures\Player\UpgradableLevels\UpgradableFixture;
 use Bl\Qa\Application\Action\SignUpNewPlayer\SignUpNewPlayer;
-use Bl\Qa\Tests\Fixtures\Domain\Auth\Account\PasswordPlainFixture;
-use Bl\Qa\Tests\Fixtures\Domain\Auth\Account\UsernameFixture;
-use Bl\Qa\Tests\Fixtures\Domain\Game\Player\UpgradableLevels\UpgradableFixture;
 use Bl\Qa\Tests\Monolith\Infrastructure\TestKernelSingleton;
 use PHPUnit\Framework\Attributes\CoversNothing;
 use PHPUnit\Framework\Attributes\DataProvider;

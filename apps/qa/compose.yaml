@@ -10,6 +10,8 @@ services:
       # Mount current directory into container for QA tools and configs
       - .:/apps/qa
       - vendor:/apps/qa/vendor
+      # Mount shared packages
+      - ../../packages:/packages
       # Mount the monolith source code for analysis
       - ../monolith:/apps/monolith
       # Mount the monolith's vendor volume for PHPStan analysis

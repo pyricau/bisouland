@@ -4,9 +4,11 @@ declare(strict_types=1);
 
 namespace Bl\Qa\Tests\Monolith\EndToEnd;
 
-use Bl\Qa\Tests\Monolith\EndToEnd\Assertion\Assert;
-use Bl\Qa\Tests\Monolith\Infrastructure\Scenario\GetLoggedInPlayer;
-use Bl\Qa\Tests\Monolith\Infrastructure\Scenario\LogOutPlayer;
+use Bl\Auth\Tests\Fixtures\Account\PasswordPlainFixture;
+use Bl\Auth\Tests\Fixtures\Account\UsernameFixture;
+use Bl\Qa\Application\Action\SignInPlayer\SignInPlayer;
+use Bl\Qa\Application\Action\SignUpNewPlayer\SignUpNewPlayer;
+use Bl\Qa\Tests\Monolith\Infrastructure\TestKernelSingleton;
 use PHPUnit\Framework\Attributes\CoversNothing;
 use PHPUnit\Framework\Attributes\Large;
 use PHPUnit\Framework\TestCase;
@@ -17,12 +19,32 @@ final class LogOutTest extends TestCase
 {
     public function test_it_allows_players_to_log_out(): void
     {
-        $loggedInPlayer = GetLoggedInPlayer::run();
+        // Arrange
+        $httpClient = TestKernelSingleton::get()->httpClient();
+        $actionRunner = TestKernelSingleton::get()->actionRunner();
 
-        Assert::playerIsLoggedIn($loggedInPlayer);
+        $signedUpPlayer = $actionRunner->run(new SignUpNewPlayer(
+            UsernameFixture::makeString(),
+            PasswordPlainFixture::makeString(),
+        ))->toArray();
+        $signedInPlayer = $actionRunner->run(new SignInPlayer(
+            (string) $signedUpPlayer['username'],
+        ))->toArray();
 
-        LogOutPlayer::run($loggedInPlayer);
+        $sessionCookie = "{$signedInPlayer['cookie_name']}={$signedInPlayer['cookie_value']}";
 
-        Assert::playerIsLoggedOut($loggedInPlayer);
+        // Act
+        $httpClient->request('GET', '/logout.html', [
+            'headers' => ['Cookie' => $sessionCookie],
+        ]);
+
+        // Assert
+        $response = $httpClient->request('GET', '/cerveau.html', [
+            'headers' => ['Cookie' => $sessionCookie],
+        ]);
+        $content = $response->getContent();
+
+        $this->assertStringContainsString("Tu n'es pas connect&eacute;.", $content);
+        $this->assertSame(200, $response->getStatusCode(), $content);
     }
 }

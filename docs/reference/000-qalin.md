@@ -54,8 +54,9 @@ Nearly a day, and most of it is just watching completion timers tick.
 We've spent 15,000 LP to be able to build a Smooch,
 which by the way grants us 15 Score Points (SC).
 
-Ready to blow kisses now? Well not quite: Players aren't able to blow kisses
-(and be kissed) when they have under 50 SP.
+Ready to blow kisses now? Well not quite.
+
+Players aren't able to blow kisses (and be kissed) when they have under 50 SP.
 
 The grind is not done yet.
 
@@ -82,7 +83,58 @@ bypassing game restrictions (costs, completion times, etc).
 **Scenarios** are composed sequences of actions that bring the game to a specific,
 meaningful state in one call, named after what they represent in the domain.
 
+For example, `instant-free-upgrade` upgrades any upgradable N levels at once, for free,
+with no completion timer:
+
+```php
+<?php
+
+declare(strict_types=1);
+
+namespace Bl\Qa\Application\Action\InstantFreeUpgrade;
+
+use Bl\Auth\Account\Username;
+use Bl\Exception\ServerErrorException;
+use Bl\Exception\ValidationFailedException;
+use Bl\Game\ApplyCompletedUpgrade;
+use Bl\Game\FindPlayer;
+use Bl\Game\Player\UpgradableLevels\Upgradable;
+
+final readonly class InstantFreeUpgradeHandler
+{
+    public function __construct(
+        private ApplyCompletedUpgrade $applyCompletedUpgrade,
+        private FindPlayer $findPlayer,
+    ) {
+    }
+
+    public function run(InstantFreeUpgrade $input): InstantFreeUpgradeOutput
+    {
+        $username = Username::fromString($input->username);
+        $upgradable = Upgradable::fromString($input->upgradable);
+        if ($input->levels < 1) {
+            throw ValidationFailedException::make(
+                "Invalid \"InstantFreeUpgrade\" parameter: it should have levels >= 1 (`{$input->levels}` given)",
+            );
+        }
+
+        $player = $this->findPlayer->find($username);
+
+        for ($i = 0; $i < $input->levels; ++$i) {
+            $upgradable->checkPrerequisites($player->upgradableLevels);
+            $milliScore = $upgradable->computeCost($player->upgradableLevels);
+            $player = $this->applyCompletedUpgrade->apply($username, $upgradable, $milliScore);
+        }
+
+        return new InstantFreeUpgradeOutput($player);
+    }
+}
+```
+
 ## Interfaces
+
+Qalin runs alongside the app in local, dev, test, and staging environments. It is
+never deployed to production.
 
 Qalin exposes the same actions and scenarios through multiple interfaces, so everyone
 can use it in the way that suits them:
@@ -115,25 +167,83 @@ For designers and product who prefer a browser, for example:
 
 ### API
 
-For bots, scripts, and HTTP clients, for example:
+For bots, scripts, and HTTP clients:
 
-* `POST http://localhost:43010/actions/sign-up-new-player`
-* `POST http://localhost:43010/actions/instant-free-upgrade`
+```console
+curl -X POST http://localhost:43010/api/v1/actions/sign-up-new-player \
+     -H 'Content-Type: application/json' \
+     -d '{"username": "Petrus", "password": "iLoveBlade"}'
+
+curl -X POST http://localhost:43010/api/v1/actions/instant-free-upgrade \
+     -H 'Content-Type: application/json' \
+     -d '{"username": "Petrus", "upgradable": "heart", "levels": 5}'
+```
 
 ### Testsuite
 
-For automated tests. `TestKernelSingleton` boots the real application once per run and
-exposes:
+For automated tests, Qalin exposes an `ActionRunner` that runs Actions directly.
 
-| Method            | Returns                                     |
-|-------------------|---------------------------------------------|
-| `application()`   | `ApplicationTester` (wraps the CLI)         |
-| `httpClient()`    | HTTP client pointed at the Web/API          |
-| `actionRunner()`  | runs use cases directly, no HTTP or CLI     |
-| `pdo()`           | direct database connection                  |
+Its purpose is **setting up state** with minimal boilerplate: rather than writing raw
+SQL queries or curl requests, a test calls the relevant Action through the runner.
 
-Reusable scenarios (e.g. `SignUpNewPlayer::run()`, `LogInPlayer::run()`) combine these
-to set up test state in a single call.
+This applies to Smoke, End-to-End, and Integration tests. Unit and Spec tests deal with
+isolated logic and have no need for Qalin Actions.
+
+For example, testing log-out requires a logged-in player, set up in the Arrange section
+via two chained Actions:
+
+```php
+<?php
+
+declare(strict_types=1);
+
+namespace Bl\Qa\Tests\Monolith\EndToEnd;
+
+use Bl\Auth\Tests\Fixtures\Account\PasswordPlainFixture;
+use Bl\Auth\Tests\Fixtures\Account\UsernameFixture;
+use Bl\Qa\Application\Action\SignInPlayer\SignInPlayer;
+use Bl\Qa\Application\Action\SignUpNewPlayer\SignUpNewPlayer;
+use Bl\Qa\Tests\Monolith\Infrastructure\TestKernelSingleton;
+use PHPUnit\Framework\Attributes\CoversNothing;
+use PHPUnit\Framework\Attributes\Large;
+use PHPUnit\Framework\TestCase;
+
+#[CoversNothing]
+#[Large]
+final class LogOutTest extends TestCase
+{
+    public function test_it_allows_players_to_log_out(): void
+    {
+        // Arrange
+        $httpClient = TestKernelSingleton::get()->httpClient();
+        $actionRunner = TestKernelSingleton::get()->actionRunner();
+
+        $signedUpPlayer = $actionRunner->run(new SignUpNewPlayer(
+            UsernameFixture::makeString(),
+            PasswordPlainFixture::makeString(),
+        ))->toArray();
+        $signedInPlayer = $actionRunner->run(new SignInPlayer(
+            $signedUpPlayer['username'],
+        ))->toArray();
+
+        $sessionCookie = "{$signedInPlayer['cookie_name']}={$signedInPlayer['cookie_value']}";
+
+        // Act
+        $httpClient->request('GET', '/logout.html', [
+            'headers' => ['Cookie' => $sessionCookie],
+        ]);
+
+        // Assert
+        $response = $httpClient->request('GET', '/cerveau.html', [
+            'headers' => ['Cookie' => $sessionCookie],
+        ]);
+        $content = $response->getContent();
+
+        $this->assertStringContainsString("Tu n'es pas connect&eacute;.", $content);
+        $this->assertSame(200, $response->getStatusCode(), $content);
+    }
+}
+```
 
 ## Inspiration
 
@@ -146,3 +256,52 @@ The core idea is the same: rather than touching the database directly or bending
 production code to fit a test scenario, you expose a dedicated set of controlled
 operations that anyone on the team can call: developers, QA, designers, product,
 and automated tests alike.
+
+A QAAPI method is called via HTTP:
+
+```
+/SetPromoTimeOffset?seconds=20&userid=12345
+```
+
+And returns JSON:
+
+```json
+{ "success" : true }
+```
+
+Its implementation is a self-contained class with a description, typed parameters,
+and a `run()` method:
+
+```php
+<?php
+
+class SetPromoTimeOffset extends \QAAPI\Methods\AbstractMethod
+{
+    public function getDescription() : string
+    {
+        return <<<Description
+Sets a time offset in seconds between the user's registration date and the promo showing
+Description;
+    }
+
+    public function getParamsConfig() : array
+    {
+        return [
+            'user_id' => \QAAPI\Params\UserId::create(),
+            'seconds' => \QAAPI\Params\PositiveInteger::create()
+                ->setDescription('Offset in seconds'),
+        ];
+    }
+
+    public function run() : \QAAPI\Models\Output
+    {
+        // logic here
+
+        return \QAAPI\Models\Output::success();
+    }
+}
+```
+
+Qalin follows the same concept, with a few differences: input is a separate readonly DTO
+rather than a method on the class, dependencies are injected via the constructor rather
+than inherited, and the handler is wired through Symfony's service container.

@@ -9,15 +9,11 @@ use Bl\Qa\Tests\Monolith\Infrastructure\TestKernelSingleton;
 final readonly class SignUpNewPlayer
 {
     public static function run(
-        string $username = 'BisouTest',
-        string $password = 'password',
-        string $passwordConfirmation = 'password',
-    ): Player {
+        string $username,
+        string $password,
+        string $passwordConfirmation,
+    ): string {
         $httpClient = TestKernelSingleton::get()->httpClient();
-
-        if ('BisouTest' === $username) {
-            $username = substr('BisouTest_'.uniqid(), 0, 15);
-        }
 
         $httpClient->request('POST', '/inscription.html', [
             'body' => [
@@ -31,6 +27,6 @@ final readonly class SignUpNewPlayer
             ],
         ]);
 
-        return new Player($username, $password);
+        return $username;
     }
 }

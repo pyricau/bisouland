@@ -6,6 +6,16 @@ This file logs the changes between versions.
 
 v4: 2025 second v1 rollback, refactoring attempt.
 
+* `4.0.24`: Monorepo
+    * extracted `bl/exception` package
+    * extracted `bl/exception-bundle` package
+    * extracted `bl/auth` package
+    * extracted `bl/auth-pdopg` package
+    * extracted `bl/auth-tests` package
+    * extracted `bl/game` package
+    * extracted `bl/game-bundle` package
+    * extracted `bl/game-pdopg` package
+    * extracted `bl/game-tests` package
 * `4.0.23`: Qalin
     * replaced remnants of private messages with system notifications
     * removed old admin backend (news article management)

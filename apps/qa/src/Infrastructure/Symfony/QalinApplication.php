@@ -30,9 +30,9 @@ final class QalinApplication extends Application
             $output->writeln($this->getHelp());
             $output->writeln('<fg=yellow>Available commands:</>');
             foreach ($this->all() as $command) {
-                $name = $command->getName();
+                $name = $command->getName() ?? '';
                 if (str_starts_with($name, 'action:') || str_starts_with($name, 'scenario:')) {
-                    $output->writeln(sprintf('  <info>%-35s</info> %s', $name, $command->getDescription()));
+                    $output->writeln(\sprintf('  <info>%-35s</info> %s', $name, $command->getDescription()));
                 }
             }
 

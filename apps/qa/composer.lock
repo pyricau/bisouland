@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "1abaa949cd41d7fc9c9352d59f7adb9e",
+    "content-hash": "c8059752a5afb5aa565b457c3cee478a",
     "packages": [
         {
             "name": "bl/auth",
@@ -35,6 +35,40 @@
                 }
             ],
             "description": "BisouLand - Auth",
+            "transport-options": {
+                "relative": true
+            }
+        },
+        {
+            "name": "bl/auth-bundle",
+            "version": "dev-main",
+            "dist": {
+                "type": "path",
+                "url": "../../packages/bl-auth-bundle",
+                "reference": "21fd501a7723a6961dc9885f82a244f2271061ce"
+            },
+            "require": {
+                "bl/auth": "*@dev",
+                "bl/auth-pdopg": "*@dev",
+                "php": ">=8.5",
+                "symfony/framework-bundle": "^8.0"
+            },
+            "type": "symfony-bundle",
+            "autoload": {
+                "psr-4": {
+                    "Bl\\AuthBundle\\": "src/"
+                }
+            },
+            "license": [
+                "Apache-2.0"
+            ],
+            "authors": [
+                {
+                    "name": "Loïc Faugeron",
+                    "email": "faugeron.loic@gmail.com"
+                }
+            ],
+            "description": "BisouLand - Auth Bundle",
             "transport-options": {
                 "relative": true
             }
@@ -8283,6 +8317,7 @@
     "minimum-stability": "stable",
     "stability-flags": {
         "bl/auth": 20,
+        "bl/auth-bundle": 20,
         "bl/auth-pdopg": 20,
         "bl/auth-tests": 20,
         "bl/exception": 20,

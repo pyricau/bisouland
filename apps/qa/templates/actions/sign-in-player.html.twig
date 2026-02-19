@@ -1,0 +1,16 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Sign In Player - Qalin{% endblock %}
+
+{% block body %}
+    <h2>Action: Sign In Player</h2>
+    <form data-api="/api/v1/actions/sign-in-player" data-expect="201">
+        <label for="username">Username</label>
+        <div style="position: relative;">
+            <input class="u-full-width" type="text" id="username" name="username" required>
+            <ul id="username-suggestions"></ul>
+        </div>
+        <button class="button-primary" type="submit">Sign In Player</button>
+    </form>
+    <div class="result"></div>
+{% endblock %}

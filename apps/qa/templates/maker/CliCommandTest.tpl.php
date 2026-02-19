@@ -14,7 +14,7 @@ use <?php echo $param['fixture_fqcn']; ?>;
 <?php } ?>
 <?php } ?>
 <?php if ($has_username_param) { ?>
-use Bl\Qa\Tests\Fixtures\Domain\Auth\Account\PasswordPlainFixture;
+use Bl\Auth\Tests\Fixtures\Account\PasswordPlainFixture;
 <?php } ?>
 use PHPUnit\Framework\Attributes\CoversNothing;
 use PHPUnit\Framework\Attributes\DataProvider;

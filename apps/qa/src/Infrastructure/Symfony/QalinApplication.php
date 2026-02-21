@@ -28,12 +28,28 @@ final class QalinApplication extends Application
     {
         if (!$this->getCommandName($input)) {
             $output->writeln($this->getHelp());
-            $output->writeln('<fg=yellow>Available commands:</>');
+            $actions = [];
+            $scenarios = [];
             foreach ($this->all() as $command) {
                 $name = $command->getName() ?? '';
-                if (str_starts_with($name, 'action:') || str_starts_with($name, 'scenario:')) {
-                    $output->writeln(\sprintf('  <info>%-35s</info> %s', $name, $command->getDescription()));
-                }
+                match (true) {
+                    str_starts_with($name, 'action:') => $actions[] = $command,
+                    str_starts_with($name, 'scenario:') => $scenarios[] = $command,
+                    default => null,
+                };
+            }
+
+            $output->writeln('<fg=yellow>Available actions:</>');
+            foreach ($actions as $action) {
+                $padded = str_pad($action->getName() ?? '', 35);
+                $output->writeln("  <info>{$padded}</info> {$action->getDescription()}");
+            }
+
+            $output->writeln('');
+            $output->writeln('<fg=yellow>Available scenarios:</>');
+            foreach ($scenarios as $scenario) {
+                $padded = str_pad($scenario->getName() ?? '', 35);
+                $output->writeln("  <info>{$padded}</info> {$scenario->getDescription()}");
             }
 
             return 0;

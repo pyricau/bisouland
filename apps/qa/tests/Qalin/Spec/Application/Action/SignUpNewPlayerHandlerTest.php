@@ -32,23 +32,26 @@ final class SignUpNewPlayerHandlerTest extends TestCase
     public function test_it_signs_up_a_new_player_for_a_given_username_and_password(): void
     {
         $username = UsernameFixture::makeString();
-        $password = PasswordPlainFixture::makeString();
+        $passwordPlain = PasswordPlainFixture::makeString();
         $expectedPlayer = PlayerFixture::make();
 
         $saveNewPlayer = $this->prophesize(SaveNewPlayer::class);
 
         $saveNewPlayer->save(
             Argument::that(static fn (Username $u): bool => $u->toString() === $username),
-            Argument::that(static fn (PasswordPlain $p): bool => $p->toString() === $password),
+            Argument::that(static fn (PasswordPlain $p): bool => $p->toString() === $passwordPlain),
         )->willReturn($expectedPlayer);
 
         $signUpNewPlayerHandler = new SignUpNewPlayerHandler(
             $saveNewPlayer->reveal(),
         );
-        $output = $signUpNewPlayerHandler->run(new SignUpNewPlayer($username, $password));
+        $signedUpNewPlayer = $signUpNewPlayerHandler->run(new SignUpNewPlayer(
+            $username,
+            $passwordPlain,
+        ));
 
-        $this->assertInstanceOf(SignUpNewPlayerOutput::class, $output);
-        $this->assertSame($expectedPlayer, $output->player);
+        $this->assertInstanceOf(SignUpNewPlayerOutput::class, $signedUpNewPlayer);
+        $this->assertSame($expectedPlayer, $signedUpNewPlayer->player);
     }
 
     /**
@@ -61,13 +64,13 @@ final class SignUpNewPlayerHandlerTest extends TestCase
         string $exception,
     ): void {
         $username = UsernameFixture::makeString();
-        $password = PasswordPlainFixture::makeString();
+        $passwordPlain = PasswordPlainFixture::makeString();
 
         $saveNewPlayer = $this->prophesize(SaveNewPlayer::class);
 
         $saveNewPlayer->save(
             Argument::that(static fn (Username $u): bool => $u->toString() === $username),
-            Argument::that(static fn (PasswordPlain $p): bool => $p->toString() === $password),
+            Argument::that(static fn (PasswordPlain $p): bool => $p->toString() === $passwordPlain),
         )->willThrow($exception);
 
         $signUpNewPlayerHandler = new SignUpNewPlayerHandler(
@@ -75,7 +78,10 @@ final class SignUpNewPlayerHandlerTest extends TestCase
         );
 
         $this->expectException($exception);
-        $signUpNewPlayerHandler->run(new SignUpNewPlayer($username, $password));
+        $signUpNewPlayerHandler->run(new SignUpNewPlayer(
+            $username,
+            $passwordPlain,
+        ));
     }
 
     /**
@@ -86,9 +92,21 @@ final class SignUpNewPlayerHandlerTest extends TestCase
      */
     public static function failureProvider(): \Iterator
     {
-        yield ['scenario' => 'Username is already registered', 'exception' => ValidationFailedException::class];
-        yield ['scenario' => 'CloudCoordinates X/Y are already occupied (race condition)', 'exception' => ValidationFailedException::class];
-        yield ['scenario' => 'CloudCoordinates Y is not available (cloud is full)', 'exception' => ValidationFailedException::class];
-        yield ['scenario' => 'an unexpected error occurs (database or remote endpoint failure)', 'exception' => ServerErrorException::class];
+        yield [
+            'scenario' => 'Username is already registered',
+            'exception' => ValidationFailedException::class,
+        ];
+        yield [
+            'scenario' => 'CloudCoordinates X/Y are already occupied (race condition)',
+            'exception' => ValidationFailedException::class,
+        ];
+        yield [
+            'scenario' => 'CloudCoordinates Y is not available (cloud is full)',
+            'exception' => ValidationFailedException::class,
+        ];
+        yield [
+            'scenario' => 'an unexpected error occurs (database or remote endpoint failure)',
+            'exception' => ServerErrorException::class,
+        ];
     }
 }

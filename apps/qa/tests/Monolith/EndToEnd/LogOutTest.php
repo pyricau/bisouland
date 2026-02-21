@@ -6,8 +6,7 @@ namespace Bl\Qa\Tests\Monolith\EndToEnd;
 
 use Bl\Auth\Tests\Fixtures\Account\PasswordPlainFixture;
 use Bl\Auth\Tests\Fixtures\Account\UsernameFixture;
-use Bl\Qa\Application\Action\SignInPlayer\SignInPlayer;
-use Bl\Qa\Application\Action\SignUpNewPlayer\SignUpNewPlayer;
+use Bl\Qa\Application\Scenario\SignInNewPlayer\SignInNewPlayer;
 use Bl\Qa\Tests\Monolith\Infrastructure\TestKernelSingleton;
 use PHPUnit\Framework\Attributes\CoversNothing;
 use PHPUnit\Framework\Attributes\Large;
@@ -21,17 +20,14 @@ final class LogOutTest extends TestCase
     {
         // Arrange
         $httpClient = TestKernelSingleton::get()->httpClient();
-        $actionRunner = TestKernelSingleton::get()->actionRunner();
+        $scenarioRunner = TestKernelSingleton::get()->scenarioRunner();
 
-        $signedUpPlayer = $actionRunner->run(new SignUpNewPlayer(
+        $signedInNewPlayer = $scenarioRunner->run(new SignInNewPlayer(
             UsernameFixture::makeString(),
             PasswordPlainFixture::makeString(),
         ))->toArray();
-        $signedInPlayer = $actionRunner->run(new SignInPlayer(
-            (string) $signedUpPlayer['username'],
-        ))->toArray();
 
-        $sessionCookie = "{$signedInPlayer['cookie_name']}={$signedInPlayer['cookie_value']}";
+        $sessionCookie = $signedInNewPlayer['cookie'];
 
         // Act
         $httpClient->request('GET', '/logout.html', [

@@ -10,6 +10,11 @@ use Bl\Qa\Application\Action\<?php echo $action_name; ?>\<?php echo $action_name
 use Bl\Exception\ServerErrorException;
 use Bl\Exception\ValidationFailedException;
 <?php foreach ($action_parameters as $param) { ?>
+<?php if ($param['value_object_fqcn']) { ?>
+use <?php echo $param['value_object_fqcn']; ?>;
+<?php } ?>
+<?php } ?>
+<?php foreach ($action_parameters as $param) { ?>
 <?php if ($param['fixture_fqcn']) { ?>
 use <?php echo $param['fixture_fqcn']; ?>;
 <?php } ?>
@@ -19,6 +24,7 @@ use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\Attributes\Small;
 use PHPUnit\Framework\Attributes\TestDox;
 use PHPUnit\Framework\TestCase;
+use Prophecy\Argument;
 use Prophecy\PhpUnit\ProphecyTrait;
 
 #[CoversClass(<?php echo $action_name; ?>Handler::class)]
@@ -33,6 +39,9 @@ final class <?php echo $class_name; ?> extends TestCase
 <?php foreach ($action_parameters as $param) { ?>
 <?php if ($param['fixture_fqcn']) { ?>
         $<?php echo $param['name']; ?> = <?php echo $param['fixture_class']; ?>::make<?php echo 'int' === $param['type'] ? 'Int' : 'String'; ?>();
+<?php if ($param['value_object_class']) { ?>
+        // Argument::that(static fn (<?php echo $param['value_object_class']; ?> $<?php echo $param['value_object_var']; ?>): bool => $<?php echo $param['value_object_var']; ?>->toString() === $<?php echo $param['name']; ?>)
+<?php } ?>
 <?php } elseif ('int' === $param['type']) { ?>
         $<?php echo $param['name']; ?> = 1; // TODO: use fixture
 <?php } else { ?>
@@ -43,7 +52,11 @@ final class <?php echo $class_name; ?> extends TestCase
         $<?php echo $action_camel; ?>Handler = new <?php echo $action_name; ?>Handler(
             // TODO: inject revealed prophecies
         );
-        $output = $<?php echo $action_camel; ?>Handler->run(new <?php echo $action_name; ?>(<?php echo implode(', ', array_map(static fn ($p) => '$'.$p['name'], $action_parameters)); ?>));
+        $output = $<?php echo $action_camel; ?>Handler->run(new <?php echo $action_name; ?>(
+<?php foreach ($action_parameters as $param) { ?>
+            $<?php echo $param['name']; ?>,
+<?php } ?>
+        ));
 
         $this->assertInstanceOf(<?php echo $action_name; ?>Output::class, $output);
         // TODO: add assertions on $output->player
@@ -62,6 +75,9 @@ final class <?php echo $class_name; ?> extends TestCase
 <?php foreach ($action_parameters as $param) { ?>
 <?php if ($param['fixture_fqcn']) { ?>
         $<?php echo $param['name']; ?> = <?php echo $param['fixture_class']; ?>::make<?php echo 'int' === $param['type'] ? 'Int' : 'String'; ?>();
+<?php if ($param['value_object_class']) { ?>
+        // Argument::that(static fn (<?php echo $param['value_object_class']; ?> $<?php echo $param['value_object_var']; ?>): bool => $<?php echo $param['value_object_var']; ?>->toString() === $<?php echo $param['name']; ?>)
+<?php } ?>
 <?php } elseif ('int' === $param['type']) { ?>
         $<?php echo $param['name']; ?> = 1; // TODO: use fixture
 <?php } else { ?>
@@ -74,7 +90,11 @@ final class <?php echo $class_name; ?> extends TestCase
         );
 
         $this->expectException($exception);
-        $<?php echo $action_camel; ?>Handler->run(new <?php echo $action_name; ?>(<?php echo implode(', ', array_map(static fn ($p) => '$'.$p['name'], $action_parameters)); ?>));
+        $<?php echo $action_camel; ?>Handler->run(new <?php echo $action_name; ?>(
+<?php foreach ($action_parameters as $param) { ?>
+            $<?php echo $param['name']; ?>,
+<?php } ?>
+        ));
     }
 
     /**
@@ -85,7 +105,13 @@ final class <?php echo $class_name; ?> extends TestCase
      */
     public static function failureProvider(): \Iterator
     {
-        yield ['scenario' => 'validation fails', 'exception' => ValidationFailedException::class];
-        yield ['scenario' => 'an unexpected error occurs', 'exception' => ServerErrorException::class];
+        yield [
+            'scenario' => 'validation fails',
+            'exception' => ValidationFailedException::class,
+        ];
+        yield [
+            'scenario' => 'an unexpected error occurs',
+            'exception' => ServerErrorException::class,
+        ];
     }
 }

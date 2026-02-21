@@ -29,8 +29,7 @@ final readonly class SignInPlayerOutput implements ActionOutput
             'auth_token_id' => $this->createAuthToken->authToken->authTokenId->toString(),
             'token_plain' => $this->createAuthToken->tokenPlain->toString(),
             'expires_at' => $this->createAuthToken->authToken->expiresAt->toString(),
-            'cookie_name' => $cookie->getName(),
-            'cookie_value' => $cookie->getValue(),
+            'cookie' => "{$cookie->getName()}={$cookie->getValue()}",
         ];
     }
 }

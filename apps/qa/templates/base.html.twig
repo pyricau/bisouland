@@ -17,6 +17,10 @@
             {% for action in actions %}
                 <a href="{{ action.path }}">{{ action.name }}</a>
             {% endfor %}
+            <span class="nav-label">Scenarios</span>
+            {% for scenario in scenarios %}
+                <a href="{{ scenario.path }}">{{ scenario.name }}</a>
+            {% endfor %}
         </nav>
         <main>
             {% block body %}{% endblock %}

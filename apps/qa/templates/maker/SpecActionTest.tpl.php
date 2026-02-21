@@ -31,7 +31,14 @@ final class <?php echo $class_name; ?> extends TestCase
         <?php echo $param['type']; ?> $<?php echo $param['name']; ?>,
 <?php } ?>
     ): void {
-        $<?php echo $action_camel; ?> = new <?php echo $action_name; ?>(<?php echo implode(', ', array_map(static fn ($p) => '$'.$p['name'], array_filter($action_parameters, static fn ($p) => null === $p['default']))); ?>);
+        $<?php echo $action_camel; ?> = new <?php echo $action_name; ?>(
+<?php foreach ($action_parameters as $param) {
+    if (null !== $param['default']) {
+        continue;
+    } ?>
+            $<?php echo $param['name']; ?>,
+<?php } ?>
+        );
 
 <?php foreach ($action_parameters as $param) {
     if (null !== $param['default']) {
@@ -58,10 +65,13 @@ final class <?php echo $class_name; ?> extends TestCase
     if (null !== $param['default']) {
         continue;
     } ?>
-        yield ['scenario' => '<?php echo $param['name']; ?> as a required parameter'<?php foreach ($action_parameters as $otherParam) {
-            if (null !== $otherParam['default']) {
-                continue;
-            } ?>, '<?php echo $otherParam['name']; ?>' => <?php if ($otherParam['fixture_fqcn']) { ?><?php echo $otherParam['fixture_class']; ?>::make<?php echo 'int' === $otherParam['type'] ? 'Int' : 'String'; ?>()<?php } elseif ('int' === $otherParam['type']) { ?>1<?php } else { ?>'valid_<?php echo $otherParam['name']; ?>'<?php } ?><?php } ?>];
+        yield [
+            'scenario' => '<?php echo $param['name']; ?> as a required parameter',
+<?php foreach ($action_parameters as $otherParam) {
+    if (null !== $otherParam['default']) {
+        continue;
+    } ?>            '<?php echo $otherParam['name']; ?>' => <?php if ($otherParam['fixture_fqcn']) { ?><?php echo $otherParam['fixture_class']; ?>::make<?php echo 'int' === $otherParam['type'] ? 'Int' : 'String'; ?>()<?php } elseif ('int' === $otherParam['type']) { ?>1<?php } else { ?>'valid_<?php echo $otherParam['name']; ?>'<?php } ?>,
+<?php } ?>        ];
 <?php } ?>
     }
 <?php if ($has_optional_params) { ?>
@@ -77,7 +87,14 @@ final class <?php echo $class_name; ?> extends TestCase
         $<?php echo $param['name']; ?> = <?php if ($param['fixture_fqcn']) { ?><?php echo $param['fixture_class']; ?>::make<?php echo 'int' === $param['type'] ? 'Int' : 'String'; ?>();<?php } elseif ('int' === $param['type']) { ?>1;<?php } else { ?>'valid_<?php echo $param['name']; ?>';<?php } ?>
 
 <?php } ?>
-        $<?php echo $action_camel; ?> = new <?php echo $action_name; ?>(<?php echo implode(', ', array_map(static fn ($p) => null === $p['default'] ? '$'.$p['name'] : '', $action_parameters)); ?>);
+        $<?php echo $action_camel; ?> = new <?php echo $action_name; ?>(
+<?php foreach ($action_parameters as $param) {
+    if (null !== $param['default']) {
+        continue;
+    } ?>
+            $<?php echo $param['name']; ?>,
+<?php } ?>
+        );
 
 <?php foreach ($action_parameters as $param) {
     if (null === $param['default']) {
@@ -104,7 +121,10 @@ final class <?php echo $class_name; ?> extends TestCase
     if (null === $param['default']) {
         continue;
     } ?>
-        yield ['scenario' => '<?php echo $param['name']; ?> as an optional parameter (defaults to <?php echo $param['default']; ?>)', 'expected<?php echo ucfirst($param['name']); ?>' => <?php echo $param['default']; ?>];
+        yield [
+            'scenario' => '<?php echo $param['name']; ?> as an optional parameter (defaults to <?php echo $param['default']; ?>)',
+            'expected<?php echo ucfirst($param['name']); ?>' => <?php echo $param['default']; ?>,
+        ];
 <?php } ?>
     }
 <?php } ?>

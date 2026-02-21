@@ -39,8 +39,16 @@ final class InstantFreeUpgradeTest extends TestCase
      */
     public static function requiredParametersProvider(): \Iterator
     {
-        yield ['scenario' => 'username as a required parameter', 'username' => UsernameFixture::makeString(), 'upgradable' => UpgradableFixture::makeString()];
-        yield ['scenario' => 'upgradable as a required parameter', 'username' => UsernameFixture::makeString(), 'upgradable' => UpgradableFixture::makeString()];
+        yield [
+            'scenario' => 'username as a required parameter',
+            'username' => UsernameFixture::makeString(),
+            'upgradable' => UpgradableFixture::makeString(),
+        ];
+        yield [
+            'scenario' => 'upgradable as a required parameter',
+            'username' => UsernameFixture::makeString(),
+            'upgradable' => UpgradableFixture::makeString(),
+        ];
     }
 
     #[DataProvider('optionalParametersProvider')]
@@ -60,6 +68,9 @@ final class InstantFreeUpgradeTest extends TestCase
      */
     public static function optionalParametersProvider(): \Iterator
     {
-        yield ['scenario' => 'levels as an optional parameter (defaults to 1)', 'expectedLevels' => 1];
+        yield [
+            'scenario' => 'levels as an optional parameter (defaults to 1)',
+            'expectedLevels' => 1,
+        ];
     }
 }

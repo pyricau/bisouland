@@ -38,8 +38,14 @@ final class InstantFreeUpgradeHandlerTest extends TestCase
      */
     public static function levelsProvider(): \Iterator
     {
-        yield ['scenario' => '1 level', 'levels' => 1];
-        yield ['scenario' => '3 levels', 'levels' => 3];
+        yield [
+            'scenario' => '1 level',
+            'levels' => 1,
+        ];
+        yield [
+            'scenario' => '3 levels',
+            'levels' => 3,
+        ];
     }
 
     #[TestDox('It provides an instant free upgrade for $scenario')]
@@ -55,13 +61,13 @@ final class InstantFreeUpgradeHandlerTest extends TestCase
 
         $findPlayer = $this->prophesize(FindPlayer::class);
         $findPlayer->find(
-            Argument::type(Username::class),
+            Argument::that(static fn (Username $u): bool => $u->toString() === $username),
         )->willReturn($player);
 
         $applyCompletedUpgrade = $this->prophesize(ApplyCompletedUpgrade::class);
         $applyCompletedUpgrade->apply(
-            Argument::type(Username::class),
-            Argument::type(Upgradable::class),
+            Argument::that(static fn (Username $u): bool => $u->toString() === $username),
+            Argument::that(static fn (Upgradable $u): bool => $u->toString() === $upgradable),
             Argument::type('int'), // milli_score
         )->shouldBeCalledTimes($levels)->willReturn($expectedPlayer);
 
@@ -69,7 +75,11 @@ final class InstantFreeUpgradeHandlerTest extends TestCase
             $applyCompletedUpgrade->reveal(),
             $findPlayer->reveal(),
         );
-        $output = $instantFreeUpgradeHandler->run(new InstantFreeUpgrade($username, $upgradable, $levels));
+        $output = $instantFreeUpgradeHandler->run(new InstantFreeUpgrade(
+            $username,
+            $upgradable,
+            $levels,
+        ));
 
         $this->assertInstanceOf(InstantFreeUpgradeOutput::class, $output);
         $this->assertSame($expectedPlayer, $output->player);
@@ -90,7 +100,11 @@ final class InstantFreeUpgradeHandlerTest extends TestCase
         );
 
         $this->expectException(ValidationFailedException::class);
-        $instantFreeUpgradeHandler->run(new InstantFreeUpgrade($username, $upgradable, $levels));
+        $instantFreeUpgradeHandler->run(new InstantFreeUpgrade(
+            $username,
+            $upgradable,
+            $levels,
+        ));
     }
 
     public function test_it_fails_when_username_is_not_an_existing_one(): void
@@ -101,7 +115,7 @@ final class InstantFreeUpgradeHandlerTest extends TestCase
 
         $findPlayer = $this->prophesize(FindPlayer::class);
         $findPlayer->find(
-            Argument::type(Username::class),
+            Argument::that(static fn (Username $u): bool => $u->toString() === $username),
         )->willThrow(ValidationFailedException::class);
 
         $applyCompletedUpgrade = $this->prophesize(ApplyCompletedUpgrade::class);
@@ -112,7 +126,11 @@ final class InstantFreeUpgradeHandlerTest extends TestCase
         );
 
         $this->expectException(ValidationFailedException::class);
-        $instantFreeUpgradeHandler->run(new InstantFreeUpgrade($username, $upgradable, $levels));
+        $instantFreeUpgradeHandler->run(new InstantFreeUpgrade(
+            $username,
+            $upgradable,
+            $levels,
+        ));
     }
 
     public function test_it_fails_when_apply_completed_upgrade_fails(): void
@@ -124,14 +142,14 @@ final class InstantFreeUpgradeHandlerTest extends TestCase
 
         $findPlayer = $this->prophesize(FindPlayer::class);
         $findPlayer->find(
-            Argument::type(Username::class),
+            Argument::that(static fn (Username $u): bool => $u->toString() === $username),
         )->willReturn($foundPlayer);
 
         $applyCompletedUpgrade = $this->prophesize(ApplyCompletedUpgrade::class);
         $applyCompletedUpgrade->apply(
-            Argument::type(Username::class),
-            Argument::type(Upgradable::class),
-            Argument::type('int'),
+            Argument::that(static fn (Username $u): bool => $u->toString() === $username),
+            Argument::that(static fn (Upgradable $u): bool => $u->toString() === $upgradable),
+            Argument::type('int'), // milli_score
         )->willThrow(ServerErrorException::class);
 
         $instantFreeUpgradeHandler = new InstantFreeUpgradeHandler(
@@ -140,6 +158,10 @@ final class InstantFreeUpgradeHandlerTest extends TestCase
         );
 
         $this->expectException(ServerErrorException::class);
-        $instantFreeUpgradeHandler->run(new InstantFreeUpgrade($username, $upgradable, $levels));
+        $instantFreeUpgradeHandler->run(new InstantFreeUpgrade(
+            $username,
+            $upgradable,
+            $levels,
+        ));
     }
 }

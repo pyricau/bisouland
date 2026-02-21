@@ -118,6 +118,9 @@ final class MakeAction extends AbstractMaker
             $fixture = $this->discoverFixture($param['name'], $testsDir);
             $param['fixture_fqcn'] = $fixture['fqcn'] ?? null;
             $param['fixture_class'] = $fixture['class'] ?? null;
+            $param['value_object_class'] = $fixture['value_object_class'] ?? null;
+            $param['value_object_fqcn'] = $fixture['value_object_fqcn'] ?? null;
+            $param['value_object_var'] = $fixture['value_object_var'] ?? null;
             if ('username' === $param['name']) {
                 $hasUsernameParam = true;
             }
@@ -270,7 +273,7 @@ final class MakeAction extends AbstractMaker
     }
 
     /**
-     * @return array{fqcn: string, class: string}|null
+     * @return array{fqcn: string, class: string, value_object_class: string|null, value_object_fqcn: string|null, value_object_var: string|null}|null
      */
     private function discoverFixture(string $paramName, string $testsDir): ?array
     {
@@ -320,9 +323,23 @@ final class MakeAction extends AbstractMaker
             return null;
         }
 
+        $valueObjectClass = null;
+        $valueObjectFqcn = null;
+        $valueObjectVar = null;
+        if (1 === preg_match('/public static function make\(\)\s*:\s*([A-Z]\w+)/', $contents, $makeMatch)) {
+            $valueObjectClass = $makeMatch[1];
+            $valueObjectVar = strtolower($valueObjectClass[0]);
+            if (1 === preg_match("/use ([\\w\\\\]+\\\\{$valueObjectClass});/", $contents, $useMatch)) {
+                $valueObjectFqcn = $useMatch[1];
+            }
+        }
+
         return [
             'fqcn' => "{$nsMatch[1]}\\{$className}",
             'class' => $className,
+            'value_object_class' => $valueObjectClass,
+            'value_object_fqcn' => $valueObjectFqcn,
+            'value_object_var' => $valueObjectVar,
         ];
     }
 

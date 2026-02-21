@@ -83,8 +83,8 @@ bypassing game restrictions (costs, completion times, etc).
 **Scenarios** are composed sequences of actions that bring the game to a specific,
 meaningful state in one call, named after what they represent in the domain.
 
-For example, `instant-free-upgrade` upgrades any upgradable N levels at once, for free,
-with no completion timer:
+For example, the `instant-free-upgrade` Action upgrades any upgradable N levels at once,
+for free, with no completion timer:
 
 ```php
 <?php
@@ -131,6 +131,44 @@ final readonly class InstantFreeUpgradeHandler
 }
 ```
 
+And the `sign-in-new-player` Scenario signs up a brand-new player
+and immediately signs them in, returning their session cookie in one call:
+
+```php
+<?php
+
+declare(strict_types=1);
+
+namespace Bl\Qa\Application\Scenario\SignInNewPlayer;
+
+use Bl\Qa\Application\Action\SignInPlayer\SignInPlayer;
+use Bl\Qa\Application\Action\SignInPlayer\SignInPlayerHandler;
+use Bl\Qa\Application\Action\SignUpNewPlayer\SignUpNewPlayer;
+use Bl\Qa\Application\Action\SignUpNewPlayer\SignUpNewPlayerHandler;
+
+final readonly class SignInNewPlayerHandler
+{
+    public function __construct(
+        private SignUpNewPlayerHandler $signUpNewPlayerHandler,
+        private SignInPlayerHandler $signInPlayerHandler,
+    ) {
+    }
+
+    public function run(SignInNewPlayer $input): SignInNewPlayerOutput
+    {
+        $signedUp = $this->signUpNewPlayerHandler->run(
+            new SignUpNewPlayer($input->username, $input->password),
+        );
+
+        $signedIn = $this->signInPlayerHandler->run(
+            new SignInPlayer($signedUp->player->account->username->toString()),
+        );
+
+        return new SignInNewPlayerOutput($signedUp, $signedIn);
+    }
+}
+```
+
 ## Interfaces
 
 Qalin runs alongside the app in local, dev, test, and staging environments. It is
@@ -152,6 +190,7 @@ For developers who live in the terminal.
 make qalin
 make qalin arg='action:sign-up-new-player <username> <password>'
 make qalin arg='action:instant-free-upgrade <username> <upgradable> [--levels=N]'
+make qalin arg='scenario:sign-in-new-player <username> <password>'
 ```
 
 ![Qalin CLI screenshot](./000-qalin/qalin-cli.png)
@@ -162,6 +201,7 @@ For designers and product who prefer a browser, for example:
 
 * http://localhost:43010/actions/sign-up-new-player
 * http://localhost:43010/actions/instant-free-upgrade
+* http://localhost:43010/scenarios/sign-in-new-player
 
 ![Qalin Web screenshot](./000-qalin/qalin-web.png)
 
@@ -177,20 +217,26 @@ curl -X POST http://localhost:43010/api/v1/actions/sign-up-new-player \
 curl -X POST http://localhost:43010/api/v1/actions/instant-free-upgrade \
      -H 'Content-Type: application/json' \
      -d '{"username": "Petrus", "upgradable": "heart", "levels": 5}'
+
+curl -X POST http://localhost:43010/api/v1/scenarios/sign-in-new-player \
+     -H 'Content-Type: application/json' \
+     -d '{"username": "Petrus", "password": "iLoveBlade"}'
 ```
 
 ### Testsuite
 
-For automated tests, Qalin exposes an `ActionRunner` that runs Actions directly.
+For automated tests, Qalin exposes an `ActionRunner` that runs Actions directly, and a
+`ScenarioRunner` that runs Scenarios directly.
 
-Its purpose is **setting up state** with minimal boilerplate: rather than writing raw
-SQL queries or curl requests, a test calls the relevant Action through the runner.
+Their purpose is **setting up state** with minimal boilerplate: rather than writing raw
+SQL queries or curl requests, a test calls the relevant Action or Scenario through the
+runner.
 
 This applies to Smoke, End-to-End, and Integration tests. Unit and Spec tests deal with
-isolated logic and have no need for Qalin Actions.
+isolated logic and have no need for Qalin Actions or Scenarios.
 
 For example, testing log-out requires a logged-in player, set up in the Arrange section
-via two chained Actions:
+via the `SignInNewPlayer` scenario:
 
 ```php
 <?php
@@ -201,8 +247,7 @@ namespace Bl\Qa\Tests\Monolith\EndToEnd;
 
 use Bl\Auth\Tests\Fixtures\Account\PasswordPlainFixture;
 use Bl\Auth\Tests\Fixtures\Account\UsernameFixture;
-use Bl\Qa\Application\Action\SignInPlayer\SignInPlayer;
-use Bl\Qa\Application\Action\SignUpNewPlayer\SignUpNewPlayer;
+use Bl\Qa\Application\Scenario\SignInNewPlayer\SignInNewPlayer;
 use Bl\Qa\Tests\Monolith\Infrastructure\TestKernelSingleton;
 use PHPUnit\Framework\Attributes\CoversNothing;
 use PHPUnit\Framework\Attributes\Large;
@@ -216,17 +261,14 @@ final class LogOutTest extends TestCase
     {
         // Arrange
         $httpClient = TestKernelSingleton::get()->httpClient();
-        $actionRunner = TestKernelSingleton::get()->actionRunner();
+        $scenarioRunner = TestKernelSingleton::get()->scenarioRunner();
 
-        $signedUpPlayer = $actionRunner->run(new SignUpNewPlayer(
+        $signedInNewPlayer = $scenarioRunner->run(new SignInNewPlayer(
             UsernameFixture::makeString(),
             PasswordPlainFixture::makeString(),
         ))->toArray();
-        $signedInPlayer = $actionRunner->run(new SignInPlayer(
-            $signedUpPlayer['username'],
-        ))->toArray();
 
-        $sessionCookie = "{$signedInPlayer['cookie_name']}={$signedInPlayer['cookie_value']}";
+        $sessionCookie = $signedInNewPlayer['cookie'];
 
         // Act
         $httpClient->request('GET', '/logout.html', [

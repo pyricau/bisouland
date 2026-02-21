@@ -34,7 +34,7 @@ final class SignInPlayerHandlerTest extends TestCase
 
         $findPlayer = $this->prophesize(FindPlayer::class);
         $findPlayer->find(
-            Argument::type(Username::class),
+            Argument::that(static fn (Username $u): bool => $u->toString() === $username),
         )->willReturn($player);
 
         $saveAuthToken = $this->prophesize(SaveAuthToken::class);
@@ -46,9 +46,11 @@ final class SignInPlayerHandlerTest extends TestCase
             $findPlayer->reveal(),
             $saveAuthToken->reveal(),
         );
-        $output = $signInPlayerHandler->run(new SignInPlayer($username));
+        $signedInPlayer = $signInPlayerHandler->run(new SignInPlayer(
+            $username,
+        ));
 
-        $this->assertInstanceOf(SignInPlayerOutput::class, $output);
+        $this->assertInstanceOf(SignInPlayerOutput::class, $signedInPlayer);
     }
 
     public function test_it_fails_when_username_is_not_an_existing_one(): void
@@ -57,7 +59,7 @@ final class SignInPlayerHandlerTest extends TestCase
 
         $findPlayer = $this->prophesize(FindPlayer::class);
         $findPlayer->find(
-            Argument::type(Username::class),
+            Argument::that(static fn (Username $u): bool => $u->toString() === $username),
         )->willThrow(ValidationFailedException::class);
 
         $saveAuthToken = $this->prophesize(SaveAuthToken::class);
@@ -68,7 +70,9 @@ final class SignInPlayerHandlerTest extends TestCase
         );
 
         $this->expectException(ValidationFailedException::class);
-        $signInPlayerHandler->run(new SignInPlayer($username));
+        $signInPlayerHandler->run(new SignInPlayer(
+            $username,
+        ));
     }
 
     public function test_it_fails_when_an_unexpected_error_occurs(): void
@@ -78,7 +82,7 @@ final class SignInPlayerHandlerTest extends TestCase
 
         $findPlayer = $this->prophesize(FindPlayer::class);
         $findPlayer->find(
-            Argument::type(Username::class),
+            Argument::that(static fn (Username $u): bool => $u->toString() === $username),
         )->willReturn($player);
 
         $saveAuthToken = $this->prophesize(SaveAuthToken::class);
@@ -92,6 +96,8 @@ final class SignInPlayerHandlerTest extends TestCase
         );
 
         $this->expectException(ServerErrorException::class);
-        $signInPlayerHandler->run(new SignInPlayer($username));
+        $signInPlayerHandler->run(new SignInPlayer(
+            $username,
+        ));
     }
 }

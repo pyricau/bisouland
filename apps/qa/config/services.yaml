@@ -52,3 +52,10 @@ services:
 
     Bl\Qa\Infrastructure\Symfony\ActionRunner:
         public: true
+
+    Bl\Qa\Application\Scenario\:
+        resource: '../src/Application/Scenario/*/*Handler.php'
+        tags: ['app.scenario_handler']
+
+    Bl\Qa\Infrastructure\Symfony\ScenarioRunner:
+        public: true

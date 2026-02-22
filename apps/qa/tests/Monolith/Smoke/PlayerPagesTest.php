@@ -6,6 +6,7 @@ namespace Bl\Qa\Tests\Monolith\Smoke;
 
 use Bl\Auth\Tests\Fixtures\Account\PasswordPlainFixture;
 use Bl\Auth\Tests\Fixtures\Account\UsernameFixture;
+use Bl\Qa\Application\Scenario\SignInNewPlayer\SignedInNewPlayer;
 use Bl\Qa\Application\Scenario\SignInNewPlayer\SignInNewPlayer;
 use Bl\Qa\Tests\Monolith\Infrastructure\TestKernelSingleton;
 use Bl\Qa\Tests\Monolith\Smoke\Assertion\Assert;
@@ -37,14 +38,15 @@ final class PlayerPagesTest extends TestCase
         $httpClient = TestKernelSingleton::get()->httpClient();
         $scenarioRunner = TestKernelSingleton::get()->scenarioRunner();
 
+        /** @var SignedInNewPlayer $signedInNewPlayer */
         $signedInNewPlayer = $scenarioRunner->run(new SignInNewPlayer(
             UsernameFixture::makeString(),
             PasswordPlainFixture::makeString(),
-        ))->toArray();
+        ));
 
         $response = $httpClient->request('GET', $url, [
             'headers' => [
-                'Cookie' => $signedInNewPlayer['cookie'],
+                'Cookie' => $signedInNewPlayer->toArray()['cookie'],
             ],
         ]);
 

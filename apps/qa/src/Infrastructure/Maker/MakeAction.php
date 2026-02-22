@@ -27,7 +27,7 @@ final class MakeAction extends AbstractMaker
 
     public static function getCommandName(): string
     {
-        return 'make:action';
+        return 'make:qalin:action';
     }
 
     public static function getCommandDescription(): string

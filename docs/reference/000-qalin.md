@@ -294,11 +294,11 @@ interactive mode (prompts guide you through each field) or non-interactive mode
 (pass all values as options, useful for scripting).
 
 ```console
-make maker arg='make:action <Name>'
-make maker arg='make:scenario <Name>'
+make qalin-action arg='<Name>'
+make qalin-scenario arg='<Name>'
 ```
 
-### make:action
+### make:qalin:action
 
 | Option | Short | Format | Description |
 |--------|-------|--------|-------------|
@@ -308,7 +308,7 @@ make maker arg='make:scenario <Name>'
 Example:
 
 ```console
-make maker arg='make:action InstantFreeUpgrade \
+make qalin-action arg='InstantFreeUpgrade \
   -d "Instantly upgrade an upgradable for free" \
   -p "username:string:4-15 alphanumeric characters" \
   -p "upgradable:string:heart or mouth" \
@@ -328,9 +328,9 @@ make phpstan-analyze
 make phpunit
 ```
 
-### make:scenario
+### make:qalin:scenario
 
-Same `--description` / `-d` and `--parameter` / `-p` options as `make:action`, plus:
+Same `--description` / `-d` and `--parameter` / `-p` options as `make:qalin:action`, plus:
 
 | Option | Short | Format | Description |
 |--------|-------|--------|-------------|
@@ -339,7 +339,7 @@ Same `--description` / `-d` and `--parameter` / `-p` options as `make:action`, p
 Example:
 
 ```console
-make maker arg='make:scenario SignInNewPlayer \
+make qalin-scenario arg='SignInNewPlayer \
   -d "Sign up and immediately sign in a brand-new player" \
   -p "username:string:4-15 alphanumeric characters" \
   -p "password:string:8-72 characters" \
@@ -347,7 +347,7 @@ make maker arg='make:scenario SignInNewPlayer \
   -a SignInPlayer'
 ```
 
-Generates the same 12 files as `make:action`, but under `Application/Scenario/` and
+Generates the same 12 files as `make:qalin:action`, but under `Application/Scenario/` and
 `UserInterface/{Cli,Web,Api}/Scenario/`. The handler is pre-wired with the discovered
 action handlers as constructor dependencies.
 

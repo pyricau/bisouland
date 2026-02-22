@@ -30,7 +30,7 @@ final class MakeScenario extends AbstractMaker
 
     public static function getCommandName(): string
     {
-        return 'make:scenario';
+        return 'make:qalin:scenario';
     }
 
     public static function getCommandDescription(): string

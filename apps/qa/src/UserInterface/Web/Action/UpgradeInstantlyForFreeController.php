@@ -9,17 +9,17 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
 use Twig\Environment;
 
-final readonly class InstantFreeUpgradeController
+final readonly class UpgradeInstantlyForFreeController
 {
     public function __construct(
         private Environment $twig,
     ) {
     }
 
-    #[Route('/actions/instant-free-upgrade', methods: ['GET'])]
+    #[Route('/actions/upgrade-instantly-for-free', methods: ['GET'])]
     public function __invoke(): Response
     {
-        return new Response($this->twig->render('qalin/action/instant-free-upgrade.html.twig', [
+        return new Response($this->twig->render('qalin/action/upgrade-instantly-for-free.html.twig', [
             'upgradables' => Upgradable::cases(),
         ]));
     }

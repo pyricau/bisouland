@@ -69,7 +69,7 @@ Qalin lets you define **Actions** and **Scenarios** that skip the time gates, th
 and the prerequisites, and drop you straight into the game state that matters for your
 test case.
 
-Need Heart at level 42? `instant-free-upgrade`. Bim.
+Need Heart at level 42? `upgrade-instantly-for-free`. Bim.
 Need to verify cloud-leaping works? `UnlockLeap` scenario. Bam.
 Need to check kiss blowing for early game balance? `UnlockKissBlowing` scenario. Boom.
 
@@ -83,7 +83,7 @@ bypassing game restrictions (costs, completion times, etc).
 **Scenarios** are composed sequences of actions that bring the game to a specific,
 meaningful state in one call, named after what they represent in the domain.
 
-For example, the `instant-free-upgrade` Action upgrades any upgradable N levels at once,
+For example, the `upgrade-instantly-for-free` Action upgrades any upgradable N levels at once,
 for free, with no completion timer:
 
 ```php
@@ -91,7 +91,7 @@ for free, with no completion timer:
 
 declare(strict_types=1);
 
-namespace Bl\Qa\Application\Action\InstantFreeUpgrade;
+namespace Bl\Qa\Application\Action\UpgradeInstantlyForFree;
 
 use Bl\Auth\Account\Username;
 use Bl\Exception\ServerErrorException;
@@ -100,7 +100,7 @@ use Bl\Game\ApplyCompletedUpgrade;
 use Bl\Game\FindPlayer;
 use Bl\Game\Player\UpgradableLevels\Upgradable;
 
-final readonly class InstantFreeUpgradeHandler
+final readonly class UpgradeInstantlyForFreeHandler
 {
     public function __construct(
         private ApplyCompletedUpgrade $applyCompletedUpgrade,
@@ -108,13 +108,13 @@ final readonly class InstantFreeUpgradeHandler
     ) {
     }
 
-    public function run(InstantFreeUpgrade $input): InstantFreeUpgraded
+    public function run(UpgradeInstantlyForFree $input): UpgradeInstantlyForFreed
     {
         $username = Username::fromString($input->username);
         $upgradable = Upgradable::fromString($input->upgradable);
         if ($input->levels < 1) {
             throw ValidationFailedException::make(
-                "Invalid \"InstantFreeUpgrade\" parameter: it should have levels >= 1 (`{$input->levels}` given)",
+                "Invalid \"UpgradeInstantlyForFree\" parameter: it should have levels >= 1 (`{$input->levels}` given)",
             );
         }
 
@@ -126,7 +126,7 @@ final readonly class InstantFreeUpgradeHandler
             $player = $this->applyCompletedUpgrade->apply($username, $upgradable, $milliScore);
         }
 
-        return new InstantFreeUpgraded($player);
+        return new UpgradeInstantlyForFreed($player);
     }
 }
 ```
@@ -189,7 +189,7 @@ For developers who live in the terminal.
 ```console
 make qalin
 make qalin arg='action:sign-up-new-player <username> <password>'
-make qalin arg='action:instant-free-upgrade <username> <upgradable> [--levels=N]'
+make qalin arg='action:upgrade-instantly-for-free <username> <upgradable> [--levels=N]'
 make qalin arg='scenario:sign-in-new-player <username> <password>'
 ```
 
@@ -200,7 +200,7 @@ make qalin arg='scenario:sign-in-new-player <username> <password>'
 For designers and product who prefer a browser, for example:
 
 * http://localhost:43010/actions/sign-up-new-player
-* http://localhost:43010/actions/instant-free-upgrade
+* http://localhost:43010/actions/upgrade-instantly-for-free
 * http://localhost:43010/scenarios/sign-in-new-player
 
 ![Qalin Web screenshot](./000-qalin/qalin-web.png)
@@ -214,7 +214,7 @@ curl -X POST http://localhost:43010/api/v1/actions/sign-up-new-player \
      -H 'Content-Type: application/json' \
      -d '{"username": "Petrus", "password": "iLoveBlade"}'
 
-curl -X POST http://localhost:43010/api/v1/actions/instant-free-upgrade \
+curl -X POST http://localhost:43010/api/v1/actions/upgrade-instantly-for-free \
      -H 'Content-Type: application/json' \
      -d '{"username": "Petrus", "upgradable": "heart", "levels": 5}'
 
@@ -305,15 +305,15 @@ make qalin-scenario arg='<Name>'
 | Option | Short | Format | Description |
 |--------|-------|--------|-------------|
 | `--description` | `-d` | `"Short text"` | Shown in the CLI command help and Web page title |
-| `--output-name` | `-o` | `PascalCaseName` | Output DTO class name. Defaults to `{Name}ed` if omitted. Use the past participle of the action verb (e.g. `InstantFreeUpgraded`). |
+| `--output-name` | `-o` | `PascalCaseName` | Output DTO class name. Defaults to `{Name}ed` if omitted. Use the past participle of the action verb (e.g. `UpgradeInstantlyForFreed`). |
 | `--parameter` | `-p` | `name:type:description[:default]` | Repeatable. `type` is `string` or `int`. Omit the default to make the parameter required. |
 
 Example:
 
 ```console
-make qalin-action arg='InstantFreeUpgrade \
+make qalin-action arg='UpgradeInstantlyForFree \
   -d "Instantly upgrade an upgradable for free" \
-  -o InstantFreeUpgraded \
+  -o UpgradeInstantlyForFreed \
   -p "username:string:4-15 alphanumeric characters" \
   -p "upgradable:string:heart or mouth" \
   -p "levels:int:number of levels to upgrade:1"'

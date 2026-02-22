@@ -13,14 +13,14 @@ use Symfony\Component\HttpFoundation\Response;
 
 #[CoversNothing]
 #[Medium]
-final class InstantFreeUpgradeControllerTest extends TestCase
+final class UpgradeInstantlyForFreeControllerTest extends TestCase
 {
-    public function test_it_renders_the_instant_free_upgrade_page(): void
+    public function test_it_renders_the_upgrade_instantly_for_free_page(): void
     {
         $appKernel = TestKernelSingleton::get()->appKernel();
 
         $request = Request::create(
-            uri: '/actions/instant-free-upgrade',
+            uri: '/actions/upgrade-instantly-for-free',
             method: 'GET',
         );
 

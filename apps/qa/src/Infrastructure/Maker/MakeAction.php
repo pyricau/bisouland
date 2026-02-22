@@ -40,9 +40,9 @@ final class MakeAction extends AbstractMaker
     public function configureCommand(Command $command, InputConfiguration $inputConfig): void
     {
         $command
-            ->addArgument('name', InputArgument::REQUIRED, 'The action name in PascalCase (e.g. <fg=yellow>InstantFreeUpgrade</>)')
+            ->addArgument('name', InputArgument::REQUIRED, 'The action name in PascalCase (e.g. <fg=yellow>UpgradeInstantlyForFree</>)')
             ->addOption('description', 'd', InputOption::VALUE_REQUIRED, 'Short description for CLI command and page title')
-            ->addOption('output-name', 'o', InputOption::VALUE_REQUIRED, 'Output DTO class name in PascalCase (e.g. <fg=yellow>InstantFreeUpgraded</>)')
+            ->addOption('output-name', 'o', InputOption::VALUE_REQUIRED, 'Output DTO class name in PascalCase (e.g. <fg=yellow>UpgradeInstantlyForFreed</>)')
             ->addOption('parameter', 'p', InputOption::VALUE_REQUIRED | InputOption::VALUE_IS_ARRAY, 'Parameters as name:type:description[:default] (e.g. <fg=yellow>username:string:4-15 alphanumeric characters</>, <fg=yellow>levels:int:number of levels:1</>). Type defaults to string if omitted. Providing a default makes the parameter optional.')
         ;
     }
@@ -54,7 +54,7 @@ final class MakeAction extends AbstractMaker
     public function interact(InputInterface $input, ConsoleStyle $io, Command $command): void
     {
         if (null === $input->getArgument('name')) {
-            $input->setArgument('name', $io->ask('Action name (PascalCase, e.g. InstantFreeUpgrade)'));
+            $input->setArgument('name', $io->ask('Action name (PascalCase, e.g. UpgradeInstantlyForFree)'));
         }
 
         // Description: use --description option or prompt

@@ -6,16 +6,16 @@ namespace Bl\Qa\Tests\Qalin\Spec\Application\Action;
 
 use Bl\Auth\Tests\Fixtures\Account\UsernameFixture;
 use Bl\Game\Tests\Fixtures\Player\UpgradableLevels\UpgradableFixture;
-use Bl\Qa\Application\Action\InstantFreeUpgrade\InstantFreeUpgrade;
+use Bl\Qa\Application\Action\UpgradeInstantlyForFree\UpgradeInstantlyForFree;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\Attributes\Small;
 use PHPUnit\Framework\Attributes\TestDox;
 use PHPUnit\Framework\TestCase;
 
-#[CoversClass(InstantFreeUpgrade::class)]
+#[CoversClass(UpgradeInstantlyForFree::class)]
 #[Small]
-final class InstantFreeUpgradeTest extends TestCase
+final class UpgradeInstantlyForFreeTest extends TestCase
 {
     #[DataProvider('requiredParametersProvider')]
     #[TestDox('It has $scenario')]
@@ -24,10 +24,10 @@ final class InstantFreeUpgradeTest extends TestCase
         string $username,
         string $upgradable,
     ): void {
-        $instantFreeUpgrade = new InstantFreeUpgrade($username, $upgradable);
+        $upgradeInstantlyForFree = new UpgradeInstantlyForFree($username, $upgradable);
 
-        $this->assertSame($username, $instantFreeUpgrade->username);
-        $this->assertSame($upgradable, $instantFreeUpgrade->upgradable);
+        $this->assertSame($username, $upgradeInstantlyForFree->username);
+        $this->assertSame($upgradable, $upgradeInstantlyForFree->upgradable);
     }
 
     /**
@@ -55,9 +55,9 @@ final class InstantFreeUpgradeTest extends TestCase
     #[TestDox('It has $scenario')]
     public function test_it_has_optional_parameters(string $scenario, int $expectedLevels): void
     {
-        $instantFreeUpgrade = new InstantFreeUpgrade(UsernameFixture::makeString(), UpgradableFixture::makeString());
+        $upgradeInstantlyForFree = new UpgradeInstantlyForFree(UsernameFixture::makeString(), UpgradableFixture::makeString());
 
-        $this->assertSame($expectedLevels, $instantFreeUpgrade->levels);
+        $this->assertSame($expectedLevels, $upgradeInstantlyForFree->levels);
     }
 
     /**

@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Bl\Qa\Application\Action\InstantFreeUpgrade;
+namespace Bl\Qa\Application\Action\UpgradeInstantlyForFree;
 
 use Bl\Auth\Account\Username;
 use Bl\Exception\ServerErrorException;
@@ -14,7 +14,7 @@ use Bl\Game\Player\UpgradableLevels\Upgradable;
 /**
  * @object-type UseCase
  */
-final readonly class InstantFreeUpgradeHandler
+final readonly class UpgradeInstantlyForFreeHandler
 {
     public function __construct(
         private ApplyCompletedUpgrade $applyCompletedUpgrade,
@@ -30,13 +30,13 @@ final readonly class InstantFreeUpgradeHandler
      * @throws ValidationFailedException If the upgradable isn't unlocked yet (e.g. legs require heart >= 15)
      * @throws ServerErrorException      If an unexpected error occurs
      */
-    public function run(InstantFreeUpgrade $input): InstantFreeUpgraded
+    public function run(UpgradeInstantlyForFree $input): UpgradeInstantlyForFreed
     {
         $username = Username::fromString($input->username);
         $upgradable = Upgradable::fromString($input->upgradable);
         if ($input->levels < 1) {
             throw ValidationFailedException::make(
-                "Invalid \"InstantFreeUpgrade\" parameter: it should have levels >= 1 (`{$input->levels}` given)",
+                "Invalid \"UpgradeInstantlyForFree\" parameter: it should have levels >= 1 (`{$input->levels}` given)",
             );
         }
 
@@ -48,6 +48,6 @@ final readonly class InstantFreeUpgradeHandler
             $player = $this->applyCompletedUpgrade->apply($username, $upgradable, $milliScore);
         }
 
-        return new InstantFreeUpgraded($player);
+        return new UpgradeInstantlyForFreed($player);
     }
 }

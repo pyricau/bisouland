@@ -6,8 +6,8 @@ namespace Bl\Qa\UserInterface\Cli\Action;
 
 use Bl\Exception\ServerErrorException;
 use Bl\Exception\ValidationFailedException;
-use Bl\Qa\Application\Action\InstantFreeUpgrade\InstantFreeUpgrade;
-use Bl\Qa\Application\Action\InstantFreeUpgrade\InstantFreeUpgradeHandler;
+use Bl\Qa\Application\Action\UpgradeInstantlyForFree\UpgradeInstantlyForFree;
+use Bl\Qa\Application\Action\UpgradeInstantlyForFree\UpgradeInstantlyForFreeHandler;
 use Symfony\Component\Console\Attribute\Argument;
 use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Console\Attribute\Option;
@@ -16,13 +16,13 @@ use Symfony\Component\Console\Helper\Table;
 use Symfony\Component\Console\Style\SymfonyStyle;
 
 #[AsCommand(
-    name: 'action:instant-free-upgrade',
+    name: 'action:upgrade-instantly-for-free',
     description: 'Instantly upgrade for free',
 )]
-final readonly class InstantFreeUpgradeCommand
+final readonly class UpgradeInstantlyForFreeCommand
 {
     public function __construct(
-        private InstantFreeUpgradeHandler $instantFreeUpgradeHandler,
+        private UpgradeInstantlyForFreeHandler $upgradeInstantlyForFreeHandler,
     ) {
     }
 
@@ -36,7 +36,7 @@ final readonly class InstantFreeUpgradeCommand
         int $levels = 1,
     ): int {
         try {
-            $instantFreeUpgraded = $this->instantFreeUpgradeHandler->run(new InstantFreeUpgrade($username, $upgradable, $levels));
+            $upgradeInstantlyForFreed = $this->upgradeInstantlyForFreeHandler->run(new UpgradeInstantlyForFree($username, $upgradable, $levels));
         } catch (ValidationFailedException $e) {
             $io->error($e->getMessage());
 
@@ -47,10 +47,10 @@ final readonly class InstantFreeUpgradeCommand
             return Command::FAILURE;
         }
 
-        $io->success('Successfully completed Instant Free Upgrade');
+        $io->success('Successfully completed Upgrade Instantly For Free');
 
         $rows = [];
-        foreach ($instantFreeUpgraded->toArray() as $field => $value) {
+        foreach ($upgradeInstantlyForFreed->toArray() as $field => $value) {
             $rows[] = [$field, $value];
         }
 

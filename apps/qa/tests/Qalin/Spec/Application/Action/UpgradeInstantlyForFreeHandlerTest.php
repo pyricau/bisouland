@@ -13,9 +13,9 @@ use Bl\Game\FindPlayer;
 use Bl\Game\Player\UpgradableLevels\Upgradable;
 use Bl\Game\Tests\Fixtures\Player\UpgradableLevels\UpgradableFixture;
 use Bl\Game\Tests\Fixtures\PlayerFixture;
-use Bl\Qa\Application\Action\InstantFreeUpgrade\InstantFreeUpgrade;
-use Bl\Qa\Application\Action\InstantFreeUpgrade\InstantFreeUpgraded;
-use Bl\Qa\Application\Action\InstantFreeUpgrade\InstantFreeUpgradeHandler;
+use Bl\Qa\Application\Action\UpgradeInstantlyForFree\UpgradeInstantlyForFree;
+use Bl\Qa\Application\Action\UpgradeInstantlyForFree\UpgradeInstantlyForFreed;
+use Bl\Qa\Application\Action\UpgradeInstantlyForFree\UpgradeInstantlyForFreeHandler;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\Attributes\Small;
@@ -24,9 +24,9 @@ use PHPUnit\Framework\TestCase;
 use Prophecy\Argument;
 use Prophecy\PhpUnit\ProphecyTrait;
 
-#[CoversClass(InstantFreeUpgradeHandler::class)]
+#[CoversClass(UpgradeInstantlyForFreeHandler::class)]
 #[Small]
-final class InstantFreeUpgradeHandlerTest extends TestCase
+final class UpgradeInstantlyForFreeHandlerTest extends TestCase
 {
     use ProphecyTrait;
 
@@ -71,18 +71,18 @@ final class InstantFreeUpgradeHandlerTest extends TestCase
             Argument::type('int'), // milli_score
         )->shouldBeCalledTimes($levels)->willReturn($expectedPlayer);
 
-        $instantFreeUpgradeHandler = new InstantFreeUpgradeHandler(
+        $upgradeInstantlyForFreeHandler = new UpgradeInstantlyForFreeHandler(
             $applyCompletedUpgrade->reveal(),
             $findPlayer->reveal(),
         );
-        $instantFreeUpgraded = $instantFreeUpgradeHandler->run(new InstantFreeUpgrade(
+        $upgradeInstantlyForFreed = $upgradeInstantlyForFreeHandler->run(new UpgradeInstantlyForFree(
             $username,
             $upgradable,
             $levels,
         ));
 
-        $this->assertInstanceOf(InstantFreeUpgraded::class, $instantFreeUpgraded);
-        $this->assertSame($expectedPlayer, $instantFreeUpgraded->player);
+        $this->assertInstanceOf(UpgradeInstantlyForFreed::class, $upgradeInstantlyForFreed);
+        $this->assertSame($expectedPlayer, $upgradeInstantlyForFreed->player);
     }
 
     public function test_it_fails_when_levels_is_less_than_1(): void
@@ -94,13 +94,13 @@ final class InstantFreeUpgradeHandlerTest extends TestCase
         $findPlayer = $this->prophesize(FindPlayer::class);
         $applyCompletedUpgrade = $this->prophesize(ApplyCompletedUpgrade::class);
 
-        $instantFreeUpgradeHandler = new InstantFreeUpgradeHandler(
+        $upgradeInstantlyForFreeHandler = new UpgradeInstantlyForFreeHandler(
             $applyCompletedUpgrade->reveal(),
             $findPlayer->reveal(),
         );
 
         $this->expectException(ValidationFailedException::class);
-        $instantFreeUpgradeHandler->run(new InstantFreeUpgrade(
+        $upgradeInstantlyForFreeHandler->run(new UpgradeInstantlyForFree(
             $username,
             $upgradable,
             $levels,
@@ -120,13 +120,13 @@ final class InstantFreeUpgradeHandlerTest extends TestCase
 
         $applyCompletedUpgrade = $this->prophesize(ApplyCompletedUpgrade::class);
 
-        $instantFreeUpgradeHandler = new InstantFreeUpgradeHandler(
+        $upgradeInstantlyForFreeHandler = new UpgradeInstantlyForFreeHandler(
             $applyCompletedUpgrade->reveal(),
             $findPlayer->reveal(),
         );
 
         $this->expectException(ValidationFailedException::class);
-        $instantFreeUpgradeHandler->run(new InstantFreeUpgrade(
+        $upgradeInstantlyForFreeHandler->run(new UpgradeInstantlyForFree(
             $username,
             $upgradable,
             $levels,
@@ -152,13 +152,13 @@ final class InstantFreeUpgradeHandlerTest extends TestCase
             Argument::type('int'), // milli_score
         )->willThrow(ServerErrorException::class);
 
-        $instantFreeUpgradeHandler = new InstantFreeUpgradeHandler(
+        $upgradeInstantlyForFreeHandler = new UpgradeInstantlyForFreeHandler(
             $applyCompletedUpgrade->reveal(),
             $findPlayer->reveal(),
         );
 
         $this->expectException(ServerErrorException::class);
-        $instantFreeUpgradeHandler->run(new InstantFreeUpgrade(
+        $upgradeInstantlyForFreeHandler->run(new UpgradeInstantlyForFree(
             $username,
             $upgradable,
             $levels,

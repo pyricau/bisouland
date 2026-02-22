@@ -19,7 +19,7 @@ use Symfony\Component\HttpFoundation\Response;
 
 #[CoversNothing]
 #[Medium]
-final class InstantFreeUpgradeControllerTest extends TestCase
+final class UpgradeInstantlyForFreeControllerTest extends TestCase
 {
     public function test_it_runs_action_successfully(): void
     {
@@ -30,7 +30,7 @@ final class InstantFreeUpgradeControllerTest extends TestCase
         $appKernel = TestKernelSingleton::get()->appKernel();
 
         $request = Request::create(
-            uri: '/api/v1/actions/instant-free-upgrade',
+            uri: '/api/v1/actions/upgrade-instantly-for-free',
             method: 'POST',
             server: ['CONTENT_TYPE' => 'application/json'],
             content: json_encode([
@@ -57,7 +57,7 @@ final class InstantFreeUpgradeControllerTest extends TestCase
         $appKernel = TestKernelSingleton::get()->appKernel();
 
         $request = Request::create(
-            uri: '/api/v1/actions/instant-free-upgrade',
+            uri: '/api/v1/actions/upgrade-instantly-for-free',
             method: 'POST',
             server: ['CONTENT_TYPE' => 'application/json'],
             content: json_encode($body, \JSON_THROW_ON_ERROR),
@@ -102,7 +102,7 @@ final class InstantFreeUpgradeControllerTest extends TestCase
         $appKernel = TestKernelSingleton::get()->appKernel();
 
         $request = Request::create(
-            uri: '/api/v1/actions/instant-free-upgrade',
+            uri: '/api/v1/actions/upgrade-instantly-for-free',
             method: 'POST',
             server: ['CONTENT_TYPE' => 'application/json'],
             content: json_encode($body, \JSON_THROW_ON_ERROR),
@@ -149,7 +149,7 @@ final class InstantFreeUpgradeControllerTest extends TestCase
         $appKernel = TestKernelSingleton::get()->appKernel();
 
         $request = Request::create(
-            uri: '/api/v1/actions/instant-free-upgrade',
+            uri: '/api/v1/actions/upgrade-instantly-for-free',
             method: 'POST',
             server: ['CONTENT_TYPE' => 'application/json'],
             content: json_encode($body, \JSON_THROW_ON_ERROR),

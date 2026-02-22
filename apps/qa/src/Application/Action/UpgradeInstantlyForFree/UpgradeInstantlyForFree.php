@@ -2,12 +2,12 @@
 
 declare(strict_types=1);
 
-namespace Bl\Qa\Application\Action\InstantFreeUpgrade;
+namespace Bl\Qa\Application\Action\UpgradeInstantlyForFree;
 
 /**
  * @object-type DataTransferObject
  */
-final readonly class InstantFreeUpgrade
+final readonly class UpgradeInstantlyForFree
 {
     public function __construct(
         public string $username,

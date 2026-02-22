@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Bl\Qa\Application\Action\InstantFreeUpgrade;
+namespace Bl\Qa\Application\Action\UpgradeInstantlyForFree;
 
 use Bl\Game\Player;
 use Bl\Game\Player\UpgradableLevels\Upgradable;
@@ -11,7 +11,7 @@ use Bl\Qa\Application\Output;
 /**
  * @object-type DataTransferObject
  */
-final readonly class InstantFreeUpgraded implements Output
+final readonly class UpgradeInstantlyForFreed implements Output
 {
     public function __construct(
         public Player $player,

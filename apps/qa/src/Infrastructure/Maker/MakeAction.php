@@ -18,12 +18,18 @@ final class MakeAction extends AbstractMaker
 {
     private string $description = '';
 
+    private string $outputName = '';
+
     /** @var list<array{name: string, type: string, description: string, default: string|null}> */
     private array $parameters = [];
 
+    public function __construct(private readonly MakerHelper $makerHelper)
+    {
+    }
+
     public static function getCommandName(): string
     {
-        return 'make:action';
+        return 'make:qalin:action';
     }
 
     public static function getCommandDescription(): string
@@ -34,8 +40,9 @@ final class MakeAction extends AbstractMaker
     public function configureCommand(Command $command, InputConfiguration $inputConfig): void
     {
         $command
-            ->addArgument('name', InputArgument::REQUIRED, 'The action name in PascalCase (e.g. <fg=yellow>InstantFreeUpgrade</>)')
+            ->addArgument('name', InputArgument::REQUIRED, 'The action name in PascalCase (e.g. <fg=yellow>UpgradeInstantlyForFree</>)')
             ->addOption('description', 'd', InputOption::VALUE_REQUIRED, 'Short description for CLI command and page title')
+            ->addOption('output-name', 'o', InputOption::VALUE_REQUIRED, 'Output DTO class name in PascalCase (e.g. <fg=yellow>UpgradeInstantlyForFreed</>)')
             ->addOption('parameter', 'p', InputOption::VALUE_REQUIRED | InputOption::VALUE_IS_ARRAY, 'Parameters as name:type:description[:default] (e.g. <fg=yellow>username:string:4-15 alphanumeric characters</>, <fg=yellow>levels:int:number of levels:1</>). Type defaults to string if omitted. Providing a default makes the parameter optional.')
         ;
     }
@@ -47,7 +54,7 @@ final class MakeAction extends AbstractMaker
     public function interact(InputInterface $input, ConsoleStyle $io, Command $command): void
     {
         if (null === $input->getArgument('name')) {
-            $input->setArgument('name', $io->ask('Action name (PascalCase, e.g. InstantFreeUpgrade)'));
+            $input->setArgument('name', $io->ask('Action name (PascalCase, e.g. UpgradeInstantlyForFree)'));
         }
 
         // Description: use --description option or prompt
@@ -59,9 +66,20 @@ final class MakeAction extends AbstractMaker
             $this->description = \is_string($description) ? $description : '';
         }
 
+        // Output name: use --output-name option or prompt
+        $outputNameOption = $input->getOption('output-name');
+        if (\is_string($outputNameOption)) {
+            $this->outputName = $outputNameOption;
+        } else {
+            /** @var string $actionName */
+            $actionName = $input->getArgument('name');
+            $outputName = $io->ask("Output DTO class name (PascalCase, e.g. {$actionName}ed)", "{$actionName}ed");
+            $this->outputName = \is_string($outputName) ? $outputName : "{$actionName}ed";
+        }
+
         // Parameters: use --parameter options or prompt
         if ([] !== $input->getOption('parameter')) {
-            $this->parseParameterOptions($input);
+            $this->parameters = $this->makerHelper->parseParameterOptions($input);
         } else {
             $this->parameters = [];
             $io->note('Add parameters (empty name to stop):');
@@ -97,17 +115,22 @@ final class MakeAction extends AbstractMaker
             $this->description = \is_string($descriptionOption) ? $descriptionOption : '';
         }
 
+        if ('' === $this->outputName) {
+            $outputNameOption = $input->getOption('output-name');
+            $this->outputName = \is_string($outputNameOption) ? $outputNameOption : "{$actionName}ed";
+        }
+
         if ([] === $this->parameters) {
-            $this->parseParameterOptions($input);
+            $this->parameters = $this->makerHelper->parseParameterOptions($input);
         }
 
         $description = $this->description;
         $parameters = $this->parameters;
 
-        $actionKebab = $this->toKebabCase($actionName);
-        $actionTitle = $this->toTitleCase($actionName);
+        $actionKebab = $this->makerHelper->toKebabCase($actionName);
+        $actionTitle = $this->makerHelper->toTitleCase($actionName);
 
-        $actionSnake = $this->toSnakeCase($actionName);
+        $actionSnake = $this->makerHelper->toSnakeCase($actionName);
         $actionCamel = lcfirst($actionName);
 
         $templateDir = __DIR__.'/../../../templates/maker';
@@ -115,9 +138,12 @@ final class MakeAction extends AbstractMaker
         $hasUsernameParam = false;
         $hasOptionalParams = false;
         foreach ($parameters as &$param) {
-            $fixture = $this->discoverFixture($param['name'], $testsDir);
+            $fixture = $this->makerHelper->discoverFixture($param['name'], $testsDir);
             $param['fixture_fqcn'] = $fixture['fqcn'] ?? null;
             $param['fixture_class'] = $fixture['class'] ?? null;
+            $param['value_object_class'] = $fixture['value_object_class'] ?? null;
+            $param['value_object_fqcn'] = $fixture['value_object_fqcn'] ?? null;
+            $param['value_object_var'] = $fixture['value_object_var'] ?? null;
             if ('username' === $param['name']) {
                 $hasUsernameParam = true;
             }
@@ -134,6 +160,7 @@ final class MakeAction extends AbstractMaker
 
         $variables = [
             'action_name' => $actionName,
+            'action_output_name' => $this->outputName,
             'action_kebab' => $actionKebab,
             'action_title' => $actionTitle,
             'action_snake' => $actionSnake,
@@ -147,84 +174,84 @@ final class MakeAction extends AbstractMaker
         // 1. Action input DTO
         $generator->generateClass(
             "Bl\\Qa\\Application\\Action\\{$actionName}\\{$actionName}",
-            "{$templateDir}/Action.tpl.php",
+            "{$templateDir}/Qalin/Action/HandlerInput.tpl.php",
             $variables,
         );
 
         // 2. Action handler
         $generator->generateClass(
             "Bl\\Qa\\Application\\Action\\{$actionName}\\{$actionName}Handler",
-            "{$templateDir}/ActionHandler.tpl.php",
+            "{$templateDir}/Qalin/Action/Handler.tpl.php",
             $variables,
         );
 
         // 3. Action output DTO
         $generator->generateClass(
-            "Bl\\Qa\\Application\\Action\\{$actionName}\\{$actionName}Output",
-            "{$templateDir}/ActionOutput.tpl.php",
+            "Bl\\Qa\\Application\\Action\\{$actionName}\\{$this->outputName}",
+            "{$templateDir}/Qalin/Action/HandlerOutput.tpl.php",
             $variables,
         );
 
         // 4. CLI Command
         $generator->generateClass(
             "Bl\\Qa\\UserInterface\\Cli\\Action\\{$actionName}Command",
-            "{$templateDir}/CliCommand.tpl.php",
+            "{$templateDir}/Qalin/Action/CliCommand.tpl.php",
             $variables,
         );
 
         // 5. Web Controller
         $generator->generateClass(
             "Bl\\Qa\\UserInterface\\Web\\Action\\{$actionName}Controller",
-            "{$templateDir}/WebController.tpl.php",
+            "{$templateDir}/Qalin/Action/WebController.tpl.php",
             $variables,
         );
 
         // 6. API Controller
         $generator->generateClass(
             "Bl\\Qa\\UserInterface\\Api\\Action\\{$actionName}Controller",
-            "{$templateDir}/ApiController.tpl.php",
+            "{$templateDir}/Qalin/Action/ApiController.tpl.php",
             $variables,
         );
 
         // 7. Twig template
         $generator->generateTemplate(
-            "actions/{$actionKebab}.html.twig",
-            "{$templateDir}/TwigTemplate.tpl.php",
+            "qalin/action/{$actionKebab}.html.twig",
+            "{$templateDir}/Qalin/Action/TwigTemplate.tpl.php",
             $variables,
         );
 
         // 8. Spec action input DTO test
         $generator->generateClass(
             "Bl\\Qa\\Tests\\Qalin\\Spec\\Application\\Action\\{$actionName}Test",
-            "{$templateDir}/SpecActionTest.tpl.php",
+            "{$templateDir}/Qalin/Action/HandlerInputSpecTest.tpl.php",
             $variables,
         );
 
         // 9. Spec action handler test
         $generator->generateClass(
             "Bl\\Qa\\Tests\\Qalin\\Spec\\Application\\Action\\{$actionName}HandlerTest",
-            "{$templateDir}/SpecHandlerTest.tpl.php",
+            "{$templateDir}/Qalin/Action/HandlerSpecTest.tpl.php",
             $variables,
         );
 
         // 10. CLI Command integration test
         $generator->generateClass(
             "Bl\\Qa\\Tests\\Qalin\\Integration\\UserInterface\\Cli\\Action\\{$actionName}CommandTest",
-            "{$templateDir}/CliCommandTest.tpl.php",
+            "{$templateDir}/Qalin/Action/CliCommandTest.tpl.php",
             $variables,
         );
 
         // 11. Web Controller integration test
         $generator->generateClass(
             "Bl\\Qa\\Tests\\Qalin\\Integration\\UserInterface\\Web\\Action\\{$actionName}ControllerTest",
-            "{$templateDir}/WebControllerTest.tpl.php",
+            "{$templateDir}/Qalin/Action/WebControllerTest.tpl.php",
             $variables,
         );
 
         // 12. API Controller integration test
         $generator->generateClass(
             "Bl\\Qa\\Tests\\Qalin\\Integration\\UserInterface\\Api\\Action\\{$actionName}ControllerTest",
-            "{$templateDir}/ApiControllerTest.tpl.php",
+            "{$templateDir}/Qalin/Action/ApiControllerTest.tpl.php",
             $variables,
         );
 
@@ -234,110 +261,9 @@ final class MakeAction extends AbstractMaker
         $io->text('Next steps:');
         $io->listing([
             "Implement domain logic in <fg=yellow>src/Application/Action/{$actionName}/{$actionName}Handler.php</>",
+            "Return <fg=yellow>{$this->outputName}</> from the handler's <fg=yellow>run()</> method",
             'Fill in TODO comments in generated files',
             'Run <fg=yellow>make phpstan-analyze</> and <fg=yellow>make phpunit</> to verify',
         ]);
-    }
-
-    private function parseParameterOptions(InputInterface $input): void
-    {
-        /** @var list<string> $parameterOptions */
-        $parameterOptions = $input->getOption('parameter');
-        if ([] === $parameterOptions) {
-            return;
-        }
-
-        $this->parameters = [];
-        foreach ($parameterOptions as $parameterOption) {
-            $parts = explode(':', $parameterOption, 4);
-            if (\count($parts) >= 3 && \in_array($parts[1], ['string', 'int'], true)) {
-                $this->parameters[] = [
-                    'name' => $parts[0],
-                    'type' => $parts[1],
-                    'description' => $parts[2],
-                    'default' => $parts[3] ?? null,
-                ];
-            } else {
-                // Backwards-compatible: name:description (type defaults to string)
-                $this->parameters[] = [
-                    'name' => $parts[0],
-                    'type' => 'string',
-                    'description' => $parts[1] ?? '',
-                    'default' => null,
-                ];
-            }
-        }
-    }
-
-    /**
-     * @return array{fqcn: string, class: string}|null
-     */
-    private function discoverFixture(string $paramName, string $testsDir): ?array
-    {
-        $pascalCase = str_replace(' ', '', ucwords(str_replace('_', ' ', $paramName)));
-        $pascalCase = lcfirst($pascalCase);
-        $pascalCase = ucfirst($pascalCase);
-
-        $className = "{$pascalCase}Fixture";
-        $fileName = "{$className}.php";
-
-        $searchDirs = ["{$testsDir}/Fixtures"];
-        $packagesDir = __DIR__.'/../../../../../packages';
-        foreach (glob("{$packagesDir}/*/src") ?: [] as $packageSrc) {
-            if (is_dir($packageSrc)) {
-                $searchDirs[] = $packageSrc;
-            }
-        }
-
-        $filePath = null;
-        foreach ($searchDirs as $searchDir) {
-            if (!is_dir($searchDir)) {
-                continue;
-            }
-
-            $iterator = new \RecursiveIteratorIterator(
-                new \RecursiveDirectoryIterator($searchDir),
-            );
-            /** @var \SplFileInfo $file */
-            foreach ($iterator as $file) {
-                if ($file->getFilename() === $fileName) {
-                    $filePath = $file->getPathname();
-                    break 2;
-                }
-            }
-        }
-
-        if (null === $filePath) {
-            return null;
-        }
-
-        $contents = file_get_contents($filePath);
-        if (false === $contents) {
-            return null;
-        }
-
-        if (1 !== preg_match('/namespace\s+(.+?);/', $contents, $nsMatch)) {
-            return null;
-        }
-
-        return [
-            'fqcn' => "{$nsMatch[1]}\\{$className}",
-            'class' => $className,
-        ];
-    }
-
-    private function toKebabCase(string $pascalCase): string
-    {
-        return strtolower((string) preg_replace('/(?<!^)[A-Z]/', '-$0', $pascalCase));
-    }
-
-    private function toTitleCase(string $pascalCase): string
-    {
-        return trim((string) preg_replace('/(?<!^)[A-Z]/', ' $0', $pascalCase));
-    }
-
-    private function toSnakeCase(string $pascalCase): string
-    {
-        return strtolower((string) preg_replace('/(?<!^)[A-Z]/', '_$0', $pascalCase));
     }
 }

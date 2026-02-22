@@ -23,10 +23,10 @@ final readonly class SignUpNewPlayerController
         #[MapRequestPayload]
         SignUpNewPlayer $signUpNewPlayer,
     ): JsonResponse {
-        $output = $this->signUpNewPlayerHandler->run($signUpNewPlayer);
+        $signedUpNewPlayer = $this->signUpNewPlayerHandler->run($signUpNewPlayer);
 
         return new JsonResponse(
-            json_encode($output->toArray(), \JSON_THROW_ON_ERROR),
+            json_encode($signedUpNewPlayer->toArray(), \JSON_THROW_ON_ERROR),
             Response::HTTP_CREATED,
             json: true,
         );

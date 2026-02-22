@@ -33,7 +33,7 @@ final readonly class SignUpNewPlayerCommand
         SymfonyStyle $io,
     ): int {
         try {
-            $output = $this->signUpNewPlayerHandler->run(new SignUpNewPlayer($username, $password));
+            $signedUpNewPlayer = $this->signUpNewPlayerHandler->run(new SignUpNewPlayer($username, $password));
         } catch (ValidationFailedException $e) {
             $io->error($e->getMessage());
 
@@ -47,11 +47,9 @@ final readonly class SignUpNewPlayerCommand
         $io->success('Successfully signed up new player');
 
         $rows = [];
-        foreach ($output->toArray() as $field => $value) {
+        foreach ($signedUpNewPlayer->toArray() as $field => $value) {
             $rows[] = [$field, $value];
         }
-
-        $rows[] = ['password', '<redacted>'];
 
         $table = new Table($io);
         $table->setStyle('markdown');

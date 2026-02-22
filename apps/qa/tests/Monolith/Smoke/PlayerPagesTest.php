@@ -4,7 +4,10 @@ declare(strict_types=1);
 
 namespace Bl\Qa\Tests\Monolith\Smoke;
 
-use Bl\Qa\Tests\Monolith\Infrastructure\Scenario\GetLoggedInPlayer;
+use Bl\Auth\Tests\Fixtures\Account\PasswordPlainFixture;
+use Bl\Auth\Tests\Fixtures\Account\UsernameFixture;
+use Bl\Qa\Application\Scenario\SignInNewPlayer\SignedInNewPlayer;
+use Bl\Qa\Application\Scenario\SignInNewPlayer\SignInNewPlayer;
 use Bl\Qa\Tests\Monolith\Infrastructure\TestKernelSingleton;
 use Bl\Qa\Tests\Monolith\Smoke\Assertion\Assert;
 use PHPUnit\Framework\Attributes\CoversNothing;
@@ -33,12 +36,17 @@ final class PlayerPagesTest extends TestCase
     public function test_it_loads_player_page_for_logged_in_players(string $url, string $pageName): void
     {
         $httpClient = TestKernelSingleton::get()->httpClient();
+        $scenarioRunner = TestKernelSingleton::get()->scenarioRunner();
 
-        $loggedInPlayer = GetLoggedInPlayer::run();
+        /** @var SignedInNewPlayer $signedInNewPlayer */
+        $signedInNewPlayer = $scenarioRunner->run(new SignInNewPlayer(
+            UsernameFixture::makeString(),
+            PasswordPlainFixture::makeString(),
+        ));
 
         $response = $httpClient->request('GET', $url, [
             'headers' => [
-                'Cookie' => $loggedInPlayer->sessionCookie,
+                'Cookie' => $signedInNewPlayer->toArray()['cookie'],
             ],
         ]);
 

@@ -39,7 +39,15 @@ final class SignUpNewPlayerTest extends TestCase
      */
     public static function requiredParametersProvider(): \Iterator
     {
-        yield ['scenario' => 'username as a required parameter', 'username' => UsernameFixture::makeString(), 'password' => PasswordPlainFixture::makeString()];
-        yield ['scenario' => 'password as a required parameter', 'username' => UsernameFixture::makeString(), 'password' => PasswordPlainFixture::makeString()];
+        yield [
+            'scenario' => 'username as a required parameter',
+            'username' => UsernameFixture::makeString(),
+            'password' => PasswordPlainFixture::makeString(),
+        ];
+        yield [
+            'scenario' => 'password as a required parameter',
+            'username' => UsernameFixture::makeString(),
+            'password' => PasswordPlainFixture::makeString(),
+        ];
     }
 }

@@ -6,6 +6,7 @@ namespace Bl\Qa\Tests\Monolith\Infrastructure;
 
 use Bl\Qa\Infrastructure\Symfony\ActionRunner;
 use Bl\Qa\Infrastructure\Symfony\AppKernel;
+use Bl\Qa\Infrastructure\Symfony\ScenarioRunner;
 use Psr\Container\ContainerInterface;
 use Symfony\Bundle\FrameworkBundle\Console\Application;
 use Symfony\Component\Console\Tester\ApplicationTester;
@@ -40,6 +41,11 @@ final class TestKernel
             throw new \RuntimeException('ActionRunner service not found');
         }
 
+        $scenarioRunner = $container->get(ScenarioRunner::class);
+        if (!$scenarioRunner instanceof ScenarioRunner) {
+            throw new \RuntimeException('ScenarioRunner service not found');
+        }
+
         return new self(
             $appKernel,
             $stderrApplicationTester,
@@ -47,6 +53,7 @@ final class TestKernel
             $httpClient,
             $pdo,
             $actionRunner,
+            $scenarioRunner,
         );
     }
 
@@ -57,6 +64,7 @@ final class TestKernel
         private HttpClientInterface $httpClient,
         private \PDO $pdo,
         private ActionRunner $actionRunner,
+        private ScenarioRunner $scenarioRunner,
     ) {
     }
 
@@ -88,5 +96,10 @@ final class TestKernel
     public function actionRunner(): ActionRunner
     {
         return $this->actionRunner;
+    }
+
+    public function scenarioRunner(): ScenarioRunner
+    {
+        return $this->scenarioRunner;
     }
 }

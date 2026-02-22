@@ -1,0 +1,139 @@
+<?php echo "<?php\n"; ?>
+
+declare(strict_types=1);
+
+namespace <?php echo $namespace; ?>;
+
+use Bl\Qa\Application\Scenario\<?php echo $scenario_name; ?>\<?php echo $scenario_name; ?>;
+<?php foreach ($scenario_parameters as $param) { ?>
+<?php if ($param['fixture_fqcn']) { ?>
+use <?php echo $param['fixture_fqcn']; ?>;
+<?php } ?>
+<?php } ?>
+use PHPUnit\Framework\Attributes\CoversClass;
+use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\Attributes\Small;
+use PHPUnit\Framework\Attributes\TestDox;
+use PHPUnit\Framework\TestCase;
+
+#[CoversClass(<?php echo $scenario_name; ?>::class)]
+#[Small]
+final class <?php echo $class_name; ?> extends TestCase
+{
+    #[DataProvider('requiredParametersProvider')]
+    #[TestDox('It has $scenario')]
+    public function test_it_has_required_parameters(
+        string $scenario,
+<?php foreach ($scenario_parameters as $param) {
+    if (null !== $param['default']) {
+        continue;
+    } ?>
+        <?php echo $param['type']; ?> $<?php echo $param['name']; ?>,
+<?php } ?>
+    ): void {
+        $<?php echo $scenario_camel; ?> = new <?php echo $scenario_name; ?>(
+<?php foreach ($scenario_parameters as $param) {
+    if (null !== $param['default']) {
+        continue;
+    } ?>
+            $<?php echo $param['name']; ?>,
+<?php } ?>
+        );
+
+<?php foreach ($scenario_parameters as $param) {
+    if (null !== $param['default']) {
+        continue;
+    } ?>
+        $this->assertSame($<?php echo $param['name']; ?>, $<?php echo $scenario_camel; ?>-><?php echo $param['name']; ?>);
+<?php } ?>
+    }
+
+    /**
+     * @return \Iterator<array{
+     *     scenario: string,
+<?php foreach ($scenario_parameters as $param) {
+    if (null !== $param['default']) {
+        continue;
+    } ?>
+     *     <?php echo $param['name']; ?>: <?php echo $param['type']; ?>,
+<?php } ?>
+     * }>
+     */
+    public static function requiredParametersProvider(): \Iterator
+    {
+<?php foreach ($scenario_parameters as $param) {
+    if (null !== $param['default']) {
+        continue;
+    } ?>
+        yield [
+            'scenario' => '<?php echo $param['name']; ?> as a required parameter',
+<?php foreach ($scenario_parameters as $otherParam) {
+    if (null !== $otherParam['default']) {
+        continue;
+    } ?>            '<?php echo $otherParam['name']; ?>' => <?php if ($otherParam['fixture_fqcn']) { ?><?php echo $otherParam['fixture_class']; ?>::make<?php echo 'int' === $otherParam['type'] ? 'Int' : 'String'; ?>()<?php } elseif ('int' === $otherParam['type']) { ?>1<?php } else { ?>'valid_<?php echo $otherParam['name']; ?>'<?php } ?>,
+<?php } ?>        ];
+<?php } ?>
+    }
+<?php if ($has_optional_params) { ?>
+
+    #[DataProvider('optionalParametersProvider')]
+    #[TestDox('It has $scenario')]
+    public function test_it_has_optional_parameters(
+        string $scenario,
+<?php foreach ($scenario_parameters as $param) {
+    if (null === $param['default']) {
+        continue;
+    } ?>
+        <?php echo $param['type']; ?> $expected<?php echo ucfirst($param['name']); ?>,
+<?php } ?>
+    ): void
+    {
+<?php foreach ($scenario_parameters as $param) {
+    if (null !== $param['default']) {
+        continue;
+    } ?>
+        $<?php echo $param['name']; ?> = <?php if ($param['fixture_fqcn']) { ?><?php echo $param['fixture_class']; ?>::make<?php echo 'int' === $param['type'] ? 'Int' : 'String'; ?>();<?php } elseif ('int' === $param['type']) { ?>1;<?php } else { ?>'valid_<?php echo $param['name']; ?>';<?php } ?>
+
+<?php } ?>
+        $<?php echo $scenario_camel; ?> = new <?php echo $scenario_name; ?>(
+<?php foreach ($scenario_parameters as $param) {
+    if (null !== $param['default']) {
+        continue;
+    } ?>
+            $<?php echo $param['name']; ?>,
+<?php } ?>
+        );
+
+<?php foreach ($scenario_parameters as $param) {
+    if (null === $param['default']) {
+        continue;
+    } ?>
+        $this->assertSame($expected<?php echo ucfirst($param['name']); ?>, $<?php echo $scenario_camel; ?>-><?php echo $param['name']; ?>);
+<?php } ?>
+    }
+
+    /**
+     * @return \Iterator<array{
+     *     scenario: string,
+<?php foreach ($scenario_parameters as $param) {
+    if (null === $param['default']) {
+        continue;
+    } ?>
+     *     expected<?php echo ucfirst($param['name']); ?>: <?php echo $param['type']; ?>,
+<?php } ?>
+     * }>
+     */
+    public static function optionalParametersProvider(): \Iterator
+    {
+<?php foreach ($scenario_parameters as $param) {
+    if (null === $param['default']) {
+        continue;
+    } ?>
+        yield [
+            'scenario' => '<?php echo $param['name']; ?> as an optional parameter (defaults to <?php echo $param['default']; ?>)',
+            'expected<?php echo ucfirst($param['name']); ?>' => <?php echo 'int' === $param['type'] ? $param['default'] : "'{$param['default']}'"; ?>,
+        ];
+<?php } ?>
+    }
+<?php } ?>
+}

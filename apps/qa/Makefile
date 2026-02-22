@@ -65,12 +65,6 @@ composer-dump: ## Dumps autoloader (arg, eg `arg='--classmap-authoritative'`)
 console: ## Runs Symfony Console (arg, env, eg `arg='cache:clear' env='prod'`)
 	@$(CONSOLE) $(arg)
 
-maker: ## Runs MakerBundle interactively (arg, eg `arg='make:action InstantFreeUpgrade'`)
-	@docker compose exec -it -e APP_ENV=dev $(QA_SERVICE) php bin/console $(arg)
-
-qalin: ## Runs Qalin Console (arg, env, eg `arg='action:sign-up-new-player'`)
-	@$(QALIN) $(arg)
-
 cs-check: ## Checks CS with PHP-CS-Fixer (arg, eg `arg='../monolith/web'`)
 	@$(PHP_CS_FIXER) check --verbose $(arg)
 
@@ -97,6 +91,16 @@ rector-fix: ## Automated refactorings with Rector (arg, eg `arg='--clear-cache'`
 
 rector-check: ## Refactoring checks with Rector
 	@$(RECTOR) process --dry-run
+
+## —— Qalin 🫂 ————————————————————————————————————————————————————————————————
+qalin: ## Runs Qalin CLI (arg, env, eg `arg='action:sign-up-new-player'`)
+	@$(QALIN) $(arg)
+
+qalin-action: ## Scaffolds a new Qalin Action (arg, eg `arg='UpgradeInstantlyForFree'`)
+	@docker compose exec -it -e APP_ENV=dev $(QA_SERVICE) php bin/console make:qalin:action $(arg)
+
+qalin-scenario: ## Scaffolds a new Qalin Scenario (arg, eg `arg='SignInNewPlayer'`)
+	@docker compose exec -it -e APP_ENV=dev $(QA_SERVICE) php bin/console make:qalin:scenario $(arg)
 
 ## —— App 📱 ———————————————————————————————————————————————————————————————————
 app-init: ## First install / resetting (Docker build, up, etc)

@@ -10,15 +10,15 @@ use Symfony\Component\HttpClient\Exception\RedirectionException;
 
 final readonly class LogInPlayer
 {
-    public static function run(Player $player): string
+    public static function run(string $username, string $password): string
     {
         $httpClient = TestKernelSingleton::get()->httpClient();
 
         try {
             $response = $httpClient->request('POST', '/connexion.html', [
                 'body' => [
-                    'pseudo' => $player->username,
-                    'mdp' => $player->password,
+                    'pseudo' => $username,
+                    'mdp' => $password,
                     'connexion' => 'Se connecter',
                 ],
                 'headers' => [

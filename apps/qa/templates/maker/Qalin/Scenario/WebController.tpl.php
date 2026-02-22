@@ -16,9 +16,9 @@ final readonly class <?php echo $class_name; ?>
     ) {
     }
 
-    #[Route('/actions/<?php echo $action_kebab; ?>', methods: ['GET'])]
+    #[Route('/scenarios/<?php echo $scenario_kebab; ?>', methods: ['GET'])]
     public function __invoke(): Response
     {
-        return new Response($this->twig->render('actions/<?php echo $action_kebab; ?>.html.twig'));
+        return new Response($this->twig->render('qalin/scenario/<?php echo $scenario_kebab; ?>.html.twig'));
     }
 }

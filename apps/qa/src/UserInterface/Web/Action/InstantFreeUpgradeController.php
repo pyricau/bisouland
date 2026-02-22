@@ -19,7 +19,7 @@ final readonly class InstantFreeUpgradeController
     #[Route('/actions/instant-free-upgrade', methods: ['GET'])]
     public function __invoke(): Response
     {
-        return new Response($this->twig->render('actions/instant-free-upgrade.html.twig', [
+        return new Response($this->twig->render('qalin/action/instant-free-upgrade.html.twig', [
             'upgradables' => Upgradable::cases(),
         ]));
     }

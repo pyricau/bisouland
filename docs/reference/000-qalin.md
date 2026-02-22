@@ -287,6 +287,70 @@ final class LogOutTest extends TestCase
 }
 ```
 
+## Creating Actions and Scenarios
+
+Use the MakerBundle commands to scaffold new Actions and Scenarios. Both support
+interactive mode (prompts guide you through each field) or non-interactive mode
+(pass all values as options, useful for scripting).
+
+```console
+make maker arg='make:action <Name>'
+make maker arg='make:scenario <Name>'
+```
+
+### make:action
+
+| Option | Short | Format | Description |
+|--------|-------|--------|-------------|
+| `--description` | `-d` | `"Short text"` | Shown in the CLI command help and Web page title |
+| `--parameter` | `-p` | `name:type:description[:default]` | Repeatable. `type` is `string` or `int`. Omit the default to make the parameter required. |
+
+Example:
+
+```console
+make maker arg='make:action InstantFreeUpgrade \
+  -d "Instantly upgrade an upgradable for free" \
+  -p "username:string:4-15 alphanumeric characters" \
+  -p "upgradable:string:heart or mouth" \
+  -p "levels:int:number of levels to upgrade:1"'
+```
+
+This generates 12 files under `src/` (input DTO, handler, output DTO, CLI command, Web
+controller, API controller, Twig template) and `tests/` (spec tests for the DTO and
+handler, integration tests for each interface).
+
+After generation, implement the domain logic in `NameHandler.php`, fill in any `TODO`
+comments, then run:
+
+```console
+cd apps/qa
+make phpstan-analyze
+make phpunit
+```
+
+### make:scenario
+
+Same `--description` / `-d` and `--parameter` / `-p` options as `make:action`, plus:
+
+| Option | Short | Format | Description |
+|--------|-------|--------|-------------|
+| `--action` | `-a` | `PascalCaseName` | Repeatable. Actions to compose. Must already exist; their handlers are discovered automatically and injected into the generated scenario handler. |
+
+Example:
+
+```console
+make maker arg='make:scenario SignInNewPlayer \
+  -d "Sign up and immediately sign in a brand-new player" \
+  -p "username:string:4-15 alphanumeric characters" \
+  -p "password:string:8-72 characters" \
+  -a SignUpNewPlayer \
+  -a SignInPlayer'
+```
+
+Generates the same 12 files as `make:action`, but under `Application/Scenario/` and
+`UserInterface/{Cli,Web,Api}/Scenario/`. The handler is pre-wired with the discovered
+action handlers as constructor dependencies.
+
 ## Inspiration
 
 Qalin is inspired by **QAAPI**, a Test Control Interface built at Bumble Inc. and described

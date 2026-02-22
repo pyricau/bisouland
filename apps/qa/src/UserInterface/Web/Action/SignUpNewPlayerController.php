@@ -18,6 +18,6 @@ final readonly class SignUpNewPlayerController
     #[Route('/actions/sign-up-new-player', methods: ['GET'])]
     public function __invoke(): Response
     {
-        return new Response($this->twig->render('actions/sign-up-new-player.html.twig'));
+        return new Response($this->twig->render('qalin/action/sign-up-new-player.html.twig'));
     }
 }

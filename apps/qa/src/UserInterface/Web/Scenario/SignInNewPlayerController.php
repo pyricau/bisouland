@@ -18,6 +18,6 @@ final readonly class SignInNewPlayerController
     #[Route('/scenarios/sign-in-new-player', methods: ['GET'])]
     public function __invoke(): Response
     {
-        return new Response($this->twig->render('scenarios/sign-in-new-player.html.twig'));
+        return new Response($this->twig->render('qalin/scenario/sign-in-new-player.html.twig'));
     }
 }

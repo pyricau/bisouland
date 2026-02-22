@@ -12,9 +12,9 @@ use Bl\Exception\ServerErrorException;
 use Bl\Exception\ValidationFailedException;
 use Bl\Game\FindPlayer;
 use Bl\Game\Tests\Fixtures\PlayerFixture;
+use Bl\Qa\Application\Action\SignInPlayer\SignedInPlayer;
 use Bl\Qa\Application\Action\SignInPlayer\SignInPlayer;
 use Bl\Qa\Application\Action\SignInPlayer\SignInPlayerHandler;
-use Bl\Qa\Application\Action\SignInPlayer\SignInPlayerOutput;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\Small;
 use PHPUnit\Framework\TestCase;
@@ -50,7 +50,7 @@ final class SignInPlayerHandlerTest extends TestCase
             $username,
         ));
 
-        $this->assertInstanceOf(SignInPlayerOutput::class, $signedInPlayer);
+        $this->assertInstanceOf(SignedInPlayer::class, $signedInPlayer);
     }
 
     public function test_it_fails_when_username_is_not_an_existing_one(): void

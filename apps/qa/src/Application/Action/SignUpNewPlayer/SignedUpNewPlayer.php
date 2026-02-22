@@ -11,7 +11,7 @@ use Bl\Qa\Application\Action\ActionOutput;
 /**
  * @object-type DataTransferObject
  */
-final readonly class SignUpNewPlayerOutput implements ActionOutput
+final readonly class SignedUpNewPlayer implements ActionOutput
 {
     public function __construct(
         public Player $player,

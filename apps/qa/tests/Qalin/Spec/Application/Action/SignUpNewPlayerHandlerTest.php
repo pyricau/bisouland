@@ -12,9 +12,9 @@ use Bl\Exception\ServerErrorException;
 use Bl\Exception\ValidationFailedException;
 use Bl\Game\SaveNewPlayer;
 use Bl\Game\Tests\Fixtures\PlayerFixture;
+use Bl\Qa\Application\Action\SignUpNewPlayer\SignedUpNewPlayer;
 use Bl\Qa\Application\Action\SignUpNewPlayer\SignUpNewPlayer;
 use Bl\Qa\Application\Action\SignUpNewPlayer\SignUpNewPlayerHandler;
-use Bl\Qa\Application\Action\SignUpNewPlayer\SignUpNewPlayerOutput;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\Attributes\Small;
@@ -50,7 +50,7 @@ final class SignUpNewPlayerHandlerTest extends TestCase
             $passwordPlain,
         ));
 
-        $this->assertInstanceOf(SignUpNewPlayerOutput::class, $signedUpNewPlayer);
+        $this->assertInstanceOf(SignedUpNewPlayer::class, $signedUpNewPlayer);
         $this->assertSame($expectedPlayer, $signedUpNewPlayer->player);
     }
 

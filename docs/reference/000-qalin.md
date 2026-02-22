@@ -108,7 +108,7 @@ final readonly class InstantFreeUpgradeHandler
     ) {
     }
 
-    public function run(InstantFreeUpgrade $input): InstantFreeUpgradeOutput
+    public function run(InstantFreeUpgrade $input): InstantFreeUpgraded
     {
         $username = Username::fromString($input->username);
         $upgradable = Upgradable::fromString($input->upgradable);
@@ -126,7 +126,7 @@ final readonly class InstantFreeUpgradeHandler
             $player = $this->applyCompletedUpgrade->apply($username, $upgradable, $milliScore);
         }
 
-        return new InstantFreeUpgradeOutput($player);
+        return new InstantFreeUpgraded($player);
     }
 }
 ```
@@ -154,7 +154,7 @@ final readonly class SignInNewPlayerHandler
     ) {
     }
 
-    public function run(SignInNewPlayer $input): SignInNewPlayerOutput
+    public function run(SignInNewPlayer $input): SignedInNewPlayer
     {
         $signedUp = $this->signUpNewPlayerHandler->run(
             new SignUpNewPlayer($input->username, $input->password),
@@ -164,7 +164,7 @@ final readonly class SignInNewPlayerHandler
             new SignInPlayer($signedUp->player->account->username->toString()),
         );
 
-        return new SignInNewPlayerOutput($signedUp, $signedIn);
+        return new SignedInNewPlayer($signedUp, $signedIn);
     }
 }
 ```
@@ -303,6 +303,7 @@ make qalin-scenario arg='<Name>'
 | Option | Short | Format | Description |
 |--------|-------|--------|-------------|
 | `--description` | `-d` | `"Short text"` | Shown in the CLI command help and Web page title |
+| `--output-name` | `-o` | `PascalCaseName` | Output DTO class name. Defaults to `{Name}ed` if omitted. Use the past participle of the action verb (e.g. `InstantFreeUpgraded`). |
 | `--parameter` | `-p` | `name:type:description[:default]` | Repeatable. `type` is `string` or `int`. Omit the default to make the parameter required. |
 
 Example:
@@ -310,6 +311,7 @@ Example:
 ```console
 make qalin-action arg='InstantFreeUpgrade \
   -d "Instantly upgrade an upgradable for free" \
+  -o InstantFreeUpgraded \
   -p "username:string:4-15 alphanumeric characters" \
   -p "upgradable:string:heart or mouth" \
   -p "levels:int:number of levels to upgrade:1"'
@@ -330,7 +332,7 @@ make phpunit
 
 ### make:qalin:scenario
 
-Same `--description` / `-d` and `--parameter` / `-p` options as `make:qalin:action`, plus:
+Same `--description` / `-d`, `--output-name` / `-o`, and `--parameter` / `-p` options as `make:qalin:action`, plus:
 
 | Option | Short | Format | Description |
 |--------|-------|--------|-------------|
@@ -341,6 +343,7 @@ Example:
 ```console
 make qalin-scenario arg='SignInNewPlayer \
   -d "Sign up and immediately sign in a brand-new player" \
+  -o SignedInNewPlayer \
   -p "username:string:4-15 alphanumeric characters" \
   -p "password:string:8-72 characters" \
   -a SignUpNewPlayer \

@@ -31,7 +31,7 @@ final readonly class SignInNewPlayerHandler
      * @throws ValidationFailedException If the username is not an already existing one
      * @throws ServerErrorException      If an unexpected error occurs
      */
-    public function run(SignInNewPlayer $input): SignInNewPlayerOutput
+    public function run(SignInNewPlayer $input): SignedInNewPlayer
     {
         $signedUp = $this->signUpNewPlayerHandler->run(
             new SignUpNewPlayer($input->username, $input->password),
@@ -41,6 +41,6 @@ final readonly class SignInNewPlayerHandler
             new SignInPlayer($signedUp->player->account->username->toString()),
         );
 
-        return new SignInNewPlayerOutput($signedUp, $signedIn);
+        return new SignedInNewPlayer($signedUp, $signedIn);
     }
 }

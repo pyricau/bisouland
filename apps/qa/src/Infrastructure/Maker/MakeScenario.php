@@ -18,6 +18,8 @@ final class MakeScenario extends AbstractMaker
 {
     private string $description = '';
 
+    private string $outputName = '';
+
     /** @var list<array{name: string, type: string, description: string, default: string|null}> */
     private array $parameters = [];
 
@@ -43,6 +45,7 @@ final class MakeScenario extends AbstractMaker
         $command
             ->addArgument('name', InputArgument::REQUIRED, 'The scenario name in PascalCase (e.g. <fg=yellow>SignInNewPlayer</>)')
             ->addOption('description', 'd', InputOption::VALUE_REQUIRED, 'Short description for CLI command and page title')
+            ->addOption('output-name', 'o', InputOption::VALUE_REQUIRED, 'Output DTO class name in PascalCase (e.g. <fg=yellow>SignedInNewPlayer</>)')
             ->addOption('parameter', 'p', InputOption::VALUE_REQUIRED | InputOption::VALUE_IS_ARRAY, 'Parameters as name:type:description[:default] (e.g. <fg=yellow>username:string:4-15 alphanumeric characters</>, <fg=yellow>levels:int:number of levels:1</>). Type defaults to string if omitted. Providing a default makes the parameter optional.')
             ->addOption('action', 'a', InputOption::VALUE_REQUIRED | InputOption::VALUE_IS_ARRAY, 'Actions to compose in PascalCase (e.g. <fg=yellow>SignUpNewPlayer</>, <fg=yellow>SignInPlayer</>)')
         ;
@@ -64,6 +67,17 @@ final class MakeScenario extends AbstractMaker
         } else {
             $description = $io->ask('Short description (for CLI command and page title)');
             $this->description = \is_string($description) ? $description : '';
+        }
+
+        // Output name: use --output-name option or prompt
+        $outputNameOption = $input->getOption('output-name');
+        if (\is_string($outputNameOption)) {
+            $this->outputName = $outputNameOption;
+        } else {
+            /** @var string $scenarioName */
+            $scenarioName = $input->getArgument('name');
+            $outputName = $io->ask("Output DTO class name (PascalCase, e.g. {$scenarioName}ed)", "{$scenarioName}ed");
+            $this->outputName = \is_string($outputName) ? $outputName : "{$scenarioName}ed";
         }
 
         if ([] !== $input->getOption('parameter')) {
@@ -122,6 +136,11 @@ final class MakeScenario extends AbstractMaker
             $this->description = \is_string($descriptionOption) ? $descriptionOption : '';
         }
 
+        if ('' === $this->outputName) {
+            $outputNameOption = $input->getOption('output-name');
+            $this->outputName = \is_string($outputNameOption) ? $outputNameOption : "{$scenarioName}ed";
+        }
+
         if ([] === $this->parameters) {
             $this->parameters = $this->makerHelper->parseParameterOptions($input);
         }
@@ -178,6 +197,7 @@ final class MakeScenario extends AbstractMaker
 
         $variables = [
             'scenario_name' => $scenarioName,
+            'scenario_output_name' => $this->outputName,
             'scenario_kebab' => $scenarioKebab,
             'scenario_title' => $scenarioTitle,
             'scenario_snake' => $scenarioSnake,
@@ -205,7 +225,7 @@ final class MakeScenario extends AbstractMaker
 
         // 3. Scenario output DTO
         $generator->generateClass(
-            "Bl\\Qa\\Application\\Scenario\\{$scenarioName}\\{$scenarioName}Output",
+            "Bl\\Qa\\Application\\Scenario\\{$scenarioName}\\{$this->outputName}",
             "{$templateDir}/Qalin/Scenario/HandlerOutput.tpl.php",
             $variables,
         );
@@ -279,7 +299,7 @@ final class MakeScenario extends AbstractMaker
         $io->text('Next steps:');
         $io->listing([
             "Implement the handler in <fg=yellow>src/Application/Scenario/{$scenarioName}/{$scenarioName}Handler.php</>",
-            "Implement the output in <fg=yellow>src/Application/Scenario/{$scenarioName}/{$scenarioName}Output.php</>",
+            "Implement the output in <fg=yellow>src/Application/Scenario/{$scenarioName}/{$this->outputName}.php</>",
             'Fill in TODO comments in generated files',
             'Run <fg=yellow>make phpstan-analyze</> and <fg=yellow>make phpunit</> to verify',
         ]);
@@ -296,6 +316,12 @@ final class MakeScenario extends AbstractMaker
             return null;
         }
 
+        $outputClass = "{$actionName}ed";
+        $handlerContent = file_get_contents($handlerFile);
+        if (\is_string($handlerContent) && 1 === preg_match('/public function run\([^)]+\): (\w+)/', $handlerContent, $matches)) {
+            $outputClass = $matches[1];
+        }
+
         return [
             'name' => $actionName,
             'camel_name' => lcfirst($actionName),
@@ -303,8 +329,8 @@ final class MakeScenario extends AbstractMaker
             'handler_fqcn' => "Bl\\Qa\\Application\\Action\\{$actionName}\\{$actionName}Handler",
             'input_class' => $actionName,
             'input_fqcn' => "Bl\\Qa\\Application\\Action\\{$actionName}\\{$actionName}",
-            'output_class' => "{$actionName}Output",
-            'output_fqcn' => "Bl\\Qa\\Application\\Action\\{$actionName}\\{$actionName}Output",
+            'output_class' => $outputClass,
+            'output_fqcn' => "Bl\\Qa\\Application\\Action\\{$actionName}\\{$outputClass}",
         ];
     }
 }

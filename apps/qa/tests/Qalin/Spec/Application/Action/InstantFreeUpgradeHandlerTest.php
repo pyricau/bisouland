@@ -14,8 +14,8 @@ use Bl\Game\Player\UpgradableLevels\Upgradable;
 use Bl\Game\Tests\Fixtures\Player\UpgradableLevels\UpgradableFixture;
 use Bl\Game\Tests\Fixtures\PlayerFixture;
 use Bl\Qa\Application\Action\InstantFreeUpgrade\InstantFreeUpgrade;
+use Bl\Qa\Application\Action\InstantFreeUpgrade\InstantFreeUpgraded;
 use Bl\Qa\Application\Action\InstantFreeUpgrade\InstantFreeUpgradeHandler;
-use Bl\Qa\Application\Action\InstantFreeUpgrade\InstantFreeUpgradeOutput;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\Attributes\Small;
@@ -75,14 +75,14 @@ final class InstantFreeUpgradeHandlerTest extends TestCase
             $applyCompletedUpgrade->reveal(),
             $findPlayer->reveal(),
         );
-        $output = $instantFreeUpgradeHandler->run(new InstantFreeUpgrade(
+        $instantFreeUpgraded = $instantFreeUpgradeHandler->run(new InstantFreeUpgrade(
             $username,
             $upgradable,
             $levels,
         ));
 
-        $this->assertInstanceOf(InstantFreeUpgradeOutput::class, $output);
-        $this->assertSame($expectedPlayer, $output->player);
+        $this->assertInstanceOf(InstantFreeUpgraded::class, $instantFreeUpgraded);
+        $this->assertSame($expectedPlayer, $instantFreeUpgraded->player);
     }
 
     public function test_it_fails_when_levels_is_less_than_1(): void

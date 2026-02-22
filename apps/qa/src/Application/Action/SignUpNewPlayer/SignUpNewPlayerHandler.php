@@ -28,13 +28,13 @@ final readonly class SignUpNewPlayerHandler
      * @throws ValidationFailedException If no cloud coordinate Y is available
      * @throws ServerErrorException      If an unexpected error occurs
      */
-    public function run(SignUpNewPlayer $input): SignUpNewPlayerOutput
+    public function run(SignUpNewPlayer $input): SignedUpNewPlayer
     {
         $player = $this->saveNewPlayer->save(
             Username::fromString($input->username),
             PasswordPlain::fromString($input->password),
         );
 
-        return new SignUpNewPlayerOutput($player);
+        return new SignedUpNewPlayer($player);
     }
 }

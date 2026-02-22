@@ -32,11 +32,11 @@ final readonly class <?php echo $class_name; ?>
 <?php } ?>
      * @throws ServerErrorException      If an unexpected error occurs
      */
-    public function run(<?php echo $action_name; ?> $input): <?php echo $action_name; ?>Output
+    public function run(<?php echo $action_name; ?> $input): <?php echo $action_output_name; ?>
     {
 <?php if ($has_username_param) { ?>
         $username = Username::fromString($input->username);
 <?php } ?>
-        // TODO: implement domain logic, return new <?php echo $action_name; ?>Output(...)
+        // TODO: implement domain logic, return new <?php echo $action_output_name; ?>(...)
     }
 }

@@ -31,7 +31,7 @@ final readonly class SignInPlayerCommand
         SymfonyStyle $io,
     ): int {
         try {
-            $output = $this->signInPlayerHandler->run(new SignInPlayer($username));
+            $signedInPlayer = $this->signInPlayerHandler->run(new SignInPlayer($username));
         } catch (ValidationFailedException $e) {
             $io->error($e->getMessage());
 
@@ -45,7 +45,7 @@ final readonly class SignInPlayerCommand
         $io->success('Successfully completed Sign In Player');
 
         $rows = [];
-        foreach ($output->toArray() as $field => $value) {
+        foreach ($signedInPlayer->toArray() as $field => $value) {
             $rows[] = [$field, $value];
         }
 

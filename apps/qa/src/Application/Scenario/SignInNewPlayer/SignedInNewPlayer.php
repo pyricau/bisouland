@@ -4,18 +4,18 @@ declare(strict_types=1);
 
 namespace Bl\Qa\Application\Scenario\SignInNewPlayer;
 
-use Bl\Qa\Application\Action\SignInPlayer\SignInPlayerOutput;
-use Bl\Qa\Application\Action\SignUpNewPlayer\SignUpNewPlayerOutput;
+use Bl\Qa\Application\Action\SignInPlayer\SignedInPlayer;
+use Bl\Qa\Application\Action\SignUpNewPlayer\SignedUpNewPlayer;
 use Bl\Qa\Application\Scenario\ScenarioOutput;
 
 /**
  * @object-type DataTransferObject
  */
-final readonly class SignInNewPlayerOutput implements ScenarioOutput
+final readonly class SignedInNewPlayer implements ScenarioOutput
 {
     public function __construct(
-        public SignUpNewPlayerOutput $signedUp,
-        public SignInPlayerOutput $signedIn,
+        public SignedUpNewPlayer $signedUp,
+        public SignedInPlayer $signedIn,
     ) {
     }
 

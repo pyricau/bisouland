@@ -24,10 +24,10 @@ final readonly class <?php echo $class_name; ?>
         #[MapRequestPayload]
         <?php echo $scenario_name; ?> $<?php echo $scenario_camel; ?>,
     ): JsonResponse {
-        $output = $this-><?php echo $scenario_camel; ?>Handler->run($<?php echo $scenario_camel; ?>);
+        $<?php echo lcfirst($scenario_output_name); ?> = $this-><?php echo $scenario_camel; ?>Handler->run($<?php echo $scenario_camel; ?>);
 
         return new JsonResponse(
-            json_encode($output->toArray(), \JSON_THROW_ON_ERROR),
+            json_encode($<?php echo lcfirst($scenario_output_name); ?>->toArray(), \JSON_THROW_ON_ERROR),
             Response::HTTP_CREATED,
             json: true,
         );

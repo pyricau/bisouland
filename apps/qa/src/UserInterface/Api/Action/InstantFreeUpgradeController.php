@@ -23,10 +23,10 @@ final readonly class InstantFreeUpgradeController
         #[MapRequestPayload]
         InstantFreeUpgrade $instantFreeUpgrade,
     ): JsonResponse {
-        $output = $this->instantFreeUpgradeHandler->run($instantFreeUpgrade);
+        $instantFreeUpgraded = $this->instantFreeUpgradeHandler->run($instantFreeUpgrade);
 
         return new JsonResponse(
-            json_encode($output->toArray(), \JSON_THROW_ON_ERROR),
+            json_encode($instantFreeUpgraded->toArray(), \JSON_THROW_ON_ERROR),
             Response::HTTP_CREATED,
             json: true,
         );

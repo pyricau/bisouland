@@ -6,7 +6,7 @@ namespace <?php echo $namespace; ?>;
 
 use Bl\Qa\Application\Action\<?php echo $action_name; ?>\<?php echo $action_name; ?>;
 use Bl\Qa\Application\Action\<?php echo $action_name; ?>\<?php echo $action_name; ?>Handler;
-use Bl\Qa\Application\Action\<?php echo $action_name; ?>\<?php echo $action_name; ?>Output;
+use Bl\Qa\Application\Action\<?php echo $action_name; ?>\<?php echo $action_output_name; ?>;
 use Bl\Exception\ServerErrorException;
 use Bl\Exception\ValidationFailedException;
 <?php foreach ($action_parameters as $param) { ?>
@@ -52,14 +52,14 @@ final class <?php echo $class_name; ?> extends TestCase
         $<?php echo $action_camel; ?>Handler = new <?php echo $action_name; ?>Handler(
             // TODO: inject revealed prophecies
         );
-        $output = $<?php echo $action_camel; ?>Handler->run(new <?php echo $action_name; ?>(
+        $<?php echo lcfirst($action_output_name); ?> = $<?php echo $action_camel; ?>Handler->run(new <?php echo $action_name; ?>(
 <?php foreach ($action_parameters as $param) { ?>
             $<?php echo $param['name']; ?>,
 <?php } ?>
         ));
 
-        $this->assertInstanceOf(<?php echo $action_name; ?>Output::class, $output);
-        // TODO: add assertions on $output->player
+        $this->assertInstanceOf(<?php echo $action_output_name; ?>::class, $<?php echo lcfirst($action_output_name); ?>);
+        // TODO: add assertions on $<?php echo lcfirst($action_output_name); ?>
     }
 
     /**

@@ -36,7 +36,7 @@ final readonly class InstantFreeUpgradeCommand
         int $levels = 1,
     ): int {
         try {
-            $output = $this->instantFreeUpgradeHandler->run(new InstantFreeUpgrade($username, $upgradable, $levels));
+            $instantFreeUpgraded = $this->instantFreeUpgradeHandler->run(new InstantFreeUpgrade($username, $upgradable, $levels));
         } catch (ValidationFailedException $e) {
             $io->error($e->getMessage());
 
@@ -50,7 +50,7 @@ final readonly class InstantFreeUpgradeCommand
         $io->success('Successfully completed Instant Free Upgrade');
 
         $rows = [];
-        foreach ($output->toArray() as $field => $value) {
+        foreach ($instantFreeUpgraded->toArray() as $field => $value) {
             $rows[] = [$field, $value];
         }
 

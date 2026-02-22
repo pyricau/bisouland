@@ -17,9 +17,9 @@ use Bl\Game\SaveNewPlayer;
 use Bl\Game\Tests\Fixtures\PlayerFixture;
 use Bl\Qa\Application\Action\SignInPlayer\SignInPlayerHandler;
 use Bl\Qa\Application\Action\SignUpNewPlayer\SignUpNewPlayerHandler;
+use Bl\Qa\Application\Scenario\SignInNewPlayer\SignedInNewPlayer;
 use Bl\Qa\Application\Scenario\SignInNewPlayer\SignInNewPlayer;
 use Bl\Qa\Application\Scenario\SignInNewPlayer\SignInNewPlayerHandler;
-use Bl\Qa\Application\Scenario\SignInNewPlayer\SignInNewPlayerOutput;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\Attributes\Small;
@@ -72,7 +72,7 @@ final class SignInNewPlayerHandlerTest extends TestCase
             $password,
         ));
 
-        $this->assertInstanceOf(SignInNewPlayerOutput::class, $signedInNewPlayer);
+        $this->assertInstanceOf(SignedInNewPlayer::class, $signedInNewPlayer);
         $this->assertSame($player, $signedInNewPlayer->signedUp->player);
     }
 

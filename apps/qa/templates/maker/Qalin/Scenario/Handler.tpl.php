@@ -33,7 +33,7 @@ final readonly class <?php echo $class_name; ?>
      * @throws ValidationFailedException If a parameter is invalid
      * @throws ServerErrorException      If an unexpected error occurs
      */
-    public function run(<?php echo $scenario_name; ?> $<?php echo $scenario_camel; ?>): <?php echo $scenario_name; ?>Output
+    public function run(<?php echo $scenario_name; ?> $<?php echo $scenario_camel; ?>): <?php echo $scenario_output_name; ?>
     {
 <?php if ([] !== $action_dependencies) { ?>
 <?php foreach ($action_dependencies as $dep) { ?>
@@ -42,9 +42,9 @@ final readonly class <?php echo $class_name; ?>
         );
 <?php } ?>
 
-        return new <?php echo $scenario_name; ?>Output(<?php echo implode(', ', array_map(static fn ($d) => '$'.$d['camel_name'], $action_dependencies)); ?>);
+        return new <?php echo $scenario_output_name; ?>(<?php echo implode(', ', array_map(static fn ($d) => '$'.$d['camel_name'], $action_dependencies)); ?>);
 <?php } else { ?>
-        // TODO: call action handlers and return new <?php echo $scenario_name; ?>Output(...)
+        // TODO: call action handlers and return new <?php echo $scenario_output_name; ?>(...)
 <?php } ?>
     }
 }

@@ -27,7 +27,7 @@ final readonly class SignInPlayerHandler
      * @throws ValidationFailedException If the username is not an already existing one
      * @throws ServerErrorException      If an unexpected error occurs
      */
-    public function run(SignInPlayer $input): SignInPlayerOutput
+    public function run(SignInPlayer $input): SignedInPlayer
     {
         $player = $this->findPlayer->find(
             Username::fromString($input->username),
@@ -39,6 +39,6 @@ final readonly class SignInPlayerHandler
 
         $this->saveAuthToken->save($createAuthToken->authToken);
 
-        return new SignInPlayerOutput($createAuthToken);
+        return new SignedInPlayer($createAuthToken);
     }
 }

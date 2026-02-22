@@ -30,7 +30,7 @@ final readonly class InstantFreeUpgradeHandler
      * @throws ValidationFailedException If the upgradable isn't unlocked yet (e.g. legs require heart >= 15)
      * @throws ServerErrorException      If an unexpected error occurs
      */
-    public function run(InstantFreeUpgrade $input): InstantFreeUpgradeOutput
+    public function run(InstantFreeUpgrade $input): InstantFreeUpgraded
     {
         $username = Username::fromString($input->username);
         $upgradable = Upgradable::fromString($input->upgradable);
@@ -48,6 +48,6 @@ final readonly class InstantFreeUpgradeHandler
             $player = $this->applyCompletedUpgrade->apply($username, $upgradable, $milliScore);
         }
 
-        return new InstantFreeUpgradeOutput($player);
+        return new InstantFreeUpgraded($player);
     }
 }

@@ -11,7 +11,7 @@ use Bl\Qa\Application\Action\ActionOutput;
 /**
  * @object-type DataTransferObject
  */
-final readonly class InstantFreeUpgradeOutput implements ActionOutput
+final readonly class InstantFreeUpgraded implements ActionOutput
 {
     public function __construct(
         public Player $player,

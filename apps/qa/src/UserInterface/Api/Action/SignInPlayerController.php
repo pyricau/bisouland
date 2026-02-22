@@ -23,10 +23,10 @@ final readonly class SignInPlayerController
         #[MapRequestPayload]
         SignInPlayer $signInPlayer,
     ): JsonResponse {
-        $output = $this->signInPlayerHandler->run($signInPlayer);
+        $signedInPlayer = $this->signInPlayerHandler->run($signInPlayer);
 
         return new JsonResponse(
-            json_encode($output->toArray(), \JSON_THROW_ON_ERROR),
+            json_encode($signedInPlayer->toArray(), \JSON_THROW_ON_ERROR),
             Response::HTTP_CREATED,
             json: true,
         );

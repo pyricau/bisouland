@@ -46,7 +46,7 @@ final readonly class <?php echo $class_name; ?>
 <?php } ?>
     ): int {
         try {
-            $output = $this-><?php echo $action_camel; ?>Handler->run(new <?php echo $action_name; ?>(<?php echo implode(', ', array_map(static fn ($p) => '$'.$p['name'], $action_parameters)); ?>));
+            $<?php echo lcfirst($action_output_name); ?> = $this-><?php echo $action_camel; ?>Handler->run(new <?php echo $action_name; ?>(<?php echo implode(', ', array_map(static fn ($p) => '$'.$p['name'], $action_parameters)); ?>));
         } catch (ValidationFailedException $e) {
             $io->error($e->getMessage());
 
@@ -60,7 +60,7 @@ final readonly class <?php echo $class_name; ?>
         $io->success('Successfully completed <?php echo $action_title; ?>');
 
         $rows = [];
-        foreach ($output->toArray() as $field => $value) {
+        foreach ($<?php echo lcfirst($action_output_name); ?>->toArray() as $field => $value) {
             $rows[] = [$field, $value];
         }
 

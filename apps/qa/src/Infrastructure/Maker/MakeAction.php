@@ -18,6 +18,8 @@ final class MakeAction extends AbstractMaker
 {
     private string $description = '';
 
+    private string $outputName = '';
+
     /** @var list<array{name: string, type: string, description: string, default: string|null}> */
     private array $parameters = [];
 
@@ -40,6 +42,7 @@ final class MakeAction extends AbstractMaker
         $command
             ->addArgument('name', InputArgument::REQUIRED, 'The action name in PascalCase (e.g. <fg=yellow>InstantFreeUpgrade</>)')
             ->addOption('description', 'd', InputOption::VALUE_REQUIRED, 'Short description for CLI command and page title')
+            ->addOption('output-name', 'o', InputOption::VALUE_REQUIRED, 'Output DTO class name in PascalCase (e.g. <fg=yellow>InstantFreeUpgraded</>)')
             ->addOption('parameter', 'p', InputOption::VALUE_REQUIRED | InputOption::VALUE_IS_ARRAY, 'Parameters as name:type:description[:default] (e.g. <fg=yellow>username:string:4-15 alphanumeric characters</>, <fg=yellow>levels:int:number of levels:1</>). Type defaults to string if omitted. Providing a default makes the parameter optional.')
         ;
     }
@@ -61,6 +64,17 @@ final class MakeAction extends AbstractMaker
         } else {
             $description = $io->ask('Short description (for CLI command and page title)');
             $this->description = \is_string($description) ? $description : '';
+        }
+
+        // Output name: use --output-name option or prompt
+        $outputNameOption = $input->getOption('output-name');
+        if (\is_string($outputNameOption)) {
+            $this->outputName = $outputNameOption;
+        } else {
+            /** @var string $actionName */
+            $actionName = $input->getArgument('name');
+            $outputName = $io->ask("Output DTO class name (PascalCase, e.g. {$actionName}ed)", "{$actionName}ed");
+            $this->outputName = \is_string($outputName) ? $outputName : "{$actionName}ed";
         }
 
         // Parameters: use --parameter options or prompt
@@ -99,6 +113,11 @@ final class MakeAction extends AbstractMaker
         if ('' === $this->description) {
             $descriptionOption = $input->getOption('description');
             $this->description = \is_string($descriptionOption) ? $descriptionOption : '';
+        }
+
+        if ('' === $this->outputName) {
+            $outputNameOption = $input->getOption('output-name');
+            $this->outputName = \is_string($outputNameOption) ? $outputNameOption : "{$actionName}ed";
         }
 
         if ([] === $this->parameters) {
@@ -141,6 +160,7 @@ final class MakeAction extends AbstractMaker
 
         $variables = [
             'action_name' => $actionName,
+            'action_output_name' => $this->outputName,
             'action_kebab' => $actionKebab,
             'action_title' => $actionTitle,
             'action_snake' => $actionSnake,
@@ -167,7 +187,7 @@ final class MakeAction extends AbstractMaker
 
         // 3. Action output DTO
         $generator->generateClass(
-            "Bl\\Qa\\Application\\Action\\{$actionName}\\{$actionName}Output",
+            "Bl\\Qa\\Application\\Action\\{$actionName}\\{$this->outputName}",
             "{$templateDir}/Qalin/Action/HandlerOutput.tpl.php",
             $variables,
         );
@@ -241,6 +261,7 @@ final class MakeAction extends AbstractMaker
         $io->text('Next steps:');
         $io->listing([
             "Implement domain logic in <fg=yellow>src/Application/Action/{$actionName}/{$actionName}Handler.php</>",
+            "Return <fg=yellow>{$this->outputName}</> from the handler's <fg=yellow>run()</> method",
             'Fill in TODO comments in generated files',
             'Run <fg=yellow>make phpstan-analyze</> and <fg=yellow>make phpunit</> to verify',
         ]);

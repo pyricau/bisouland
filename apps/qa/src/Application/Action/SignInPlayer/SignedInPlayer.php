@@ -11,7 +11,7 @@ use Bl\Qa\Application\Action\ActionOutput;
 /**
  * @object-type DataTransferObject
  */
-final readonly class SignInPlayerOutput implements ActionOutput
+final readonly class SignedInPlayer implements ActionOutput
 {
     public function __construct(
         public CreateAuthToken $createAuthToken,

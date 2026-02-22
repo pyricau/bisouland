@@ -6,12 +6,12 @@ namespace Bl\Qa\Application\Action\InstantFreeUpgrade;
 
 use Bl\Game\Player;
 use Bl\Game\Player\UpgradableLevels\Upgradable;
-use Bl\Qa\Application\Action\ActionOutput;
+use Bl\Qa\Application\Output;
 
 /**
  * @object-type DataTransferObject
  */
-final readonly class InstantFreeUpgraded implements ActionOutput
+final readonly class InstantFreeUpgraded implements Output
 {
     public function __construct(
         public Player $player,

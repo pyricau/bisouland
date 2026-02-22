@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Bl\Qa\Infrastructure\Symfony;
 
-use Bl\Qa\Application\Scenario\ScenarioOutput;
+use Bl\Qa\Application\Output;
 use Psr\Container\ContainerInterface;
 use Symfony\Component\DependencyInjection\Attribute\AutowireLocator;
 
@@ -19,7 +19,7 @@ final readonly class ScenarioRunner
     ) {
     }
 
-    public function run(object $input): ScenarioOutput
+    public function run(object $input): Output
     {
         return $this->handlers->get($input::class.'Handler')->run($input); // @phpstan-ignore method.nonObject, return.type
     }

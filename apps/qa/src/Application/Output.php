@@ -2,9 +2,9 @@
 
 declare(strict_types=1);
 
-namespace Bl\Qa\Application\Action;
+namespace Bl\Qa\Application;
 
-interface ActionOutput
+interface Output
 {
     /**
      * @return array<string, int|string>

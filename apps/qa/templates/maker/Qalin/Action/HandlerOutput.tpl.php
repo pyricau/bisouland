@@ -4,14 +4,14 @@ declare(strict_types=1);
 
 namespace <?php echo $namespace; ?>;
 
-use Bl\Qa\Application\Action\ActionOutput;
+use Bl\Qa\Application\Output;
 use Bl\Game\Player;
 use Bl\Game\Player\UpgradableLevels\Upgradable;
 
 /**
  * @object-type DataTransferObject
  */
-final readonly class <?php echo $class_name; ?> implements ActionOutput
+final readonly class <?php echo $class_name; ?> implements Output
 {
     public function __construct(
         public Player $player,

@@ -6,12 +6,12 @@ namespace Bl\Qa\Application\Action\SignInPlayer;
 
 use Bl\Auth\Application\AuthToken\CreateAuthToken;
 use Bl\Auth\Application\AuthTokenCookie\CreateAuthTokenCookie;
-use Bl\Qa\Application\Action\ActionOutput;
+use Bl\Qa\Application\Output;
 
 /**
  * @object-type DataTransferObject
  */
-final readonly class SignedInPlayer implements ActionOutput
+final readonly class SignedInPlayer implements Output
 {
     public function __construct(
         public CreateAuthToken $createAuthToken,

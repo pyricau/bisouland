@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace <?php echo $namespace; ?>;
 
-use Bl\Qa\Application\Scenario\ScenarioOutput;
+use Bl\Qa\Application\Output;
 <?php foreach ($action_dependencies as $dep) { ?>
 use <?php echo $dep['output_fqcn']; ?>;
 <?php } ?>
@@ -12,7 +12,7 @@ use <?php echo $dep['output_fqcn']; ?>;
 /**
  * @object-type DataTransferObject
  */
-final readonly class <?php echo $class_name; ?> implements ScenarioOutput
+final readonly class <?php echo $class_name; ?> implements Output
 {
     public function __construct(
 <?php if ([] !== $action_dependencies) { ?>

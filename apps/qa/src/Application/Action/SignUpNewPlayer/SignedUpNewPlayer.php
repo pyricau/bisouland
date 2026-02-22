@@ -6,12 +6,12 @@ namespace Bl\Qa\Application\Action\SignUpNewPlayer;
 
 use Bl\Game\Player;
 use Bl\Game\Player\UpgradableLevels\Upgradable;
-use Bl\Qa\Application\Action\ActionOutput;
+use Bl\Qa\Application\Output;
 
 /**
  * @object-type DataTransferObject
  */
-final readonly class SignedUpNewPlayer implements ActionOutput
+final readonly class SignedUpNewPlayer implements Output
 {
     public function __construct(
         public Player $player,

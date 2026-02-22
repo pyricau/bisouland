@@ -6,6 +6,16 @@ This file logs the changes between versions.
 
 v4: 2025 second v1 rollback, refactoring attempt.
 
+* `4.0.25`: Qalin
+    * added make:qalin:action command
+    * added make:qalin:scenario command
+    * added SignInPlayer action
+    * added SignInNewPlayer scenario
+    * added welcome screen
+    * updated monolith smoke and e2e tests to use Qalin actions
+    * updated PHP CS Fixer to PHP 8.5
+    * updated Rector to PHP 8.5
+    * updated PHPUnit to v13
 * `4.0.24`: Monorepo
     * extracted `bl/exception` package
     * extracted `bl/exception-bundle` package

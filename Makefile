@@ -15,6 +15,7 @@ help: ## Outputs this help screen
 
 ## —— Apps 📱 ——————————————————————————————————————————————————————————————————
 apps-init: ## First install / resetting (Docker build, up, etc)
+	@$(MAKE) -C apps/qa docker-down
 	@$(MAKE) -C apps/monolith app-init
 	@$(MAKE) -C apps/qa app-init
 

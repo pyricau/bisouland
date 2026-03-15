@@ -19,7 +19,7 @@ use Bl\Qa\Infrastructure\PhpTui\Component\Layout\LayoutWidget;
 use Bl\Qa\Infrastructure\PhpTui\ComponentState;
 use Bl\Qa\Infrastructure\PhpTui\Screen;
 use Bl\Qa\UserInterface\Tui\HomeScreen;
-use Bl\Qa\UserInterface\Tui\QalinBanner;
+use Bl\Qa\UserInterface\Tui\QalinAnimatedBanner;
 use PhpTui\Term\Event;
 use PhpTui\Term\Event\CodedKeyEvent;
 use PhpTui\Term\KeyCode;
@@ -52,6 +52,7 @@ final class UpgradeInstantlyForFreeScreen implements Screen
 
     public function __construct(
         private readonly HttpClientInterface $qalinHttpClient,
+        private readonly QalinAnimatedBanner $qalinAnimatedBanner,
     ) {
         $this->form = FormComponent::fromFields(
             InputFieldComponent::fromLabel('Username'),
@@ -73,7 +74,7 @@ final class UpgradeInstantlyForFreeScreen implements Screen
     {
         return LayoutWidget::from(
             // Banner: Logo + Slogan
-            QalinBanner::widget(),
+            $this->qalinAnimatedBanner->widget(),
             // Navbar: screen name
             ConstrainedWidget::wrap(
                 ParagraphWidget::fromLines(Line::fromSpans(
@@ -118,6 +119,8 @@ final class UpgradeInstantlyForFreeScreen implements Screen
     {
         // Esc: Navigate to HomeScreen
         if ($event instanceof CodedKeyEvent && KeyCode::Esc === $event->code) {
+            $this->qalinAnimatedBanner->animate();
+
             return new Navigate(HomeScreen::class);
         }
 
@@ -125,6 +128,8 @@ final class UpgradeInstantlyForFreeScreen implements Screen
         if (ComponentState::Submitted !== $this->form->handle($event)) {
             return new Stay();
         }
+
+        $this->qalinAnimatedBanner->animate();
 
         // Form Submit, call API, display Result
         $response = $this->qalinHttpClient->request('POST', 'api/v1/actions/upgrade-instantly-for-free', [

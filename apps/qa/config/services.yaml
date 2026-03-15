@@ -27,6 +27,9 @@ services:
     Bl\Qa\Infrastructure\PhpTui\QalinTui:
         public: true
 
+    Symfony\Component\Clock\ClockInterface:
+        class: Symfony\Component\Clock\MonotonicClock
+
     # add more service definitions when explicit configuration is needed
     # please note that last definitions always *replace* previous ones
 
@@ -70,4 +73,3 @@ services:
 
     Bl\Qa\Infrastructure\Symfony\ScenarioRunner:
         public: true
-

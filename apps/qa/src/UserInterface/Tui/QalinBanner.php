@@ -39,9 +39,22 @@ final readonly class QalinBanner
         '      ██████      ',
     ];
 
-    public static function widget(): BannerWidget
+    public static function widget(?Style $logoStyle = null): BannerWidget
     {
+        $logoStyle ??= Style::default()->fg(AnsiColor::Red);
+
         return BannerWidget::from(self::LOGO, ...self::SLOGAN)
-            ->logoStyle(Style::default()->fg(AnsiColor::Red));
+            ->logoStyle($logoStyle);
+    }
+
+    /**
+     * @param list<string> $logo
+     */
+    public static function widgetWithLogo(array $logo, ?Style $logoStyle = null): BannerWidget
+    {
+        $logoStyle ??= Style::default()->fg(AnsiColor::Red);
+
+        return BannerWidget::from($logo, ...self::SLOGAN)
+            ->logoStyle($logoStyle);
     }
 }

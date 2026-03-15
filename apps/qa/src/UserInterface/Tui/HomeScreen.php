@@ -58,6 +58,7 @@ final class HomeScreen implements Screen
      * @param iterable<Screen> $scenarioScreens
      */
     public function __construct(
+        private readonly QalinAnimatedBanner $qalinAnimatedBanner,
         #[AutowireIterator('app.tui_action_screen')]
         iterable $actionScreens,
         #[AutowireIterator('app.tui_scenario_screen')]
@@ -119,7 +120,7 @@ final class HomeScreen implements Screen
             );
 
         return LayoutWidget::from(
-            QalinBanner::widget(),
+            $this->qalinAnimatedBanner->widget(),
             $nav,
             $content,
             KeyHintsWidget::from(['Next' => 'Tab', 'Select' => 'Enter', 'Quit' => 'Esc']),
@@ -208,7 +209,13 @@ final class HomeScreen implements Screen
     {
         $selected = $this->filteredScreens[$this->cursorIndex] ?? null;
 
-        return null !== $selected ? new Navigate($selected::class) : new Stay();
+        if (null === $selected) {
+            return new Stay();
+        }
+
+        $this->qalinAnimatedBanner->animate();
+
+        return new Navigate($selected::class);
     }
 
     private function cursorNext(): Stay

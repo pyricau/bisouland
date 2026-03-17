@@ -6,6 +6,12 @@ This file logs the changes between versions.
 
 v4: 2025 second v1 rollback, refactoring attempt.
 
+* `4.0.26`: Qalin TUI
+    * added HomeScreen
+    * added Action/SignInPlayerScreen
+    * added Action/SignUpNewPlayerScreen
+    * added Action/UpgradeInstantlyForFreeScreen
+    * added Scenario/SignInNewPlayerScreen
 * `4.0.25`: Qalin
     * added make:qalin:action command
     * added make:qalin:scenario command

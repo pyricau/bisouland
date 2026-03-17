@@ -9,6 +9,7 @@
 parameters:
     monolith.database.dsn: 'pgsql:host=%env(DATABASE_HOST)%;port=%env(DATABASE_PORT)%;dbname=%env(DATABASE_NAME)%'
     monolith.base_uri: '%env(MONOLITH_BASE_URI)%'
+    qalin.base_uri: '%env(QALIN_BASE_URI)%'
 
 services:
     # default configuration for services in *this* file
@@ -22,6 +23,12 @@ services:
         resource: '../src/'
         exclude:
             - '../src/Infrastructure/Symfony/AppKernel.php'
+
+    Bl\Qa\Infrastructure\PhpTui\QalinTui:
+        public: true
+
+    Symfony\Component\Clock\ClockInterface:
+        class: Symfony\Component\Clock\MonotonicClock
 
     # add more service definitions when explicit configuration is needed
     # please note that last definitions always *replace* previous ones
@@ -45,6 +52,13 @@ services:
         arguments:
             - '%monolith.base_uri%'
         public: true
+
+    # HTTP Client for qalin
+    Symfony\Contracts\HttpClient\HttpClientInterface $qalinHttpClient:
+        class: Symfony\Contracts\HttpClient\HttpClientInterface
+        factory: ['Symfony\Component\HttpClient\HttpClient', 'createForBaseUri']
+        arguments:
+            - '%qalin.base_uri%'
 
     Bl\Qa\Application\Action\:
         resource: '../src/Application/Action/*/*Handler.php'

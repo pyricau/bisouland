@@ -7,8 +7,11 @@ env ?= test
 # Docker containers
 MONOLITH_SERVICE = web
 
+# Dotenv: load .env.dev as base, .env.local as optional personal overrides
+DOTENV_LOAD = --env-file .env.dev $(if $(wildcard .env.local),--env-file .env.local,)
+
 # Executables
-COMPOSER = docker compose exec $(MONOLITH_SERVICE) composer
+COMPOSER = docker compose $(DOTENV_LOAD) exec $(MONOLITH_SERVICE) composer
 
 # Misc
 .DEFAULT_GOAL = help
@@ -30,17 +33,17 @@ docker: ## Runs Docker (arg, eg `arg='compose logs --tail=0 --follow'`)
 	@docker $(arg)
 
 docker-compose: ## Runs Docker Compose (arg, eg `arg='logs --tail=0 --follow'`)
-	@docker compose $(arg)
+	@docker compose $(DOTENV_LOAD) $(arg)
 
 docker-init: ## Builds the Docker images and starts the services in detached mode (no logs)
-	@docker compose build --pull
-	@docker compose up --detach
+	@docker compose $(DOTENV_LOAD) build --pull
+	@docker compose $(DOTENV_LOAD) up --detach
 
 docker-down: ## Stops the services
-	@docker compose down --remove-orphans
+	@docker compose $(DOTENV_LOAD) down --remove-orphans
 
 docker-bash: ## Opens a (bash) shell in the container
-	@docker compose exec $(MONOLITH_SERVICE) bash
+	@docker compose $(DOTENV_LOAD) exec $(MONOLITH_SERVICE) bash
 
 ## —— PHP 🐘 ———————————————————————————————————————————————————————————————————
 composer: ## Runs Composer (arg, eg `arg='outdated'`)
@@ -69,7 +72,7 @@ app-init: ## First install / resetting (Docker build, up, etc)
 	@echo ''
 	@echo '  // Installing Composer dependencies...'
 	@$(MAKE) composer-install
-	@docker compose exec $(MONOLITH_SERVICE) chmod -R o+rX vendor/
+	@docker compose $(DOTENV_LOAD) exec $(MONOLITH_SERVICE) chmod -R o+rX vendor/
 	@echo ''
 	@echo '  // Waiting for PostgreSQL to initialize...'
 	@sleep 3

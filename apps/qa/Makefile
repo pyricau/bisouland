@@ -96,6 +96,9 @@ rector-check: ## Refactoring checks with Rector
 qalin: ## Runs Qalin CLI (arg, env, eg `arg='action:sign-up-new-player'`)
 	@$(QALIN) $(arg)
 
+qalin-tui: ## Runs Qalin TUI (arg, env)
+	@docker compose exec -it -e COLUMNS=$$(tput cols) -e LINES=$$(tput lines) -e APP_ENV=$(env) $(QA_SERVICE) php qalin-tui.php $(arg)
+
 qalin-action: ## Scaffolds a new Qalin Action (arg, eg `arg='UpgradeInstantlyForFree'`)
 	@docker compose exec -it -e APP_ENV=dev $(QA_SERVICE) php bin/console make:qalin:action $(arg)
 

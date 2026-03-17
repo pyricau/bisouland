@@ -6,6 +6,8 @@ This file logs the changes between versions.
 
 v4: 2025 second v1 rollback, refactoring attempt.
 
+* `4.0.27`: Qalin TUI
+    * updated HomeScreen to use ChoiceInput
 * `4.0.26`: Qalin TUI
     * added HomeScreen
     * added Action/SignInPlayerScreen

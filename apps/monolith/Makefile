@@ -1,14 +1,17 @@
 # Parameters (optional)
 # * `arg`: arbitrary arguments to pass to rules (default: none)
-# * `env`: used to set `APP_ENV` (default: `test`)
+# * `env`: used to set `APP_ENV` (default: `dev`)
 arg ?=
-env ?= test
+env ?= dev
 
 # Docker containers
 MONOLITH_SERVICE = web
 
-# Dotenv: load .env.dev as base, .env.local as optional personal overrides
-DOTENV_LOAD = --env-file .env.dev $(if $(wildcard .env.local),--env-file .env.local,)
+# Dotenv: load env files in order: .env > .env.local > .env.<env> > .env.<env>.local
+DOTENV_LOAD = --env-file .env \
+    $(if $(wildcard .env.local),--env-file .env.local,) \
+    $(if $(wildcard .env.$(env)),--env-file .env.$(env),) \
+    $(if $(wildcard .env.$(env).local),--env-file .env.$(env).local,)
 
 # Executables
 COMPOSER = docker compose $(DOTENV_LOAD) exec $(MONOLITH_SERVICE) composer
@@ -22,7 +25,7 @@ COMPOSER = docker compose $(DOTENV_LOAD) exec $(MONOLITH_SERVICE) composer
 ## (arg) denotes the possibility to pass "arg=" parameter to the target
 ##     this allows to add command and options, example: make composer arg='dump --optimize'
 ## (env) denotes the possibility to pass "env=" parameter to the target
-##     this allows to set APP_ENV environment variable (default: test), example: make console env='prod' arg='cache:warmup'
+##     this allows to set APP_ENV environment variable (default: dev), example: make console env='prod' arg='cache:warmup'
 help: ## Outputs this help screen
 	@grep -E '(^[a-zA-Z0-9\./_-]+:.*?##.*$$)|(^##)' $(MAKEFILE_LIST) \
 		| awk 'BEGIN {FS = ":.*?## "}{printf "\033[32m%-30s\033[0m %s\n", $$1, $$2}' \

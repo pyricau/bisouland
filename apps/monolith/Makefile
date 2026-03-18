@@ -59,8 +59,8 @@ composer-dump: ## Dumps autoloader (arg, eg `arg='--classmap-authoritative'`)
 	@$(COMPOSER) dump-autoload --optimize --strict-psr --strict-ambiguous $(arg)
 
 ## —— Database ⛁ ———————————————————————————————————————————————————————————————
-db-reset: ## Reset the database by dropping and recreating it with schema.sql
-	@./bin/db-reset.sh
+db-reset: ## Reset the database by dropping and recreating it with schema.sql (env)
+	@./bin/db-reset.sh $(env)
 
 ## —— App 📱 ———————————————————————————————————————————————————————————————————
 app-init: ## First install / resetting (Docker build, up, etc)

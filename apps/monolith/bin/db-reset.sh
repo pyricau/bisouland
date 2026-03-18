@@ -18,8 +18,18 @@ cd "${_ROOT_DIR}"
 # `set -a` enables exportation of env vars, while `set +a` disables it.
 # Passing PostgreSQL password via command line arguments is insecure,
 # so using `PGPASSWORD` instead.
+#
+# Env files are loaded in Symfony's dotenv order (later files win):
+#   .env > .env.local > .env.<env> > .env.<env>.local
 # ──────────────────────────────────────────────────────────────────────────────
-set -a; source .env; set +a
+_ENV="${1:-}"
+
+set -a
+source .env
+[ -f .env.local ] && source .env.local
+[ -n "${_ENV}" ] && [ -f ".env.${_ENV}" ] && source ".env.${_ENV}"
+[ -n "${_ENV}" ] && [ -f ".env.${_ENV}.local" ] && source ".env.${_ENV}.local"
+set +a
 
 export PGPASSWORD="${DATABASE_PASSWORD}"
 

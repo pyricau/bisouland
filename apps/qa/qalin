@@ -4,8 +4,8 @@
 declare(strict_types=1);
 
 use Bl\Qa\Infrastructure\Symfony\AppKernel;
-use Bl\Qa\Infrastructure\Symfony\QalinApplication;
-use Symfony\Bundle\FrameworkBundle\Console\Application as FrameworkApplication;
+use Bl\Qa\Infrastructure\Symfony\QalinCli;
+use Symfony\Bundle\FrameworkBundle\Console\Application;
 
 if (!is_dir(__DIR__.'/vendor')) {
     throw new LogicException('Dependencies are missing. Try running "composer install".');
@@ -17,13 +17,20 @@ if (!is_file(__DIR__.'/vendor/autoload_runtime.php')) {
 
 require_once __DIR__.'/vendor/autoload_runtime.php';
 
-return static function (array $context): QalinApplication {
+return static function (array $context): QalinCli {
     $kernel = new AppKernel($context['APP_ENV'], (bool) $context['APP_DEBUG']);
-    $frameworkApp = new FrameworkApplication($kernel);
+    $application = new Application($kernel);
 
-    $qalin = new QalinApplication('Qalin');
-    foreach ($frameworkApp->all() as $command) {
-        $name = $command->getName();
+    // Register only qalin commands into QalinCli, filtering out Symfony framework
+    // commands (cache:clear, make:*, etc). Qalin commands use #[AsCommand] on invokable
+    // classes that don't extend Command, so Symfony wraps them — $command::class is a
+    // Symfony proxy and cannot be used to filter; command name prefix is used instead.
+    // Symfony default console commands (help, list, _complete, completion) are added by
+    // Application::__construct() and cannot be intercepted here, so they are filtered out
+    // in QalinCli::doRun instead.
+    $qalin = new QalinCli('Qalin');
+    foreach ($application->all() as $command) {
+        $name = $command->getName() ?? '';
         if (str_starts_with($name, 'action:') || str_starts_with($name, 'scenario:')) {
             $qalin->addCommand($command);
         }

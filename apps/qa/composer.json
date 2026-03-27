@@ -16,6 +16,7 @@
     ],
     "require": {
         "php": ">=8.5",
+        "amphp/http-client": "^5.3.4",
         "ext-curl": "*",
         "ext-pdo_pgsql": "*",
         "bl/auth": "*@dev",

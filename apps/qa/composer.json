@@ -28,7 +28,6 @@
         "bl/game-bundle": "*@dev",
         "bl/game-pdopg": "*@dev",
         "php-tui/php-tui": "^0.2.1",
-        "phpspec/prophecy-phpunit": "^2.5",
         "symfony/clock": "^8.0",
         "symfony/console": "^8.0.7",
         "symfony/framework-bundle": "^8.0.7",
@@ -39,6 +38,8 @@
         "symfony/runtime": "^8.0.1",
         "symfony/serializer": "^8.0.7",
         "symfony/twig-bundle": "^8.0.4",
+        "symfony/dotenv": "^8.0.7",
+        "symfony/http-client": "^8.0.7",
         "symfony/uid": "^8.0.4",
         "symfony/yaml": "^8.0.6"
     },
@@ -47,12 +48,11 @@
         "bl/game-tests": "*@dev",
         "friendsofphp/php-cs-fixer": "^3.94.2",
         "jangregor/phpstan-prophecy": "^2.3",
+        "phpspec/prophecy-phpunit": "^2.5",
         "phpstan/phpstan": "^2.1.44",
         "phpunit/phpunit": "^13.0.5",
         "rector/rector": "^2.3.9",
         "rector/swiss-knife": "^2.3.5",
-        "symfony/dotenv": "^8.0.7",
-        "symfony/http-client": "^8.0.7",
         "symfony/maker-bundle": "^1.67"
     },
     "config": {

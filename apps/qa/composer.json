@@ -28,6 +28,7 @@
         "bl/game-bundle": "*@dev",
         "bl/game-pdopg": "*@dev",
         "php-tui/php-tui": "^0.2.1",
+        "symfony/tui": "*@dev",
         "symfony/clock": "^8.0",
         "symfony/console": "^8.0.7",
         "symfony/framework-bundle": "^8.0.7",

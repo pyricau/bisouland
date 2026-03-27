@@ -59,6 +59,18 @@ composer-install: ## Install dependencies (arg, eg `arg='--no-dev'`)
 composer-update: ## Updates dependencies (arg, eg `arg='--no-dev'`)
 	@$(COMPOSER) update --optimize-autoloader $(arg)
 
+## symfony/tui is not on Packagist yet (pending PR symfony/symfony#63778).
+## It lives in fabpot/symfony (tui branch) and is vendored locally in packages/symfony-tui.
+## Once the PR merges and the package is published, remove the local copy and require it normally.
+composer-update-sf-tui: ## Updates symfony/tui from fabpot/symfony tui branch
+	@rm -rf /tmp/symfony-tui-src
+	@git clone --filter=blob:none --sparse https://github.com/fabpot/symfony.git /tmp/symfony-tui-src --branch tui --depth 1 --quiet
+	@cd /tmp/symfony-tui-src && git sparse-checkout set src/Symfony/Component/Tui
+	@rm -rf ../../packages/symfony-tui
+	@cp -r /tmp/symfony-tui-src/src/Symfony/Component/Tui ../../packages/symfony-tui
+	@rm -rf /tmp/symfony-tui-src
+	@$(MAKE) composer-dump
+
 composer-dump: ## Dumps autoloader (arg, eg `arg='--classmap-authoritative'`)
 	@$(COMPOSER) dump-autoload --optimize --strict-psr --strict-ambiguous $(arg)
 

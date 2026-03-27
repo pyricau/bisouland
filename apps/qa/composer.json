@@ -29,30 +29,30 @@
         "php-tui/php-tui": "^0.2.1",
         "phpspec/prophecy-phpunit": "^2.5",
         "symfony/clock": "^8.0",
-        "symfony/console": "^8.0.4",
-        "symfony/framework-bundle": "^8.0.5",
+        "symfony/console": "^8.0.7",
+        "symfony/framework-bundle": "^8.0.7",
         "symfony/monolog-bundle": "^4.0.1",
         "symfony/property-access": "^8.0.4",
-        "symfony/property-info": "^8.0.5",
-        "symfony/routing": "^8.0.4",
+        "symfony/property-info": "^8.0.7",
+        "symfony/routing": "^8.0.6",
         "symfony/runtime": "^8.0.1",
-        "symfony/serializer": "^8.0.5",
+        "symfony/serializer": "^8.0.7",
         "symfony/twig-bundle": "^8.0.4",
         "symfony/uid": "^8.0.4",
-        "symfony/yaml": "^8.0.1"
+        "symfony/yaml": "^8.0.6"
     },
     "require-dev": {
         "bl/auth-tests": "*@dev",
         "bl/game-tests": "*@dev",
-        "friendsofphp/php-cs-fixer": "^3.94.1",
+        "friendsofphp/php-cs-fixer": "^3.94.2",
         "jangregor/phpstan-prophecy": "^2.3",
-        "phpstan/phpstan": "^2.1.39",
-        "phpunit/phpunit": "^13",
-        "rector/rector": "^2.3.7",
+        "phpstan/phpstan": "^2.1.44",
+        "phpunit/phpunit": "^13.0.5",
+        "rector/rector": "^2.3.9",
         "rector/swiss-knife": "^2.3.5",
-        "symfony/dotenv": "^8.0",
-        "symfony/http-client": "^8.0.5",
-        "symfony/maker-bundle": "^1.66"
+        "symfony/dotenv": "^8.0.7",
+        "symfony/http-client": "^8.0.7",
+        "symfony/maker-bundle": "^1.67"
     },
     "config": {
         "allow-plugins": {

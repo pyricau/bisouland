@@ -20,6 +20,9 @@ phpstan.neon
 phpunit.xml
 .phpunit.cache/
 
+# rector
+rector.php
+
 # symfony
 config/reference.php
 config/secrets/prod/prod.decrypt.private.php

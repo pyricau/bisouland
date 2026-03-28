@@ -1,0 +1,25 @@
+#!/usr/bin/env php
+<?php
+
+declare(strict_types=1);
+
+use Bl\Qa\Infrastructure\Symfony\AppKernel;
+use Bl\Qa\UserInterface\Tui2\QalinLayout;
+use Bl\Qa\UserInterface\Tui2\QalinStylesheet;
+use Symfony\Component\Dotenv\Dotenv;
+use Symfony\Component\Tui\Input\Key;
+use Symfony\Component\Tui\Tui;
+
+require __DIR__.'/vendor/autoload.php';
+
+new Dotenv()->bootEnv(__DIR__.'/.env');
+
+$kernel = new AppKernel($_SERVER['APP_ENV'] ?? 'prod', (bool) ($_SERVER['APP_DEBUG'] ?? false));
+$kernel->boot();
+
+$tui = new Tui(QalinStylesheet::create());
+$tui->quitOn(Key::ESCAPE, Key::ctrl('c'));
+
+$tui->add(QalinLayout::create(['Esc' => 'Quit']));
+
+$tui->run();

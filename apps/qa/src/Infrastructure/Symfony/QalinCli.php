@@ -15,18 +15,48 @@ use Symfony\Component\Console\Output\OutputInterface;
  */
 final class QalinCli extends Application
 {
+    /**
+     * width: 18
+     * height: 6.
+     *
+     * @var array<string>
+     */
+    private const array LOGO = [
+        '  ████      ████  ',
+        '████████  ████████',
+        '██████████████████',
+        '██████████████████',
+        '   ████████████   ',
+        '      ██████      ',
+    ];
+
+    /** @var array<string> */
+    private const array SLOGAN = [
+        "Qalin (it's pronounced câlin)",
+        'Quality Assurance Local Interface Nudger',
+        '(your own Test Control Interface)',
+    ];
+
     public function getHelp(): string
     {
-        return implode("\n", [
-            '',
-            '  <fg=red>████</>      <fg=red>████</>     <options=bold>Qalin</> (it\'s pronounced <options=bold>câlin</>)',
-            '<fg=red>████████</>  <fg=red>████████</>   Quality Assurance Local Interface Nudger',
-            '<fg=red>██████████████████</>   (your own Test Control Interface)',
-            '<fg=red>██████████████████</>',
-            '   <fg=red>████████████</>  ',
-            '      <fg=red>██████</>     ',
-            '',
-        ]);
+        // Colour LOGO in red
+        $lines = array_map(
+            static fn (string $line): string => "<fg=red>{$line}</>",
+            self::LOGO,
+        );
+
+        // Add SLOGAN to the right of LOGO
+        $sloganMarginTop = 0;
+        $sloganMarginLeft = '   ';
+        foreach (self::SLOGAN as $i => $sloganLine) {
+            // First line in BOLD
+            $styleOpen = 0 === $i ? '<options=bold>' : '';
+            $styleClose = 0 === $i ? '</>' : '';
+
+            $lines[$sloganMarginTop + $i] .= "{$sloganMarginLeft}{$styleOpen}{$sloganLine}{$styleClose}";
+        }
+
+        return implode("\n", $lines);
     }
 
     public function doRun(InputInterface $input, OutputInterface $output): int

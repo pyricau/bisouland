@@ -55,10 +55,10 @@ services:
 
     # HTTP Client for qalin
     Symfony\Contracts\HttpClient\HttpClientInterface $qalinHttpClient:
-        class: Symfony\Contracts\HttpClient\HttpClientInterface
-        factory: ['Symfony\Component\HttpClient\HttpClient', 'createForBaseUri']
+        class: Symfony\Component\HttpClient\AmpHttpClient
         arguments:
-            - '%qalin.base_uri%'
+            $defaultOptions:
+                base_uri: '%qalin.base_uri%'
 
     Bl\Qa\Application\Action\:
         resource: '../src/Application/Action/*/*Handler.php'

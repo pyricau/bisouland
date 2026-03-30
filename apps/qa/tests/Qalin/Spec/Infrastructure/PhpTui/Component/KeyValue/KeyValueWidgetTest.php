@@ -21,10 +21,11 @@ final class KeyValueWidgetTest extends TestCase
     /** @param array<string, int|string> $rows */
     #[DataProvider('rowsProvider')]
     #[TestDox('It has rows: $scenario')]
-    public function test_it_has_rows(string $scenario, array $rows): void
-    {
+    public function test_it_has_rows(
+        string $scenario,
+        array $rows,
+    ): void {
         $widget = KeyValueWidget::fromRows($rows);
-
         $this->assertSame($rows, $widget->rows);
     }
 

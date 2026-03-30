@@ -46,9 +46,21 @@ final class UsernameTest extends TestCase
      */
     public static function invalidUsernameProvider(): \Iterator
     {
-        yield ['scenario' => 'is empty', 'invalidUsername' => ''];
-        yield ['scenario' => 'too short (< 4 characters)', 'invalidUsername' => 'abc'];
-        yield ['scenario' => 'too long (> 15 characters)', 'invalidUsername' => 'abcdefghijklmnop'];
-        yield ['scenario' => 'contains special characters (non alpha-numerical, not an underscore (`_`))', 'invalidUsername' => 'user@name'];
+        yield [
+            'scenario' => 'is empty',
+            'invalidUsername' => '',
+        ];
+        yield [
+            'scenario' => 'too short (< 4 characters)',
+            'invalidUsername' => 'abc',
+        ];
+        yield [
+            'scenario' => 'too long (> 15 characters)',
+            'invalidUsername' => 'abcdefghijklmnop',
+        ];
+        yield [
+            'scenario' => 'contains special characters (non alpha-numerical, not an underscore (`_`))',
+            'invalidUsername' => 'user@name',
+        ];
     }
 }

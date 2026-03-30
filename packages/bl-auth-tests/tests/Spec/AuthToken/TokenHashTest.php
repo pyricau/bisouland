@@ -58,9 +58,21 @@ final class TokenHashTest extends TestCase
      */
     public static function invalidTokenHashProvider(): \Iterator
     {
-        yield ['scenario' => 'is an empty string', 'invalidTokenHash' => ''];
-        yield ['scenario' => 'is shorter than 64 characters', 'invalidTokenHash' => 'not 64 characters'];
-        yield ['scenario' => 'is longer than 64 characters', 'invalidTokenHash' => 'this string is definitely way too long to be 64 hexadecimal characters'];
-        yield ['scenario' => 'has non hexadecimal characters', 'invalidTokenHash' => 'non hexadecimal characters!!!!!'];
+        yield [
+            'scenario' => 'is an empty string',
+            'invalidTokenHash' => '',
+        ];
+        yield [
+            'scenario' => 'is shorter than 64 characters',
+            'invalidTokenHash' => 'not 64 characters',
+        ];
+        yield [
+            'scenario' => 'is longer than 64 characters',
+            'invalidTokenHash' => 'this string is definitely way too long to be 64 hexadecimal characters',
+        ];
+        yield [
+            'scenario' => 'has non hexadecimal characters',
+            'invalidTokenHash' => 'non hexadecimal characters!!!!!',
+        ];
     }
 }

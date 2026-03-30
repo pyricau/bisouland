@@ -7,6 +7,7 @@ namespace Bl\Qa\Dev\Rector;
 use PhpParser\Comment;
 use PhpParser\Node;
 use PhpParser\Node\Stmt\Class_;
+use PHPUnit\Framework\TestCase;
 use Rector\NodeTypeResolver\Node\AttributeKey;
 use Rector\Rector\AbstractRector;
 use Symplify\RuleDocGenerator\ValueObject\CodeSample\CodeSample;
@@ -67,7 +68,7 @@ final class TestMethodArgumentsNewLinedRector extends AbstractRector
         // ─────────────────────────────────────────────────────────────────────
         if (
             !$node->extends instanceof Node
-            || !$this->isName($node->extends, 'PHPUnit\Framework\TestCase')
+            || !$this->isName($node->extends, TestCase::class)
         ) {
             return null;
         }
@@ -77,10 +78,11 @@ final class TestMethodArgumentsNewLinedRector extends AbstractRector
             // ─────────────────────────────────────────────────────────────────────
             // The method must be public and prefixed with "test"
             // ─────────────────────────────────────────────────────────────────────
-            if (
-                !$classMethod->isPublic()
-                || !str_starts_with($classMethod->name->toString(), 'test')
-            ) {
+            if (!$classMethod->isPublic()) {
+                continue;
+            }
+
+            if (!str_starts_with($classMethod->name->toString(), 'test')) {
                 continue;
             }
 
@@ -88,10 +90,11 @@ final class TestMethodArgumentsNewLinedRector extends AbstractRector
             // There must be at least one argument, on the same line as the method
             // ─────────────────────────────────────────────────────────────────────
             $firstParam = $classMethod->params[0] ?? null;
-            if (
-                null === $firstParam
-                || $classMethod->name->getStartLine() !== $firstParam->getStartLine()
-            ) {
+            if (null === $firstParam) {
+                continue;
+            }
+
+            if ($classMethod->name->getStartLine() !== $firstParam->getStartLine()) {
                 continue;
             }
 

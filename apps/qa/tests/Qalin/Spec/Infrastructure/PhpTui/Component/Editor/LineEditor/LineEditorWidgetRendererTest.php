@@ -32,12 +32,14 @@ final class LineEditorWidgetRendererTest extends TestCase
     /** @param list<string> $expected */
     #[DataProvider('renderProvider')]
     #[TestDox('It renders: $scenario')]
-    public function test_it_renders(string $scenario, Area $area, Widget $widget, array $expected): void
-    {
+    public function test_it_renders(
+        string $scenario,
+        Area $area,
+        Widget $widget,
+        array $expected,
+    ): void {
         $buffer = Buffer::empty($area);
-
         $this->render($buffer, $widget);
-
         $this->assertSame($expected, $buffer->toLines());
     }
 

@@ -93,10 +93,11 @@ final class DataProviderYieldArrayNewLinedRector extends AbstractRector
             // The yielded value must be a single-line array
             // ─────────────────────────────────────────────────────────────────
             $array = $yield->value;
-            if (
-                !$array instanceof Array_
-                || !$this->isSingleLineArray($array)
-            ) {
+            if (!$array instanceof Array_) {
+                continue;
+            }
+
+            if (!$this->isSingleLineArray($array)) {
                 continue;
             }
 
@@ -115,10 +116,11 @@ final class DataProviderYieldArrayNewLinedRector extends AbstractRector
     {
         foreach ($array->items as $key => $item) {
             $nextItem = $array->items[$key + 1] ?? null;
-            if (
-                !$item instanceof ArrayItem
-                || !$nextItem instanceof ArrayItem
-            ) {
+            if (!$item instanceof ArrayItem) {
+                continue;
+            }
+
+            if (!$nextItem instanceof ArrayItem) {
                 continue;
             }
 

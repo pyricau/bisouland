@@ -52,22 +52,24 @@ final class UpgradeInstantlyForFreeScreenTest extends TestCase
      */
     #[DataProvider('optionalFieldsProvider')]
     #[TestDox('It has $scenario')]
-    public function test_it_has_optional_fields(string $scenario, array $input): void
-    {
+    public function test_it_has_optional_fields(
+        string $scenario,
+        array $input,
+    ): void {
         $username = $input['username'];
         TestKernelSingleton::get()->actionRunner()->run(
             new SignUpNewPlayer($username, PasswordPlainFixture::makeString()),
         );
         $screen = TestKernelSingleton::get()->container()->get(UpgradeInstantlyForFreeScreen::class);
         $this->assertInstanceOf(UpgradeInstantlyForFreeScreen::class, $screen);
-
         foreach (str_split($username) as $char) {
             $screen->handle(CharKeyEvent::new($char));
         }
 
-        $screen->handle(CodedKeyEvent::new(KeyCode::Tab)); // username → upgradable (default: first choice)
-
-        $screen->handle(CodedKeyEvent::new(KeyCode::Tab)); // upgradable → levels
+        $screen->handle(CodedKeyEvent::new(KeyCode::Tab));
+        // username → upgradable (default: first choice)
+        $screen->handle(CodedKeyEvent::new(KeyCode::Tab));
+        // upgradable → levels
         if ('' !== $input['levels_override']) {
             $screen->handle(CodedKeyEvent::new(KeyCode::Backspace)); // clear default '1'
             foreach (str_split($input['levels_override']) as $char) {
@@ -75,9 +77,10 @@ final class UpgradeInstantlyForFreeScreenTest extends TestCase
             }
         }
 
-        $screen->handle(CodedKeyEvent::new(KeyCode::Tab)); // levels → Upgrade
-        $result = $screen->handle(CodedKeyEvent::new(KeyCode::Enter)); // submit
-
+        $screen->handle(CodedKeyEvent::new(KeyCode::Tab));
+        // levels → Upgrade
+        $result = $screen->handle(CodedKeyEvent::new(KeyCode::Enter));
+        // submit
         $this->assertInstanceOf(Stay::class, $result);
     }
 
@@ -104,25 +107,28 @@ final class UpgradeInstantlyForFreeScreenTest extends TestCase
      */
     #[DataProvider('requiredFieldsProvider')]
     #[TestDox('It has $scenario')]
-    public function test_it_has_required_fields(string $scenario, array $input): void
-    {
+    public function test_it_has_required_fields(
+        string $scenario,
+        array $input,
+    ): void {
         $screen = TestKernelSingleton::get()->container()->get(UpgradeInstantlyForFreeScreen::class);
         $this->assertInstanceOf(UpgradeInstantlyForFreeScreen::class, $screen);
-
         foreach (str_split($input['username']) as $char) {
             $screen->handle(CharKeyEvent::new($char));
         }
 
-        $screen->handle(CodedKeyEvent::new(KeyCode::Tab)); // username → upgradable
+        $screen->handle(CodedKeyEvent::new(KeyCode::Tab));
+        // username → upgradable
         foreach (str_split($input['upgradable_filter']) as $char) {
             $screen->handle(CharKeyEvent::new($char));
         }
 
-        $screen->handle(CodedKeyEvent::new(KeyCode::Tab)); // upgradable → levels
-        $screen->handle(CodedKeyEvent::new(KeyCode::Tab)); // levels → Upgrade
-
-        $result = $screen->handle(CodedKeyEvent::new(KeyCode::Enter)); // submit
-
+        $screen->handle(CodedKeyEvent::new(KeyCode::Tab));
+        // upgradable → levels
+        $screen->handle(CodedKeyEvent::new(KeyCode::Tab));
+        // levels → Upgrade
+        $result = $screen->handle(CodedKeyEvent::new(KeyCode::Enter));
+        // submit
         $this->assertInstanceOf(Stay::class, $result);
     }
 
@@ -149,8 +155,11 @@ final class UpgradeInstantlyForFreeScreenTest extends TestCase
      */
     #[DataProvider('invalidInputProvider')]
     #[TestDox('It fails when $scenario')]
-    public function test_it_fails_on_invalid_input(string $scenario, bool $preCreate, array $input): void
-    {
+    public function test_it_fails_on_invalid_input(
+        string $scenario,
+        bool $preCreate,
+        array $input,
+    ): void {
         if ($preCreate) {
             TestKernelSingleton::get()->actionRunner()->run(
                 new SignUpNewPlayer($input['username'], PasswordPlainFixture::makeString()),
@@ -159,17 +168,18 @@ final class UpgradeInstantlyForFreeScreenTest extends TestCase
 
         $screen = TestKernelSingleton::get()->container()->get(UpgradeInstantlyForFreeScreen::class);
         $this->assertInstanceOf(UpgradeInstantlyForFreeScreen::class, $screen);
-
         foreach (str_split($input['username']) as $char) {
             $screen->handle(CharKeyEvent::new($char));
         }
 
-        $screen->handle(CodedKeyEvent::new(KeyCode::Tab)); // username → upgradable
+        $screen->handle(CodedKeyEvent::new(KeyCode::Tab));
+        // username → upgradable
         foreach (str_split($input['upgradable_filter']) as $char) {
             $screen->handle(CharKeyEvent::new($char));
         }
 
-        $screen->handle(CodedKeyEvent::new(KeyCode::Tab)); // upgradable → levels
+        $screen->handle(CodedKeyEvent::new(KeyCode::Tab));
+        // upgradable → levels
         if ('' !== $input['levels_override']) {
             $screen->handle(CodedKeyEvent::new(KeyCode::Backspace)); // clear default '1'
             foreach (str_split($input['levels_override']) as $char) {
@@ -177,9 +187,10 @@ final class UpgradeInstantlyForFreeScreenTest extends TestCase
             }
         }
 
-        $screen->handle(CodedKeyEvent::new(KeyCode::Tab)); // levels → Upgrade
-        $result = $screen->handle(CodedKeyEvent::new(KeyCode::Enter)); // submit
-
+        $screen->handle(CodedKeyEvent::new(KeyCode::Tab));
+        // levels → Upgrade
+        $result = $screen->handle(CodedKeyEvent::new(KeyCode::Enter));
+        // submit
         $this->assertInstanceOf(Stay::class, $result);
     }
 

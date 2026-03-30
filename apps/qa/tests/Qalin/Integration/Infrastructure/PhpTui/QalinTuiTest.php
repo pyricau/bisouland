@@ -27,13 +27,14 @@ final class QalinTuiTest extends TestCase
      */
     #[DataProvider('reportsProvider')]
     #[TestDox('It reports $scenario')]
-    public function test_it_reports(string $scenario, Event $event, string $expected): void
-    {
+    public function test_it_reports(
+        string $scenario,
+        Event $event,
+        string $expected,
+    ): void {
         $tui = TestKernelSingleton::get()->container()->get(QalinTui::class);
         $this->assertInstanceOf(QalinTui::class, $tui);
-
         $result = $tui->handle($event);
-
         $this->assertInstanceOf($expected, $result);
     }
 

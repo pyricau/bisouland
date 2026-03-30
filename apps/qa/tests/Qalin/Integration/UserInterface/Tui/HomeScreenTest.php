@@ -33,17 +33,18 @@ final class HomeScreenTest extends TestCase
      */
     #[DataProvider('hasProvider')]
     #[TestDox('It has $scenario')]
-    public function test_it_has(string $scenario, array $setupEvents, string $expectedScreen): void
-    {
+    public function test_it_has(
+        string $scenario,
+        array $setupEvents,
+        string $expectedScreen,
+    ): void {
         $screen = TestKernelSingleton::get()->container()->get(HomeScreen::class);
         $this->assertInstanceOf(HomeScreen::class, $screen);
-
         foreach ($setupEvents as $setupEvent) {
             $screen->handle($setupEvent);
         }
 
         $result = $screen->handle(CodedKeyEvent::new(KeyCode::Enter));
-
         $this->assertInstanceOf(Navigate::class, $result);
         $this->assertSame($expectedScreen, $result->screen);
     }
@@ -78,11 +79,13 @@ final class HomeScreenTest extends TestCase
      */
     #[DataProvider('reportsProvider')]
     #[TestDox('It reports $scenario')]
-    public function test_it_reports(string $scenario, array $events, string $expected): void
-    {
+    public function test_it_reports(
+        string $scenario,
+        array $events,
+        string $expected,
+    ): void {
         $screen = TestKernelSingleton::get()->container()->get(HomeScreen::class);
         $this->assertInstanceOf(HomeScreen::class, $screen);
-
         $result = null;
         foreach ($events as $event) {
             $result = $screen->handle($event);

@@ -97,17 +97,53 @@ final class ExpiresAtTest extends TestCase
      */
     public static function invalidIso8601Provider(): \Iterator
     {
-        yield ['scenario' => 'is invalid date', 'invalidDate' => 'invalid-date'];
-        yield ['scenario' => 'has invalid month', 'invalidDate' => '2025-13-17T13:00:00'];
-        yield ['scenario' => 'has invalid day', 'invalidDate' => '2025-06-32T13:00:00'];
-        yield ['scenario' => 'has invalid hour', 'invalidDate' => '2025-06-17T25:00:00'];
-        yield ['scenario' => 'has invalid minute', 'invalidDate' => '2025-06-17T13:61:00'];
-        yield ['scenario' => 'has invalid second', 'invalidDate' => '2025-06-17T13:00:61'];
-        yield ['scenario' => 'has wrong format', 'invalidDate' => '2025/06/17 13:00:00'];
-        yield ['scenario' => 'has wrong date order', 'invalidDate' => '17-06-2025T13:00:00'];
-        yield ['scenario' => 'is missing T', 'invalidDate' => '2025-06-17 13:00:00'];
-        yield ['scenario' => 'is missing seconds', 'invalidDate' => '2025-06-17T13:00'];
-        yield ['scenario' => 'has single digit month', 'invalidDate' => '2025-6-17T13:00:00'];
-        yield ['scenario' => 'has single digit day', 'invalidDate' => '2025-06-7T13:00:00'];
+        yield [
+            'scenario' => 'is invalid date',
+            'invalidDate' => 'invalid-date',
+        ];
+        yield [
+            'scenario' => 'has invalid month',
+            'invalidDate' => '2025-13-17T13:00:00',
+        ];
+        yield [
+            'scenario' => 'has invalid day',
+            'invalidDate' => '2025-06-32T13:00:00',
+        ];
+        yield [
+            'scenario' => 'has invalid hour',
+            'invalidDate' => '2025-06-17T25:00:00',
+        ];
+        yield [
+            'scenario' => 'has invalid minute',
+            'invalidDate' => '2025-06-17T13:61:00',
+        ];
+        yield [
+            'scenario' => 'has invalid second',
+            'invalidDate' => '2025-06-17T13:00:61',
+        ];
+        yield [
+            'scenario' => 'has wrong format',
+            'invalidDate' => '2025/06/17 13:00:00',
+        ];
+        yield [
+            'scenario' => 'has wrong date order',
+            'invalidDate' => '17-06-2025T13:00:00',
+        ];
+        yield [
+            'scenario' => 'is missing T',
+            'invalidDate' => '2025-06-17 13:00:00',
+        ];
+        yield [
+            'scenario' => 'is missing seconds',
+            'invalidDate' => '2025-06-17T13:00',
+        ];
+        yield [
+            'scenario' => 'has single digit month',
+            'invalidDate' => '2025-6-17T13:00:00',
+        ];
+        yield [
+            'scenario' => 'has single digit day',
+            'invalidDate' => '2025-06-7T13:00:00',
+        ];
     }
 }

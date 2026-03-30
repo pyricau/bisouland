@@ -59,10 +59,30 @@ final class CloudCoordinatesTest extends TestCase
      */
     public static function invalidCloudCoordinatesProvider(): \Iterator
     {
-        yield ['scenario' => 'x is zero (< 1)', 'x' => 0, 'y' => 1];
-        yield ['scenario' => 'y is zero (< 1)', 'x' => 1, 'y' => 0];
-        yield ['scenario' => 'x is negative (< 0)', 'x' => -1, 'y' => 1];
-        yield ['scenario' => 'y is negative (< 0)', 'x' => 1, 'y' => -1];
-        yield ['scenario' => 'y is too high (> 16)', 'x' => 1, 'y' => 17];
+        yield [
+            'scenario' => 'x is zero (< 1)',
+            'x' => 0,
+            'y' => 1,
+        ];
+        yield [
+            'scenario' => 'y is zero (< 1)',
+            'x' => 1,
+            'y' => 0,
+        ];
+        yield [
+            'scenario' => 'x is negative (< 0)',
+            'x' => -1,
+            'y' => 1,
+        ];
+        yield [
+            'scenario' => 'y is negative (< 0)',
+            'x' => 1,
+            'y' => -1,
+        ];
+        yield [
+            'scenario' => 'y is too high (> 16)',
+            'x' => 1,
+            'y' => 17,
+        ];
     }
 }

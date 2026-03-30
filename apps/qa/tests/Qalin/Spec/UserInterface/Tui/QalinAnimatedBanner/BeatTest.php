@@ -19,11 +19,8 @@ final class BeatTest extends TestCase
 {
     #[DataProvider('frame0Provider')]
     #[TestDox('It renders frame 0: $scenario')]
-    public function test_it_renders_logo_frame_0(
-        string $scenario,
-        int $index,
-        string $line,
-    ): void {
+    public function test_it_renders_logo_frame_0(string $scenario, int $index, string $line): void
+    {
         $mockClock = new MockClock('2024-01-01 00:00:00');
         $beat = new Beat($mockClock);
 

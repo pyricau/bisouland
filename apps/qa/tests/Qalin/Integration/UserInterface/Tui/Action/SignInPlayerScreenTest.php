@@ -49,18 +49,20 @@ final class SignInPlayerScreenTest extends TestCase
      */
     #[DataProvider('requiredFieldsProvider')]
     #[TestDox('It has $scenario')]
-    public function test_it_has_required_fields(string $scenario, array $input): void
-    {
+    public function test_it_has_required_fields(
+        string $scenario,
+        array $input,
+    ): void {
         $screen = TestKernelSingleton::get()->container()->get(SignInPlayerScreen::class);
         $this->assertInstanceOf(SignInPlayerScreen::class, $screen);
-
         foreach (str_split($input['username']) as $char) {
             $screen->handle(CharKeyEvent::new($char));
         }
 
-        $screen->handle(CodedKeyEvent::new(KeyCode::Tab)); // username → Sign In
-        $result = $screen->handle(CodedKeyEvent::new(KeyCode::Enter)); // submit
-
+        $screen->handle(CodedKeyEvent::new(KeyCode::Tab));
+        // username → Sign In
+        $result = $screen->handle(CodedKeyEvent::new(KeyCode::Enter));
+        // submit
         $this->assertInstanceOf(Stay::class, $result);
     }
 
@@ -83,18 +85,20 @@ final class SignInPlayerScreenTest extends TestCase
      */
     #[DataProvider('invalidInputProvider')]
     #[TestDox('It fails when $scenario')]
-    public function test_it_fails_on_invalid_input(string $scenario, array $input): void
-    {
+    public function test_it_fails_on_invalid_input(
+        string $scenario,
+        array $input,
+    ): void {
         $screen = TestKernelSingleton::get()->container()->get(SignInPlayerScreen::class);
         $this->assertInstanceOf(SignInPlayerScreen::class, $screen);
-
         foreach (str_split($input['username']) as $char) {
             $screen->handle(CharKeyEvent::new($char));
         }
 
-        $screen->handle(CodedKeyEvent::new(KeyCode::Tab)); // username → Sign In
-        $result = $screen->handle(CodedKeyEvent::new(KeyCode::Enter)); // submit
-
+        $screen->handle(CodedKeyEvent::new(KeyCode::Tab));
+        // username → Sign In
+        $result = $screen->handle(CodedKeyEvent::new(KeyCode::Enter));
+        // submit
         $this->assertInstanceOf(Stay::class, $result);
     }
 

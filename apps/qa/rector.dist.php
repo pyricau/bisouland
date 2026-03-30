@@ -2,6 +2,8 @@
 
 declare(strict_types=1);
 
+use Bl\Qa\Dev\Rector\DataProviderYieldArrayNewLinedRector;
+use Bl\Qa\Dev\Rector\TestMethodArgumentsNewLinedRector;
 use Rector\Caching\ValueObject\Storage\FileCacheStorage;
 use Rector\CodeQuality\Rector\Assign\CombinedAssignRector;
 use Rector\CodingStyle\Rector\Closure\StaticClosureRector;
@@ -71,6 +73,10 @@ return RectorConfig::configure()
         PHPUnitSetList::PHPUNIT_120,
     ])
     ->withRules([
+        // —— BisouLand ————————————————————————————————————————————————————————
+        DataProviderYieldArrayNewLinedRector::class,
+        TestMethodArgumentsNewLinedRector::class,
+
         // —— Core —————————————————————————————————————————————————————————————
         // Inherit parent visibility
         ChangeConstantVisibilityRector::class,

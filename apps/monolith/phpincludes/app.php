@@ -82,7 +82,7 @@ if ('POST' === $_SERVER['REQUEST_METHOD'] && isset($_POST['connexion'])) {
         // Vérifie si le pseudo existe
         if (false !== $currentAccount) {
             // Si le mot de passe est le même.
-            if (password_verify($_POST['mdp'], $currentAccount['mdp'])) {
+            if (password_verify((string) $_POST['mdp'], $currentAccount['mdp'])) {
                 // --- Persistent authentication
                 $createAuthToken = CreateAuthToken::fromRawAccountId(
                     $currentAccount['id'],

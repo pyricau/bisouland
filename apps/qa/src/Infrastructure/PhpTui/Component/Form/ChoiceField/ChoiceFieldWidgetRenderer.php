@@ -48,7 +48,7 @@ final class ChoiceFieldWidgetRenderer implements WidgetRenderer
         }
 
         $listItems = array_map(
-            static fn (string $choice): ListItem => ListItem::fromString($choice),
+            ListItem::fromString(...),
             $widget->choices,
         );
 

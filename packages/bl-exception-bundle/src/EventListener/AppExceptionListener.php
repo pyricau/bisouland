@@ -14,10 +14,10 @@ use Symfony\Component\HttpKernel\Exception\HttpException;
 use Symfony\Component\Uid\Uuid;
 
 #[AsEventListener]
-final class AppExceptionListener
+final readonly class AppExceptionListener
 {
     public function __construct(
-        private readonly LoggerInterface $logger,
+        private LoggerInterface $logger,
     ) {
     }
 

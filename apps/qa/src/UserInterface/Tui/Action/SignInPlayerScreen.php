@@ -46,7 +46,7 @@ final class SignInPlayerScreen implements Screen
     /** @var ?array<string, int|string> */
     private ?array $result = null;
 
-    private FormComponent $form;
+    private readonly FormComponent $form;
 
     public function __construct(
         private readonly HttpClientInterface $qalinHttpClient,

@@ -11,11 +11,11 @@ use Symfony\Component\Clock\ClockInterface;
 
 final class Sparkles implements Animation
 {
-    private const SPARKLE_ON_SECONDS = 0.15;
+    private const float SPARKLE_ON_SECONDS = 0.15;
 
-    private const SPARKLE_OFF_SECONDS = 0.1;
+    private const float SPARKLE_OFF_SECONDS = 0.1;
 
-    private const SPARKLE_COUNT = 2;
+    private const int SPARKLE_COUNT = 2;
 
     private ?float $sparklesStartedAt = null;
 

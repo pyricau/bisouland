@@ -43,7 +43,7 @@ try {
     ]);
 
     echo "Unexpected: PDO succeeds to pass Unix timestamp as value for a PostgreSQL TIMESTAMPTZ field\n";
-} catch (PDOException $pdoException) {
+} catch (PDOException) {
     echo "PDO fails to accept PHP integer (UNIX timestamp):\n";
     echo "  - {$newLastconnectAsTimestamp}\n";
 }

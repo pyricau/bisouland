@@ -171,7 +171,7 @@ if (true === $blContext['is_signed_in']) {
         ?>
 <h1>Dévisager</h1>
 <br />
-<a href="<?php echo htmlspecialchars($_GET['Dnuage']); ?>.nuage.html">Retourner sur le nuage en cours</a><br />
+<a href="<?php echo htmlspecialchars((string) $_GET['Dnuage']); ?>.nuage.html">Retourner sur le nuage en cours</a><br />
 <br />
 <?php
             echo '<span class="info">[ '.$resultat.' ]</span><br /><br />';

@@ -251,7 +251,7 @@ function SupprimerCompte(string $accountId): void
 function ChangerMotPasse($idChange, $newMdp): void
 {
     $pdo = bd_connect();
-    $newMdp = password_hash($newMdp, \PASSWORD_DEFAULT);
+    $newMdp = password_hash((string) $newMdp, \PASSWORD_DEFAULT);
     $stmt = $pdo->prepare(<<<'SQL'
         UPDATE membres
         SET mdp = :password_hash

@@ -37,6 +37,7 @@ final class QalinCli extends Application
         '(your own Test Control Interface)',
     ];
 
+    #[\Override]
     public function getHelp(): string
     {
         // Colour LOGO in red
@@ -59,6 +60,7 @@ final class QalinCli extends Application
         return implode("\n", $lines);
     }
 
+    #[\Override]
     public function doRun(InputInterface $input, OutputInterface $output): int
     {
         // Command provided, execute it

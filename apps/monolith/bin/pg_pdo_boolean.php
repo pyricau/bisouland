@@ -38,7 +38,7 @@ try {
         'bloque' => $flippedConfirmation,
         'id' => $player['id'],
     ]);
-} catch (PDOException $pdoException) {
+} catch (PDOException) {
     echo "PDO fails to pass PHP bool as value for a PostgreSQL BOOLEAN field\n";
 }
 

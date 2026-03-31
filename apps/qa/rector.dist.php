@@ -2,6 +2,8 @@
 
 declare(strict_types=1);
 
+use Bl\Qa\Dev\Rector\DataProviderYieldArrayNewLinedRector;
+use Bl\Qa\Dev\Rector\TestMethodArgumentsNewLinedRector;
 use Rector\Caching\ValueObject\Storage\FileCacheStorage;
 use Rector\CodeQuality\Rector\Assign\CombinedAssignRector;
 use Rector\CodingStyle\Rector\Closure\StaticClosureRector;
@@ -52,6 +54,21 @@ return RectorConfig::configure()
     ])
     ->withSets([
         // —— PHP ——————————————————————————————————————————————————————————————
+        SetList::PHP_52,
+        SetList::PHP_53,
+        SetList::PHP_54,
+        SetList::PHP_55,
+        SetList::PHP_56,
+        SetList::PHP_70,
+        SetList::PHP_71,
+        SetList::PHP_72,
+        SetList::PHP_73,
+        SetList::PHP_74,
+        SetList::PHP_80,
+        SetList::PHP_81,
+        SetList::PHP_82,
+        SetList::PHP_83,
+        SetList::PHP_84,
         SetList::PHP_85,
 
         // —— Core —————————————————————————————————————————————————————————————
@@ -71,6 +88,10 @@ return RectorConfig::configure()
         PHPUnitSetList::PHPUNIT_120,
     ])
     ->withRules([
+        // —— BisouLand ————————————————————————————————————————————————————————
+        DataProviderYieldArrayNewLinedRector::class,
+        TestMethodArgumentsNewLinedRector::class,
+
         // —— Core —————————————————————————————————————————————————————————————
         // Inherit parent visibility
         ChangeConstantVisibilityRector::class,

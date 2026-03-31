@@ -27,11 +27,11 @@ Il est désormais possible de changer de mot de passe, si l'ancien ne vous convi
                 $account = $stmt->fetch();
                 if (
                     false !== $account
-                    && password_verify($_POST['oldpass'], $account['mdp'])
+                    && password_verify((string) $_POST['oldpass'], $account['mdp'])
                 ) {
                     if ($_POST['newpass'] == $_POST['newpass2']) {
-                        if (preg_match("!^\w+$!", $_POST['newpass'])) {
-                            $taille = strlen(trim($_POST['newpass']));
+                        if (preg_match("!^\w+$!", (string) $_POST['newpass'])) {
+                            $taille = strlen(trim((string) $_POST['newpass']));
                             if ($taille >= 5 && $taille <= 15) {
                                 // On change le mot de passe.
                                 ChangerMotPasse($blContext['account']['id'], $_POST['newpass']);

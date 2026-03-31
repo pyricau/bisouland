@@ -57,7 +57,13 @@ final class PasswordHashTest extends TestCase
      */
     public static function invalidPasswordHashProvider(): \Iterator
     {
-        yield ['scenario' => 'is empty', 'invalidPasswordHash' => ''];
-        yield ['scenario' => 'is not a recognized password hash', 'invalidPasswordHash' => 'not-a-valid-hash'];
+        yield [
+            'scenario' => 'is empty',
+            'invalidPasswordHash' => '',
+        ];
+        yield [
+            'scenario' => 'is not a recognized password hash',
+            'invalidPasswordHash' => 'not-a-valid-hash',
+        ];
     }
 }

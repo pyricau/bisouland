@@ -26,15 +26,17 @@ final class LineEditorComponentTest extends TestCase
     /** @param list<Event> $setup */
     #[DataProvider('changedEventsProvider')]
     #[TestDox('It reports ComponentState::Changed when $scenario')]
-    public function test_it_reports_changed(string $scenario, array $setup, Event $event): void
-    {
+    public function test_it_reports_changed(
+        string $scenario,
+        array $setup,
+        Event $event,
+    ): void {
         $lineEditorComponent = LineEditorComponent::empty();
         foreach ($setup as $setupEvent) {
             $lineEditorComponent->handle($setupEvent);
         }
 
         $state = $lineEditorComponent->handle($event);
-
         $this->assertSame(ComponentState::Changed, $state);
     }
 
@@ -153,15 +155,17 @@ final class LineEditorComponentTest extends TestCase
     /** @param list<Event> $setup */
     #[DataProvider('handledEventsProvider')]
     #[TestDox('It reports ComponentState::Handled when $scenario')]
-    public function test_it_reports_handled(string $scenario, array $setup, Event $event): void
-    {
+    public function test_it_reports_handled(
+        string $scenario,
+        array $setup,
+        Event $event,
+    ): void {
         $lineEditorComponent = LineEditorComponent::empty();
         foreach ($setup as $setupEvent) {
             $lineEditorComponent->handle($setupEvent);
         }
 
         $state = $lineEditorComponent->handle($event);
-
         $this->assertSame(ComponentState::Handled, $state);
     }
 
@@ -263,12 +267,12 @@ final class LineEditorComponentTest extends TestCase
 
     #[DataProvider('ignoredEventsProvider')]
     #[TestDox('It reports ComponentState::Ignored when $scenario')]
-    public function test_it_reports_ignored(string $scenario, Event $event): void
-    {
+    public function test_it_reports_ignored(
+        string $scenario,
+        Event $event,
+    ): void {
         $lineEditorComponent = LineEditorComponent::empty();
-
         $state = $lineEditorComponent->handle($event);
-
         $this->assertSame(ComponentState::Ignored, $state);
     }
 

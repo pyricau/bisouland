@@ -86,19 +86,84 @@ final class LayoutWidgetRendererTest extends TestCase
             '╰────────╯',
         ];
 
-        yield ['scenario' => 'banner top border    `╭────────╮`', 'area' => $area, 'widget' => $widget, 'expected' => $expected];
-        yield ['scenario' => 'banner logo line     `│≋       │`', 'area' => $area, 'widget' => $widget, 'expected' => $expected];
-        yield ['scenario' => 'banner bottom border `╰────────╯`', 'area' => $area, 'widget' => $widget, 'expected' => $expected];
-        yield ['scenario' => 'navbar top border    `╭────────╮`', 'area' => $area, 'widget' => $widget, 'expected' => $expected];
-        yield ['scenario' => 'navbar tab row       `│[1] N   │`', 'area' => $area, 'widget' => $widget, 'expected' => $expected];
-        yield ['scenario' => 'navbar bottom border `╰────────╯`', 'area' => $area, 'widget' => $widget, 'expected' => $expected];
-        yield ['scenario' => 'body top border      `╭────────╮`', 'area' => $area, 'widget' => $widget, 'expected' => $expected];
-        yield ['scenario' => 'body content row     `│ Body   │`', 'area' => $area, 'widget' => $widget, 'expected' => $expected];
-        yield ['scenario' => 'body padding row     `│        │`', 'area' => $area, 'widget' => $widget, 'expected' => $expected];
-        yield ['scenario' => 'body bottom border   `╰────────╯`', 'area' => $area, 'widget' => $widget, 'expected' => $expected];
-        yield ['scenario' => 'footer top border    `╭────────╮`', 'area' => $area, 'widget' => $widget, 'expected' => $expected];
-        yield ['scenario' => 'footer hints row     `│Quit:Esc│`', 'area' => $area, 'widget' => $widget, 'expected' => $expected];
-        yield ['scenario' => 'footer bottom border `╰────────╯`', 'area' => $area, 'widget' => $widget, 'expected' => $expected];
+        yield [
+            'scenario' => 'banner top border    `╭────────╮`',
+            'area' => $area,
+            'widget' => $widget,
+            'expected' => $expected,
+        ];
+        yield [
+            'scenario' => 'banner logo line     `│≋       │`',
+            'area' => $area,
+            'widget' => $widget,
+            'expected' => $expected,
+        ];
+        yield [
+            'scenario' => 'banner bottom border `╰────────╯`',
+            'area' => $area,
+            'widget' => $widget,
+            'expected' => $expected,
+        ];
+        yield [
+            'scenario' => 'navbar top border    `╭────────╮`',
+            'area' => $area,
+            'widget' => $widget,
+            'expected' => $expected,
+        ];
+        yield [
+            'scenario' => 'navbar tab row       `│[1] N   │`',
+            'area' => $area,
+            'widget' => $widget,
+            'expected' => $expected,
+        ];
+        yield [
+            'scenario' => 'navbar bottom border `╰────────╯`',
+            'area' => $area,
+            'widget' => $widget,
+            'expected' => $expected,
+        ];
+        yield [
+            'scenario' => 'body top border      `╭────────╮`',
+            'area' => $area,
+            'widget' => $widget,
+            'expected' => $expected,
+        ];
+        yield [
+            'scenario' => 'body content row     `│ Body   │`',
+            'area' => $area,
+            'widget' => $widget,
+            'expected' => $expected,
+        ];
+        yield [
+            'scenario' => 'body padding row     `│        │`',
+            'area' => $area,
+            'widget' => $widget,
+            'expected' => $expected,
+        ];
+        yield [
+            'scenario' => 'body bottom border   `╰────────╯`',
+            'area' => $area,
+            'widget' => $widget,
+            'expected' => $expected,
+        ];
+        yield [
+            'scenario' => 'footer top border    `╭────────╮`',
+            'area' => $area,
+            'widget' => $widget,
+            'expected' => $expected,
+        ];
+        yield [
+            'scenario' => 'footer hints row     `│Quit:Esc│`',
+            'area' => $area,
+            'widget' => $widget,
+            'expected' => $expected,
+        ];
+        yield [
+            'scenario' => 'footer bottom border `╰────────╯`',
+            'area' => $area,
+            'widget' => $widget,
+            'expected' => $expected,
+        ];
     }
 
     public function test_it_ignores_unsupported_widgets(): void

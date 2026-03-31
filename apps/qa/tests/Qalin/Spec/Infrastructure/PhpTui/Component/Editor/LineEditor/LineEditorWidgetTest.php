@@ -18,8 +18,11 @@ final class LineEditorWidgetTest extends TestCase
 {
     #[DataProvider('valueProvider')]
     #[TestDox('It has value: $scenario')]
-    public function test_it_has_value(string $scenario, LineEditorWidget $widget, string $expectedValue): void
-    {
+    public function test_it_has_value(
+        string $scenario,
+        LineEditorWidget $widget,
+        string $expectedValue,
+    ): void {
         $this->assertSame($expectedValue, $widget->value);
     }
 
@@ -46,8 +49,11 @@ final class LineEditorWidgetTest extends TestCase
 
     #[DataProvider('cursorPositionProvider')]
     #[TestDox('It has cursorPosition: $scenario')]
-    public function test_it_has_cursor_position(string $scenario, LineEditorWidget $widget, int $expectedCursorPosition): void
-    {
+    public function test_it_has_cursor_position(
+        string $scenario,
+        LineEditorWidget $widget,
+        int $expectedCursorPosition,
+    ): void {
         $this->assertSame($expectedCursorPosition, $widget->cursorPosition);
     }
 
@@ -79,10 +85,12 @@ final class LineEditorWidgetTest extends TestCase
 
     #[DataProvider('invalidCursorPositionProvider')]
     #[TestDox('It fails when cursorPosition is $scenario')]
-    public function test_it_fails_with_invalid_cursor_position(string $scenario, LineEditorWidget $widget, int $cursorPosition): void
-    {
+    public function test_it_fails_with_invalid_cursor_position(
+        string $scenario,
+        LineEditorWidget $widget,
+        int $cursorPosition,
+    ): void {
         $this->expectException(ValidationFailedException::class);
-
         $widget->cursorPosition($cursorPosition);
     }
 
@@ -109,8 +117,11 @@ final class LineEditorWidgetTest extends TestCase
 
     #[DataProvider('focusedProvider')]
     #[TestDox('It has focused: $scenario')]
-    public function test_it_has_focused_state(string $scenario, LineEditorWidget $widget, bool $expectedFocused): void
-    {
+    public function test_it_has_focused_state(
+        string $scenario,
+        LineEditorWidget $widget,
+        bool $expectedFocused,
+    ): void {
         $this->assertSame($expectedFocused, $widget->focused);
     }
 

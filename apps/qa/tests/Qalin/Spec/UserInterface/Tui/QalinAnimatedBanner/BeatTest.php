@@ -26,7 +26,6 @@ final class BeatTest extends TestCase
     ): void {
         $mockClock = new MockClock('2024-01-01 00:00:00');
         $beat = new Beat($mockClock);
-
         $this->assertSame($line, $beat->logo()[$index]);
         $this->assertEquals(Style::default()->fg(AnsiColor::Red), $beat->logoStyle());
     }

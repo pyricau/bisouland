@@ -108,7 +108,7 @@ if (true === $blContext['is_signed_in']) {
             'current_account_id' => $blContext['account']['id'],
         ]);
     } elseif (isset($_POST['supboite']) && [] !== $_POST['supboite']) {
-        $notificationIds = array_map('strval', array_keys($_POST['supboite']));
+        $notificationIds = array_map(strval(...), array_keys($_POST['supboite']));
 
         $inSize = count($notificationIds);
         $inValues = implode(', ', array_fill(0, $inSize, '?'));

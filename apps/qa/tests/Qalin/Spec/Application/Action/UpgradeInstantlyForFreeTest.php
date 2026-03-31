@@ -53,10 +53,11 @@ final class UpgradeInstantlyForFreeTest extends TestCase
 
     #[DataProvider('optionalParametersProvider')]
     #[TestDox('It has $scenario')]
-    public function test_it_has_optional_parameters(string $scenario, int $expectedLevels): void
-    {
+    public function test_it_has_optional_parameters(
+        string $scenario,
+        int $expectedLevels,
+    ): void {
         $upgradeInstantlyForFree = new UpgradeInstantlyForFree(UsernameFixture::makeString(), UpgradableFixture::makeString());
-
         $this->assertSame($expectedLevels, $upgradeInstantlyForFree->levels);
     }
 

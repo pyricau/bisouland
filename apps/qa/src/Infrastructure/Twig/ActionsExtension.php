@@ -11,7 +11,7 @@ use Twig\Extension\GlobalsInterface;
 final class ActionsExtension extends AbstractExtension implements GlobalsInterface
 {
     public function __construct(
-        private RouterInterface $router,
+        private readonly RouterInterface $router,
     ) {
     }
 

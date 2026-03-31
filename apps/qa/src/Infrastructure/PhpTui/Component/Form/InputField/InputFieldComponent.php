@@ -21,11 +21,11 @@ use PhpTui\Tui\Widget\Widget;
  *     $field->build();         // returns InputFieldWidget for rendering
  *     $field->getValue();      // returns current text value
  */
-final class InputFieldComponent implements ValueField
+final readonly class InputFieldComponent implements ValueField
 {
     private function __construct(
-        private readonly string $label,
-        private readonly LineEditorComponent $lineEditorComponent,
+        private string $label,
+        private LineEditorComponent $lineEditorComponent,
     ) {
     }
 

@@ -32,12 +32,13 @@ final class HotkeyTabsWidgetRendererTest extends TestCase
     /** @param list<string> $expected */
     #[DataProvider('tabsProvider')]
     #[TestDox('It renders hotkeyTabs: $scenario')]
-    public function test_it_renders_hotkey_tabs(string $scenario, Widget $widget, array $expected): void
-    {
+    public function test_it_renders_hotkey_tabs(
+        string $scenario,
+        Widget $widget,
+        array $expected,
+    ): void {
         $buffer = Buffer::empty(Area::fromDimensions(32, 2));
-
         $this->render($buffer, $widget);
-
         $this->assertSame($expected, $buffer->toLines());
     }
 

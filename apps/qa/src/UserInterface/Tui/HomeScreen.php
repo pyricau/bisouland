@@ -32,7 +32,7 @@ final class HomeScreen implements Screen
     private readonly array $scenarios;
 
     /** @var HotkeyTabsComponent<HomeTab> */
-    private HotkeyTabsComponent $tabs;
+    private readonly HotkeyTabsComponent $tabs;
 
     private ChoiceFieldComponent $choiceInput;
 

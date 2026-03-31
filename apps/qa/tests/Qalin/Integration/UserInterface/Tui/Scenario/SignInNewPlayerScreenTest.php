@@ -51,23 +51,26 @@ final class SignInNewPlayerScreenTest extends TestCase
      */
     #[DataProvider('requiredFieldsProvider')]
     #[TestDox('It has $scenario')]
-    public function test_it_has_required_fields(string $scenario, array $input): void
-    {
+    public function test_it_has_required_fields(
+        string $scenario,
+        array $input,
+    ): void {
         $screen = TestKernelSingleton::get()->container()->get(SignInNewPlayerScreen::class);
         $this->assertInstanceOf(SignInNewPlayerScreen::class, $screen);
-
         foreach (str_split($input['username']) as $char) {
             $screen->handle(CharKeyEvent::new($char));
         }
 
-        $screen->handle(CodedKeyEvent::new(KeyCode::Tab)); // username → password
+        $screen->handle(CodedKeyEvent::new(KeyCode::Tab));
+        // username → password
         foreach (str_split($input['password']) as $char) {
             $screen->handle(CharKeyEvent::new($char));
         }
 
-        $screen->handle(CodedKeyEvent::new(KeyCode::Tab)); // password → Sign In
-        $result = $screen->handle(CodedKeyEvent::new(KeyCode::Enter)); // submit
-
+        $screen->handle(CodedKeyEvent::new(KeyCode::Tab));
+        // password → Sign In
+        $result = $screen->handle(CodedKeyEvent::new(KeyCode::Enter));
+        // submit
         $this->assertInstanceOf(Stay::class, $result);
     }
 
@@ -94,23 +97,26 @@ final class SignInNewPlayerScreenTest extends TestCase
      */
     #[DataProvider('invalidInputProvider')]
     #[TestDox('It fails when $scenario')]
-    public function test_it_fails_on_invalid_input(string $scenario, array $input): void
-    {
+    public function test_it_fails_on_invalid_input(
+        string $scenario,
+        array $input,
+    ): void {
         $screen = TestKernelSingleton::get()->container()->get(SignInNewPlayerScreen::class);
         $this->assertInstanceOf(SignInNewPlayerScreen::class, $screen);
-
         foreach (str_split($input['username']) as $char) {
             $screen->handle(CharKeyEvent::new($char));
         }
 
-        $screen->handle(CodedKeyEvent::new(KeyCode::Tab)); // username → password
+        $screen->handle(CodedKeyEvent::new(KeyCode::Tab));
+        // username → password
         foreach (str_split($input['password']) as $char) {
             $screen->handle(CharKeyEvent::new($char));
         }
 
-        $screen->handle(CodedKeyEvent::new(KeyCode::Tab)); // password → Sign In
-        $result = $screen->handle(CodedKeyEvent::new(KeyCode::Enter)); // submit
-
+        $screen->handle(CodedKeyEvent::new(KeyCode::Tab));
+        // password → Sign In
+        $result = $screen->handle(CodedKeyEvent::new(KeyCode::Enter));
+        // submit
         $this->assertInstanceOf(Stay::class, $result);
     }
 

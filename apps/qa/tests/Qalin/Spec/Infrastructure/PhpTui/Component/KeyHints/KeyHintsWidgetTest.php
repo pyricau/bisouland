@@ -23,10 +23,11 @@ final class KeyHintsWidgetTest extends TestCase
     /** @param array<string, string> $keyHints */
     #[DataProvider('keyHintsProvider')]
     #[TestDox('It has keyHints: $scenario')]
-    public function test_it_has_key_hints(string $scenario, array $keyHints): void
-    {
+    public function test_it_has_key_hints(
+        string $scenario,
+        array $keyHints,
+    ): void {
         $widget = KeyHintsWidget::from($keyHints);
-
         $this->assertSame($keyHints, $widget->keyHints);
     }
 
@@ -61,10 +62,11 @@ final class KeyHintsWidgetTest extends TestCase
     /** @param array<string, string> $keyHints */
     #[DataProvider('invalidKeyHintsProvider')]
     #[TestDox('It fails when $scenario')]
-    public function test_it_fails_with_invalid_key_hints(string $scenario, array $keyHints): void
-    {
+    public function test_it_fails_with_invalid_key_hints(
+        string $scenario,
+        array $keyHints,
+    ): void {
         $this->expectException(ValidationFailedException::class);
-
         KeyHintsWidget::from($keyHints);
     }
 

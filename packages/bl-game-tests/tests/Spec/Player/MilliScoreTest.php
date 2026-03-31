@@ -37,8 +37,11 @@ final class MilliScoreTest extends TestCase
 
     #[DataProvider('toScoreProvider')]
     #[TestDox('It converts to Score: $scenario')]
-    public function test_it_converts_to_score(string $scenario, int $milliScore, int $expectedScore): void
-    {
+    public function test_it_converts_to_score(
+        string $scenario,
+        int $milliScore,
+        int $expectedScore,
+    ): void {
         $this->assertSame($expectedScore, MilliScore::fromInt($milliScore)->toScore());
     }
 

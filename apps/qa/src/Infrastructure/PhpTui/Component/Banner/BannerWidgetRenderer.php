@@ -28,7 +28,7 @@ use PhpTui\Tui\Widget\WidgetRenderer;
  */
 final class BannerWidgetRenderer implements WidgetRenderer
 {
-    private const SLOGAN_GAP = 3;
+    private const int SLOGAN_GAP = 3;
 
     public function render(
         WidgetRenderer $renderer,

@@ -23,14 +23,14 @@ use Symfony\Component\Clock\ClockInterface;
  */
 final class Beat implements Animation
 {
-    private const BEAT_ON_SECONDS = 0.15;
+    private const float BEAT_ON_SECONDS = 0.15;
 
-    private const BEAT_OFF_SECONDS = 0.1;
+    private const float BEAT_OFF_SECONDS = 0.1;
 
-    private const BEAT_COUNT = 2;
+    private const int BEAT_COUNT = 2;
 
     /** @var list<string> */
-    public const CONTRACTED_LOGO = [
+    public const array CONTRACTED_LOGO = [
         '                  ',
         '    ████  ████    ',
         '   ████████████   ',

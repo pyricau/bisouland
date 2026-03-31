@@ -22,10 +22,11 @@ final class BannerWidgetTest extends TestCase
     /** @param list<string> $logo */
     #[DataProvider('logoProvider')]
     #[TestDox('It has logo: $scenario')]
-    public function test_it_has_logo(string $scenario, array $logo): void
-    {
+    public function test_it_has_logo(
+        string $scenario,
+        array $logo,
+    ): void {
         $widget = BannerWidget::from($logo);
-
         $this->assertSame($logo, $widget->logo);
     }
 
@@ -58,8 +59,11 @@ final class BannerWidgetTest extends TestCase
     /** @param list<string> $logo */
     #[DataProvider('constraintProvider')]
     #[TestDox('It has constraint: $scenario')]
-    public function test_it_has_constraint(string $scenario, array $logo, Constraint $expected): void
-    {
+    public function test_it_has_constraint(
+        string $scenario,
+        array $logo,
+        Constraint $expected,
+    ): void {
         $this->assertEquals($expected, BannerWidget::from($logo)->constraint());
     }
 
@@ -92,10 +96,11 @@ final class BannerWidgetTest extends TestCase
     /** @param list<string> $logo */
     #[DataProvider('invalidLogoProvider')]
     #[TestDox('It fails when $scenario')]
-    public function test_it_fails_with_invalid_logo(string $scenario, array $logo): void
-    {
+    public function test_it_fails_with_invalid_logo(
+        string $scenario,
+        array $logo,
+    ): void {
         $this->expectException(ValidationFailedException::class);
-
         BannerWidget::from($logo);
     }
 
@@ -116,10 +121,11 @@ final class BannerWidgetTest extends TestCase
     /** @param list<string> $slogan */
     #[DataProvider('sloganProvider')]
     #[TestDox('It has slogan: $scenario')]
-    public function test_it_has_slogan(string $scenario, array $slogan): void
-    {
+    public function test_it_has_slogan(
+        string $scenario,
+        array $slogan,
+    ): void {
         $widget = BannerWidget::from([], ...$slogan);
-
         $this->assertSame($slogan, $widget->slogan);
     }
 

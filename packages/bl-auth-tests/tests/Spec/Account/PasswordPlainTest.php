@@ -46,7 +46,13 @@ final class PasswordPlainTest extends TestCase
      */
     public static function invalidPasswordPlainProvider(): \Iterator
     {
-        yield ['scenario' => 'is empty', 'invalidPasswordPlain' => ''];
-        yield ['scenario' => 'too short (< 8 characters)', 'invalidPasswordPlain' => 'abcdefg'];
+        yield [
+            'scenario' => 'is empty',
+            'invalidPasswordPlain' => '',
+        ];
+        yield [
+            'scenario' => 'too short (< 8 characters)',
+            'invalidPasswordPlain' => 'abcdefg',
+        ];
     }
 }

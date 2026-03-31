@@ -23,14 +23,14 @@ use PhpTui\Tui\Style\Style;
 final readonly class QalinBanner
 {
     /** @var list<string> */
-    public const SLOGAN = [
+    public const array SLOGAN = [
         "Qalin (it's pronounced câlin)",
         'Quality Assurance Local Interface Nudger',
         "(BisouLand's Test Control Interface)",
     ];
 
     /** @var list<string> */
-    public const LOGO = [
+    public const array LOGO = [
         '  ████      ████  ',
         '████████  ████████',
         '██████████████████',

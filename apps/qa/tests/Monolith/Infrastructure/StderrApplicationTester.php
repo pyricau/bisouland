@@ -17,6 +17,7 @@ final class StderrApplicationTester extends ApplicationTester
      * @param array<string, mixed> $input
      * @param array<string, mixed> $options
      */
+    #[\Override]
     public function run(array $input, array $options = []): int
     {
         return parent::run($input, ['capture_stderr_separately' => true, ...$options]);

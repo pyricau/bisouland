@@ -31,7 +31,10 @@ final class UpgradableTest extends TestCase
     public static function validValuesProvider(): \Iterator
     {
         foreach (Upgradable::cases() as $upgradable) {
-            yield ['value' => $upgradable->value, 'expected' => $upgradable];
+            yield [
+                'value' => $upgradable->value,
+                'expected' => $upgradable,
+            ];
         }
     }
 

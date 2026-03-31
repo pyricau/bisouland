@@ -61,12 +61,12 @@ final class HotkeyTabsComponentTest extends TestCase
 
     #[DataProvider('ignoredEventsProvider')]
     #[TestDox('It reports ComponentState::Ignored when $scenario')]
-    public function test_it_reports_ignored(string $scenario, Event $event): void
-    {
+    public function test_it_reports_ignored(
+        string $scenario,
+        Event $event,
+    ): void {
         $tabs = HotkeyTabsComponent::fromTabs(HotkeyFixtureTab::cases());
-
         $componentState = $tabs->handle($event);
-
         $this->assertSame(ComponentState::Ignored, $componentState);
         $this->assertSame(HotkeyFixtureTab::TabA, $tabs->isFocused());
     }
